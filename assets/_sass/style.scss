@@ -22,17 +22,17 @@ $border:          #e5e8ec;
 $tags-fg:         #A6A6A7;
 $tags-hover-fg:   #F7F7F7;
 $tags-active-fg:  $black;
-$tags-bg:         #474D57;
+$tags-bg:         #466F85;                                               /*选项卡背景颜色*/
 
-$pl-bg:           #fafafa; // pl: posts-list
+$pl-bg:           #fafafa; // pl: posts-list                             /*选项目录背景颜色*/
 
 $pl-input-fg:     $green;
 $pl-input-ph:     #cbcbcb; // input placeholder foreground colour
 $pl-input-bg:     darken($pl-bg, 1%);
 
 $pl-link-fg:      darken($grey, 10%);
-$pl-hover-bg:     transparentize(darken($pl-bg, 3%), .5);
-$pl-active-fg:    darken($green, 5%);
+$pl-hover-bg:     transparentize(darken($pl-bg, 3%), .5);                
+$pl-active-fg:    darken($green, 5%);                                    /*文章目录 a标签激活颜色 */
 
 $post-fg:         #2C353D;
 $post-bg:         #fff;
@@ -47,7 +47,7 @@ $inline-code-fg:  #000;
 $inline-code-bg:  #fafafa;
 
 $selection-fg:    #fff;
-$selection-bg:    lighten($green, 5%);
+$selection-bg:    lighten($green, 5%);                                    /*搜索栏背景*/
 
 $flash:           $red;
 
@@ -60,11 +60,11 @@ $fs-bg:           transparentize($border, .5);
 
 //------- {{ dimensions }} -------//
 
-$tags-width:      165px;
-$pl-width:        420px;
+$tags-width:      165px;                                                  /*选项卡宽度 原来是165px*/
+$pl-width:        420px;                                                  /*目录宽度 原来是420px*/
 $sidebar-width:   $tags-width + $pl-width;
 
-$search-height:   65px;
+$search-height:   40px;                                                   /*搜索框宽度 原来是65px*/
 
 $fullscreen-width:800px;
 
@@ -177,7 +177,7 @@ a {
 
 
 /*---------------------------------*\
-   Tags
+   Tags  /*选项卡*/
 \*---------------------------------*/
 
 #tags {
@@ -200,11 +200,13 @@ a {
 
 //------- {{ avatar }} -------//
 
+/************头像*************/
+
 #avatar {
   width: 100px;
   height: 100px;
   margin: 55px auto 35px;
-  background: url(/assets/img/avatar.png);
+  background: url(../assets/img/avatar.png);
   border-radius: 50%;
   box-shadow: 0 0 0px 4px white, 0 0 4px 4px #eee;
   overflow: hidden;
@@ -234,6 +236,8 @@ a {
   border-bottom: 1px solid lighten($tags-bg, 5%);
   list-style: none;
 }
+
+/*选项卡样式*/
 .tags__li {
   padding: 12px 35px 9px;
   border-top: 1px solid lighten($tags-bg, 5%);

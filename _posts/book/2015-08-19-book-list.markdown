@@ -1,0 +1,23 @@
+---
+layout: post
+title: 2015阅读书单
+category: 读书
+keywords: 阅读,书单,2015
+---
+
+## Pro Git
+
+- status: 在读
+- author: Scott Chacon
+- publisher: Apress
+- language: English/正体/简体(截至目前还没完全翻译)
+- link: [http://git-scm.com/book](http://git-scm.com/book)
+- description: github的内核技术，由著名黑客linus(linux创始人)开发，分布式文件管理系统，图文讲解，值得一看。
+
+## 《黑客与画家：硅谷创业之父paul graham文集》
+
+- status: 未读
+- author: Paul Graham
+- Translator: 阮一峰 
+- language: 简体 
+- description: 暂无
