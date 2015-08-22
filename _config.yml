@@ -15,14 +15,14 @@ link: http://Owen.org
 github: http://github.com/NumerHero
 
 # 站点信息
-title: 仰望星空的天台 
+title: Owen的博客 
 description: 欧阳湘粤的博客
 url: http://Owen.org
 rss_url: /pages/atom.xml
 
 # avatar头像及Favicon
-avatar: file://url(../assets/img/avatar.png) 
-favicon: file://url(../assets/img/corazón.ico)
+avatar: (../assets/img/avatar.png) 
+favicon: (../assets/img/corazón.ico)
 
 # google analytics 设置
 ga:

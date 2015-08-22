@@ -7,6 +7,8 @@ keywords: 阅读,书单,2015
 
 ## Pro Git
 
+![pro-git](/assets/img/Books/Pro-git.jpg)
+
 - status: 在读
 - author: Scott Chacon
 - publisher: Apress
@@ -15,6 +17,8 @@ keywords: 阅读,书单,2015
 - description: github的内核技术，由著名黑客linus(linux创始人)开发，分布式文件管理系统，图文讲解，值得一看。
 
 ## 《黑客与画家：硅谷创业之父paul graham文集》
+
+![黑客与画家](/assets/img/Books/Hackers-And-parinter.jpg)
 
 - status: 未读
 - author: Paul Graham
