@@ -87,7 +87,7 @@ a {
 #tags {
   width: 165px;
   height: 100%;
-  background: #029AD1;                                                /*选项卡背景*/
+  background: #1A1A1A;                                                /*选项卡背景*/
   border-right: 1px solid #3c4149;
   box-shadow: inset -15px 0 15px -15px #222;
   float: left;
@@ -107,15 +107,17 @@ a {
   margin: 55px auto 35px;
   background: url(/assets/img/avatar.png);
   border-radius: 20px;
-  box-shadow: 0 0 0px 4px white, 0 0 4px 4px #eee;
+  box-shadow: 0 0 4px 4px white, 0 0 4px 4px #eee;
   background-repeat: no-repeat;
   background-size: 100px 100px;
   overflow: hidden;
   display: block; }
  
-  /*头像旋转动画*/
   
-  /* 
+#avatar:hover{ box-shadow: 0 0 4px 4px #DB1C73, 0 0 4px 4px #DB1C73;}
+ 
+ /*头像旋转动画*/
+   /*
     #avatar:hover {
     -webkit-animation: spin .35s linear infinite;
     -moz-animation: spin .35s linear infinite;
@@ -229,8 +231,9 @@ a {
 #posts-list {
   width: 420px;
   height: 100%;
-  background: rgba(250, 250, 250, 0.95);
+  background:url(/assets/img/post-list-bg.jpg) no-repeat 10px 50px;                  /*目录背景*/
   border-right: 1px solid #e5e8ec;
+  box-shadow: 0 0 4px 4px white;
   float: left;
   position: relative;
   -webkit-user-select: none;
@@ -280,7 +283,9 @@ a {
   -ms-appearance: none;
   -o-appearance: none;
   appearance: none;
-  cursor: not-allowed; }
+  cursor: not-allowed; 
+  }
+
   #search-input::-webkit-input-placeholder {
     color: #cbcbcb;
     font-style: italic; }
@@ -367,10 +372,10 @@ a {
 \*---------------------------------*/
 #post {
   height: 100%;
-  color: #FFF;
+  color: #7D3B2B;
   font-size: 18px;
   line-height: 1.5;
-  background: #C3B090;
+  background: url(/assets/img/Dcat.png) -200px 0 no-repeat;
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch; }
@@ -388,11 +393,11 @@ a {
   
   @font-face {
   font-family: "迷你的简石头";
-  src: url("../font/font-family.TTF");
+  src: url(/assets/font/font-family.TTF);
   font-weight: normal;
-  font-style: normal; }
-    }
-
+  font-style: normal; 
+      }
+  }
 #pjax {
   padding: 0 5% 30px; }
   #pjax.fadeIn {
