@@ -87,7 +87,7 @@ a {
 #tags {
   width: 165px;
   height: 100%;
-  background: #474d57;
+  background: #029AD1;                                                /*选项卡背景*/
   border-right: 1px solid #3c4149;
   box-shadow: inset -15px 0 15px -15px #222;
   float: left;
@@ -105,18 +105,25 @@ a {
   width: 100px;
   height: 100px;
   margin: 55px auto 35px;
-  border-radius: 50%;
+  background: url(/assets/img/avatar.png);
+  border-radius: 20px;
   box-shadow: 0 0 0px 4px white, 0 0 4px 4px #eee;
   background-repeat: no-repeat;
   background-size: 100px 100px;
   overflow: hidden;
   display: block; }
-  #avatar:hover {
+ 
+  /*头像旋转动画*/
+  
+  /* 
+    #avatar:hover {
     -webkit-animation: spin .35s linear infinite;
     -moz-animation: spin .35s linear infinite;
     -ms-animation: spin .35s linear infinite;
     -o-animation: spin .35s linear infinite;
     animation: spin .35s linear infinite; }
+  */
+
   @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
     #avatar {
       -webkit-background-size: 100px 100px;
@@ -131,16 +138,21 @@ a {
   border-bottom: 1px solid #525965;
   list-style: none; }
 
-.tags__li {
+/*选项卡菜单*/
+.tags__li 
+{
   padding: 12px 35px 9px;
   border-top: 1px solid #525965;
   border-bottom: 1px solid #3c4149;
-  cursor: pointer; }
+  cursor: pointer; 
+ }
+/*C3B090米其色*/
+/*fafafa白色*/
   .tags__li.active {
     margin-right: -1px;
-    color: #020202;
-    background: #fafafa;
-    border-right: 1px solid #fafafa;
+    color: #fafafa;
+    background: #C3B090;
+    border-right: 1px solid #C3B090;
     border-radius: 5px 0 0 5px;
     position: relative;
     -webkit-transition: none;
@@ -149,8 +161,8 @@ a {
     -o-transition: none;
     transition: none; }
     .tags__li.active:hover {
-      color: #020202;
-      background: #fafafa; }
+      color: #fafafa;
+      background: #C3B090; }
     .tags__li.active:before, .tags__li.active:after {
       content: "";
       width: 6px;
@@ -160,13 +172,13 @@ a {
       right: -3px; }
     .tags__li.active:before {
       top: -6px;
-      border-right: 2px solid #fafafa;
-      border-bottom: 2px solid #fafafa;
+      border-right: 2px solid #C3B090;
+      border-bottom: 2px solid #C3B090;
       border-radius: 0 0 6px 0; }
     .tags__li.active:after {
       bottom: -6px;
-      border-right: 2px solid #fafafa;
-      border-top: 2px solid #fafafa;
+      border-right: 2px solid #C3B090;
+      border-top: 2px solid #C3B090;
       border-radius: 0 6px 0 0; }
 
 #tags__bottom {
@@ -195,16 +207,21 @@ a {
   #icon-feed:before {
     content: "\e802"; }
 
+/*按钮属性*/
 .tags-btn {
-  color: #a6a6a7;
+  color: #fafafa;
   -webkit-transition: color .3s, background .3s;
   -moz-transition: color .3s, background .3s;
   -ms-transition: color .3s, background .3s;
   -o-transition: color .3s, background .3s;
   transition: color .3s, background .3s; }
-  .tags-btn:hover {
+
+/*按钮伪类*/
+.tags-btn:hover 
+{
     color: #f7f7f7;
-    background: #40464f; }
+    background: #40464f; 
+}
 
 /*---------------------------------*\
    Posts List
@@ -222,8 +239,8 @@ a {
   -o-user-select: none;
   user-select: none; }
   @media screen and (max-width: 585px) {
-    #posts-list {
-      width: 100%; } }
+  #posts-list {
+   width: 100%; } }
 
 #search-form {
   width: 100%;
@@ -350,10 +367,10 @@ a {
 \*---------------------------------*/
 #post {
   height: 100%;
-  color: #2c353d;
+  color: #FFF;
   font-size: 18px;
   line-height: 1.5;
-  background: white;
+  background: #C3B090;
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch; }
@@ -367,7 +384,14 @@ a {
     text-shadow: none; }
   @media screen and (max-width: 585px) {
     #post {
-      font-size: 14px; } }
+      font-size: 14px; } 
+  
+  @font-face {
+  font-family: "迷你的简石头";
+  src: url("../font/font-family.TTF");
+  font-weight: normal;
+  font-style: normal; }
+    }
 
 #pjax {
   padding: 0 5% 30px; }

@@ -20,10 +20,6 @@ description: 欧阳湘粤的博客
 url: http://Owen.org
 rss_url: /pages/atom.xml
 
-# avatar头像及Favicon
-avatar: (../assets/img/avatar.png) 
-favicon: (../assets/img/corazón.ico)
-
 # google analytics 设置
 ga:
   id: UA-54767140-1
