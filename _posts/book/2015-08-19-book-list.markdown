@@ -5,7 +5,7 @@ category: 读书
 keywords: 阅读,书单,2015
 ---
 
-## Pro Git
+## 《Pro Git》
 
 ![pro-git](/assets/img/Books/Pro-git.jpg)
 
@@ -23,5 +23,14 @@ keywords: 阅读,书单,2015
 - status: 未读
 - author: Paul Graham
 - Translator: 阮一峰 
+- language: 简体 
+- description: 暂无
+
+## 《你若安好，便是晴天》
+
+![你若安好](/assets/img/Books/linweiyin.jpg)
+
+- status: 在读
+- author: 白落梅 
 - language: 简体 
 - description: 暂无
