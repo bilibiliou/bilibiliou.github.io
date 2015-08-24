@@ -238,7 +238,7 @@ a {
 #posts-list {
   width: 420px;
   height: 100%;
-  background:url(/assets/img/post-list-bg.jpg) no-repeat 10px 50px;                  /*目录背景*/
+  background:url(/assets/img/post-list-bg.jpg) no-repeat 4px 50px;                  /*目录背景*/
   border-right: 1px solid #e5e8ec;
   box-shadow: 0 0 4px 4px white;
   float: left;
@@ -427,6 +427,7 @@ a {
 h1, h2, h3, h4, h5, h6 {
   font-weight: 400; }
 h2{color:#AFDEE4;}                                                       /*惯用标签*/
+h3{color:#FF8B00;}
 #post__title {
   margin: 0;
   padding-top: 1.1em;
