@@ -20,6 +20,10 @@
   font-weight: normal;
   font-style: normal; }
 
+@font-face{
+	font-family:"Walt Disney Script";
+	src:url(../font/Disney.ttf);
+}
 .fontello, .post__toc-li:before {
   font-family: "fontello";
   speak: none;
@@ -431,9 +435,9 @@ h3{color:#FF8B00;}
 #post__title {
   margin: 0;
   padding-top: 1.1em;
-  font-size: 2em; 
+  font-size: 3em; 
   color:#C61FC1 !important;                                               /*文章标题*/
-  
+  font-family: Walt Disney Script,'幼圆','黑体';
 }
 
 #post__content > p, #post__content > ul, #post__content > ol {
