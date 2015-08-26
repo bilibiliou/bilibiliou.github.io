@@ -1,11 +1,10 @@
 ﻿permalink: /:year/:month/:day/:title.html
 markdown: kramdown
-Rouge: true
-
 kramdown:
   input: GFM
   use_coderay: true
-
+  
+highlighter: Rouge
 # 作者信息
 author: 
 name: Owen

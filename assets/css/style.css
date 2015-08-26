@@ -242,7 +242,7 @@ a {
 #posts-list {
   width: 420px;
   height: 100%;
-  background:url(/assets/img/post-list-bg.jpg) no-repeat 4px 50px;                  /*目录背景*/
+  background:url(/assets/img/post-list-bg.jpg) no-repeat 0px 50px;                  /*目录背景*/
   border-right: 1px solid #e5e8ec;
   box-shadow: 0 0 4px 4px white;
   float: left;
