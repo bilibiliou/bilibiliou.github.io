@@ -42,24 +42,25 @@ Ajax (Asynchronous Javascript And XML) 也就是异步的 javascript 和 XML
 
 异步 :进程非堵塞的
 	e.g:
-	{% highlight ruby %}
-	settimeout(consonle.log(1),2000);
-	console.log(2);
-	{% endhighlight %}
+{% highlight JavaScript %}
+settimeout(consonle.log(1),2000);
+console.log(2);
+{% endhighlight %}
+	
 这里settimeout也就是2秒后打印出1
 但是consonle.log(2)不会等settimtout2秒打印出1后才执行，它会立即执行，也就是说settimeout这个代码块不会堵塞总体代码的执行进程，之后的代码不会因为它的延时执行而不立即执行
 
 同步 :进程堵塞的
-	e.g
-	{% highlight ruby %}
-	<script src="jquery.js"></script>
-	<script>
-	window.onload = function()
-	{
-		$(function(){});
-	}
-	</script>
-	{% endhighlight %}
+e.g
+{% highlight  JavaScript %}
+<script src="jquery.js"></script>
+<script>
+window.onload = function()
+{
+	$(function(){});
+}
+</script>
+{% endhighlight %}
 
 如果要让 `$(function(){});`  这句代码执行。 必须等到这个库`<script src="jquery.js"></script>` 加载完，不然这个封装的方法就无法使用，这就是所谓的进程堵塞，也就是同步
 
@@ -68,8 +69,7 @@ Ajax (Asynchronous Javascript And XML) 也就是异步的 javascript 和 XML
 ## 最基本的AJAX
 
 直接上代码:
-	{% highlight ruby %}
-
+{% highlight  JavaScript %}
 	//可以想象成虚拟的打开了一个输入Url的地址框
 	try
 	{
@@ -96,7 +96,7 @@ Ajax (Asynchronous Javascript And XML) 也就是异步的 javascript 和 XML
 			alert( xhr.responseText );
 		}
 	}
-	{% endhighlight %}
+{% endhighlight %}
 
 	
 

@@ -391,14 +391,16 @@ a {
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch; }
-  #post ::selection {
+
+  /*代码高亮默认背景*/
+  /*#post ::selection {
     color: white;
     background: #33caa6;
     text-shadow: none; }
   #post ::-moz-selection {
     color: white;
     background: #33caa6;
-    text-shadow: none; }
+    text-shadow: none; }*/
   @media screen and (max-width: 585px) {
     #post {
       font-size: 14px; } 
@@ -965,12 +967,12 @@ iframe {
 .highlight {
   margin: 1.715em 0; }
 
+/*代码块高亮的css文件 ， 如果要用高亮代码需要修改这里的css值*/
 pre {
   padding: 1em;
   font: .9em/1.5 Consolas, Monaco, 'Andale Mono', monospace;
   border: 1px solid #e5e8ec;
   border-radius: 3px;
-  background-color: #fdfdfd;
   background-image: -webkit-linear-gradient(transparent 50%, rgba(69, 142, 209, 0.04) 50%);
   background-image: -moz-linear-gradient(transparent 50%, rgba(69, 142, 209, 0.04) 50%);
   background-image: -ms-linear-gradient(transparent 50%, rgba(69, 142, 209, 0.04) 50%);

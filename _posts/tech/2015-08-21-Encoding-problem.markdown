@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 使用github + jekyll + markdown建站的遇到的一些问题
+title: 使用github + jekyll + markdown建站遇到的一些问题和细节
 category: 技术
 keywords: 技术,jekyll,github,markdown,建站
 ---
@@ -13,7 +13,7 @@ keywords: 技术,jekyll,github,markdown,建站
 
 于是就跟风也学着建立一个。由于这方面的教程网上有很多，所以在这里我就不再过多赘余
 
-## 分享下我遇到的一些问题
+## 分享下我遇到的一些问题和一些细节
 
   window下面安装ruby时候出现的一些问题
   由于jekll是以ruby语言编写的，自然需要安装ruby的编译程序
@@ -110,6 +110,101 @@ keywords: 技术,jekyll,github,markdown,建站
 
 >gem install jekyll
 
+## 代码高亮
+
+如果我们需要在博客上展示自己的代码可以添加代码高亮，而代码高亮的第三方插件中我选择的是pygments。
+
+步骤
+{% highlight  JavaScript %}
+    安装python ==> 安装eazy_install ==> 安装pygments ==> 使用pygments产生使代码高亮的.css文件 ==> 在html的header区域引用外部的css文件 ==> 编辑markdown的时候编辑高亮区域 ==> 实现页面高亮
+{% endhighlight %}
+这么多步骤，真的很麻烦，但是，一步一步来，最终是可以解决问题的
+
+### 安装python
+首先，我们下载[安装包]() 
+因为，python2 和 python3 是两个区别度比较大的版本，所以大家不要下载3.0+ 这里下载的是2.7的
+然后，就出现问题了。
+window 8.1(估计win7也会出现)下会因为权限问题导致安装失败,解决这个办法,网上有很多种
+这里，我就介绍我亲自尝试过的方法
+win + x 打开有管理员权限的cmd
+![shootpic](/assets/img/python-install2.png)
+
+然后顺着安装向导一步一步就能装，安装过程中注意勾选自动添加到path(环境变量)
+
+如果忘记添加了，也不要紧
+![shootpic](/assets/img/python-install3.png)
+
+然后 重启一下cmd 
+执行代码
+
+>C:\Windows\system32>python -V(大写)
+ Python 2.7.5
+
+如果正确弹出了版本号，说明安装成功了
+
+### 安装easy_install
+一个插件管理工具 (可以类比 Devkit) 好处是，使用它安装插件不用配置和设置其他文件， 只要一句代码就搞定
+
+言归正传，首先我们先下载[安装包 ez_setup.py](https://pypi.python.org/pypi/setuptools)
+![shootpic](/assets/img/python-install4.png)
+
+下载完后，一句cmd代码解决问题
+切换到存放ez_install的地方
+>python ez_setup.py
+
+然后，还是和上面一样，需要添加一下配置环境， 具体步骤参照上面
+
+### 安装pygments
+>easy_install pygments
+解决问题
+
+### 检查一下安装情况
+
+> C:\Windows\system32>python -V
+  Python 2.7.5
+
+  C:\Windows\system32>easy_install --version
+  setuptools 18.2
+
+弹出版本号，说明安装成功
+
+### 使用pygments
+pygments是基于python的一款第三方插件
+
+使用方法可以参考
+[http://pygments.org/docs/cmdline/](http://pygments.org/docs/cmdline/)和
+[http://segmentfault.com/a/1190000000661337](http://segmentfault.com/a/1190000000661337)
+
+细节1:在你使用pygments前，需要告诉jekyll 你用的高亮语法是pygments
+在配置文件_config.yml中添加 新版jekyll:`highlighter: pygments` 老版:`pygments: true`
+
+细节2:检查Pygments的主题样式,需要先在cmd中进入python编译模式
+{% highlight language %}
+C:\Windows\system32>python
+Python 2.7.5 (default, May 15 2013, 22:43:36) [MSC v.1500 32 bit (Intel)] on win
+32
+Type "help", "copyright", "credits" or "license" for more information.
+>>>
+{% endhighlight %}
+  再在底下依次输入这两句代码
+`from pygments.styles import STYLE_MAP`
+`STYLE_MAP.keys()`
+
+但是，产生css文件的时候 不需要在python的编译模式下 需要先ctrl + c 退出python
+然后，在执行 pygmentize -f html(声明在html文件下高亮) -a .highlight -S default(主题样式名) > 你准备生产的文件夹路径 + \pygments.css
+
+  * `-f` html指明需要输出html文件
+  * `-a` .highlight指所有css选择器都具有.highlight这一祖先选择器
+  * `-S` default就是指定所需要的样式了，各位可以对各种样式都尝试一下。在官网上是可以直接尝试的哦！
+  * `->` pygments.css将内容输出到pygments.css文件中
+
+然后，在header标签里面引入外部css文件
+
+细节3: 怎么使用高亮css
+
+你需要高亮的代码块上下添加markdown语法
+![shootpic](/assets/img/python-install5.png)
+
 
 =========华丽的分割符=========
 
@@ -133,10 +228,15 @@ layout: post(引号和post之间要有一个空格)
 sublime 和 notepad++ 都能保存你的编码设置
 
 ## 感谢
+本人，在学过程中看了很多前辈的博客，可惜本人因为机器原因，丢失了一些博文链接，所以现在只记得一些博文连接，对此，深表遗憾
 
- 这里引用了oukongli的blog资料[http://blog.csdn.net/kong5090041/article/details/38408211](http://blog.csdn.net/kong5090041/article/details/38408211)
+但是，还是对所有帮助过本人的前辈表示衷心的感谢，谢谢你们为中国编程事业做出的辛勤贡献，谢谢
 
- 特此表示衷心感谢
+[Havee's Space的博客](havee.me/internet/2013-08/support-pygments-in-jekyll.html)
+[Jerry's Blog ](http://segmentfault.com/a/1190000000661337)
+[oukongli的blog资料](http://blog.csdn.net/kong5090041/article/details/38408211)
+
+
 
   
 
