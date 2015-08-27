@@ -163,7 +163,7 @@ win + x 打开有管理员权限的cmd
 > C:\Windows\system32>python -V
   Python 2.7.5
 
-  C:\Windows\system32>easy_install --version
+> C:\Windows\system32>easy_install --version
   setuptools 18.2
 
 弹出版本号，说明安装成功
