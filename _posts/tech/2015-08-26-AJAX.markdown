@@ -23,7 +23,7 @@ keywords: 技术,Ajax,wampserver,建站
 
 ## 小白级使用wampserver
 双击打开wampserver 在右下角有运行图标
-![shootpic](/Assets/img/AJAX-shootpic1.png)
+![shootpic](/assets/img/AJAX-shootpic1.png)
 
 localhost就是你的本机地址
 www directory 是本机存放数据的文件夹 你练习的文件都需要存在www这个文件夹里面
