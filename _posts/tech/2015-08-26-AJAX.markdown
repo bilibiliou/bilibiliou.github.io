@@ -93,10 +93,35 @@ window.onload = function()
 	{
 		if(xhr.readystate == 4)
 		{
-			alert( xhr.responseText );
+			//如果HTTP状态码 等于 200(请求成功) 那么就打印出返回的文件内容
+			if( xhr.status == 200)
+			{
+				alert( xhr.responseText );
+			}
+			else
+			{
+				alert( '出错咯 ，Err : ' + xhr.status)
+			}
 		}
 	}
 {% endhighlight %}
+
+对上面的代码做一些解释:
+
+readystate : 是AJAX的状态码，用来表示AJAX运行的各种状态
+
+	0 >>（初始化）还没有调用open()方法
+	1 >>（载入）已调用send()方法，正在发送请求
+	2 >>（载入完成）send()方法完成，已收到全部响应内容
+	3 >>（解析）正在解析响应内容
+	4 >>（完成）响应内容解析完成，可以在客户端调用了
+
+on readystate change事件 : 当AJAX状态改变执行事件
+xhr.status : 服务器(请求资源)的状态 HTTP状态编码
+
+responseText：返回以文本形式存放的内容(注意: 不论什么格式的内容都会以文本形式返回，如果编码存在问题 ， 会导致一些其他问题)
+
+responseXML：返回XML形式的内容
 
 	
 
