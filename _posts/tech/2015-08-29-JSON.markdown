@@ -1,0 +1,10 @@
+---
+layout: post
+title: JSON学习笔记(部分原创 + copy他人知识的汇总)
+category: 技术
+keywords: 技术,JSON
+---
+
+## 感谢
+
+[关于JS中的JSON对象](http://www.cnblogs.com/gaojun/p/3394274.html)
