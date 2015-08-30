@@ -385,7 +385,7 @@ a {
   height: 100%;
   color: #7D3B2B;
   font-size: 18px;
-  font-family: Yuppy;                                    /*文本字体*/
+  font-family: '楷体_GB2312',Yuppy;                                    /*文本字体*/
   line-height: 1.5;
   background: url(/assets/img/Dcat.png) -200px 0 no-repeat;
   overflow-x: hidden;

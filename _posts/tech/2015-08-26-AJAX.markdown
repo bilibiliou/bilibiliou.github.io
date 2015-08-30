@@ -41,7 +41,7 @@ Ajax (Asynchronous Javascript And XML) 也就是异步的 javascript 和 XML
 但是，在计算机中，异步和同步理解起来就和生活中的完全相反
 
 异步 :进程非堵塞的
-	e.g:
+e.g:
 {% highlight JavaScript %}
 settimeout(consonle.log(1),2000);
 console.log(2);
@@ -266,7 +266,6 @@ www.baidu.com是网站域名
 
 2.因为url栏目有字符上限,所以有关大量数据的传递，一来因为会把数据内容显示在url栏，会有安全性问题，再来有url有字符上限，如果超过上限数据就无法进行传输，所以建议，get应用在小规模数据传递且数据所需安全性不用太高的表单中
 
-		
 {% highlight JavaScript %}
 以下是网友对一些浏览器地址栏最大字符上限的测试:
 
@@ -300,6 +299,61 @@ Microsoft Internet Information Server(IIS)
 服务器的最大并发数显然会下降，介于安全和稳定的考虑，故而给了url加了限制。
 {% endhighlight %}
 
+3.get存在Web缓存问题，
+
+什么是Web缓存呢？
+这是浏览器的一种提升访问效率的机制
+当我们多次浏览同一个页面，
+或者在同一个页面多次请求的时候
+浏览器就会将你的url保存在本地的缓存文件夹中
+这样当你再次访问这个页面的时候就不用访问DNS服务器来解析域名了
+直接能访问到你想访问的网站
+
+但是我们知道AJAX的操作对象是在同一张页面内
+使用GET方式传输的URL地址肯定是相同的，
+这样Web缓存就会出麻烦
+
+{% highlight JavaScript %}
+现在我们来举个例子:
+
+
+比如我们现在要登录账户
+用GET发送请求
+numerhero.github.io/?username=Owen&pw=123
+当我们访问一次之后和后端交互了一次之后，成功了，得到了我们想要的数据
+然后缓存文件夹就会记录下numerhero.github.io/?username=Owen&pw=123交互成功之后的内容
+以便以后再次访问
+
+但是，如果下次我们使用GET方法登录账户
+numerhero.github.io/?username=Owen&pw=123
+浏览器就会从本地的缓存文件夹中调取老数据
+这样，就无法得到我们想要的新数据
+
+=== 解决方案 ===
+
+我们可以在请求的后面添加一个 随机数 或 时间戳来保证每次请求的地址不相同
+这样浏览器看到每次请求的地址和老地址不相同，
+就不会访问本地缓存文件而是访问远端服务器了
+
+"numerhero.github.io/?username=Owen&pw=123&" + new Date().getTime() 
+(注意:请求内容和时间戳或随机数之间需要有一个&来连接) 
+
+每请求一次 都是毫秒级的变化,这样就不可能出现缓存问题了
+(当然也可以用随机数目,但是随机数有重复的可能,而时间戳基本不可能重复)
+{% endhighlight %}
+
+4.中文 以及其他文字的编码问题
+我们页面使用的一般是unicode编码 和 utf-8编码
+但是我们用于传输的地址自己有一套特殊的编码机制
+也就是url编码
+
+所以，如果我们要用GET方式传递像
+numerhero.github.io/?username=欧阳湘粤&pw=123
+的数据，就需要对齐进行编码 而非直接用 utf-8 中文编码
+encodeURL()方法把中文编码转化成URL编码
+"numerhero.github.io/?username=" + encodeURL(欧阳湘粤) + "&pw=123"
+
+这样就能解决乱码问题
 ### get的安全安全性
 
 get相对与post方法对于服务器而言是较安全的
@@ -328,6 +382,39 @@ GET方法用于获取资源，不应有副作用，所以是幂等的。
 
 2.理论上来说对数据的大小没有传输的限制，
 但HTTP规范也没有对其进行限制，起限制作用的是服务器的处理能力。
+
+3.post无法从地址栏直接传递数据
+"numerhero.github.io/?username=Owen&pw=123&" + new Date().getTime() 
+像GET方式的传递方式，在POST方式上不适用，后端收不到这些数据
+
+如果需要从前端向后端提交数据，可以在send()里面写
+
+xhr.send(username=Owen&pw=123)
+
+4.请求头声明
+使用post方法需要声明请求头
+也就是要添加一句
+xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+大家可能不知道是什么意思
+
+我翻译一下
+xhr对象底下头部请求信息("请求文件的格式" , "文件的编码")
+因为服务端 对 客户端 可以说是一无所知(毕竟是电脑嘛)
+所以我们需要给传输的数据加个备注信息
+也就是这个所谓的请求头声明
+
+关于请求文件的格式 和 文件的编码 具体可以百度 这里不过多讨论
+
+5.post方式没有中文乱码问题
+这是当然嘛，因为请求头信息中有文件的编码
+application/x-www-form-urlencoded
+这里不就已经告诉服务器端 要用urlencoded 这个URL编码
+来读取数据吗?自然就没有乱码的问题了
+(也就是说你可以直接使用中文发送，
+而不用像GET方式那样将中文用encodeURL()括起来)
+
+6.post不存在缓存问题
+使用post发送的数据不会被缓存文件夹保存
 
 ### post方法的安全性
 
@@ -379,82 +466,82 @@ Ajax.js
 
 {% highlight JavaScript %}
 
-	function ajax( url , success , method , data , faild)   
+
+function ajax( url , success , method , data , faild)   
+{
+	//data 以JSON形式传递过来
+	try
 	{
-		//data 以JSON形式传递过来
-		try
-		{
-			var xhr =  new XMLHttpRequest();
-		}
-		catch(e)
-		{
-			var xhr = new ActiveXObject('Microsoft.XMLHTTP');
-		}
+		var xhr =  new XMLHttpRequest();
+	}
+	catch(e)
+	{
+		var xhr = new ActiveXObject('Microsoft.XMLHTTP');
+	}
 
-		//如果method 不填写 默认是get方式输入
-		if(!method)
-		{
-			method = 'get';
-		}
+	//如果method 不填写 默认是get方式输入
+	if(!method)
+	{
+		method = 'get';
+	}
 
-		if(method.toLowerCase() == "post")
+	if(method.toLowerCase() == "post")
+	{
+		//当post方法需要用send方法传递参数时候
+		if(data)
 		{
-			//当post方法需要用send方法传递参数时候
-			if(data)
+			for(i in data) 
 			{
-				for(i in data) 
-				{
-					// 这里的 i 就是遍历对象的属性名 data[i] 是属性的值
-					url = addURLParam(url , i , data[i]);
-				}
+			// 这里的 i 就是遍历对象的属性名 data[i] 是属性的值
+				url = addURLParam(url , i , data[i]);
 			}
-			xhr.open( 'post' , url , true);
-			xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-			xhr.send(data);
 		}
-		else if(method.toLowerCase() == "get")
+	xhr.open( 'post' , url , true);
+	xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xhr.send(data);
+	}
+	else if(method.toLowerCase() == "get")
+	{
+		xhr.open( 'get' , url , true);
+		xhr.send(null);
+	}
+	else
+	{
+		alert("你参数选择的方法输入错误,请修改脚本");
+		return;
+	}
+
+	xhr.onreadystatechange = function()
+	{
+		if(xhr.readyState == 4 && xhr.status == 200)
 		{
-			xhr.open( 'get' , url , true);
-			xhr.send(null);
+		if(success)
+		{
+			success( xhr.responseText );
 		}
 		else
 		{
-			alert("你参数选择的方法输入错误,请修改脚本");
-			return;
+			faild && faild();
 		}
-		
-		xhr.onreadystatechange = function()
-		{
-			if(xhr.readyState == 4 && xhr.status == 200)
-			{
-				if(success)
-				{
-					success( xhr.responseText );
-				}
-				else
-				{
-					faild && faild();
-				}
-			}
-			
-		}
-
-			function addURLParam(url , name , value)
-			{
-				//遍历url字符串 判断是否有?字符 如果没有 就添加一个?字符 后面跟着加数据
-				//如果已经有了 说明需要添加的不是第一个数据了
-				//这时候就加一个&后面再跟其他数据
-
-				url += (url.indexOf("?") == -1 ? "?" : "&");
-				
-				//encodeURIComponent()函数用于将 除url标准字符外的 
-				//其他字符转为HTTP编码
-				
-				url += encodeURIComponent(name) + "=" + encodeURIComponent(value);
-				return url;
-			}
 	}
 
+}
+
+	function addURLParam(url , name , value)
+	{
+		//遍历url字符串 判断是否有?字符 如果没有 就添加一个?字符 后面跟着加数据
+		//如果已经有了 说明需要添加的不是第一个数据了
+		//这时候就加一个&后面再跟其他数据
+
+		url += (url.indexOf("?") == -1 ? "?" : "&");
+
+		//encodeURIComponent()函数用于将 除url标准字符外的 
+		//其他字符转为HTTP编码
+
+		url += encodeURIComponent(name) + "=" + encodeURIComponent(value);
+		return url;
+	}
+}
 === 存在的BUG ===
 
 当使用GET方式的时候,无法定义faild函数
@@ -473,3 +560,7 @@ Ajax.js
 [引用了陈曦明前辈的一些话](http://www.cnblogs.com/hyddd/archive/2009/03/31/1426026.html)
 
 [引用了yibuyisheng前辈的一些话](http://blog.sina.com.cn/s/blog_9f6de58301018axo.html)
+
+## 引用书籍
+
+###《javascript高级程序设计》
