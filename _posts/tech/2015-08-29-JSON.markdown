@@ -4,7 +4,178 @@ title: JSON学习笔记(部分原创 + copy他人知识的汇总)
 category: 技术
 keywords: 技术,JSON
 ---
+## 绪论
 
+谈到JSON，就不的不谈起，交互这个关键词
+准确一些，前后端数据交换问题
+
+用户在前端页面提交数据，要以一个通用的格式传递给后端数据库
+后端数据库得到前端页面请求数据，要以一个通用的格式把数据包传递给后端
+
+看起来好像很抽象，
+但实际上数据交换本身不是那么的严格
+你可以直接丢一大堆HTML代码，甚至一大堆字符串，
+但是，计算机不是人，他需要有一种固定，冗余度小的格式来支撑数据内容
+(其实就算是人，面对那么多数据一大堆字符串也会傻眼)
+
+PS.我们可以类比一下英语的语法和单词
+把数据类比成一个个单词
+语法类比成数据传输格式
+
+把服务器和用户交互 或者 服务器和服务器之间的交互
+类比成人与人之间说话
+
+试想一下如果一个人和你说话
+只说一堆单词，没有其他的语法
+你能不能和他沟通？
+
+所以，我们需要一种通用的格式来规范数据，
+这个通用的形式 业界名曰："互联网传输结构化数据"
+
+但是，计算机没有人类通常意义上的语法
+一般是用语言来规范语言
+
+## XML 扩展标记语言(EXtensible Markup Language)
+
+在01年以前JSON还没出现的时候，XML一直是网上通用的互联网传输结构化数据的事实标准
+使用DTD(document type definition)文档类型定义来组织数据，一度成为业界公认的标准
+突出特点就是
+
+```
+1.格式统一
+2.跨平台和语言
+3.结构冗余繁琐
+4.描述复杂结构能力较强
+```
+xml是使用标签对来描述数据内容的
+
+## JSON(JavaScript Object Notation) 
+JSON也是一种轻量级的数据交换格式,特点是
+
+```
+1.简单易读
+2.轻量级
+3.传输速度比XML快
+4.描述复杂结构能力较弱
+5.支持多种语言
+6.能够使用内建的 JavaScript eval() 方法进行解析
+```
+
+JSON是使用键值对的形式来描述数据
+
+## 关于JSON和XML之间相互转化
+
+关于两种语法的相互转化
+你可以类比成两种语言互相翻译
+
+### 常规转化
+
+{% highlight JavaScript %}
+
+XML
+<Book>半生缘</Book>
+
+JSON
+{"Book":"半生缘"}
+
+两者可以互译
+{% endhighlight %}
+### 没有属性标签结点的转换
+{% highlight JavaScript %}
+
+XML
+<line>
+	<item>半生缘</item>
+	<item>十八春</item>
+</line>
+
+JSON
+
+{
+  "line": {
+    "item": [
+      "半生缘",
+      "十八春"
+    ]
+  }
+}
+
+两者可以互译
+{% endhighlight %}
+
+### 含有属性标签结点的转换
+{% highlight JavaScript %}
+
+XML
+<book class="101">半生缘</book>
+
+JSON
+{
+	"book":
+	{
+		"@CLASS":"101",
+		"#text":"半生缘"
+	}
+}
+
+两者还是可以互译
+{% endhighlight %}
+
+### 有顺序性结点的转化
+{% highlight JavaScript %}
+XML
+<template> 
+  <block>天空</block>  
+  <line>地平线</line>  
+  <block>地下</block> 
+</template>
+
+JSON
+
+{
+  "template": {
+    "block": [
+      "天空",
+      "地下"
+    ],
+    "line": "地平线"
+  }
+}
+
+这样两者就不能互译了
+{% endhighlight %}
+
+所以总的来说，XML结构上比JSON更加清晰
+当然结构上的清晰导致，也导致代码较JSON更加冗余
+所以我们一般使用结构性好的XML来做配置文件(复杂数据结构)
+用冗余度较低，传输快的JSON来做数据格式传递(简单数据结构)
+
+## JSON语法
+
+前面说了那么多，终于到了本文主要研究的重点了
+JSON支持Javascript中除undefined之外的所有数据类型
+JSON 根据数据的不同可以有三种表现形式(语法)
+
+### JSON解释简单值的形式
+{% highlight JavaScript %}
+
+数值
+NaN
+JSON
+NaN
+
+字符串
+I love you
+JSON
+"I love you"
+
+很简单，但是实际应用中，简单值只是基础，JSON需要解释更多更复杂的数据类型
+{% endhighlight %}
+
+### JSON解释对象
 ## 感谢
-
+本博文，有相当一部分内容COPY 和 引用了他人的知识，特此陈列，以表感谢
 [关于JS中的JSON对象](http://www.cnblogs.com/gaojun/p/3394274.html)
+
+## 引用出自
+### 《javascript高级程序设计》

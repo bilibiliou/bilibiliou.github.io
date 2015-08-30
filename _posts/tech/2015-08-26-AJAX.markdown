@@ -91,7 +91,7 @@ window.onload = function()
 	//服务器接收处理请求，然后返回文件数据
 	xhr.onreadystatechange = function()
 	{
-		if(xhr.readystate == 4)
+		if(xhr.readyState == 4)
 		{
 			//如果HTTP状态码 等于 200(请求成功) 那么就打印出返回的文件内容
 			if( xhr.status == 200)
@@ -118,15 +118,15 @@ xhr.send();
 
 要改成
 
-xmlhttp.open("POST","ajax.php",true);
-xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-xmlhttp.send("name=Owen&password=123456");
+xhr.open("POST","ajax.php",true);
+xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+xhr.send("name=Owen&password=123456");
 
 {% endhighlight %}
 
 
 对上面的代码做一些解释:
-readystate : 是AJAX的状态码，用来表示AJAX运行的各种状态
+xhr.readyState : 是AJAX的状态码，用来表示AJAX运行的各种状态
 
 {% highlight JavaScript %}
 0 >>（初始化）还没有调用open()方法
@@ -144,12 +144,12 @@ on readystate change事件 : 当AJAX状态改变执行事件，
 
 xhr.status : 服务器(请求资源)的状态 HTTP状态编码
 
-responseText：返回以文本形式存放的内容(注意: 不论什么格式的内容都会以文本形式返回，
+xhr.responseText：返回以文本形式存放的内容(注意: 不论什么格式的内容都会以文本形式返回，
 如果编码存在问题 ， 可能会导致一些其他问题)
 
-responseXML ：返回XML形式的内容
+xhr.responseXML ：返回XML形式的内容
 
-setRequestHeader(header,value)
+xhr.setRequestHeader(header,value)
 添加HTTP头请求函数
 header部分 规定了请求头的名称
 value 部分 规定了请求头的值
@@ -372,6 +372,95 @@ _________|~幂等性~|~~对于用户安全性~~~|~~对于服务器安全性~~~|~
 关于JSON具体的研究分析，请看本站[JSON对象学习笔记](http://numerhero.github.io/2015/08/29/JSON.html)
 
 	
+## 封装AJAX函数
+
+这里把这个AJAX函数文件名命名为
+Ajax.js
+
+{% highlight JavaScript %}
+
+	function ajax( url , success , method , data , faild)   
+	{
+		//data 以JSON形式传递过来
+		try
+		{
+			var xhr =  new XMLHttpRequest();
+		}
+		catch(e)
+		{
+			var xhr = new ActiveXObject('Microsoft.XMLHTTP');
+		}
+
+		//如果method 不填写 默认是get方式输入
+		if(!method)
+		{
+			method = 'get';
+		}
+
+		if(method.toLowerCase() == "post")
+		{
+			//当post方法需要用send方法传递参数时候
+			if(data)
+			{
+				for(i in data) 
+				{
+					// 这里的 i 就是遍历对象的属性名 data[i] 是属性的值
+					url = addURLParam(url , i , data[i]);
+				}
+			}
+			xhr.open( 'post' , url , true);
+			xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+			xhr.send(data);
+		}
+		else if(method.toLowerCase() == "get")
+		{
+			xhr.open( 'get' , url , true);
+			xhr.send(null);
+		}
+		else
+		{
+			alert("你参数选择的方法输入错误,请修改脚本");
+			return;
+		}
+		
+		xhr.onreadystatechange = function()
+		{
+			if(xhr.readyState == 4 && xhr.status == 200)
+			{
+				if(success)
+				{
+					success( xhr.responseText );
+				}
+				else
+				{
+					faild && faild();
+				}
+			}
+			
+		}
+
+			function addURLParam(url , name , value)
+			{
+				//遍历url字符串 判断是否有?字符 如果没有 就添加一个?字符 后面跟着加数据
+				//如果已经有了 说明需要添加的不是第一个数据了
+				//这时候就加一个&后面再跟其他数据
+
+				url += (url.indexOf("?") == -1 ? "?" : "&");
+				
+				//encodeURIComponent()函数用于将 除url标准字符外的 
+				//其他字符转为HTTP编码
+				
+				url += encodeURIComponent(name) + "=" + encodeURIComponent(value);
+				return url;
+			}
+	}
+
+=== 存在的BUG ===
+
+当使用GET方式的时候,无法定义faild函数
+
+会继续更改
+{% endhighlight %}
 
 ## 感谢
 
