@@ -12,7 +12,7 @@ title: Welcome
 
 这个博客是参照了[闫素的博客](http://yansu.org/)、[coffeeChou的博客](http://coffeechou.github.io/)和[林安亚的博客](http://painterlin.com/)来设计修改的，他们对生活、对写作、对读书的认识，让我颇受影响，谢谢
 
-另外还要特别感谢适兕老师给我的[影响](http://www.ocselected.org/planet/)，半个暑假的学习确实没有白费，在Eayun，我学到了很多，不单是技术，还有一些其他东西。
+另外还要特别感谢适兕老师给我的[影响](http://www.ocselected.org/planet/)还有[他的博客](http://iaaslee.blogspot.hk/)，半个暑假的学习确实没有白费，在Eayun，我学到了很多，不单是技术，还有一些其他东西。
 
 我把博客的源码托管在[Github](https://github.com/NumerHero/NumerHero.github.io)上，如果有任何改进意见，欢迎讨论。
 
