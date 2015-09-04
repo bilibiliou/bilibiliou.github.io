@@ -21,6 +21,14 @@ keywords: 技术,Ajax,wampserver,建站
 
 解决方法:在www目录下找到index.php，然后修改里面查找$projectContents，或直接查看338行代码，修改'http://'为'http://localhost/'即可。
 
+问题二 :
+firebug报错
+Warning: failed to open stream: Invalid argument in Unknown on line
+
+因为不识别中文路径导致的
+
+解决方法：将路径中全部由中文有空格的文件名改成英文和‘ - ’。 
+
 ## 小白级使用wampserver
 双击打开wampserver 在右下角有运行图标
 ![shootpic](/assets/img/AJAX-shootpic1.png)
@@ -466,9 +474,15 @@ Ajax.js
 
 {% highlight JavaScript %}
 
-
-function ajax( url , success , method , data , faild)   
+function ajax( method , data , url , success , faild )   
 {
+	// 设置形参缺省值
+	this.method = method || 'get';
+	this.data = data || undefined;
+	this.url = url || undefined
+	this.success = success || undefined;
+	this.faild = faild || undefined;
+	
 	//data 以JSON形式传递过来
 	try
 	{
@@ -479,29 +493,18 @@ function ajax( url , success , method , data , faild)
 		var xhr = new ActiveXObject('Microsoft.XMLHTTP');
 	}
 
-	//如果method 不填写 默认是get方式输入
-	if(!method)
-	{
-		method = 'get';
-	}
-
 	if(method.toLowerCase() == "post")
 	{
+		
+		isData();
+		xhr.open( 'post' , url , true);
+		xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 		//当post方法需要用send方法传递参数时候
-		if(data)
-		{
-			for(i in data) 
-			{
-			// 这里的 i 就是遍历对象的属性名 data[i] 是属性的值
-				url = addURLParam(url , i , data[i]);
-			}
-		}
-	xhr.open( 'post' , url , true);
-	xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-	xhr.send(data);
+		xhr.send(data);
 	}
 	else if(method.toLowerCase() == "get")
 	{
+		isData();
 		xhr.open( 'get' , url , true);
 		xhr.send(null);
 	}
@@ -510,22 +513,43 @@ function ajax( url , success , method , data , faild)
 		alert("你参数选择的方法输入错误,请修改脚本");
 		return;
 	}
-
+	
 	xhr.onreadystatechange = function()
 	{
 		if(xhr.readyState == 4 && xhr.status == 200)
 		{
-		if(success)
-		{
-			success( xhr.responseText );
-		}
-		else
-		{
-			faild && faild();
+			if(success)
+			{
+				success( xhr.responseText );
+			}
+			else
+			{
+				faild && faild();
+			}
 		}
 	}
 
-}
+	function isData()
+	{
+		if(data)
+		{
+			if(data != 'object')
+			{
+				//当data是其他数据类型的时候
+				//(其他类型以字符串形传参，并且保证符合url格式不然会出错误)
+				url = url + '?' +　data;
+			}
+			else
+			{
+				//当data是JSON的时候
+				for(i in data)
+				{
+					// 这里的 i 就是遍历对象的属性名 data[i] 是属性的值
+					url = addURLParam(url , i , data[i]);
+				}
+			}
+		}
+	}
 
 	function addURLParam(url , name , value)
 	{
@@ -534,20 +558,217 @@ function ajax( url , success , method , data , faild)
 		//这时候就加一个&后面再跟其他数据
 
 		url += (url.indexOf("?") == -1 ? "?" : "&");
-
+		
 		//encodeURIComponent()函数用于将 除url标准字符外的 
 		//其他字符转为HTTP编码
-
+		
 		url += encodeURIComponent(name) + "=" + encodeURIComponent(value);
 		return url;
 	}
 }
-=== 存在的BUG ===
-
-当使用GET方式的时候,无法定义faild函数
-
-会继续更改
 {% endhighlight %}
+
+## AJax实例:关于简单的瀑布流实现
+
+下面介绍一种简单的瀑布流实现
+
+
+{% highlight JavaScript %}
+具体思路很简单,
+就是设置n个li标签(n为瀑布流的列数)
+这n个li的width固定，但高随着图片的加载auto
+每次加载的时候，遍历这n个li
+选择offsetTop最短的那个li加载图片
+
+html的layout十分简单
+
+<body>
+	<ul id="ul1">
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+	</ul>
+</body>
+
+=== 华丽丽的分割线 ===
+
+css则根据自己的需求写
+这里大致简单弄了
+
+body{margin: 0;padding: 0;}
+#ul1{width:1080px; margin:100px auto 0;}
+#ul1 li {width:242px; list-style: none; float: left; margin-right:10px;}
+#ul1 div { border: 1px solid #000; padding: 10px; float: left;}
+#ul1 div p{ width: 220px;}
+#ul1 div img{ width:220px; display: block; }
+
+=== 华丽丽的分割线 ===
+
+最主要的javascript代码
+
+window.onload = function()
+{
+	var
+	oUl = $('ul1'),
+	aLi = $TagName(oUl , 'li'),
+	iLen = aLi.length;
+	iPage = 1;
+	switched = true;
+
+	getList();
+
+function getList()
+{
+	ajax( 'get' , 'cpage=' + iPage , 'getPics.php' , function( data )
+	{		
+		var data = JSON.parse(data);
+		if( !data.length )
+		{
+			// 如果已经没有数据了
+			switched = true;
+			return;
+		}
+		for( var i = 0 ; i < data.length; i++ )
+		{
+			//_index 为获取的最小高度的li
+			var
+			_index =  getShortHeight( aLi , iLen ),
+			oDiv = document.createElement('div'),
+			oImg = document.createElement('img'),
+			oP = document.createElement('p');
+			
+			//数据JSON底下preview对象和title对象
+			oImg.src = data[i].preview;
+			oImg.style.width = '220px'; 
+			oImg.style.height = data[i].height * (220 / data[i].width) + 'px';
+			oP.innerHTML = data[i].title;
+	
+			oDiv.appendChild( oImg );
+			oDiv.appendChild( oP );
+			aLi[_index].appendChild( oDiv );
+		}
+		//当加载完成后重新启用开关，保证下一次加载
+		switched = true;
+	}
+	,function()
+	{
+		alert('错误!');
+	});
+}
+
+	window.onscroll = function()
+	{
+		var _index = getShortHeight( aLi , iLen );
+		var oLi = aLi[_index];
+		var scrollTop = document.documentElement.scrollTop || document.body.scrollTop
+		
+		if( getTop( oLi ) + oLi.offsetHeight < document.documentElement.clientHeight + scrollTop)
+		{
+			if(switched)
+			{
+				switched = false;
+				iPage++;
+				getList();
+			}
+			
+		}
+	}
+
+	function getTop(obj)
+	{
+		var iTop = 0;
+		while(obj)
+		{
+			iTop += obj.offsetTop;
+			obj = obj.offsetParent;
+		}
+		return iTop;
+	}
+
+}
+	function getShortHeight( aLi , iLen )
+	{
+		var
+		index = 0,
+		ih = aLi[index].offsetHeight;
+
+		for(var i = 0 ; i<iLen ;i++ )
+		{
+			if( aLi[i].offsetHeight < ih)
+			{
+				index = i;
+				ih = aLi[i].offsetHeight;
+			}
+		}
+		return index;
+	}
+
+
+function $(d){return document.getElementById(d);}
+function $TagName(obj , tag){return obj.getElementsByTagName(tag);}
+
+=== 华丽丽的分割线 ===
+
+这里使用了www.wookmark.com网站的数据源
+当然你可以使用自己提供的数据源
+如果有自己的数据源可以无视这部分内容
+不过JS中，对数据的引用可能就不一样
+需要视自己的情况更改
+<?php
+header('Content-type:text/html; charset="utf-8"');
+
+/*
+API:
+	getPics.php
+
+		参数
+		cpage : 获取数据的页数
+*/
+$cpage = isset($_GET['cpage']) ? $_GET['cpage'] : 1;
+
+$url = 'http://www.wookmark.com/api/json/popular?page=' . $cpage;
+
+$content = file_get_contents($url);
+$content = iconv('gbk', 'utf-8', $content);
+
+echo $content;
+
+?>
+
+=== 华丽丽的分割线 ===
+
+这里主要详细解javascript原码
+
+一共4个函数
+getList() //主函数，使用ajax来获取内容
+window.scroll //实现滑动到最顶端后，加载内容
+getTop() //遍历对象和其父级的offsetHeight 返回最终和
+getShortHeight() //遍历数组每个元素 ， 返回最小元素值的索引
+
+还有一些变量
+
+iPage //表示调用的数据源的页数(如果数据源不同，视自己情况改)
+switched //开关变量 用来控制加载
+
+
+主函数调用了上文封装的ajax.js
+并且传入两个匿名函数success 和 faild函数
+success函数使用DOM操作将加载的数据内容
+选择当前高度最小的li标签 并 将内容加入进去
+
+window.scroll函数判断总页面(scrollTop + clientHeight)高度
+是否已经超过当前最小的li标签高度
+如果超过了就继续加载新的内容
+
+getTop 工具函数
+用来求取精确的offsetTop值
+
+getShortHeight 工具函数
+用来球的最小高度的li的索引
+
+{% endhighlight %}
+
 
 ## 感谢
 
@@ -563,4 +784,4 @@ function ajax( url , success , method , data , faild)
 
 ## 引用书籍
 
-###《javascript高级程序设计》
+### 《javascript高级程序设计》

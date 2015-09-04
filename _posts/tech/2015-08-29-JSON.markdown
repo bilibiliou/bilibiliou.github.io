@@ -171,11 +171,13 @@ JSON
 
 很简单，但是实际应用中，简单值只是基础，JSON需要解释更多更复杂的数据类型
 {% endhighlight %}
-
 ### JSON解释对象
+
 ## 感谢
+
 本博文，有相当一部分内容COPY 和 引用了他人的知识，特此陈列，以表感谢
 [关于JS中的JSON对象](http://www.cnblogs.com/gaojun/p/3394274.html)
 
 ## 引用出自
+
 ### 《javascript高级程序设计》
