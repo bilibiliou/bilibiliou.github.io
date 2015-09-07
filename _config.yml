@@ -5,7 +5,7 @@ kramdown:
   input: GFM
   use_coderay: true
   
-highlighter: Rouge
+
 # 作者信息
 author: 
 name: Owen
