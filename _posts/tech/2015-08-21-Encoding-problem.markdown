@@ -115,7 +115,7 @@ keywords: 技术,jekyll,github,markdown,建站
 如果我们需要在博客上展示自己的代码可以添加代码高亮，而代码高亮的第三方插件中我选择的是pygments。
 
 步骤
-{% highlight  JavaScript %}
+{% highlight JavaScript %}
     安装python ==> 安装eazy_install ==> 安装pygments ==> 使用pygments产生使代码高亮的.css文件 ==> 在html的header区域引用外部的css文件 ==> 编辑markdown的时候编辑高亮区域 ==> 实现页面高亮
 {% endhighlight %}
 这么多步骤，真的很麻烦，但是，一步一步来，最终是可以解决问题的

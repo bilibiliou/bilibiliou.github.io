@@ -107,9 +107,11 @@ JSON
 {% highlight JavaScript %}
 
 XML
+
 <book class="101">半生缘</book>
 
 JSON
+
 {
 	"book":
 	{
@@ -142,7 +144,7 @@ JSON
   }
 }
 
-这样两者就不能互译了
+这样两者就不能互译了(因为从xml转换到JSON后 数据顺序改变了)
 {% endhighlight %}
 
 所以总的来说，XML结构上比JSON更加清晰
@@ -172,6 +174,192 @@ JSON
 很简单，但是实际应用中，简单值只是基础，JSON需要解释更多更复杂的数据类型
 {% endhighlight %}
 ### JSON解释对象
+
+{% highlight JavaScript %}
+
+使用javascript 字面量解释对象
+	var book = 
+	{
+		name : "半生缘",
+		author : "张爱玲"
+	}
+
+用JSON解释 对象
+	{
+		"name" : "半生缘",
+		"authot" : "张爱玲"
+	}
+
+不同点有两个
+1)js 需要声明一个变量引用  var book,而JSON不硬性需要
+2)JSON的属性名加 " " ( 重点强调 一定是" "  连' '都不行 不然会出错 )
+{% endhighlight %}
+
+## JSON的遍历
+{% highlight JavaScript %}
+如果我们需要遍历一个对象
+比如
+var person =
+	{
+		"name" : "owen",
+		"age" : 19,
+		"work" : "FrontEnd" 
+	}
+
+
+用for(i in data)
+
+索引i 就是对象的属性名
+data[i] 就是对象对应属性的值
+
+{% endhighlight %}
+
+## stringify方法
+
+用于将JSON转换成字符串
+{% highlight JavaScript %}
+
+var person = 
+{
+	"name" : "owen",
+	"age" : 19,
+	"work" : "FrontEnd",
+	"school" : ["Meishan middle school" , "SSFL"]
+}
+
+这里我有一个JSON对象,并且我用person 来装它
+
+然后我用stringify把变成字符串,并且用一个jsontext来装字符串
+
+var jsontext = JSON.stringify( person );
+
+得到的是一个字符串
+
+" Javascript练习.js:2764 {"name":"owen","age":19,"work":"FrontEnd","school":["Meishan middle school","SSFL"]}  "
+
+
+我们还可以给stringify方法 添加筛选条件参数
+
+这个条件嘛 可以是两种
+
+一种是数组形式
+另外一种是函数形式
+
+
+
+
+数组形式 :
+
+var jsontext = JSON.stringify( person , ["name" , "age"] );
+
+如果这么写,那么返回的字符串就是
+
+" {"name":"owen","age":19}  "
+
+因为work属性不在选定的条件范围，所以它被过滤了
+
+
+函数形式 :
+
+var jsontext = JSON.stringify( person , function( index , attribute ){
+	switch( index )
+	{
+		case "school" : return attribute.join(",");
+		//把数组数据的逗号去掉
+
+		case "age" : return 18;
+		//可以设置缺省值，无论实际年龄多少岁，都是永远的十八岁 哈哈
+
+		case "work" : return undefined;
+		//再次强调一遍 JSON 在JS所有数据类型中 只有undefined不能解释 所以work属性不能输出
+
+		default : return attribute;
+		//其他的属性正常输出
+	}
+
+	//当然这里的switch也可以改写成if...else
+	if( index == "school" )
+	{
+		return attribute.join(",");
+	}
+	else if( index == "age" )
+	{
+		return 18;
+	}else if( index == "work")
+	{
+		return undefined;
+	}else
+	{
+		return attribute
+	}
+});
+
+那么得到的结果是
+" {"name":"owen","age":18,"work":"FrontEnd","school":"Meishan middle school,SSFL"} "
+
+{% endhighlight %}
+
+## parse方法
+可以将有效的JSON格式的字符串
+转换成JSON对象
+
+{% highlight JavaScript %}
+
+var datatext = '{	"name" : "owen","school" : ["MeiShan Middle school" , "SSFL" ] }';
+var data = JSON.parse( datatext );
+console.log(data);
+
+打印出
+ Object { name="owen",  school=[2]}
+
+其中school数组数据 在火狐展开
+
+name
+	"owen"
+school
+	["MeiShan Middle school", "SSFL"]
+
+	0	"MeiShan Middle school"	
+	1	"SSFL"
+
+{% endhighlight %}
+
+## toJSON方法
+toJSON方法是从对象内部筛选属性的方法
+
+{% highlight JavaScript %}
+
+var book = 
+	{
+		"title" : ["JavaScript","HTML5"],
+		"authors" : "Owen",
+		"year" : "2015",
+		toJSON : function(){
+		//切记这里不能少了this
+			return this.authors;
+		}
+	};
+
+	var jsontext = JSON.stringify( book );
+
+console.log(jsontext);//只输出 "Owen"
+
+
+var book = 
+	{
+		"title" : ["JavaScript","HTML5"],
+		"authors" : "Owen",
+		"year" : "2015",
+		toJSON : function(){
+			return this.title[1];
+		}
+	};
+
+	var jsontext = JSON.stringify( book );
+
+console.log(jsontext);//只输出 "HTML5"
+
+{% endhighlight %}
 
 ## 感谢
 

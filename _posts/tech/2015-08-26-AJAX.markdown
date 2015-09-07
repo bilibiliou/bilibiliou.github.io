@@ -250,11 +250,13 @@ bool idempotent_withdraw(ticket_id, account_id, amount)
 
 ### get的传输方式分析
 
-1.以?分割URL和传输数据，参数之间以&相连，如：www.baidu.com
-?name=Owen+Brown&password=xxxxx&verify=%e6%88%91%e7%9a%84%e5%90%8d%e5%ad
-%97%e5%8f%ab%e6%ac%a7%e9%98%b3%e6%b9%98%e7%b2%a4。
+1.以?分割URL和传输数据，参数之间以&相连，
 
 {% highlight JavaScript %}
+
+如：www.baidu.com
+?name=Owen+Brown&password=xxxxx&verify=%e6%88%91%e7%9a%84%e5%90%8d%e5%ad
+%97%e5%8f%ab%e6%ac%a7%e9%98%b3%e6%b9%98%e7%b2%a4。
 	我们分解一下这串url
 
 www.baidu.com是网站域名
@@ -339,7 +341,7 @@ numerhero.github.io/?username=Owen&pw=123
 
 === 解决方案 ===
 
-我们可以在请求的后面添加一个 随机数 或 时间戳来保证每次请求的地址不相同
+我们可以在请求的后面添加一个 随机数 或 时间戳 来保证每次请求的地址不相同
 这样浏览器看到每次请求的地址和老地址不相同，
 就不会访问本地缓存文件而是访问远端服务器了
 
@@ -444,17 +446,16 @@ POST所对应的URI并非创建的资源本身，而是资源的接收者。
 
 HTTP响应中应包含帖子的创建状态以及帖子的URI。
 两次相同的POST请求会在服务器端创建两份资源，它们具有不同的URI;
-
+ 
 
 ### 总结一下
-{% highlight JavaScript %}
 
-_________|~幂等性~|~~对于用户安全性~~~|~~对于服务器安全性~~~|~~~适用于~~
-	-----|--------|------------------|--------------------|-----------
-	post |   否   |~~~~~~~~高~~~~~~~~|~~~~~~~~~低~~~~~~~~~|~~~修改数据
-	-----|--------|------------------|--------------------|-----------
-	get  |   是   |~~~~~~~~低~~~~~~~~|~~~~~~~~~高~~~~~~~~~|~~~提取数据
-{% endhighlight %}
+
+|  | 幂等性 | 对于用户安全性 | 对于服务器安全性 | 适用于 |
+|:----- |:--------:|:------------------:|:--------------------:|:-----------:|
+|post |否|高|低|修改数据|
+|:----- |:--------:|:------------------:|:--------------------:|:-----------:|
+| get |是|低|高|提取数据|
 
 所以get多用于从服务器上获取数据，post多用于从服务器上发送数据
 但是,GET和POST只是发送机制不同，并不是一个取一个发！(GET和POST都能取和发)
@@ -477,11 +478,11 @@ Ajax.js
 function ajax( method , data , url , success , faild )   
 {
 	// 设置形参缺省值
-	this.method = method || 'get';
-	this.data = data || undefined;
-	this.url = url || undefined
-	this.success = success || undefined;
-	this.faild = faild || undefined;
+	method = method || 'get';
+	data = data || undefined;
+	url = url || undefined
+	success = success || undefined;
+	faild = faild || undefined;
 	
 	//data 以JSON形式传递过来
 	try
@@ -496,7 +497,6 @@ function ajax( method , data , url , success , faild )
 	if(method.toLowerCase() == "post")
 	{
 		
-		isData();
 		xhr.open( 'post' , url , true);
 		xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 		//当post方法需要用send方法传递参数时候
@@ -765,10 +765,147 @@ getTop 工具函数
 用来求取精确的offsetTop值
 
 getShortHeight 工具函数
-用来球的最小高度的li的索引
+用来求得最小高度的li的索引
 
 {% endhighlight %}
 
+## AJAX的跨域请求问题
+
+题目看起来好像可能很高大上
+其实理解起来一点都不复杂
+
+首先理解一下什么是跨域请求
+说白了就是使用别人家的数据库API
+更直接点就是跑到别人家里借东西然后拿到自己家用
+
+
+比如我这里 想要借用豆瓣网 他家的数据
+
+api.douban.com/book/subjects?q=HTML5&alt=json
+
+用GET方式传递 
+q参数传递的是查找关键字 
+alt是声明传递得到的数据格式(默认是JSON)
+
+然后就调用AJAX代码
+
+ajax( 'get' , 'q=HTML5&alt=json' , 'api.douban.com/book/subjects' , function( data )
+{
+	...
+});
+
+运行之
+发现浏览器报了错
+
+XMLHttpRequest cannot load http://api.douban.com/book/subjects 
+'Access-Control-Allow-Origin' header is present on the requested resource .....
+
+Access-Control-Allow-Origin 输入源控制许可
+
+说白了就是,你自己的门啦
+
+你从别人家里借东西过来，
+别人同意借你了
+但是你家的门却不让你把借的东西拿进家里来
+
+现实中听起来确实很奇葩，
+但是这确实在网络世界中是实实在在存在的一道门
+
+
+
+
+当然这有什么方法可以解决呢？
+
+这里引用一下最先提出者的博客
+
+Remote JSON - JSONP
+
+The browser security model dictates that XMLHttpRequest, frames, etc. must have the same domain in order to communicate. That's not a terrible idea, for security reasons, but it sure does make distributed (service oriented, mash-up, whatever it's called this week) web development suck.
+
+There are traditionally three solutions to solving this problem.
+
+Local proxy:
+Needs infrastructure (can't run a serverless client) and you get double-taxed on bandwidth and latency (remote - proxy - client).
+Flash:
+Remote host needs to deploy a crossdomain.xml file, Flash is relatively proprietary and opaque to use, requires learning a one-off moving target programming langage.
+Script tag:
+Difficult to know when the content is available, no standard methodology, can be considered a "security risk".
+I'm proposing a new technology agnostic standard methodology for the script tag method for cross-domain data fetching: JSON with Padding, or simply JSONP.
+
+The way JSONP works is simple, but requires a little bit of server-side cooperation. Basically, the idea is that you let the client decide on a small chunk of arbitrary text to prepend to the JSON document, and you wrap it in parentheses to create a valid JavaScript document (and possibly a valid function call).
+
+The client decides on the arbitrary prepended text by using a query argument named jsonp with the text to prepend. Simple! With an empty jsonp argument, the result document is simply JSON wrapped in parentheses.
+
+Let's take the del.icio.us JSON API as an example. This API has a "script tag" variant that looks like this:
+
+http://del.icio.us/feeds/json/bob/mochikit+interpreter:
+
+if(typeof(Delicious) == 'undefined') Delicious = {};
+Delicious.posts = [{
+    "u": "http://mochikit.com/examples/interpreter/index.html",
+    "d": "Interpreter - JavaScript Interactive Interpreter",
+    "t": [
+        "mochikit","webdev","tool","tools",
+        "javascript","interactive","interpreter","repl"
+    ]
+}]
+In terms of JSONP, a document semantically identical to this would be available at the following URL:
+
+http://del.icio.us/feeds/json/bob/mochikit+interpreter?jsonp=if(typeof(Delicious)%3D%3D%27undefined%27)Delicious%3D%7B%7D%3BDelicious.posts%3D
+
+That's not very interesting on its own, but let's say I wanted to be notified when the document is available. I could come up with a little system for tracking them:
+
+var delicious_callbacks = {};
+function getDelicious(callback, url) {
+    var uid = (new Date()).getTime();
+    delicious_callbacks[uid] = function () {
+        delete delicious_callbacks[uid];
+        callback();
+    };
+    url += "?jsonp=" + encodeURIComponent("delicious_callbacks[" + uid + "]");
+    // add the script tag to the document, cross fingers
+};
+
+getDelicious(doSomething, "http://del.icio.us/feeds/json/bob/mochikit+interpreter");
+The fetched URL from this hypothetical experiment would look something like this:
+
+http://del.icio.us/feeds/json/bob/mochikit+interpreter?jsonp=delicious_callbacks%5B12345%5D
+
+delicious_callbacks[12345]([{
+    "u": "http://mochikit.com/examples/interpreter/index.html",
+    "d": "Interpreter - JavaScript Interactive Interpreter",
+    "t": [
+        "mochikit","webdev","tool","tools",
+        "javascript","interactive","interpreter","repl"
+    ]
+}])
+See, because we're wrapping with parentheses, a JSONP request can translate into a function call or a plain old JSON literal. All the server needs to do differently is prepend a little bit of text to the beginning and wrap the JSON in parentheses!
+
+Now, of course, you'd have libraries like MochiKit, Dojo, etc. abstracting JSONP so that you don't have to write the ugly DOM script tag insertion yourself, etc.
+
+Of course, this just solves the standardization problem. Your page is still toast if the remote host decides to inject malicious code instead of JSON data. However, if implemented, it'd save a lot of developers some time and allow for generic abstractions, tutorials, and documentation to be built.
+
+05 December 2005
+
+由上得到三种解决方案
+
+第一种 使用Flash在XML设置 输入源控制许可 可以解决
+但是我们这里不准备详细讨论这种方法
+
+第二种 在服务器端 执行请求
+也就是在本域，也就是在本目录下的后端脚本
+中请求方法跨域资源
+
+俗话说 前面不行咱可以走后门嘛，
+但是今天我们也不准备详细讨论这种方法
+
+第三种 JSON with Padding
+
+
+## Summery
+简单来说 AJAX 可以理解为一个函数一个API
+调用这个函数从后端获得数据
+再通过前端技术利用并更好的展现数据
 
 ## 感谢
 
@@ -782,6 +919,7 @@ getShortHeight 工具函数
 
 [引用了yibuyisheng前辈的一些话](http://blog.sina.com.cn/s/blog_9f6de58301018axo.html)
 
+[JSONP 引自 bob.ippoli.to ](http://bob.ippoli.to/archives/2005/12/05/remote-json-jsonp/)
 ## 引用书籍
 
 ### 《javascript高级程序设计》
