@@ -1,6 +1,7 @@
 /*! NProgress (c) 2013, Rico Sta. Cruz
  *  http://ricostacruz.com/nprogress */
 
+//进度条 脚本
 ;(function(factory) {
 
   if (typeof module === 'function') {

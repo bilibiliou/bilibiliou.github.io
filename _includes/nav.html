@@ -21,10 +21,13 @@
 
   <!--目录-->
   <div id="posts-list">
-    <form action="" id="search-form">
-      <a href="/index.html" id="mobile-avatar"></a>
-      <!-- NOTE: input field is disabled by default -->
-      <input id="search-input" type="text" placeholder="Search..." disabled >
+    <form  id="search-form">
+      <!-- <a href="/index.html" id="mobile-avatar"></a> -->
+      <!-- 百度搜索框 -->
+      <input id="search-input" type="text" autocomplete="off" maxlength="100" >
+      <input id="search-button" type="button" value="百度一下">
+      <ul id="search-list"></ul>
+
     </form>
 
     <nav id="pl__container">

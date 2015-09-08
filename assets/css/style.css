@@ -3,6 +3,7 @@
    @author Peiwen Lu (P233)
    https://github.com/P233/3-Ghost
 \*---------------------------------*/
+body{ cursor: url("../img/cursor.png"),default; }
 /*---------------------------------*\
    Fonts
 \*---------------------------------*/
@@ -258,8 +259,10 @@ a {
 
 #search-form {
   width: 100%;
-  height: 65px;
-  border-bottom: 1px solid #e5e8ec; }
+  height: 60px;
+  border-bottom: 1px solid #e5e8ec; 
+  position: relative;
+  }
   @media screen and (max-width: 585px) {
     #search-form {
       height: 51px;
@@ -278,34 +281,90 @@ a {
       display: block;
       float: left; } }
 
+#search-button{
+  height: 40px;
+  width: 100px;
+  background: #3388FF;
+  text-align: center;
+  border: 1px solid #2625E5;
+  color: white;
+  font-size: 15px;
+  font-weight: 500;
+  position: absolute;
+  top:20%;
+  right: 10px;
+  cursor: url("../img/cursor.png"),default;
+}
+#search-button:active{
+  background: #2A7BEB;
+}
 #search-input {
-  width: 100%;
-  height: 100%;
+  width: 300px;
+  height: 40px;
   margin: 0;
-  padding: 20px 20px 0;
+  /*padding: 20px 20px 0;*/
   color: #2eb695;
-  font-size: 18px;
+  font-size: 15px;
   font-family: inherit;
   background: #f7f7f7;
-  border: none;
+  border: 1px solid #CCC;
+  position: absolute;
+  top:20%;
+  left: 3%;
   outline: none;
+  text-indent: 10px;
   -webkit-appearance: none;
   -moz-appearance: none;
   -ms-appearance: none;
   -o-appearance: none;
   appearance: none;
-  cursor: not-allowed; 
   }
-
+  #search-input:hover{
+    border: 1px solid #999;
+  }
+  #search-input:focus{
+    border: 1px solid #2625E5;
+  }
   #search-input::-webkit-input-placeholder {
-    color: #cbcbcb;
-    font-style: italic; }
+    
+    font-weight: 600;
+   }
   #search-input::-moz-placeholder {
-    color: #cbcbcb;
-    font-style: italic; }
+    font-weight: 600;
+   }
   #search-input:-ms-input-placeholder {
-    color: #cbcbcb;
-    font-style: italic; }
+    font-weight: 600;
+   }
+  
+  #search-list{
+    width:296px;
+    height: auto;
+    padding: 0;
+    display: none;
+    position: absolute;
+    top: 61%;
+    left: 3%;
+    z-index: 999;
+    background: #CCC;
+    filter:alpha(opacity=70);
+    opacity: 0.7;
+  }
+  #search-list li{
+    width: 286px;
+    margin: 5px;
+    line-height: 30px;
+    list-style: none;
+    z-index: 1000;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: 'Yuppy';
+    letter-spacing:2px;
+    overflow: hidden;
+  }
+  #search-list li:hover{
+    background: #9AFF9A;
+    color: white;
+  }
   @media screen and (max-width: 585px) {
     #search-input {
       padding: 10px 10px 0;

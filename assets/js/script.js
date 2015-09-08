@@ -1,7 +1,143 @@
+/*!--------------------------------*\
+   一些自己添加的功能(原生)
+   @author 欧阳湘粤 (Owen)
+   https://github.com/Numerhero/NumerHero.github.io
+\*---------------------------------*/
+
+$(function()
+{
+  var oSearchInput = document.getElementById('search-input'),
+      oSearchList  = document.getElementById('search-list'),
+      oSearchButton= document.getElementById('search-button'),
+      date         = new Date();
+      
+      oSearchInput.onkeyup = function()
+      {  
+        if( this.value != '' )
+        {
+          var oScript = document.createElement('script');
+          oScript.src = 'http://suggestion.baidu.com/su?wd='+ this.value + '&cb=callback' + '&t=' + date.getTime();
+          document.body.appendChild(oScript);
+        }else
+        {
+          oSearchList.style.display = 'none';
+          oSearchList.innerHTML = '';
+        }
+      }
+      oSearchButton.onclick = function()
+      {
+        window.open('http://www.baidu.com/s?wd=' + encodeURI(oSearchInput.value));
+        oSearchInput.value = '';
+      }
+      oSearchInput.onkeydown = function(ev)
+      {
+        var oEvent = ev || event;
+        var index = -1;
+        var oLi = oSearchList.getElementsByTagName('li');
+        if( oEvent.keyCode == 13)
+        {
+          window.open('http://www.baidu.com/s?wd=' + encodeURI(oSearchInput.value));
+          oSearchInput.value = '';
+        }
+
+        if( oEvent.keyCode == 40 && oSearchInput.value != '' )
+        { 
+
+          if( index == oLi.length - 1)
+          {
+            index = 0;
+          }
+          else
+          {
+            index++;
+          }
+          if( index == -1 )
+          {
+            index = 0;
+          }
+          
+          for(var i = 0; i<oLi.length ; i++)
+          {
+            if(i == index)
+            {
+              alert(index);
+              oLi[i].style.background = '#9AFF9A';
+              oLi[i].style.color = 'white';
+            }
+            oLi[i].style.background = '';
+            oLi[i].style.color = '';
+          }
+          return false;
+        }
+
+        if( oEvent.keyCode == 38 && oSearchInput.value != '' )
+        {
+          if( index == 0)
+          {
+            index = oLi.length - 1;
+          }
+          else
+          {
+            index++;
+          }
+          if( index == -1 )
+          {
+            index = 0;
+          }
+          for(var i = 0; i<oLi.length ; i++)
+          {
+            if(i == index)
+            {
+              oLi[i].style.background = '#9AFF9A';
+              oLi[i].style.color = 'white';
+            }
+            oLi[i].style.background = '';
+            oLi[i].style.color = '';
+          }
+          return false;
+        }
+
+
+      }
+});
+
+function callback( data )
+{
+  var oSearchInput = document.getElementById('search-input'),
+      oSearchList = document.getElementById('search-list'),
+      oLi = oSearchList.getElementsByTagName('li'),
+      html = '';
+
+  if( data.s.length )
+  {
+      oSearchList.style.display = 'block';
+      for(var i = 0 ; i<data.s.length ; i++)
+      {
+        html += '<li>' + data.s[i] + '</li>'
+      }
+      oSearchList.innerHTML = html;
+
+      for(var i = 0 ; i<oLi.length; i++)
+      {
+        oLi[i].index = i;
+        oLi[i].onclick = function()
+        {
+          oSearchInput.value = oLi[this.index].innerHTML;
+          oSearchList.style.display = 'none';
+        }
+      }
+
+  }else
+  {
+    oSearchList.style.display = 'none';
+    oSearchList.innerHTML = '';
+  }
+}
 
 /*!--------------------------------*\
-   3-Jekyll Theme
-   @author Peiwen Lu (P233)
+   My blog Theme Peiwen Lu & Owen
+   
+   @Theme author Peiwen Lu (P233)
    https://github.com/P233/3-Jekyll
 \*---------------------------------*/
 

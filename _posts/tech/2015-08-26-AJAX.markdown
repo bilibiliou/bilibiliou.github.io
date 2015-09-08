@@ -811,9 +811,6 @@ Access-Control-Allow-Origin 输入源控制许可
 现实中听起来确实很奇葩，
 但是这确实在网络世界中是实实在在存在的一道门
 
-
-
-
 当然这有什么方法可以解决呢？
 
 这里引用一下最先提出者的博客
@@ -887,7 +884,7 @@ Of course, this just solves the standardization problem. Your page is still toas
 
 05 December 2005
 
-由上得到三种解决方案
+由上得到以下三种解决方案
 
 第一种 使用Flash在XML设置 输入源控制许可 可以解决
 但是我们这里不准备详细讨论这种方法
@@ -900,6 +897,17 @@ Of course, this just solves the standardization problem. Your page is still toas
 但是今天我们也不准备详细讨论这种方法
 
 第三种 JSON with Padding
+
+俗称JSONP 
+是我们今天的主角
+
+而且
+
+所谓Padding相信大家都会有印象，
+这不就是内边距吗？
+
+没错，但是在这里我们换一个角度去理解
+内填充
 
 
 ## Summery
@@ -920,6 +928,7 @@ Of course, this just solves the standardization problem. Your page is still toas
 [引用了yibuyisheng前辈的一些话](http://blog.sina.com.cn/s/blog_9f6de58301018axo.html)
 
 [JSONP 引自 bob.ippoli.to ](http://bob.ippoli.to/archives/2005/12/05/remote-json-jsonp/)
+
 ## 引用书籍
 
 ### 《javascript高级程序设计》
