@@ -179,7 +179,7 @@ pygments是基于python的一款第三方插件
 在配置文件_config.yml中添加 新版jekyll:`highlighter: pygments` 老版:`pygments: true`
 
 细节2:检查Pygments的主题样式,需要先在cmd中进入python编译模式
-{% highlight language %}
+{% highlight Javascript %}
 C:\Windows\system32>python
 Python 2.7.5 (default, May 15 2013, 22:43:36) [MSC v.1500 32 bit (Intel)] on win
 32
