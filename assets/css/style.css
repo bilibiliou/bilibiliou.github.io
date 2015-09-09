@@ -717,8 +717,9 @@ iframe {
     -o-transform: translateX(-585px);
     transform: translateX(-585px); } }
 
+/*浏览模式最大宽度*/
 #pjax.fullscreen {
-  max-width: 800px;
+  max-width: 1200px;
   margin: 0 auto; }
 
 #js-fullscreen, #nprogress .spinner-icon {

@@ -60,7 +60,6 @@ $(function()
           {
             if(i == index)
             {
-              alert(index);
               oLi[i].style.background = '#9AFF9A';
               oLi[i].style.color = 'white';
             }

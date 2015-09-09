@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Ajax学习笔记(部分原创 + copy他人知识的汇总)
+title: Ajax 和 JSONP 学习笔记(部分原创 + copy他人知识的汇总)
 category: 技术
-keywords: 技术,Ajax,wampserver,建站
+keywords: 技术,Ajax,JSONP,wampserver,建站
 ---
 ## 准备工作
 因为我们接下来学习的是如何异步的与后台交换数据
@@ -78,40 +78,41 @@ window.onload = function()
 
 直接上代码:
 {% highlight  JavaScript %}
-	//可以想象成虚拟的打开了一个输入Url的地址框
-	try
-	{
-		//IE7以上创建AJAX对象
-		xhr = new XMLHttpRequest();
-	}
-	catch(e)
-	{
-		//兼容IE6 以ActiveXObject插件创建AJAX对象
-		xhr = new ActiveXObject('Microsoft.XMLHTTP');
-	}
 
-	//可以想象成向这个虚拟的地址框里输入要访问文件的地址
-	xhr.open('get(传输的方式 有get & post 两种)','需要加载的文件的文件名','是否异步(true & false)');
+//可以想象成虚拟的打开了一个输入Url的地址框
+try
+{
+	//IE7以上创建AJAX对象
+	xhr = new XMLHttpRequest();
+}
+catch(e)
+{
+	//兼容IE6 以ActiveXObject插件创建AJAX对象
+	xhr = new ActiveXObject('Microsoft.XMLHTTP');
+}
 
-	//可以想象成回车发送请求
-	xhr.send();
-	
-	//服务器接收处理请求，然后返回文件数据
-	xhr.onreadystatechange = function()
+//可以想象成向这个虚拟的地址框里输入要访问文件的地址
+xhr.open('get(传输的方式 有get & post 两种)','需要加载的文件的文件名','是否异步(true & false)');
+
+//可以想象成回车发送请求
+xhr.send();
+
+//服务器接收处理请求，然后返回文件数据
+xhr.onreadystatechange = function()
+{
+	if(xhr.readyState == 4)
 	{
-		if(xhr.readyState == 4)
+		//如果HTTP状态码 等于 200(请求成功) 那么就打印出返回的文件内容
+		if( xhr.status == 200)
 		{
-			//如果HTTP状态码 等于 200(请求成功) 那么就打印出返回的文件内容
-			if( xhr.status == 200)
-			{
-				alert( xhr.responseText );
-			}
-			else
-			{
-				alert( '出错咯 ，Err : ' + xhr.status)
-			}
+			alert( xhr.responseText );
+		}
+		else
+		{
+			alert( '出错咯 ，Err : ' + xhr.status)
 		}
 	}
+}
 
 ========华丽丽的分割线========
 
@@ -364,14 +365,13 @@ encodeURL()方法把中文编码转化成URL编码
 "numerhero.github.io/?username=" + encodeURL(欧阳湘粤) + "&pw=123"
 
 这样就能解决乱码问题
+
 ### get的安全安全性
 
 get相对与post方法对于服务器而言是较安全的
 这里所谓的安全不是上文所指的安全，这里的安全是对于服务器而言的，而上文的安全是对用户而言的。
 
 这里的安全意思是操作用于获取信息而非修改信息。换句话说，GET请求一般不应产生副作用。就是说，它仅仅是获取资源信息，就像数据库查询一样，不会修改，增加数据，不会影响资源的状态。
-
-
 
 ### get的幂等性
 
@@ -496,8 +496,7 @@ function ajax( method , data , url , success , faild )
 
 	if(method.toLowerCase() == "post")
 	{
-		
-		xhr.open( 'post' , url , true);
+		xhr.open( 'post' , url , true );
 		xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 		//当post方法需要用send方法传递参数时候
 		xhr.send(data);
@@ -505,7 +504,7 @@ function ajax( method , data , url , success , faild )
 	else if(method.toLowerCase() == "get")
 	{
 		isData();
-		xhr.open( 'get' , url , true);
+		xhr.open( 'get' , url , true );
 		xhr.send(null);
 	}
 	else
@@ -788,11 +787,14 @@ q参数传递的是查找关键字
 alt是声明传递得到的数据格式(默认是JSON)
 
 然后就调用AJAX代码
+{% highlight JavaScript %}
 
 ajax( 'get' , 'q=HTML5&alt=json' , 'api.douban.com/book/subjects' , function( data )
 {
 	...
 });
+
+{% endhighlight %}
 
 运行之
 发现浏览器报了错
@@ -815,6 +817,7 @@ Access-Control-Allow-Origin 输入源控制许可
 
 这里引用一下最先提出者的博客
 
+{% highlight JavaScript %}
 Remote JSON - JSONP
 
 The browser security model dictates that XMLHttpRequest, frames, etc. must have the same domain in order to communicate. That's not a terrible idea, for security reasons, but it sure does make distributed (service oriented, mash-up, whatever it's called this week) web development suck.
@@ -884,6 +887,8 @@ Of course, this just solves the standardization problem. Your page is still toas
 
 05 December 2005
 
+{% endhighlight %}
+
 由上得到以下三种解决方案
 
 第一种 使用Flash在XML设置 输入源控制许可 可以解决
@@ -899,21 +904,107 @@ Of course, this just solves the standardization problem. Your page is still toas
 第三种 JSON with Padding
 
 俗称JSONP 
-是我们今天的主角
+这才是我们今天的主角
 
-而且
+## JSONP
 
-所谓Padding相信大家都会有印象，
+{% highlight JavaScript %}
+
+JSONP的主要原理是 <script> 脚本标签
+因为使用<script> 的src 属性
+我们就不会遇到跨域问题
+
+这里所谓Padding相信大家都会有印象，
 这不就是内边距吗？
 
 没错，但是在这里我们换一个角度去理解
-内填充
+
+也就是"内填充"(其实内边距的实质也就是内填充了空间)
+
+也就是说我们需要在js里面使用DOM操作
+去动态的内填充跨域请求脚本
+
+var oScript = document.createElement('script');
+oScript.src = '你需要调用的脚本的url' + date.getTime();
+document.body.appendChild(oScript);
+
+而这里得到的脚本需要填充在一个回掉函数里面
+便于我们使用
+所以，这里我们就需要和后端同学配合好
+
+这里我们列举一个百度的例子
+
+var oScript = document.createElement('script');
+oScript.src = 'http://suggestion.baidu.com/su?wd='+ 要搜索的关键字字符串 + '&cb=回调函数名称' + '&t=' + date.getTime();
+document.body.appendChild(oScript);
+
+这里我们调用了百度的一个检索的数据库
+'suggestion.baidu.com/su?wd='+ 要搜索的关键字字符串 + '&cb=回调函数名称' + '&t=' + date.getTime();
+
+参数包括一个wd 和 cb 还有一个时间戳
+wd就是你需要搜索的内容
+(这里的内容不用转为URI码 因为百度已经做好处理了)
+
+重点在于回掉函数上
+比如我们这么写请求
+
+'http://suggestion.baidu.com/su?wd=javascript&cb=CallBackfunc'
+(注意不包含单引号)
+
+百度的数据库就会返回这么一串JSON
+CallBackfunc({q:"javascript",p:false,s:["javascript教程","javascript视频教程","javascript权威指南","javascript:void(0);","javascript 数组","javascript date","javascript array","javascript 正则表达式","javascript replace","javascript split"]});
+
+这里注意看，我申请了一个回调函数 CallBackfunc
+于是,百度后端就把数据内填充CallBackfunc()参数里啦
+
+所以为什么叫JSONP 就是如此
+
+如果我们没有申请回调函数
+那么百度就会返回一串JSON
+
+{q:"javascript",p:false,s:["javascript教程","javascript视频教程","javascript权威指南","javascript:void(0);","javascript 数组","javascript date","javascript array","javascript 正则表达式","javascript replace","javascript split"]}
+
+这样我们就会处在一个蛋疼的境界:
+有JSON数据
+但是没有办法调用...
+
+所以需要动态的将数据以传参形式
+内填充入一个函数
+这样才能方便我们调用
+
+当然有了数据之后
+
+我们只要定义一个函数
+function CallBackfunc( data )
+{
+	...
+}
+然后再这个函数里面就能够进行各种DOM操作
+来使用这些数据了
+
+{% endhighlight %}
+
+## AJAX 和 JSONP的对比
+
+| || 数据传递方式 || 是否异步 || 数据使用方式 || 是否跨域 |
+|:------||:-------------:||:----:|| :----------------------------------------: ||:--:|
+| AJAX  || GET和post都行 || 是 || 后端以文本的形式传入，需要使用JSON对象解析 || 不能直接跨域，可以通过其他方式跨域 |
+|:------||:-------------:||:----:|| :----------------------------------------: ||:--:|
+| JSONP || 只能是GET方式 || 是 || 后端直接以内填充的方式传递JSON数据，可直接使用 || 可以直接跨域 |
 
 
 ## Summery
+
 简单来说 AJAX 可以理解为一个函数一个API
 调用这个函数从后端获得数据
 再通过前端技术利用并更好的展现数据
+
+JSONP 是一个非官方的为解决
+AJAX无法实现跨域传输的解决方案
+
+但是JSONP不能完全替代AJAX
+因为只能使用GET方式的缺陷
+会有安全隐患
 
 ## 感谢
 
