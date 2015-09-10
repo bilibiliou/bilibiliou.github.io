@@ -1,6 +1,6 @@
 ---
 layout: post
-title: JSON学习笔记(部分原创 + copy他人知识的汇总)
+title: JSON学习笔记
 category: 技术
 keywords: 技术,JSON
 ---

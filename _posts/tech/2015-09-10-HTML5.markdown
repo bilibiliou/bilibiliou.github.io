@@ -1,0 +1,145 @@
+---
+layout: post
+title: HTML5学习历程
+category: 技术
+keywords: 技术,HTML5
+---
+## HTML5初始化代码
+
+{% highlight HTML %}
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">	
+<title>HTML5</title>
+
+</head>
+<body>
+	<header>
+		页面头部
+	<hgroup>
+		定义一组标题组合
+		<h1>Owen的博客</h1>
+		<h2>仰望星空的天台</h2>
+	</hgroup>
+	</header>
+	<article>
+	用
+		<aside>侧边栏</aside>
+		<section>内容区</section>
+	</article>
+	<footer>页面底部</footer>
+</body>
+</html>
+
+比起之前的版本
+简化了很多
+
+主要是用于语意化规范
+那么语义化规范有什么用呢？
+
+### 1.便于SEO爬虫爬取你的页面(SEO优化)
+
+首先，在语意化标签出来之前
+我们是通过CSS给标签添加样式之后
+(或者id和class稍微的语意化)
+才知道每个布局是干什么的
+
+但是搜索引擎(Search Engine)
+是看不到我们整个页面的布局的
+所以就很难爬取到有用的信息
+这样检索信息的时候，你的页面就很难被找到
+没被找到基本上你的网站就很难和大众接轨了
+
+所以HTML标签的语意化有利于SEO找到你页面的关键信息
+
+世界上还举办了这么个节日
+[CSS Naked Day](http://baike.baidu.com/link?url=TnnAkTykYvytO7HU7djxxNXaxBInKo5sIF2w6HyeMOpnjhlQM993Fe8jsU1zy9b7A_4HBbBwDbi4iGV6NWhBca)
+CSS裸奔节
+
+用以推动Web标准、提倡简洁为美、使用正确的(x)html语义标记、良好的层次结构。
+
+### 2.便于网站维护人员维护页面
+
+其次，如果当公司让你去维护一个不是你自己写的页面
+这时候标签是清一色的 div 或者是 td 标签
+你这时候就会觉得眼花缭乱 
+
+有可能把作者叫过来看，他自己也忘了啥是啥了
+但是如果我们给加的标签自身添加了语义化的功能
+
+我们维护的时候，一看标签就知道是干什么的了
+这样工作也会轻松很多
+
+### 3.有利于一些特殊终端的阅读
+
+再来，我们介绍一些计算机的特殊终端:打印机、扫描器、手机等等
+如果需要这些特殊的终端设备识别你的页面
+标签语义化也是必不可少
+
+{% endhighlight %}
+
+## 其他的一些语义化标签
+
+### <figure></figure>
+
+{% highlight html %}
+
+用于对元素组合
+说白了一般就是用来装<img> 和 <video>
+figure 元素的内容应该与主内容相关，但如果被删除，则不应对文档流产生影响。
+figcation的子元素 用来解释
+
+{% endhighlight %}
+### <time></time>
+
+用来标记时间
+{% highlight html %}
+<p>
+	庆祝抗日战争胜利70周年,阅兵日<time> 2015-09-03 </time>
+</p>
+
+<p>
+	我的<time datetime = "1996-03-05">生日</time>
+</p>
+
+{% endhighight %}
+
+### <datalist></datalist> 和 <option></option>
+
+选项列表
+当你在表单输入时
+自动弹出可能值列表
+
+<input type="text" list="valList" />
+<datalist id="valList">
+ 	<option value="javascript">javascript</option>
+   <option value="html">html</option>
+  <option value="css">css</option>
+</datalist>
+
+这里又引出了一个新的属性"list"
+用来关联可能值列表
+
+### <summary></summary> 和 <details></details>
+
+用于列出文档列表
+<details>
+<summary>点我,就送屠龙宝刀</summary>
+乖乖努力打怪升级,自然就有
+</details>
+
+可以加一个属性Open
+使列表默认是展开状态
+
+但是，这个标签暂时还只有Chrome 和 Safari 支持
+## 感谢
+
+本博文，有相当一部分内容COPY 和 引用了他人的知识，特此陈列，以表感谢
+
+[妙味课堂](www.miaov.com)
+
+## 引用出自
+
+### 《javascript高级程序设计》

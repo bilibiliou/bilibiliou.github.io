@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Ajax 和 JSONP 学习笔记(部分原创 + copy他人知识的汇总)
+title: Ajax 和 JSONP 学习笔记
 category: 技术
 keywords: 技术,Ajax,JSONP,wampserver,建站
 ---
@@ -928,7 +928,7 @@ var oScript = document.createElement('script');
 oScript.src = '你需要调用的脚本的url' + date.getTime();
 document.body.appendChild(oScript);
 
-而这里得到的脚本需要填充在一个回掉函数里面
+而这里得到的脚本需要填充在一个回调函数里面
 便于我们使用
 所以，这里我们就需要和后端同学配合好
 
@@ -945,7 +945,7 @@ document.body.appendChild(oScript);
 wd就是你需要搜索的内容
 (这里的内容不用转为URI码 因为百度已经做好处理了)
 
-重点在于回掉函数上
+重点在于回调函数上
 比如我们这么写请求
 
 'http://suggestion.baidu.com/su?wd=javascript&cb=CallBackfunc'
