@@ -8,7 +8,7 @@ keywords: 技术,HTML5
 
 {% highlight html %}
 
-<!DOCTYPE html>
+<！DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">	
