@@ -6,13 +6,13 @@ keywords: 技术,HTML5
 ---
 ## HTML5初始化代码
 
-{% highlight HTML %}
+{% highlight html %}
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">	
-<title>HTML5</title>
+<title>html5</title>
 
 </head>
 <body>
@@ -25,7 +25,7 @@ keywords: 技术,HTML5
 	</hgroup>
 	</header>
 	<article>
-	用
+	用来语意化一篇文章主体
 		<aside>侧边栏</aside>
 		<section>内容区</section>
 	</article>
@@ -33,11 +33,15 @@ keywords: 技术,HTML5
 </body>
 </html>
 
+{% endhighlight %}
+
 比起之前的版本
 简化了很多
 
 主要是用于语意化规范
 那么语义化规范有什么用呢？
+
+## 语意化标签的作用
 
 ### 1.便于SEO爬虫爬取你的页面(SEO优化)
 
@@ -52,7 +56,7 @@ keywords: 技术,HTML5
 这样检索信息的时候，你的页面就很难被找到
 没被找到基本上你的网站就很难和大众接轨了
 
-所以HTML标签的语意化有利于SEO找到你页面的关键信息
+所以html标签的语意化有利于SEO找到你页面的关键信息
 
 世界上还举办了这么个节日
 [CSS Naked Day](http://baike.baidu.com/link?url=TnnAkTykYvytO7HU7djxxNXaxBInKo5sIF2w6HyeMOpnjhlQM993Fe8jsU1zy9b7A_4HBbBwDbi4iGV6NWhBca)
@@ -78,11 +82,9 @@ CSS裸奔节
 如果需要这些特殊的终端设备识别你的页面
 标签语义化也是必不可少
 
-{% endhighlight %}
-
 ## 其他的一些语义化标签
 
-### <figure></figure>
+### figure
 
 {% highlight html %}
 
@@ -92,7 +94,8 @@ figure 元素的内容应该与主内容相关，但如果被删除，则不应�
 figcation的子元素 用来解释
 
 {% endhighlight %}
-### <time></time>
+
+### time
 
 用来标记时间
 {% highlight html %}
@@ -104,13 +107,14 @@ figcation的子元素 用来解释
 	我的<time datetime = "1996-03-05">生日</time>
 </p>
 
-{% endhighight %}
+{% endhighlight %}
 
-### <datalist></datalist> 和 <option></option>
+### datalist 和 option
 
 选项列表
 当你在表单输入时
 自动弹出可能值列表
+{% highlight html %}
 
 <input type="text" list="valList" />
 <datalist id="valList">
@@ -119,21 +123,586 @@ figcation的子元素 用来解释
   <option value="css">css</option>
 </datalist>
 
+{% endhighlight %}
+
 这里又引出了一个新的属性"list"
 用来关联可能值列表
 
-### <summary></summary> 和 <details></details>
+### summary 和 details
 
 用于列出文档列表
+{% highlight html %}
 <details>
 <summary>点我,就送屠龙宝刀</summary>
 乖乖努力打怪升级,自然就有
 </details>
+{% endhighlight %}
 
 可以加一个属性Open
 使列表默认是展开状态
 
 但是，这个标签暂时还只有Chrome 和 Safari 支持
+
+### dialog
+
+这对标签一般用来语意化一段对话
+{% highlight html %}
+
+<dialog>
+  <dt>老师</dt>
+  <dd>2+2 等于？</dd>
+  <dt>学生</dt>
+  <dd>4</dd>
+  <dt>老师</dt>
+  <dd>答对了！</dd>
+</dialog>
+{% endhighlight %}
+
+### address
+
+用来语意化页面作者和他们的详细信息
+
+### mark
+
+高亮某一段需要高亮的字词或是段落
+可以在CSS中使用background修改高亮颜色
+
+### keygen
+
+可以使用keygen为发送的表单添加一个公共密钥
+{% highlight html %}
+<form action="http://numerhero.github.io" method="get">
+用户: <input type="text" name="usr_name" />
+公钥: <keygen name="security" />
+<input type="submit" />
+</form>
+{% endhighlight %}
+
+### progess
+
+可以定义一个简陋的进度条
+{% highlight html %}
+<progress max="100" value="77">
+     <!-- 这里用以兼容 不支持该标签的浏览器 -->
+     <span>77</span>%
+</progress>
+{% endhighlight %}
+
+## 如何向下兼容IE8以下版本
+
+{% highlight Javascript %}
+因为浏览器允许我们自定义标签
+比如
+
+<Owen> 每天都萌萌哒 </Owen>
+
+但是自定义的标签没有任何默认样式
+需要自己去添加
+
+虽然旧的浏览器版本没有HTML5这些标签
+但是我们可以通过JS脚本创建，并给他们添加CSS属性
+
+这里Google开发了一个兼容脚本:
+
+/*! HTML5 Shiv v3.6.1 | @afarkas @jdalton @jon_neal @rem | MIT/GPL2 Licensed */
+;(function(window, document) {
+/*jshint evil:true */
+  /** Preset options */
+  var options = window.html5 || {};
+
+  /** Used to skip problem elements */
+  var reSkip = /^<|^(?:button|map|select|textarea|object|iframe|option|optgroup)$/i;
+
+  /** Not all elements can be cloned in IE **/
+  var saveClones = /^(?:a|b|code|div|fieldset|h1|h2|h3|h4|h5|h6|i|label|li|ol|p|q|span|strong|style|table|tbody|td|th|tr|ul)$/i;
+
+  /** Detect whether the browser supports default html5 styles */
+  var supportsHtml5Styles;
+
+  /** Name of the expando, to work with multiple documents or to re-shiv one document */
+  var expando = '_html5shiv';
+
+  /** The id for the the documents expando */
+  var expanID = 0;
+
+  /** Cached data for each document */
+  var expandoData = {};
+
+  /** Detect whether the browser supports unknown elements */
+  var supportsUnknownElements;
+
+  (function() {
+    try {
+        var a = document.createElement('a');
+        a.innerHTML = '<xyz></xyz>';
+        //if the hidden property is implemented we can assume, that the browser supports basic HTML5 Styles
+        supportsHtml5Styles = ('hidden' in a);
+
+        supportsUnknownElements = a.childNodes.length == 1 || (function() {
+          // assign a false positive if unable to shiv
+          (document.createElement)('a');
+          var frag = document.createDocumentFragment();
+          return (
+            typeof frag.cloneNode == 'undefined' ||
+            typeof frag.createDocumentFragment == 'undefined' ||
+            typeof frag.createElement == 'undefined'
+          );
+        }());
+    } catch(e) {
+      supportsHtml5Styles = true;
+      supportsUnknownElements = true;
+    }
+
+  }());
+
+  /*--------------------------------------------------------------------------*/
+
+  /**
+   * Creates a style sheet with the given CSS text and adds it to the document.
+   * @private
+   * @param {Document} ownerDocument The document.
+   * @param {String} cssText The CSS text.
+   * @returns {StyleSheet} The style element.
+   */
+  function addStyleSheet(ownerDocument, cssText) {
+    var p = ownerDocument.createElement('p'),
+        parent = ownerDocument.getElementsByTagName('head')[0] || ownerDocument.documentElement;
+
+    p.innerHTML = 'x<style>' + cssText + '</style>';
+    return parent.insertBefore(p.lastChild, parent.firstChild);
+  }
+
+  /**
+   * Returns the value of `html5.elements` as an array.
+   * @private
+   * @returns {Array} An array of shived element node names.
+   */
+  function getElements() {
+    var elements = html5.elements;
+    return typeof elements == 'string' ? elements.split(' ') : elements;
+  }
+  
+    /**
+   * Returns the data associated to the given document
+   * @private
+   * @param {Document} ownerDocument The document.
+   * @returns {Object} An object of data.
+   */
+  function getExpandoData(ownerDocument) {
+    var data = expandoData[ownerDocument[expando]];
+    if (!data) {
+        data = {};
+        expanID++;
+        ownerDocument[expando] = expanID;
+        expandoData[expanID] = data;
+    }
+    return data;
+  }
+
+  /**
+   * returns a shived element for the given nodeName and document
+   * @memberOf html5
+   * @param {String} nodeName name of the element
+   * @param {Document} ownerDocument The context document.
+   * @returns {Object} The shived element.
+   */
+  function createElement(nodeName, ownerDocument, data){
+    if (!ownerDocument) {
+        ownerDocument = document;
+    }
+    if(supportsUnknownElements){
+        return ownerDocument.createElement(nodeName);
+    }
+    if (!data) {
+        data = getExpandoData(ownerDocument);
+    }
+    var node;
+
+    if (data.cache[nodeName]) {
+        node = data.cache[nodeName].cloneNode();
+    } else if (saveClones.test(nodeName)) {
+        node = (data.cache[nodeName] = data.createElem(nodeName)).cloneNode();
+    } else {
+        node = data.createElem(nodeName);
+    }
+
+    // Avoid adding some elements to fragments in IE < 9 because
+    // * Attributes like `name` or `type` cannot be set/changed once an element
+    //   is inserted into a document/fragment
+    // * Link elements with `src` attributes that are inaccessible, as with
+    //   a 403 response, will cause the tab/window to crash
+    // * Script elements appended to fragments will execute when their `src`
+    //   or `text` property is set
+    return node.canHaveChildren && !reSkip.test(nodeName) ? data.frag.appendChild(node) : node;
+  }
+
+  /**
+   * returns a shived DocumentFragment for the given document
+   * @memberOf html5
+   * @param {Document} ownerDocument The context document.
+   * @returns {Object} The shived DocumentFragment.
+   */
+  function createDocumentFragment(ownerDocument, data){
+    if (!ownerDocument) {
+        ownerDocument = document;
+    }
+    if(supportsUnknownElements){
+        return ownerDocument.createDocumentFragment();
+    }
+    data = data || getExpandoData(ownerDocument);
+    var clone = data.frag.cloneNode(),
+        i = 0,
+        elems = getElements(),
+        l = elems.length;
+    for(;i<l;i++){
+        clone.createElement(elems[i]);
+    }
+    return clone;
+  }
+
+  /**
+   * Shivs the `createElement` and `createDocumentFragment` methods of the document.
+   * @private
+   * @param {Document|DocumentFragment} ownerDocument The document.
+   * @param {Object} data of the document.
+   */
+  function shivMethods(ownerDocument, data) {
+    if (!data.cache) {
+        data.cache = {};
+        data.createElem = ownerDocument.createElement;
+        data.createFrag = ownerDocument.createDocumentFragment;
+        data.frag = data.createFrag();
+    }
+
+
+    ownerDocument.createElement = function(nodeName) {
+      //abort shiv
+      if (!html5.shivMethods) {
+          return data.createElem(nodeName);
+      }
+      return createElement(nodeName, ownerDocument, data);
+    };
+
+    ownerDocument.createDocumentFragment = Function('h,f', 'return function(){' +
+      'var n=f.cloneNode(),c=n.createElement;' +
+      'h.shivMethods&&(' +
+        // unroll the `createElement` calls
+        getElements().join().replace(/\w+/g, function(nodeName) {
+          data.createElem(nodeName);
+          data.frag.createElement(nodeName);
+          return 'c("' + nodeName + '")';
+        }) +
+      ');return n}'
+    )(html5, data.frag);
+  }
+
+  /*--------------------------------------------------------------------------*/
+
+  /**
+   * Shivs the given document.
+   * @memberOf html5
+   * @param {Document} ownerDocument The document to shiv.
+   * @returns {Document} The shived document.
+   */
+  function shivDocument(ownerDocument) {
+    if (!ownerDocument) {
+        ownerDocument = document;
+    }
+    var data = getExpandoData(ownerDocument);
+
+    if (html5.shivCSS && !supportsHtml5Styles && !data.hasCSS) {
+      data.hasCSS = !!addStyleSheet(ownerDocument,
+        // corrects block display not defined in IE6/7/8/9
+        'article,aside,figcaption,figure,footer,header,hgroup,nav,section{display:block}' +
+        // adds styling not present in IE6/7/8/9
+        'mark{background:#FF0;color:#000}'
+      );
+    }
+    if (!supportsUnknownElements) {
+      shivMethods(ownerDocument, data);
+    }
+    return ownerDocument;
+  }
+
+  /*--------------------------------------------------------------------------*/
+
+  /**
+   * The `html5` object is exposed so that more elements can be shived and
+   * existing shiving can be detected on iframes.
+   * @type Object
+   * @example
+   *
+   * // options can be changed before the script is included
+   * html5 = { 'elements': 'mark section', 'shivCSS': false, 'shivMethods': false };
+   */
+  var html5 = {
+
+    /**
+     * An array or space separated string of node names of the elements to shiv.
+     * @memberOf html5
+     * @type Array|String
+     */
+    'elements': options.elements || 'abbr article aside audio bdi canvas data datalist details figcaption figure footer header hgroup mark meter nav output progress section summary time video',
+
+    /**
+     * A flag to indicate that the HTML5 style sheet should be inserted.
+     * @memberOf html5
+     * @type Boolean
+     */
+    'shivCSS': (options.shivCSS !== false),
+
+    /**
+     * Is equal to true if a browser supports creating unknown/HTML5 elements
+     * @memberOf html5
+     * @type boolean
+     */
+    'supportsUnknownElements': supportsUnknownElements,
+
+    /**
+     * A flag to indicate that the document's `createElement` and `createDocumentFragment`
+     * methods should be overwritten.
+     * @memberOf html5
+     * @type Boolean
+     */
+    'shivMethods': (options.shivMethods !== false),
+
+    /**
+     * A string to describe the type of `html5` object ("default" or "default print").
+     * @memberOf html5
+     * @type String
+     */
+    'type': 'default',
+
+    // shivs the document according to the specified `html5` object options
+    'shivDocument': shivDocument,
+
+    //creates a shived element
+    createElement: createElement,
+
+    //creates a shived documentFragment
+    createDocumentFragment: createDocumentFragment
+  };
+
+  /*--------------------------------------------------------------------------*/
+
+  // expose html5
+  window.html5 = html5;
+
+  // shiv the document
+  shivDocument(document);
+
+}(this, document));
+
+{% endhighlight %}
+
+只需外部引用一下就能实现兼容了
+
+## 新增的表单属性
+
+### email
+
+{% highlight html %}
+
+<form>
+	<input type="email">
+	<input type="submit">
+</form>
+
+相当于给输入框加了一个正则表达式
+用来粗略的区分你输入的是否是一个正确的邮箱地址
+(要真正判断 还得配合AJAX)
+
+对于手机端,还会有一个输入法的转换
+当你要输入有邮箱的时候,点击email表单
+会从其他语言的输入法 转换为英文输入法
+
+{% endhighlight %}
+
+### tel
+
+{% highlight html %}
+
+<form>
+	<input type="tel">
+	<input type="submit">
+</form>
+
+对于PC端，没有什么特殊变化
+
+对于手机端,还会有一个输入法的转换
+当你要输入有电话的时候,点击tel表单
+会从其他语言的输入法 数字键盘
+
+一些可选属性：
+maxlength : 限制最大值
+readonly : 默认只读不可修改
+size : 输入数字大小
+placeholder : 默认提示
+dirname : 
+{% endhighlight %}
+
+### url
+
+{% highlight html %}
+
+<form>
+	<input type="url">
+	<input type="submit">
+</form>
+
+和email一样
+相当于给输入框加了一个正则表达式
+用来粗略的区分你输入的是否是一个网址
+
+对于手机端,还会有一个输入法的转换
+当你要输入有网址的时候,点击url表单
+会从其他语言的输入法 转换为英文输入法
+
+{% endhighlight %}
+
+### search
+
+{% highlight html %}
+
+<form>
+	<input type="search">
+	<input type="submit">
+</form>
+
+搜索框属性
+当你输入的时候，
+会出现清空内容的按钮
+可以配合其他属性使用
+
+{% endhighlight %}
+
+### range
+
+{% highlight html %}
+
+<form>
+	<input type="range">
+	<input type="submit">
+</form>
+
+数值选择器属性
+可以用来给我们选择数值
+它底下有这么些属性
+step : 数值跨度，即每次数值增加量 默认是1
+min  : 最小数值
+max  : 最大数值
+value: 缺省数值值
+
+其中Opera 浏览器 还特意为range 做了数值刻度
+
+{% endhighlight %}
+
+### number
+
+{% highlight html %}
+
+<form>
+	<input type="number">
+	<input type="submit">
+</form>
+
+
+
+另外一个数值选择器属性
+也可以用来给我们选择数值
+它底下也有这么些属性
+step : 数值跨度，即每次数值增加量 默认是1
+min  : 最小数值
+max  : 最大数值
+value: 缺省数值值
+{% endhighlight %}
+
+### color
+
+{% highlight html %}
+
+可以供我们使用的一个调色板插件
+<form>
+	<input type="color" id="incolor" >
+</form>
+
+可以添加的值
+disabled : 是否可用
+autocomplete ：弹出自动候选色(和datalist用的时候使用)
+autofocus : 是否获取焦点
+list : 关联datalist列表 可以给用户产生候选颜色
+value : 缺省色
+
+=== Javascript 简单调用 ===
+
+window.onload = function()
+{
+	var InputColor = document.getElementById('incolor');
+	//使用oninput对象调用
+	InputColor.oninput = function()
+	{
+		document.body.style.backgroundColor = this.value;
+	}
+}
+{% endhighlight %}
+
+### date
+
+{% highlight html %}
+
+<form>
+	<input type="date" min="1996-03-05" max="2004-09-22">
+</form>
+
+一个插入日期的控件
+
+一些可选属性
+min : 最小日期
+max : 最大日期
+{% endhighlight %}
+
+### datatime-local
+
+{% highlight html %}
+
+用法和date差不多
+用于选取本地时间
+<form>
+	<input type="datetime-local" >
+</form>
+
+但是貌似没有min 和 max 属性
+{% endhighlight %}
+
+### time、week、month
+
+data可以向下细分为
+
+time : 只显示时间
+week : 只显示星期
+month: 只显示月
+
+## 一些表单的属性
+
+placeholder : 提示信息
+
+autocomplete : 历史输入信息 (on / off)
+autofocus : 打开页面自动获取表单焦点 直接加(例子如下)
+require : 强制用户填写拥有该属性的表单 直接加(注意:这里直接加的话写的是required 多个d)
+
+pattern : 简单的表单正则表达式(列如：pattern="\d{1,5}" 限制表单中只能填入1-5个数字)
+(注意:由于require 和 pattern 是写在行间的属性，所以使用浏览器的修改功能 可以被用户轻易的破除)
+
+formaction : 用来添加一个新的提交路径
+{% highlight html %}
+
+<form action="http://www.baidu.com">
+	<input type="text" placeholder="输入的内容"  pattern="\d{1,5}" autofocus required  autocomplete="off">
+	<input type="submit" value="提交百度">
+	<input type="submit" value="提交腾讯" formaction="http://www.qq.com">
+</form>
+{% endhighlight %}
+
 ## 感谢
 
 本博文，有相当一部分内容COPY 和 引用了他人的知识，特此陈列，以表感谢
