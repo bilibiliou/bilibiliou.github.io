@@ -361,9 +361,51 @@ console.log(jsontext);//只输出 "HTML5"
 
 {% endhighlight %}
 
+## 关于对象引用会出现的一些问题
+
+{% highlight JavaScript %}
+
+直接上代码:
+var a = {
+	"name" : "Owen",
+	"age" : 19
+	};
+
+var b = a;
+b.name = "Zyz";
+
+console.log( a.name );//Zyz
+
+之所以出现这样的问题,是因为
+我把a赋值给b的只是一个对象的引用而已
+也就是说 这个JSON对象并没有被复制
+被复制的只是这个指向这个对象的指针而已
+
+那应该怎么解决呢？
+var b = {};
+for(i in a)
+{
+	b[i] = a[i];
+}
+console.log( a["name"] );
+
+但是 我们分析一下由此产生的另外一个问题
+试想，如果a对象里面还有一个对象
+那么我们这样单纯的遍历赋值 也会产生上文提到的引用问题
+所以，我们需要进行如下改进
+
+var b = JSON.parse(JSON.stringify(a));
+console.log( a.name );
+先将a解析成字符串 然后再将这个字符串 解析回对象 赋值给b
+这样就能解决对象引用的问题
+
+{% endhighlight %}
+
 ## 感谢
 
 本博文，有相当一部分内容COPY 和 引用了他人的知识，特此陈列，以表感谢
+
+[妙味课堂](http://www.miaov.com)
 [关于JS中的JSON对象](http://www.cnblogs.com/gaojun/p/3394274.html)
 
 ## 引用出自

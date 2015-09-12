@@ -951,9 +951,22 @@ console.log(oLi);
 |:--------------||:--------------||:--------------||:--------------|
 | querySelectorAll|| 是 || 是 || 是 |
 
-总结来说 使用querySelectorAll 更方便
+总结来说 使用querySelectorAll 更方便,但是注意querySelectorAll获取元素的时候,都是以数组为单位的
+所以，当使用querySelectorAll 获取单个元素的时候 需要加上[0];
+var box = document.querySelectorAll("#div")[0];
 
-======= 华丽丽的分界线 =======
+或者引用的时候再加[0]
+
+var box = document.querySelectorAll("#div");
+console.log( box[0] ); 
+
+还有一点需要注意的是，使用querySelectorAll / querySelector来获取HTML5新功能
+自定义属性的时候 需要加上data-
+
+<div data-Owen="abc" ></div>
+var box = document.querySelectorAll("data-Owen=abc");
+而不是 
+var box = document.querySelectorAll("Owen=abc");
 
 ### getElementsByClassName
 
@@ -998,12 +1011,88 @@ toggle() : 切换一个类
 
 {% endhighlight %}
 
+## 自定义属性
+
+我们可以使用data来自定义属性
+{% highlight JavaScript %}
+如果是HTML5之前
+我们这样自定义属性
+<div Owen = "abc"></div>
+如果要用DOM控制的话就需要用到
+getArribute来获取，但是这方法嘛 兼容性不太乐观了
+
+而现在我们可以这样定义属性
+<div  data-Owen="abc" data-Owen-Zyz = "cba" ></div>
+(注意:这里一定是“ - ”号连接!)
+(注意:浏览器在解析的时候,大小写不敏感,也就是说所有含有大写字母的,在解析中都会被变成小写字母)
+
+但是在获取对象的时候,大小写又敏感了,可以获取到DOM
+
+var box = document.querySelector('data-Owen=')
+console.log( box.dataset.Owen ); // undefined
+console.log( box.dataset.owen ); // abc
+console.log( box.dataset.owen-Zyz ) // 报错
+console.log( box.dataset.owenZyz ) // cba
+console.log( box.dataset.owenzyz ) // undefined
+console.log( box.dataset ) // { owen : abc , owenZyz : cba }
+
+实验说明 使用自定义属性的时候一定要注意大小写的问题
+或者说我们应该尽量在自定义属性的时候不使用大写
+如果说一定要使用大写字母的时候,应先将dataset弹出来看一下具体的属性名
+再进行DOM操作
+
+{% endhighlight %}
+
+data这个属性广泛用于jQuery Mobile上
+我们只需要添加jQuery Mobile
+然后在标签里面配属性就基本可以完成一些手机端的开发
+和一些简单的特效
+{% highlight html %}
+
+<div data-theme="a" ></div> //把div设置成黑色
+{% endhighlight %}
+
+当然除jQuery Mobile 的库
+还可以用Knockout 手机端库
+[Knockout](http://www.knockoutjs.com)
+
+## defer 和 async
+
+这两个新属性是关于加载脚本的
+
+比如我这里需要加载三个js
+{% highlight Javascript %}
+
+<script src="a.js"></script>
+<script src="b.js"></script>
+<script src="c.js"></script>
+
+<body>
+	...
+</body>
+{% endhighlight %}
+
+如果,这几个js文件比较大,而碰巧我们可爱的用户网又比较慢
+因为默认的加载方式是同步加载[(关于同异步的请参考本站AJAX的有关内容)](http://numerhero.github.io/2015/08/26/AJAX.html)
+这时候就会出现一段没有内容的空白期,这样就可能让一些没有耐心的用户停止等待了
+
+defer="defer"属性可以让加载的脚本延迟加载
+也就是优先让页面先加载出来,然后再加载一些js功能
+
+而async="async"呢 就是让加载的脚本和页面异步加载,齐头并进
+但是,这样就会存在一个问题.加设如果a脚本需要引用b脚本的内容
+而a脚本 在 b脚本之前就已经加载完成了,那么在a脚本需要使用b脚本的地方
+就会报错了
+
+所以,当我们使用async属性的时候 , 就需要保证加载的几个脚本是互相独立的
+
 ## 感谢
 
 本博文，有相当一部分内容COPY 和 引用了他人的知识，特此陈列，以表感谢
 
 [妙味课堂](www.miaov.com)
 [IAN MCNALLY 's blog](http://ianmcnally.me/blog/2015/6/25/input-validity-in-the-html-spec)
+
 ## 引用出自
 
 ### 《javascript高级程序设计》
