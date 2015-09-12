@@ -4,6 +4,11 @@ title: HTML5学习历程
 category: 技术
 keywords: 技术,HTML5
 ---
+## 写在前页面
+
+关于H5 C3 JS API 的浏览器版本支持度
+可以上[caniuse 网站查询](http://caniuse.com/)
+
 ## HTML5初始化代码
 
 {% highlight html %}
@@ -694,6 +699,7 @@ pattern : 简单的表单正则表达式(列如：pattern="\d{1,5}" 限制表单
 (注意:由于require 和 pattern 是写在行间的属性，所以使用浏览器的修改功能 可以被用户轻易的破除)
 
 formaction : 用来添加一个新的提交路径
+formnovalidate : 关闭验证，直接提交
 {% highlight html %}
 
 <form action="http://www.baidu.com">
@@ -703,15 +709,301 @@ formaction : 用来添加一个新的提交路径
 </form>
 {% endhighlight %}
 
-## 表单验证
+## Javascript表单验证
 
+首先我们需要讨论一下为什么要需要用到JS表单验证
+
+例如这么一个表单
+{% highlight Javascript %}
+
+<form action="www.baidu.com">
+	<input type="text" pattern = "/d{1,5}" required autocomplete="on" autofocus="on">
+	<input type="submit" value="发送">
+</form>
+{% endhighlight %}
+
+![shootpic](/assets/img/input-remove.png)
+
+因为浏览器自带可修改代码的功能
+(本来是给我们工作人员调试用的)
+
+所以用户可以轻易的通过修改代码，
+顽皮的跳过一些重要的数据采集
+
+因此，我们需要在JS代码添加一些
+简单的验证
+
+其实用户还能改JS代码，让前端的JS部分失效
+所以，前后端对表单的双重验证是必要的常识！
+(毕竟用户改不了服务器端的代码嘛)
+
+但是，表单验证不单单验证信息这么简单
+
+比如说你实现一些功能
+例如，没有输入直接发送的时候
+通过JS的DOM操作弄个非浏览器默认样式的
+更加美观的提示框
+
+那么再使用if语句的时候
+就需要用到JS表单验证返回的布尔值
+
+还有调试的时候，检验你的正则是否写错啊
+表单类型和你输入的值格式是否匹配啊等等
+
+{% highlight Javascript %}
+
+表单一共有11种验证
+首先，表单验证都是围绕一个叫validity(英译:有效的、健全的)对象进行的
+以下11种验证方法都是validity对象底下的
+
+valid : 独立于其他验证，用来检测其他验证是否通过，
+(如果其他验证全部通过，那么valid返回true 否则返回false)
+
+下列属性，如果表单内容不通过则返回true 否则返回false (与valid相反嘛)
+badInput : 
+valueMissing  :  输入值为空时 返回true
+typeMismatch :  控件值与预期类型不匹配时 返回true
+patternMismatch  :  输入值不满足pattern正则时 返回true
+
+=== html ===
+
+<form>
+	<input type="text" id ="text" pattern = "/d{1,5}" required autocomplete="on" autofocus="on">
+	<input type="submit" value="发送">
+</form>
+
+=== Javascript === 
+
+window.onload = function()
+{
+	var oText = document.getElementById("text");
+	//这里使用事件监听
+	oText.addEventListener("invaild" , fn , flase);
+	//阻止下默认事件
+	event.preventDefault();
+	function fn()
+	{
+		console.log(oText.validity.valueMissing)
+		当啥都没输的时候 弹出true
+
+		console.log(oText.validity.patternMismatch)
+		当输入的值 不满足你写的正则函数的时候 返回true
+
+		console.log(oText.validity.typeMismatch)
+		当输入的值 和你 表单需要填写的值 类型不同的时候返回true
+		比如说input类型是email 但是用户输的值不是一个email
+	}	
+
+}
+
+
+tooLong  :  超过maxLength最大限制时 返回true
+rangeUnderflow : 验证的range最小值 
+rangeOverflow：验证的range最大值 
+stepMismatch: 验证range 的当前值 是否符合min、max及step的规则
+
+(感觉以上4项功能比较鸡肋，因为当你错误的时候浏览器会帮你设置缺省值，也就是说几乎不会有错误的时候
+所以这里就不做demo了)
+
+customError 不符合自定义验证
+setCustomValidity(); 自定义验证
+
+=== Javascript === 
+
+window.onload = function()
+{
+	var oText = document.getElementById("text");
+	//这里使用事件监听
+	oText.addEventListener("invaild" , fn , flase);
+	//阻止下默认事件
+	event.preventDefault();
+	function fn()
+	{
+		if(this.value == "敏感词汇")
+		{
+			this.setCustomValidity("嘘，可不能乱填一些带颜色的词语哟");
+			//这样可以限制用户的填写
+		}
+		else
+		{
+			this.setCustomValidity("");
+			//注意 : 当用户没有输入敏感词的时候，一定要把自定义验证清空
+			//不然不论用户怎么输入都会弹出自定义的提示信息，也会弹出自定义的验证信息
+		}
+
+		//console.log(oText.validity.customError);
+		//当用户确实输入了一些敏感的词后 返回true
+	}	
+
+}
+
+
+当有些特殊的时候，暂时不需要验证
+比如当用户赶时间的时候，表单没有填写完，需要保存到草稿箱的时候
+我们就需要给保存到草稿箱那个submit 按钮添加一个formnovalidate属性来关闭所有的表单验证
+
+{% endhighlight %}
+
+## 新的DOM选择器
+
+
+
+### querySelector(类jQuery DOM选择器):
+
+学过JQuery的同学应该比较清楚
+在JQ中 获取元素很简单
+
+$('#box') $('.box') $('ol li');
+
+到了HTML5中，DOM 允许我们使用JQ的方法去获取元素
+
+
+{% highlight Javascript %}
+
+通过获取ID 来获取元素
+
+var oDiv = document.querySeletor('#box');
+
+
+通过获取类名 来获取元素
+
+var oDiv = document.querySeletor('.box');
+
+但是注意一点
+当获取类元素的时候，是不支持两个获取的
+也就是说如果有两个DOM结点 都有class="box"
+那么querySeletor 无法获取，会返回undefined
+
+
+通过获取属性名称来获取元素
+
+比如<div tilte="Owen"></div>
+我们也可以通过querySeletor获取
+
+var oDiv = document.querySeletor('[title=Owen]');
+
+甚至是自定义属性<div abc="Owen"></div>
+
+var oDiv = document.querySeletor('[abc=Owen]');
+
+
+获取继承标签组
+
+虽然querySeletor不能获取多个类 的DOM元素
+但是可以获取 继承标签组的多个DOM元素
+<ul id="ul1">
+	<li></li>
+	<li></li>
+	<li></li>
+</ul>
+
+var oLi = document.querySeletor('ul li');
+console.log(oLi.length);
+
+或者
+
+你也可以
+var oUl1 = document.querySeletor('#ul1');
+var oLi = oUl1.querySeletor('li');
+console.log(oLi.length);
+
+{% endhighlight %}
+
+### querySeletorAll
+
+{% highlight Javascript %}
+
+上面，我们说到不能通过querySeletor获取多个同类元素
+但是我们可以通过querySelectorAll方法来获取多个同类元素
+
+
+var oDivs = document.querySeletorAll('.box');
+console.log(oDivs.length);
+
+同样的
+我们也可以使用querySeletorAll()
+来获取多个 甚至是自定义的属性
+
+<ul>
+	<li abc="Owen" ></li>
+	<li></li>
+	<li abc="Owen" ></li>
+</ul>
+
+var oLi = document.querySelectorAll('[abc=Owen]');
+console.log(oLi);
+
+同时也可以获取单个元素(id class)
+
+{% endhighlight %}
+
+| || 是否能识别id || 是否能识别class || 是否能识别多个class || 是否能通过标签选择器识别单个元素 |
+|:--------------||:--------------||:--------------||:--------------||:--------------|
+| querySelector|| 是 || 是 || 否 || 是 |
+|:--------------||:--------------||:--------------||:--------------|:--------------|
+| querySelectorAll|| 是 || 是 || 是 || 是 |
+
+`续表:`
+
+| || 是否能识别多个标签组 || 是否能识别单个属性或自定义属性 || 是否能识别多个属性或自定义属性 |
+|:--------------||:--------------||:--------------||:--------------|
+| querySelector|| 是 || 是 || 是 |
+|:--------------||:--------------||:--------------||:--------------|
+| querySelectorAll|| 是 || 是 || 是 |
+
+总结来说 使用querySelectorAll 更方便
+
+======= 华丽丽的分界线 =======
+
+### getElementsByClassName
+
+类似getElementsByTagName
+
+{% highlight Javascript %}
+var oboxs = document.getElementsByClassName('box');
+console.log(oboxs);
+{% endhighlight %}
+
+### classList
+
+{% highlight Javascript %}
+我们可以通过classList来获取到一个元素的全部class
+
+<div id = "box" class="a b c"></div>
+
+var boxClass = document.getElementById('box').classList;
+console.log(boxClass);// a b c
+
+注意这里classList 是一个object 类数组 应该说很像json,我们不能同过classList.length++ 
+或者 是classList.push()的方法给 这个DOM结点添加类
+
+但是,HTML5给classLIst添加了一些方法来满足我们的需求
+
+length : 属性数量(不能直接改变)
+add() : 添加一个类
+
+boxClass.add('d');
+console.log(boxClass);
+
+remove() : 删除一个类
+
+boxClass.add('a');
+console.log(boxClass);
+
+toggle() : 切换一个类
+
+假设我现在 有 a b c 三个类
+如果我执行 boxClass.toggle('a'); 原来类表里面存在,就会删除a这个类
+如果我执行 boxClass.toggle('d'); 原来类表里面不存在,就会添加d这个类
+
+{% endhighlight %}
 
 ## 感谢
 
 本博文，有相当一部分内容COPY 和 引用了他人的知识，特此陈列，以表感谢
 
 [妙味课堂](www.miaov.com)
-
+[IAN MCNALLY 's blog](http://ianmcnally.me/blog/2015/6/25/input-validity-in-the-html-spec)
 ## 引用出自
 
 ### 《javascript高级程序设计》
