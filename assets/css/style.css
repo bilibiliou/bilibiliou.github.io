@@ -695,16 +695,6 @@ iframe {
   -moz-box-sizing: content-box;
   box-sizing: content-box; }
 */
-#copyright {
-  margin: 0;
-  padding-top: 1em;
-  font-size: .9em;
-  text-align: center;
-  border-top: 2px solid rgba(229, 232, 236, 0.5); }
-  #copyright > a {
-    color: #2eb695; }
-    #copyright > a:hover {
-      text-decoration: underline; }
 
 /*---------------------------------*\
    Fullscreen Style
@@ -727,20 +717,22 @@ iframe {
 
 #js-fullscreen, #nprogress .spinner-icon {
   width: 40px;
-  height: 40px; }
+  height: 40px;
+  }
 
+/*调整按钮位置*/
 #js-fullscreen, #nprogress .spinner {
-  top: 12px;
-  right: 20px; }
+  top: 10px;
+  right: 50px; }
 
 #js-fullscreen {
   margin: 0;
   padding: 0;
-  color: #7d8b99;
-  background: rgba(229, 232, 236, 0.5);
-  border-radius: 50%;
+  color: red;
+  /*background: ;*/
+  /*border-radius: 50%;*/
   border: none;
-  box-shadow: 0 0 10px 10px transparent;
+  box-shadow: 0 0 20px 0  black;
   outline: none;
   cursor: pointer;
   position: fixed;
@@ -757,6 +749,7 @@ iframe {
   appearance: none; }
   #js-fullscreen:hover {
     color: #2eb695;
+    /*background: ;*/
     box-shadow: 0 0 0 3px rgba(125, 139, 153, 0.15); }
   @media screen and (max-width: 585px) {
     #js-fullscreen {
@@ -766,6 +759,7 @@ iframe {
       right: 0;
       border-radius: 0; } }
 
+/*按钮内容*/
 #icon-arrow {
   padding: 10px;
   -webkit-transform: rotate(0deg);
@@ -780,7 +774,7 @@ iframe {
   transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1);
   display: block; }
   #icon-arrow:before {
-    content: "\e801";
+    /*content: "\e801";*/
     margin-left: -1px;
     font-size: 20px;
     line-height: 1; }
@@ -1007,11 +1001,12 @@ iframe {
       top: 5px;
       right: 5px; } }
 
+/*加载时候按钮动画*/
 #nprogress .spinner-icon {
   border: solid 2px transparent;
   border-top-color: #f8645a;
   border-left-color: #f8645a;
-  border-radius: 50%;
+  /*border-radius: 50%;*/
   -webkit-animation: spin 400ms linear infinite;
   -moz-animation: spin 400ms linear infinite;
   -ms-animation: spin 400ms linear infinite;

@@ -24,20 +24,20 @@ kramdown:
 author: 欧阳湘粤
 name: Owen
 email: 469564715@qq.com
-link: http://Owen.org
+link: http://numerhero.github.io
 #weibo: 
 github: http://github.com/NumerHero
 
 # 站点信息
 title: Owen的博客 
 description: 欧阳湘粤的博客
-url: http://Owen.org
+url: http://numerhero.github.io
 rss_url: /pages/atom.xml
 
 # google analytics 设置
 ga:
   id: UA-54767140-1
-  url: yansu.org
+  url: http://numerhero.github.io
 
 # disqus 设置
 disqus:
