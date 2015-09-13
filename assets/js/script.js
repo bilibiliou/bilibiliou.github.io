@@ -251,23 +251,38 @@ function afterPjax() {
     });
   });
 
+  //加载Disqus 
   // Lazy Loading Disqus
   // http://jsfiddle.net/dragoncrew/SHGwe/1/
-  var ds_loaded = false,
-      top = $('#disqus_thread').offset().top;
-  window.disqus_shortname = $('#disqus_thread').attr('name');
+  // var ds_loaded = false,
+  //     top = $('#disqus_thread').offset().top;
+  // window.disqus_shortname = $('#disqus_thread').attr('name');
 
-  function check() {
-    if ( !ds_loaded && container.scrollTop() + container.height() > top ) {
-      $.ajax({
-        type: 'GET',
-        url: 'http://' + disqus_shortname + '.disqus.com/embed.js',
-        dataType: 'script',
-        cache: true
-      });
-      ds_loaded = true;
-    }
-  }check();
-  container.scroll(check);
-}afterPjax();
+  // function check() {
+  //   if ( !ds_loaded && container.scrollTop() + container.height() > top ) {
+  //     $.ajax({
+  //       type: 'GET',
+  //       url: 'http://' + disqus_shortname + '.disqus.com/embed.js',
+  //       dataType: 'script',
+  //       cache: true
+  //     });
+  //     ds_loaded = true;
+  //   }
+  // }
+  // check();
+  // container.scroll(check);
+
+  // 多说公共JS代码 start (一个网页只需插入一次) 
+  var duoshuoQuery = {short_name:"numerhero"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  // 多说公共JS代码 end
+}
+afterPjax();
 
