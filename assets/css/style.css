@@ -729,10 +729,10 @@ iframe {
   margin: 0;
   padding: 0;
   color: red;
-  /*background: ;*/
-  /*border-radius: 50%;*/
+  background: white;
+  border-radius: 50%;
   border: none;
-  box-shadow: 0 0 20px 0  black;
+  box-shadow: 0 0 20px 0  #EBEAEF;
   outline: none;
   cursor: pointer;
   position: fixed;
@@ -749,7 +749,7 @@ iframe {
   appearance: none; }
   #js-fullscreen:hover {
     color: #2eb695;
-    /*background: ;*/
+   /* background: ;*/
     box-shadow: 0 0 0 3px rgba(125, 139, 153, 0.15); }
   @media screen and (max-width: 585px) {
     #js-fullscreen {
@@ -774,7 +774,7 @@ iframe {
   transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1);
   display: block; }
   #icon-arrow:before {
-    /*content: "\e801";*/
+    content: "\e801";
     margin-left: -1px;
     font-size: 20px;
     line-height: 1; }

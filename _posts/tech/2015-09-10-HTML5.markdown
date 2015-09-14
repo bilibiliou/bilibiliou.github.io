@@ -1086,12 +1086,162 @@ defer="defer"属性可以让加载的脚本延迟加载
 
 所以,当我们使用async属性的时候 , 就需要保证加载的几个脚本是互相独立的
 
+## 历史管理
+
+### onhashchange
+
+当我们需要在一个主页面内不断的切换内容(域名只是添加哈希值)也就是一站式页面的时候，应考虑用户需要历史管理的情况
+当用户需要前后切换历史内容的时候,缺省的浏览器历史管理方法就无效了
+这时候我们就需要调用HTML5中特定的onhashchange方法
+{% highlight Javascript %}
+
+demo:
+
+=== html ===
+
+<input type="button" value="随机选择" id="Input">
+<br/>
+<span id="text"></span>
+
+=== Javascript ===
+
+window.onload = function()
+{
+	var 
+	oInput = document.querySelector("#Input"),
+	oText = document.querySelector("#text"),
+	json = {};//模拟一个散列表
+	
+	oInput.onclick = function()
+	{
+		//随机数模拟产生一个散列值
+		var num = Math.random();
+		
+		var arr = random( 50 , 5 );
+
+		json[num] = arr ; //保存映射关系
+
+		oText.innerHTML = arr;
+
+		window.location.hash = num;//url添加散列值
+	}
+	
+	window.onhashchange = function()
+	{
+		//通过window.location.hash获取散列值 保证url和散列表的映射关系
+		oText.innerHTML = json.[window.location.hash.substring(1)];
+	}
+	function random(iAll , n)
+	{
+		一个数组池，从里面抽取n个数
+		var arr = [];
+		一个数组，用来存放抽取的随机值
+		var newArr = [];
+		
+		压栈iAll个数
+		for(var i=1 ; i<iAll ; i++)
+		{
+			arr.push(i);
+		}
+
+
+		for(var i=0; i<n ; i++)
+		{
+			从总池中抽取数，因为每次抽取都是出栈，所以将改变随机函数的取值范围，
+			所以不会出现无值可取的情况	
+			newArr.push( arr.splice(Math.floor(Math.random()*arr.length) , 1 ) );
+		}
+		return newArr;
+	}
+}
+
+原理是通过window.location.hash保存散列值,使每一次页面的url都不同,
+使浏览器产生历史管理并且保存url和对应的随机数的映射关系,并且通过onhashchange,依据每次url的散列值来修改不同的数据。
+
+{% endhighlight %}
+
+### history新对象
+
+history是HTML5下提供在服务器端下用于保存不同内容的对象
+(注意，history只能在服务器端下才能产生作用)
+
+pushState( data , title , url[可选] );
+{% highlight Javascript %}
+history.pushState方法, 可以将页面的变化状态保存,并自动建立映射关系
+参数: 第一个是保存的数据(必须填写) 第二个是保存的页面标题(也是必须填写) 第三个是url(选填)用于
+标明页面变化。
+{% endhighlight %}
+
+window.onpopstate事件
+{% highlight Javascript %}
+用来读取对应的历史内容
+需要调用事件对象event来调动window.onpopstate底下的state值(也就是保存的页面内容)
+
+demo:
+window.onpopstate = function(ev)
+{
+	var oEvent = event || ev;
+	而后调用oEvent.state
+}
+
+{% endhighlight %}
+{% highlight Javascript %}
+
+来看看再刚才的随机函数的例子:
+(html相同,请调整到服务器端测试)
+
+window.onload = function()
+{
+	var 
+	oInput = document.querySelector("#Input"),
+	oText = document.querySelector("#text");
+	
+	oInput.onclick = function()
+	{
+		
+		var arr = random( 50 , 5 );
+		history.pushState( arr,'' );    //这里从简,不设置标题和url
+		oText.innerHTML = arr;
+	}
+	
+	window.onpopstate = function(ev)
+	{
+		var oEvent = ev || event
+		oText.innerHTML = oEvent.state;
+	}
+	function random(iAll , n)
+	{
+		一个数组池，从里面抽取n个数
+		var arr = [];
+		一个数组，用来存放抽取的随机值
+		var newArr = [];
+		
+		压栈iAll个数
+		for(var i=1 ; i<iAll ; i++)
+		{
+			arr.push(i);
+		}
+
+
+		for(var i=0; i<n ; i++)
+		{
+			从总池中抽取数，因为每次抽取都是出栈，所以将改变随机函数的取值范围，
+			所以不会出现无值可取的情况	
+			newArr.push( arr.splice(Math.floor(Math.random()*arr.length) , 1 ) );
+		}
+		return newArr;
+	}
+}
+{% endhighlight %}
+
+
 ## 感谢
 
 本博文，有相当一部分内容COPY 和 引用了他人的知识，特此陈列，以表感谢
 
 [妙味课堂](www.miaov.com)
 [IAN MCNALLY 's blog](http://ianmcnally.me/blog/2015/6/25/input-validity-in-the-html-spec)
+[history对象](http://blog.csdn.net/hdchangchang/article/details/41959313)
 
 ## 引用出自
 
