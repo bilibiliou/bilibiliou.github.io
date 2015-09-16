@@ -117,17 +117,74 @@ a {
   width: 100px;
   height: 100px;
   margin: 55px auto 35px;
-  background: url(/assets/img/avatar.png);
-  border-radius: 20px;
+/*  background: url(/assets/img/avatar.png);*/
+/*  border-radius: 20px;*/
   box-shadow: 0 0 4px 4px white, 0 0 4px 4px #eee;
-  background-repeat: no-repeat;
-  background-size: 100px 100px;
-  overflow: hidden;
+ /* background-repeat: no-repeat;
+  background-size: 100px 100px;*/
+/*  overflow: hidden;*/
   display: block; }
  
   
-#avatar:hover{ box-shadow: 0 0 4px 4px #DB1C73, 0 0 4px 4px #DB1C73;}
- 
+/*#avatar:hover{ box-shadow: 0 0 4px 4px #DB1C73, 0 0 4px 4px #DB1C73;}*/
+
+#avatar:hover , #avatar img:hover
+ {
+-webkit-animation-fill-mode: both;
+-moz-animation-fill-mode: both;
+-ms-animation-fill-mode: both;
+-o-animation-fill-mode: both;
+animation-fill-mode: both;
+-webkit-animation-duration: 0s;
+-moz-animation-duration: 0s;
+-ms-animation-duration: 0s;
+-o-animation-duration: 0s;
+animation-duration: 0s;
+-webkit-animation-duration: 0.7s;
+-moz-animation-duration: 0.7s;
+-ms-animation-duration: 0.7s;
+-o-animation-duration: 0.7s;
+animation-duration: 0.7s;
+}
+@-webkit-keyframes swing {
+20%, 40%, 60%, 80%, 100% { -webkit-transform-origin: topcenter; }
+20% { -webkit-transform: rotate(15deg); }
+40% { -webkit-transform: rotate(-10deg); }
+60% { -webkit-transform: rotate(5deg); }
+80% { -webkit-transform: rotate(-5deg); }
+100% { -webkit-transform: rotate(0deg); }
+}
+@-moz-keyframes swing {
+20% { -moz-transform: rotate(15deg); }
+40% { -moz-transform: rotate(-10deg); }
+60% { -moz-transform: rotate(5deg); }
+80% { -moz-transform: rotate(-5deg); }
+100% { -moz-transform: rotate(0deg); }
+}
+@-o-keyframes swing {
+20% { -o-transform: rotate(15deg); }
+40% { -o-transform: rotate(-10deg); }
+60% { -o-transform: rotate(5deg); }
+80% { -o-transform: rotate(-5deg); }
+100% { -o-transform: rotate(0deg); }
+}
+@keyframes swing {
+20% { transform: rotate(15deg); }
+40% { transform: rotate(-10deg); }
+60% { transform: rotate(5deg); }
+80% { transform: rotate(-5deg); }
+100% { transform: rotate(0deg); }
+}
+#avatar:hover , #avatar img:hover{
+-webkit-transform-origin: topcenter;
+-moz-transform-origin: topcenter;
+-o-transform-origin: topcenter;
+transform-origin: topcenter;
+-webkit-animation-name: swing;
+-moz-animation-name: swing;
+-o-animation-name: swing;
+animation-name: swing;
+}
  /*头像旋转动画*/
    /*
     #avatar:hover {
@@ -1345,3 +1402,103 @@ pre > code {
   color: #2aa198; }
 
 /* Literal.Number.Integer.Long */
+
+
+
+
+
+/*把默认的背景色隐藏*/
+.ds-avatar{background-color: transparent !important;}
+/*多说评论框自定义头像动画*/
+#ds-reset .ds-avatar img,#ds-reset .ds-avatar img:hover{
+-webkit-animation-fill-mode: both;
+-moz-animation-fill-mode: both;
+-ms-animation-fill-mode: both;
+-o-animation-fill-mode: both;
+animation-fill-mode: both;
+-webkit-animation-duration: 0s;
+-moz-animation-duration: 0s;
+-ms-animation-duration: 0s;
+-o-animation-duration: 0s;
+animation-duration: 0s;
+-webkit-animation-duration: 0.7s;
+-moz-animation-duration: 0.7s;
+-ms-animation-duration: 0.7s;
+-o-animation-duration: 0.7s;
+animation-duration: 0.7s;
+}
+@-webkit-keyframes swing {
+20%, 40%, 60%, 80%, 100% { -webkit-transform-origin: topcenter; }
+20% { -webkit-transform: rotate(15deg); }
+40% { -webkit-transform: rotate(-10deg); }
+60% { -webkit-transform: rotate(5deg); }
+80% { -webkit-transform: rotate(-5deg); }
+100% { -webkit-transform: rotate(0deg); }
+}
+@-moz-keyframes swing {
+20% { -moz-transform: rotate(15deg); }
+40% { -moz-transform: rotate(-10deg); }
+60% { -moz-transform: rotate(5deg); }
+80% { -moz-transform: rotate(-5deg); }
+100% { -moz-transform: rotate(0deg); }
+}
+@-o-keyframes swing {
+20% { -o-transform: rotate(15deg); }
+40% { -o-transform: rotate(-10deg); }
+60% { -o-transform: rotate(5deg); }
+80% { -o-transform: rotate(-5deg); }
+100% { -o-transform: rotate(0deg); }
+}
+@keyframes swing {
+20% { transform: rotate(15deg); }
+40% { transform: rotate(-10deg); }
+60% { transform: rotate(5deg); }
+80% { transform: rotate(-5deg); }
+100% { transform: rotate(0deg); }
+}
+#ds-reset .ds-avatar img:hover{
+-webkit-transform-origin: topcenter;
+-moz-transform-origin: topcenter;
+-o-transform-origin: topcenter;
+transform-origin: topcenter;
+-webkit-animation-name: swing;
+-moz-animation-name: swing;
+-o-animation-name: swing;
+animation-name: swing;
+}
+/*隐藏多说底部版权*/
+#ds-thread #ds-reset .ds-powered-by{
+display:none;
+}
+
+/*定义发布按钮字体以及渐变背景*/
+/*#ds-thread #ds-reset .ds-post-button{
+font-family: ‘微软雅黑’ Yuppy !important;
+font-weight: bold;
+font-size:12px;
+
+background:none !important;
+color:#49976b !important;
+}*/
+
+/*隐藏评论总数背景及边框*/
+/*#ds-thread #ds-reset li.ds-tab a.ds-current{
+background:none;
+border:none;
+}*/
+
+/*隐藏最新最热等*/
+#ds-thread #ds-reset .ds-sort {
+display:none;
+}
+
+/*喜欢按钮样式修改*/
+#ds-thread #ds-reset a.ds-like-thread-button{
+  width:100px;
+  height: 20px;
+  display: inline-block;
+  text-align: center;
+  padding: 0;
+  cursor:  url("../img/cursor.png"),default;
+}
+

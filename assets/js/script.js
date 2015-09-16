@@ -273,6 +273,11 @@ function afterPjax() {
   // check();
   // container.scroll(check);
 
+  // var dsThreadLikeText = document.querySelectorAll('.ds-thread-like-text')[0];
+  // console.log(dsThreadLikeText);
+  // (function(){
+  //   dsThreadLikeText.innerHTML = '喜欢就戳戳吧';
+  // })();
 }
 afterPjax();
 

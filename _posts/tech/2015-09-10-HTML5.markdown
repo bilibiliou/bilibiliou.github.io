@@ -1234,6 +1234,165 @@ window.onload = function()
 }
 {% endhighlight %}
 
+## 拖拽
+
+HTML5支持拖拽
+只需要在你需要拖拽的元素标签中添加draggable="true"属性
+那么这个元素就可以拖拽了
+
+然后你可以在JS中添加拖拽过程中各个事件
+事件的执行顺序:(当 事件drop 不触发,也就是不会在目标元素中添加元素的时候)
+dragstart  >  drag >  dragenter >  dragover >  dragleave > dragend 
+
+当事件drop 触发的时候:
+dragstart  >  drag >  dragenter >  dragover >  drop > dragend
+
+让我们看看这些事件有什么用处
+
+### ondragstart
+
+当你产生拖拽开始时触发(不是按下的时候)
+
+### ondragend
+
+当你拖住结束的时候触发(鼠标放开的时候)
+
+### ondrag
+
+在拖拽结束的时候触发(不管是否运动,只要你开始拖拽了,拉住的过程中一直都是ondrag)
+
+### ondragenter
+
+当有其他元素拖拽进入的时候触发
+
+### ondragleave
+
+当进入的元素出去的时候触发,(判断触发的标志是鼠标是否离开目标元素而不是被拖拽元素是否超出目标元素)
+
+### ondragover
+
+当进入的元素 存在目标元素内(不放入 与drop相反)
+
+### drop
+
+当进入的元素 存放在目标元素内时触发
+( 注意:要想触发drop 一定要在阻止dragover的默认事件ev.preventDefault()才能使drop触发 )
+
+但是,火狐浏览器规定必须设置dataTransfer对象才可以拖拽除图片外的其他标签
+
+### dataTransfer
+
+设置数据传输(一定是字符串)
+dataTransfer.setData(key , value) key(是数据下标) value(获取到对应的内容)
+
+dataTransfer.getData(key) 从对象中根据key获取指定格式的元素数据
+
+dataTransfer.clearData(key)
+从dataTransfer对象中根据key值删除指定格式的数据，参数可选，若不给出，
+则为删除对象中所有的数据。
+
+addElement(element):添加自定义图标
+
+effectAllowed : 当拖拽元素进入目标元素的时候鼠标的光标样式(none, copy, copyLink, copyMove, link, linkMove, move, all 和 uninitialized)
+
+(demo:ev.dataTransfer.effectAllowed = 'copy')
+
+setDragImage(element,x,y):设置拖放操作的自定义图标。其中element设置自定义图标，x设置图标与鼠标在水平方向上的距离，y设置图标与鼠标在垂直方向上的距离。
+
+{% highlight Javascript %}
+demo:
+一个垃圾桶删除功能的demo  垃圾桶可以拖拽
+
+==== html ====
+<ul id="ul1">
+	<li draggable="true" >a</li>
+	<li draggable="true" >s</li>
+	<li draggable="true" >c</li>
+</ul>
+
+<div draggable="true" id="div1">垃圾桶</div>
+
+==== css ====
+
+#ul1 li{ list-style:none; width:200px; height:30px; background:#ccc; margin-bottom: 5px; border-radius: 5px;}
+
+#div1{ width: 100px; height: 100px; background: red;position: absolute;}
+
+==== Javascript ====
+
+var oUl = document.getElementById('ul1');
+	var oLi = oUl.getElementsByTagName('li');
+	var oDiv = document.getElementById('div1');
+
+	for(var i = 0 ; i<oLi.length ; i++)
+	{
+		oLi[i].index = i;
+		oLi[i].ondragstart = function(ev)
+		{
+			var oEvent = ev || event;
+			oEvent.dataTransfer.setData( 'Zyz' , this.index );
+			this.style.background = 'green';
+			oDiv.ondragenter = function()
+			{
+				this.style.background = 'blue';
+			}
+		}
+		
+		oLi[i].ondragend = function()
+		{
+			this.style.background = 'yellow';
+		}
+	}
+
+	oDiv.ondragstart = function(ev)
+	{
+		var oEvent = ev || event;
+
+		var Y = oEvent.clientY - this.offsetTop;
+		var X = oEvent.clientX - this.offsetLeft;
+		oDiv.ondrag = function(ev)
+		{
+			var oEvent = ev || event;
+			
+			var l  = oEvent.clientX - X + 'px';
+			var t = oEvent.clientY - Y + 'px';
+			this.style.left = l;
+			this.style.top = t;
+		}
+	}
+	
+	oDiv.ondragend = function(ev)
+	{
+		var oEvent = ev || event;
+	}
+
+	oDiv.ondragleave = function()
+	{
+		this.style.background = 'red';
+	}
+	oDiv.ondrop = function(ev)
+	{
+		var oUl = document.getElementById('ul1');
+		//需要进行判断的两点理由
+
+		//要li元素要拖拽的时候才能回setData,如果一开始就拖动垃圾桶会产生错误
+		//拖拽目标元素也会触发ondrop事件
+		
+		if(ev.dataTransfer.getData('Zyz'))
+		{
+			oUl.removeChild(oLi[ev.dataTransfer.getData('Zyz')]);
+			this.style.background = 'black';
+		}
+		
+	}
+	
+
+	oDiv.ondragover = function(ev){ev.preventDefault();}
+
+请在chrome下测试,不兼容火狐
+{% endhighlight %}
+
+
 
 ## 感谢
 
