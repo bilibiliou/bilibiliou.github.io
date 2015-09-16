@@ -1321,77 +1321,313 @@ demo:
 ==== Javascript ====
 
 var oUl = document.getElementById('ul1');
-	var oLi = oUl.getElementsByTagName('li');
-	var oDiv = document.getElementById('div1');
+var oLi = oUl.getElementsByTagName('li');
+var oDiv = document.getElementById('div1');
 
-	for(var i = 0 ; i<oLi.length ; i++)
-	{
-		oLi[i].index = i;
-		oLi[i].ondragstart = function(ev)
-		{
-			var oEvent = ev || event;
-			oEvent.dataTransfer.setData( 'Zyz' , this.index );
-			this.style.background = 'green';
-			oDiv.ondragenter = function()
-			{
-				this.style.background = 'blue';
-			}
-		}
-		
-		oLi[i].ondragend = function()
-		{
-			this.style.background = 'yellow';
-		}
-	}
-
-	oDiv.ondragstart = function(ev)
+for(var i = 0 ; i<oLi.length ; i++)
+{
+	oLi[i].index = i;
+	oLi[i].ondragstart = function(ev)
 	{
 		var oEvent = ev || event;
-
-		var Y = oEvent.clientY - this.offsetTop;
-		var X = oEvent.clientX - this.offsetLeft;
-		oDiv.ondrag = function(ev)
+		oEvent.dataTransfer.setData( 'Zyz' , this.index );
+		this.style.background = 'green';
+		oDiv.ondragenter = function()
 		{
-			var oEvent = ev || event;
-			
-			var l  = oEvent.clientX - X + 'px';
-			var t = oEvent.clientY - Y + 'px';
-			this.style.left = l;
-			this.style.top = t;
+			this.style.background = 'blue';
 		}
 	}
 	
-	oDiv.ondragend = function(ev)
+	oLi[i].ondragend = function()
+	{
+		this.style.background = 'yellow';
+	}
+}
+
+oDiv.ondragstart = function(ev)
+{
+	var oEvent = ev || event;
+
+	var Y = oEvent.clientY - this.offsetTop;
+	var X = oEvent.clientX - this.offsetLeft;
+	oDiv.ondrag = function(ev)
 	{
 		var oEvent = ev || event;
-	}
-
-	oDiv.ondragleave = function()
-	{
-		this.style.background = 'red';
-	}
-	oDiv.ondrop = function(ev)
-	{
-		var oUl = document.getElementById('ul1');
-		//需要进行判断的两点理由
-
-		//要li元素要拖拽的时候才能回setData,如果一开始就拖动垃圾桶会产生错误
-		//拖拽目标元素也会触发ondrop事件
 		
-		if(ev.dataTransfer.getData('Zyz'))
-		{
-			oUl.removeChild(oLi[ev.dataTransfer.getData('Zyz')]);
-			this.style.background = 'black';
-		}
-		
+		var l  = oEvent.clientX - X + 'px';
+		var t = oEvent.clientY - Y + 'px';
+		this.style.left = l;
+		this.style.top = t;
+	}
+}
+
+oDiv.ondragend = function(ev)
+{
+	var oEvent = ev || event;
+}
+
+oDiv.ondragleave = function()
+{
+	this.style.background = 'red';
+}
+
+oDiv.ondrop = function(ev)
+{
+	var oUl = document.getElementById('ul1');
+	//需要进行判断的两点理由
+
+	//要li元素要拖拽的时候才能回setData,如果一开始就拖动垃圾桶会产生错误
+	//拖拽目标元素也会触发ondrop事件
+	
+	if(ev.dataTransfer.getData('Zyz'))
+	{
+		oUl.removeChild(oLi[ev.dataTransfer.getData('Zyz')]);
+		this.style.background = 'black';
 	}
 	
+}
 
-	oDiv.ondragover = function(ev){ev.preventDefault();}
+oDiv.ondragover = function(ev){ev.preventDefault();}
 
 请在chrome下测试,不兼容火狐
 {% endhighlight %}
 
+### file
+
+HTML5允许用户从外部拖拽文件
+ev.dataTransfer.files
+
+拖拽进来的文件会被浏览器自动打开,这时候我们只需要阻止ondrop的默认事件就可以了
+
+filesList
+单次拖拽进来后会返回一个filesList(对象)列表 列表下 有这么几个属性
+
+{% highlight Javascript %}
+name : 文件名(包括后缀)
+length : 单次拖拽进来文件的个数 
+type : 拖拽进来文件的类型
+size : 文件的大小
+lastModifiedDate : 该文件的最后修改时间
+webkitRelativePath : webkit相关路径
+
+demo:
+
+oDiv.ondrop = function(ev)
+{
+	var fs = ev.dataTransfer.files;
+	console.log(fs[0].type);
+	ev.preventDefault();
+}
+{% endhighlight %}
+
+FileReader对象
+{% highlight Javascript %}
+当我们接受完文件之后,还需要能读取这些文件
+所以,我们需要用到这么一个对象FileReader
+
+FileReader下面有这么几个方法
+readAsDataURL([format])读取fileList文件中的数据 format必填,填fileList中的文件
+FileReader().onload 加载该文件数据该方法中一个result的值,返回的是文件base64的内容
+
+onloadend
+onloadstart
+onprogress 
+
+
+demo:
+=== html ===
+<div draggable="true" id="div1">将文件拖拽到此区域</div>
+<ul id="ul1">
+
+=== css ===
+#div1{ width: 200px; height: 200px; background: red; margin: 100px; }
+#ul1{ list-style: none;}
+
+=== javascript ===
+window.onload = function()
+{
+
+	var oDiv = document.getElementById('div1');
+	var oUl  = document.getElementById('ul1');
+
+	oDiv.ondragenter = function()
+	{
+		this.innerHTML = '可以释放鼠标';
+		this.style.background = 'blue';
+	}
+
+	oDiv.ondragover = function(ev)
+	{
+		ev.preventDefault();
+	}
+
+	oDiv.ondragleave = function()
+	{
+		this.innerHTML = '将文件拖拽到此区域'
+		this.style.background = 'red';
+	}
+
+	oDiv.ondrop = function(ev)
+	{
+		ev.preventDefault();
+		var fs = ev.dataTransfer.files;
+	
+		for(var i = 0 ; i<fs.length ; i++)
+		{
+			if(fs[i].type.indexOf('image') != -1 )
+			{
+				var fd = new FileReader();
+
+				//千万注意这里需要将fd放入循环当中
+				//不然会报The object is already busy reading Blobs这样的错误
+				
+				fd.readAsDataURL( fs[i] );
+				fd.onload = function()
+				{
+					var oLi = document.createElement('li');
+					var oImg = document.createElement('img');
+					//将数据赋值给图片元素的src 图片就能显示出来了
+					oImg.src = this.result;
+
+					oLi.appendChild(oImg);
+					oUl.appendChild(oLi);
+				}
+			}else{
+				alert('第' + i+1 + '个文件不是图片,请上传图片');	
+				continue;
+			}
+		}
+	}
+}
+{% endhighlight %}
+
+### 一个购物车实例
+
+废话不说,直接上代码
+{% highlight Javascript %}
+=== html ===
+<ul id="ul1">
+	<li draggable="true">
+		<img src="替换成自己的图片">
+		<p>Javascript语言精粹</p>
+		<p>40￥</p>
+	</li>
+	<li draggable="true">
+		<img src="替换成自己的图片">
+		<p>Javascript权威指南</p>
+		<p>120￥</p>
+	</li>
+	<li draggable="true">
+		<img src="替换成自己的图片">
+		<p>精通Javascript</p>
+		<p>35￥</p>
+	</li>
+	<li draggable="true">
+		<img src="替换成自己的图片">
+		<p>DOM编程艺术</p>
+		<p>60￥</p>
+	</li>
+</ul>
+<div id="div1">
+</div>
+
+
+=== css ===
+*{ margin:0; padding: 0;}
+#ul1 li{ list-style: none; width: 200px; font-weight: bold; color:blue; margin:10px; border:1px solid #eda; float:left;}
+#ul1 li img{ width: 200px; }
+p{ height:20px;border-bottom:1px black dashed; }
+#div1{ width:600px; border: 1px solid #000; height: 300px; clear: both; position: relative;}
+.box1{float: left;width: 200px;}
+.box2{float: left;width: 200px;}
+.box3{float: left;width: 200px;}
+#allPrice{ position: absolute; bottom: 0; right: 0;}
+
+=== Javascript ===
+window.onload = function()
+{
+	var aLi = document.getElementsByTagName('li');
+	var oDiv = document.getElementById('div1');
+	var obj = {};
+	var allPrice = null;
+	var iNum = 0;
+	for(var i=0; i<aLi.length ; i++)
+	{
+		aLi[i].ondragstart = function(ev)
+		{
+		
+			var aP = this.getElementsByTagName('p');
+			ev.dataTransfer.setData('title' , aP[0].innerHTML);
+			ev.dataTransfer.setData('price' , aP[1].innerHTML);
+			
+			//设置拖拽时候的图片
+			// ev.dataTansfer.setDragImage(this,0,0);
+
+		}
+	}
+
+	oDiv.ondragover = function(ev)
+	{
+		//允许拖拽
+		ev.preventDefault();
+	}
+
+	oDiv.ondrop = function(ev)
+	{
+		//防止默认打开
+		ev.preventDefault();
+
+		var sTitle = ev.dataTransfer.getData('title');
+		var sPrice = ev.dataTransfer.getData('price');
+		
+		if( !obj[sTitle] )
+		{
+			var oP = document.createElement('p');
+			var oSpan = document.createElement('span');
+			oSpan.className = 'box1';
+			oSpan.innerHTML = 1;
+			oP.appendChild( oSpan );
+		
+			var oSpan = document.createElement('span');
+			oSpan.className = 'box2';
+			oSpan.innerHTML = sTitle;
+			oP.appendChild( oSpan );
+
+			var oSpan = document.createElement('span');
+			oSpan.className = 'box3';
+			oSpan.innerHTML = sPrice;
+			oP.appendChild( oSpan );
+
+			oDiv.appendChild(oP);
+
+			obj[sTitle] = true;
+		}else{
+			var box1 = document.getElementsByClassName('box1');
+			var box2 = document.getElementsByClassName('box2');
+
+			for(var i = 0;i<box1.length;i++)
+			{
+				//根据box2的索引找到对应的box1的值
+				if(box2[i].innerHTML == sTitle)
+				{
+					box1[i].innerHTML = parseInt(box1[i].innerHTML) + 1;
+				}
+			}
+		}
+
+		if(!allPrice)
+		{
+			allPrice = document.createElement('div');
+			allPrice.id = 'allPrice';
+			oDiv.appendChild( allPrice );
+		}
+		
+		iNum += parseInt(sPrice);
+		allPrice.innerHTML = iNum + '￥'
+		
+	}
+}
+{% endhighlight %}
 
 
 ## 感谢
@@ -1401,6 +1637,7 @@ var oUl = document.getElementById('ul1');
 [妙味课堂](www.miaov.com)
 [IAN MCNALLY 's blog](http://ianmcnally.me/blog/2015/6/25/input-validity-in-the-html-spec)
 [history对象](http://blog.csdn.net/hdchangchang/article/details/41959313)
+[act262的博客](http://www.cnblogs.com/act262/p/3983039.html)
 
 ## 引用出自
 
