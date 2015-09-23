@@ -1629,6 +1629,170 @@ window.onload = function()
 }
 {% endhighlight %}
 
+## canvas画布
+
+canvas是一个梦幻的标签，利用它配合JS控制，可以在页面上绘制出你想要的任何图案，并且还可以绘制3D效果
+首先canvas的引入非常简单
+
+{% highlight Javascript %}
+
+<canvas>
+	<span>您的浏览器十分落后，请及时更换</span>
+</canvas>
+
+直接在body中引用就行
+{% endhighlight %}
+
+引用后，它有一个缺省的宽高值，即300px × 150px
+
+### 基本的操作代码
+
+{% highlight Javascript %}
+首先所有的操作都需要先声明绘制环境
+getContext('2d');
+这个方法会返回一个 CanvasRenderingContext2D 对象，该对象实现了一个画布所使用的大多数方法。
+目前只支持2d绘图，也许在不久的将来会支持3d
+
+canvas的主线是路径，一切基础图形的绘制都需要根据路径来实现
+
+下面是一些基础方法：
+fillRect( left , top , width , height) 绘制一个实心矩形
+strokeRect( left , top , width , height)  绘制一个空心带边框矩形
+fillStyle 填充样式属性可以用来修改颜色
+strokeStyle 填充边框样式属性可以用来修改边框的颜色
+lineWidth 填充边框大小可以修改边线大小
+lineJoin 端点样式 有这么些属性 miter 默认 bevel 斜角 round 圆角
+lineCap 端点样式 butt(默认) round(圆角) square(高度多出为要一半的值)
+beginPath()  开始绘制路径(线条)
+closePath()  结束绘制路径
+moveTo( x , y ) 移动到绘制的新目标点
+lineTo( x , y ) 新的目标点
+Rect( left , top , width , height) 绘制一个矩形路径(不进行填充)
+stroke() 根据路径画线
+fill() 根据路径填充
+clearRect( left , top , width , height ) 清除画布中的某个区域
+save() 保存路径
+resave() 恢复路径 
+
+然后是基础代码
+demo1:
+=== css ===
+body{background: black;}
+canvas{background: white;}
+
+=== html ===
+<canvas id = 'canvas1' width='400' height='400'>
+
+=== Javascript ===
+var oCanvas = document.querySelector('#canvas1');
+var oGc = oCanvas.getContext('2d');
+oGc.fillRect(50,50,100,100); 
+oGc.strokeRect(50.5,50.5,100,100);
+
+大多数情况下canvas绘制的图片默认是黑色或者黑色透明
+空心带边框矩形的边框默认是1px黑色
+然而这里会出现两个小问题
+
+1.空心带边距的矩形是按线进行定位而不是按像素点进行定位的
+所以如果定位坐标是整数的话，会在这个整数像素点的两边各取半个像素点进行填充(也就是所谓的1px边框)
+但是显示器不可能显示半个像素，所以会把这两个只有一半的像素取整，也就是会显示成2px的边框
+如果要解决这个问题也很简单，只要绘制的时候将定位坐标设置为多半个像素，就可以了
+
+2.oGc.fillRect(50,50,100,100); 和 oGc.strokeRect(50.5,50.5,100,100);的顺序问题
+一个是先填充 一个是先画边框，所以效果会进行覆盖
+
+demo2:
+=== css ===
+body{background: black;}
+canvas{background: white;}
+
+=== html ===
+<canvas id = 'canvas1' width='400' height='400'>
+
+=== Javascript ===
+var oCanvas = document.querySelector('#canvas1');
+var oGc = oCanvas.getContext('2d');
+oGc.beginPath();       //开启路径
+oGc.moveTo(100 , 100); //定位起始端点
+oGc.lineTo(200 , 200); //定位一个端点
+oGc.lineTo(300 , 100); //定位另一个端点
+oGc.closePath();       //结束绘制并自动将最后一个定位端点和起始点相连接
+oGc.stroke();          //根据路径绘制图形
+
+这里有个小问题，每次我们绘制图形的时候 需要有一个beginPath 和 closePath的闭合 
+也就是说确认绘制的路径需要闭合，否则会使不同的绘制操作 对所有路径都起效果
+简单来说就是需要我们绘制一个图形的时候，一定要有beginPath closePath
+
+demo3:
+=== css ===
+body{background: black;}
+canvas{background: white;}
+
+=== html ===
+<canvas id = 'canvas1' width='400' height='400'>
+
+=== Javascript ===
+var oCanvas = document.querySelector('#canvas1');
+var oGc = oCanvas.getContext('2d');
+
+oGc.save();
+oGc.beginPath();       
+oGc.moveTo(100 , 100); 
+oGc.lineTo(200 , 200); 
+oGc.lineTo(300 , 100); 
+oGc.closePath();       
+oGc.stroke();
+oGc.resave();          
+//使用save和resave 包含路径 和 路径操作的代码
+//如果对路径有样式的操作，这样就不会影响
+
+oGc.beginPath();       
+oGc.moveTo(100 , 100); 
+oGc.lineTo(200 , 200); 
+oGc.lineTo(300 , 200); 
+oGc.closePath();       
+oGc.stroke();
+
+再介绍一个基本的画图功能
+
+demo4:
+=== css ===
+body{background: black;}
+canvas{background: white;}
+
+=== html ===
+<canvas id = 'canvas1' width='400' height='400'>
+
+=== Javascript ===
+var oCanvas = document.querySelector('#canvas1');
+var oGc = oCanvas.getContext('2d');
+var oInput = document.querySelector('#input1');
+
+oGc.strokeStyle = 'red';
+oCanvas.onmousedown = function(ev)
+{
+	var ev = ev || event;
+	oGc.moveTo(ev.clientX - oCanvas.offsetLeft , ev.clientY - oCanvas.offsetTop);
+	document.onmousemove = function(ev)
+	{
+		var ev = ev || event;
+		oGc.lineTo(ev.clientX - oCanvas.offsetLeft , ev.clientY - oCanvas.offsetTop);
+		oGc.stroke();
+	}
+	document.onmouseup = function()
+	{
+		document.onmousemove = null;
+		document.onmouseup = null;
+	}
+}
+
+还有一个问题需要注意：
+canvas的宽高一定需要在行列样式中设置，不能在内置的样式表中设置
+因为内置的样式表中，宽高是根据父元素的宽高等比例设置的
+而行列样式才是根据确定数值来设置的
+
+{% endhighlight %}
+
 
 ## 感谢
 

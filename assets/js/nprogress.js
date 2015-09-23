@@ -313,4 +313,3 @@
 
   return NProgress;
 });
-
