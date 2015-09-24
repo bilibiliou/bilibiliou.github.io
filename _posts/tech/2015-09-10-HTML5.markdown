@@ -1651,7 +1651,8 @@ canvas是一个梦幻的标签，利用它配合JS控制，可以在页面上绘
 首先所有的操作都需要先声明绘制环境
 getContext('2d');
 这个方法会返回一个 CanvasRenderingContext2D 对象，该对象实现了一个画布所使用的大多数方法。
-目前只支持2d绘图，也许在不久的将来会支持3d
+截至目前只支持2d绘图，也许在不久的将来会支持3d
+当然没有这样的绘制环境不代表不能实现3d绘图，我们可以使用一些hack手法,但这不是今天我们讨论的重点
 
 canvas的主线是路径，一切基础图形的绘制都需要根据路径来实现
 
@@ -1792,6 +1793,153 @@ canvas的宽高一定需要在行列样式中设置，不能在内置的样式�
 而行列样式才是根据确定数值来设置的
 
 {% endhighlight %}
+
+## 使用canvas绘制圆
+
+使用绘制环境下arc可以绘制圆
+
+arc( x轴半径 , y轴半径 , 圆的半径 , 起始弧度 , 终止弧度 , 是否逆时针绘制 )
+
+1.需要注意的地方是x 、y 和圆的半径 跟上面一样不需要带单位，
+2.起始弧度和终止弧度是以弧度制为单位的( 弧度 = 角度*Math.PI/180 );
+3.false 是顺时针旋转 true是逆时针旋转
+4.绘制的起点是过圆心半径长的x轴正方向方向上的一点,终点当然就是过圆心半径长的x轴负方向上的一点喽。
+5.顺时针弧度为正，逆时针弧度为负。
+
+demo如下
+{% highlight Javascript %}
+
+css html 上同
+
+=== Javascript ===
+
+var oCanvas = document.querySelector("#canvas1");
+var oGc = oCanvas.getContext("2d");
+
+oGc.moveTo(200 , 200);
+oGc.arc(200 , 200 , 100 , 0 , 180*Math.PI/180 , true );
+oGc.stroke();
+
+{% endhighlight %}
+
+制作一个与本地时间同步的时针
+
+{% highlight Javascript %}
+function DrawClock()
+{
+	var oCanvas = document.querySelector('#canvas1');
+	var oGc = oCanvas.getContext('2d');
+
+	var oDate = new Date();
+	var oHours = oDate.getHours();
+	var oMinutes = oDate.getMinutes();
+	var oSeconds = oDate.getSeconds();
+	var x = 200;
+	var y = 200;
+	var r = 150;
+	oGc.clearRect( 0 , 0 , oCanvas.width , oCanvas.height );
+	// -90度是为了使刻度回归12点与时钟刻度起点保持一致
+	var oSecvalues = (-90 + oSeconds*6 ) * Math.PI/180;
+	var oMinvalues = (-90 + oMinutes*6 ) * Math.PI/180;  
+	//分针每走一格子，时针就要移动2℃
+	var oHoursValues = (-90 +　oHours*30 + oMinutes * 2) * Math.PI/180;
+
+	oGc.beginPath();
+	for(var i = 0;i<60;i++)
+	{
+		//注意moveTo( x , y )需要每次循环都添加，因为画完一段弧长后需要重新定位绘制点
+		oGc.moveTo( x , y );
+		oGc.arc( x , y , r , (6*i)*Math.PI/180 , (6*(i+1)*Math.PI/180));
+	}
+	oGc.closePath();
+	oGc.stroke();
+
+	oGc.fillStyle = 'white';
+	oGc.beginPath();
+	oGc.moveTo( x , y );
+	oGc.arc( x , y , r*19/20 , 0 , 360*Math.PI/180);
+	oGc.closePath();
+	oGc.fill();
+
+	oGc.lineWidth = 3;
+	oGc.strokeStyle = '#edc';
+	oGc.beginPath();
+	for(var i = 0 ; i<12; i++)
+	{	
+		oGc.moveTo( x , y );
+		oGc.arc( x , y , r , (30*i)*Math.PI/180 , (30*(i+1)*Math.PI/180));
+	}
+	oGc.closePath();
+	oGc.stroke();
+
+	oGc.fillStyle = 'white';
+	oGc.beginPath();
+	oGc.moveTo( x , y );
+	oGc.arc( x , y , r*16/20 , 0 , 360*Math.PI/180);
+	oGc.closePath();
+	oGc.fill();
+
+	oGc.strokeStyle = 'red';
+	oGc.lineWidth = 4;
+	oGc.lineJoin = 'round';
+	oGc.beginPath();
+	oGc.moveTo( x ,y );
+	oGc.arc( x , y , r*10/20 , oHoursValues , oHoursValues  );
+	oGc.closePath();
+	oGc.stroke();
+
+	oGc.strokeStyle = '#F90';
+	oGc.lineWidth = 2;
+	oGc.lineJoin = 'round';
+	oGc.beginPath();
+	oGc.moveTo( x ,y );
+	oGc.arc( x , y , r*12/20 , oMinvalues , oMinvalues );
+	oGc.closePath();
+	oGc.stroke();
+
+	oGc.strokeStyle = 'green';
+	oGc.lineWidth = 1;
+	oGc.lineJoin = 'round';
+	oGc.beginPath();
+	oGc.moveTo( x ,y );
+	oGc.arc( x , y , r*15/20 , oSecvalues , oSecvalues );
+	oGc.closePath();
+	oGc.stroke();
+
+}
+
+setInterval(DrawClock , 1000);
+{% endhighlight %}
+
+## 使用canvas绘制曲线
+
+我们还可以使用canvas绘制出曲线
+arcTo() : arcTo( 第一组坐标xy  第二组坐标xy 曲线半径 )
+什么意思呢？
+我们用一张图来了解一下
+
+![shootPic](/assets/img/arcTo-showPic.png)
+
+如图我们可以很好的了解arcTo方法的含义
+结合上图，我们可以得到下列代码
+{% highlight Javascript %}
+
+html css 上同
+
+var oCanvas = document.querySelector('#canvas1');
+var oGc = oCanvas.getContext('2d');
+
+oGc.moveTo( 100 , 200 );
+
+oGc.arcTo( 100 , 100 , 200 , 100 , 50 );
+oGc.stroke();
+	
+{% endhighlight %}
+
+## 用canvas绘制贝塞尔曲线
+
+具体了解贝塞尔曲线，可在本站[关于贝塞尔曲线知识个人理解](http://numerhero.github.io/2015/09/24/about-Bezier-curve.html)了解。
+
 
 
 ## 感谢
