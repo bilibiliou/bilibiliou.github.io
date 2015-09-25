@@ -18,9 +18,6 @@ keywords: 技术,贝塞尔曲线
 
 ![Bézier curve](/assets/img/Bezier-curve-showPic.png)
 
-{% highlight Javascript %}
-
-{% endhighlight %}
 
 依次类推n阶贝塞尔曲线也是如此
 

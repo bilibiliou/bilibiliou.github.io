@@ -501,6 +501,7 @@ animation-name: swing;
   height: 100%;
   color: #7D3B2B;
   font-size: 18px;
+  font-weight: 800;
   font-family: '楷体_GB2312',Yuppy;                                    /*文本字体*/
   line-height: 1.5;
   background: url(/assets/img/Dcat.png) -200px 0 no-repeat;
