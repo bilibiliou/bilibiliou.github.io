@@ -554,12 +554,29 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 400; }
 h2{color:#AFDEE4;}                                                       /*惯用标签*/
 h3{color:#FF8B00;}
+
 #post__title {
   margin: 0;
   padding-top: 1.1em;
   font-size: 3em; 
-  color:#C61FC1 !important;                                               /*文章标题*/
+  /*color:#3f4452 !important;  */                                             /*文章标题*/
   font-family: Walt Disney Script,'幼圆','黑体';
+}
+
+/*文章标题字体渐变色*/
+
+@media all and (-webkit-min-device-pixel-ratio:0) and (min-resolution: .001dpcm) { 
+    #post__title{
+        background-image: -webkit-linear-gradient(left, #147B96, #E6D205 25%, #147B96 50%, #E6D205 75%, #147B96);
+        -webkit-text-fill-color: transparent;
+        -webkit-background-clip: text;
+        -webkit-background-size: 200% 100%;
+        -webkit-animation: masked-animation 4s infinite linear;
+    }
+}
+@-webkit-keyframes masked-animation {
+    0%  { background-position: 0 0;}
+    100% { background-position: -100% 0;}
 }
 
 #post__content > p, #post__content > ul, #post__content > ol {
@@ -1505,4 +1522,8 @@ display:none;
   padding: 0;
   cursor:  url("../img/cursor.png"),default;
 }
+
+
+
+
 
