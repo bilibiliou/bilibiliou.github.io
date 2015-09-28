@@ -4,6 +4,9 @@
    https://github.com/P233/3-Ghost
 \*---------------------------------*/
 body{ cursor: url("../img/cursor.png"),default; }
+table{ border: 1px solid black ;}
+table td{ border: 1px solid #f90 ;}
+/*table th{ border: 1px solid red ;}*/
 /*---------------------------------*\
    Fonts
 \*---------------------------------*/

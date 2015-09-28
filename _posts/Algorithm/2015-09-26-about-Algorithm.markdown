@@ -43,7 +43,9 @@ keywords: 算法,奔猪问题
 这是我自己想的,但是也不知道是否是最少
 
 ![奔猪问题](/assets/img/Algorithm1.png)
-(看不清可以ctrl+鼠标滚轮放大)
+(看不清可以查看图片预览)
+
+[图片预览](/assets/img/Algorithm1.png)
 
 
 
