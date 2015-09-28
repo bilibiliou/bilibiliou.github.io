@@ -752,7 +752,12 @@ console.log( box.dataset ) // { owen : abc , owenZyz : cba }
 实验说明 使用自定义属性的时候一定要注意大小写的问题
 或者说我们应该尽量在自定义属性的时候不使用大写
 如果说一定要使用大写字母的时候,应先将dataset弹出来看一下具体的属性名
-再进行DOM操作
+再进行DOM操作:
+
+var obj = document.querySelectorAll('[data-Owen]');
+console.log(obj.getAttribute('data-Owen'));//abc
+
+通过getAttribute方法我们就可以利用html中传递过来的内容了
 
 {% endhighlight %}
 

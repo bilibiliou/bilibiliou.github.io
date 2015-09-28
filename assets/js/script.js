@@ -107,20 +107,19 @@ $(function()
   for(var i = 0; i<oDownload.length ; i++)
   {
     oDownload[i].index = i;
-    console.log(getAbsoluteUrl(oDownloadBox[i].getAttribute('data-download')));
     oDownload[i].onclick = function()
     {
-      window.open(getAbsoluteUrl(oDownloadBox[this.index].getAttribute('data-download')));
+      window.open('file://numerhero.github.io' + oDownloadBox[this.index].getAttribute('data-download'));
     }
   }
 
-  function getAbsoluteUrl(url){ 
-  var img = new Image(); 
-  img.src = url; // 设置相对路径给Image, 此时会发送出请求 
-  url = img.src; // 此时相对路径已经变成绝对路径 
-  img.src = null; // 取消请求 
-  return url; 
-} 
+//   function getAbsoluteUrl(url){ 
+//   var img = new Image(); 
+//   img.src = url; // 设置相对路径给Image, 此时会发送出请求 
+//   url = img.src; // 此时相对路径已经变成绝对路径 
+//   img.src = null; // 取消请求 
+//   return url; 
+// } 
 });
  
 function callback( data )
