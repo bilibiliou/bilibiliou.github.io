@@ -209,296 +209,9 @@ figcation的子元素 用来解释
 
 这里Google开发了一个兼容脚本:
 
-/*! HTML5 Shiv v3.6.1 | @afarkas @jdalton @jon_neal @rem | MIT/GPL2 Licensed */
-;(function(window, document) {
-/*jshint evil:true */
-  /** Preset options */
-  var options = window.html5 || {};
-
-  /** Used to skip problem elements */
-  var reSkip = /^<|^(?:button|map|select|textarea|object|iframe|option|optgroup)$/i;
-
-  /** Not all elements can be cloned in IE **/
-  var saveClones = /^(?:a|b|code|div|fieldset|h1|h2|h3|h4|h5|h6|i|label|li|ol|p|q|span|strong|style|table|tbody|td|th|tr|ul)$/i;
-
-  /** Detect whether the browser supports default html5 styles */
-  var supportsHtml5Styles;
-
-  /** Name of the expando, to work with multiple documents or to re-shiv one document */
-  var expando = '_html5shiv';
-
-  /** The id for the the documents expando */
-  var expanID = 0;
-
-  /** Cached data for each document */
-  var expandoData = {};
-
-  /** Detect whether the browser supports unknown elements */
-  var supportsUnknownElements;
-
-  (function() {
-    try {
-        var a = document.createElement('a');
-        a.innerHTML = '<xyz></xyz>';
-        //if the hidden property is implemented we can assume, that the browser supports basic HTML5 Styles
-        supportsHtml5Styles = ('hidden' in a);
-
-        supportsUnknownElements = a.childNodes.length == 1 || (function() {
-          // assign a false positive if unable to shiv
-          (document.createElement)('a');
-          var frag = document.createDocumentFragment();
-          return (
-            typeof frag.cloneNode == 'undefined' ||
-            typeof frag.createDocumentFragment == 'undefined' ||
-            typeof frag.createElement == 'undefined'
-          );
-        }());
-    } catch(e) {
-      supportsHtml5Styles = true;
-      supportsUnknownElements = true;
-    }
-
-  }());
-
-  /*--------------------------------------------------------------------------*/
-
-  /**
-   * Creates a style sheet with the given CSS text and adds it to the document.
-   * @private
-   * @param {Document} ownerDocument The document.
-   * @param {String} cssText The CSS text.
-   * @returns {StyleSheet} The style element.
-   */
-  function addStyleSheet(ownerDocument, cssText) {
-    var p = ownerDocument.createElement('p'),
-        parent = ownerDocument.getElementsByTagName('head')[0] || ownerDocument.documentElement;
-
-    p.innerHTML = 'x<style>' + cssText + '</style>';
-    return parent.insertBefore(p.lastChild, parent.firstChild);
-  }
-
-  /**
-   * Returns the value of `html5.elements` as an array.
-   * @private
-   * @returns {Array} An array of shived element node names.
-   */
-  function getElements() {
-    var elements = html5.elements;
-    return typeof elements == 'string' ? elements.split(' ') : elements;
-  }
-  
-    /**
-   * Returns the data associated to the given document
-   * @private
-   * @param {Document} ownerDocument The document.
-   * @returns {Object} An object of data.
-   */
-  function getExpandoData(ownerDocument) {
-    var data = expandoData[ownerDocument[expando]];
-    if (!data) {
-        data = {};
-        expanID++;
-        ownerDocument[expando] = expanID;
-        expandoData[expanID] = data;
-    }
-    return data;
-  }
-
-  /**
-   * returns a shived element for the given nodeName and document
-   * @memberOf html5
-   * @param {String} nodeName name of the element
-   * @param {Document} ownerDocument The context document.
-   * @returns {Object} The shived element.
-   */
-  function createElement(nodeName, ownerDocument, data){
-    if (!ownerDocument) {
-        ownerDocument = document;
-    }
-    if(supportsUnknownElements){
-        return ownerDocument.createElement(nodeName);
-    }
-    if (!data) {
-        data = getExpandoData(ownerDocument);
-    }
-    var node;
-
-    if (data.cache[nodeName]) {
-        node = data.cache[nodeName].cloneNode();
-    } else if (saveClones.test(nodeName)) {
-        node = (data.cache[nodeName] = data.createElem(nodeName)).cloneNode();
-    } else {
-        node = data.createElem(nodeName);
-    }
-
-    // Avoid adding some elements to fragments in IE < 9 because
-    // * Attributes like `name` or `type` cannot be set/changed once an element
-    //   is inserted into a document/fragment
-    // * Link elements with `src` attributes that are inaccessible, as with
-    //   a 403 response, will cause the tab/window to crash
-    // * Script elements appended to fragments will execute when their `src`
-    //   or `text` property is set
-    return node.canHaveChildren && !reSkip.test(nodeName) ? data.frag.appendChild(node) : node;
-  }
-
-  /**
-   * returns a shived DocumentFragment for the given document
-   * @memberOf html5
-   * @param {Document} ownerDocument The context document.
-   * @returns {Object} The shived DocumentFragment.
-   */
-  function createDocumentFragment(ownerDocument, data){
-    if (!ownerDocument) {
-        ownerDocument = document;
-    }
-    if(supportsUnknownElements){
-        return ownerDocument.createDocumentFragment();
-    }
-    data = data || getExpandoData(ownerDocument);
-    var clone = data.frag.cloneNode(),
-        i = 0,
-        elems = getElements(),
-        l = elems.length;
-    for(;i<l;i++){
-        clone.createElement(elems[i]);
-    }
-    return clone;
-  }
-
-  /**
-   * Shivs the `createElement` and `createDocumentFragment` methods of the document.
-   * @private
-   * @param {Document|DocumentFragment} ownerDocument The document.
-   * @param {Object} data of the document.
-   */
-  function shivMethods(ownerDocument, data) {
-    if (!data.cache) {
-        data.cache = {};
-        data.createElem = ownerDocument.createElement;
-        data.createFrag = ownerDocument.createDocumentFragment;
-        data.frag = data.createFrag();
-    }
-
-
-    ownerDocument.createElement = function(nodeName) {
-      //abort shiv
-      if (!html5.shivMethods) {
-          return data.createElem(nodeName);
-      }
-      return createElement(nodeName, ownerDocument, data);
-    };
-
-    ownerDocument.createDocumentFragment = Function('h,f', 'return function(){' +
-      'var n=f.cloneNode(),c=n.createElement;' +
-      'h.shivMethods&&(' +
-        // unroll the `createElement` calls
-        getElements().join().replace(/\w+/g, function(nodeName) {
-          data.createElem(nodeName);
-          data.frag.createElement(nodeName);
-          return 'c("' + nodeName + '")';
-        }) +
-      ');return n}'
-    )(html5, data.frag);
-  }
-
-  /*--------------------------------------------------------------------------*/
-
-  /**
-   * Shivs the given document.
-   * @memberOf html5
-   * @param {Document} ownerDocument The document to shiv.
-   * @returns {Document} The shived document.
-   */
-  function shivDocument(ownerDocument) {
-    if (!ownerDocument) {
-        ownerDocument = document;
-    }
-    var data = getExpandoData(ownerDocument);
-
-    if (html5.shivCSS && !supportsHtml5Styles && !data.hasCSS) {
-      data.hasCSS = !!addStyleSheet(ownerDocument,
-        // corrects block display not defined in IE6/7/8/9
-        'article,aside,figcaption,figure,footer,header,hgroup,nav,section{display:block}' +
-        // adds styling not present in IE6/7/8/9
-        'mark{background:#FF0;color:#000}'
-      );
-    }
-    if (!supportsUnknownElements) {
-      shivMethods(ownerDocument, data);
-    }
-    return ownerDocument;
-  }
-
-  /*--------------------------------------------------------------------------*/
-
-  /**
-   * The `html5` object is exposed so that more elements can be shived and
-   * existing shiving can be detected on iframes.
-   * @type Object
-   * @example
-   *
-   * // options can be changed before the script is included
-   * html5 = { 'elements': 'mark section', 'shivCSS': false, 'shivMethods': false };
-   */
-  var html5 = {
-
-    /**
-     * An array or space separated string of node names of the elements to shiv.
-     * @memberOf html5
-     * @type Array|String
-     */
-    'elements': options.elements || 'abbr article aside audio bdi canvas data datalist details figcaption figure footer header hgroup mark meter nav output progress section summary time video',
-
-    /**
-     * A flag to indicate that the HTML5 style sheet should be inserted.
-     * @memberOf html5
-     * @type Boolean
-     */
-    'shivCSS': (options.shivCSS !== false),
-
-    /**
-     * Is equal to true if a browser supports creating unknown/HTML5 elements
-     * @memberOf html5
-     * @type boolean
-     */
-    'supportsUnknownElements': supportsUnknownElements,
-
-    /**
-     * A flag to indicate that the document's `createElement` and `createDocumentFragment`
-     * methods should be overwritten.
-     * @memberOf html5
-     * @type Boolean
-     */
-    'shivMethods': (options.shivMethods !== false),
-
-    /**
-     * A string to describe the type of `html5` object ("default" or "default print").
-     * @memberOf html5
-     * @type String
-     */
-    'type': 'default',
-
-    // shivs the document according to the specified `html5` object options
-    'shivDocument': shivDocument,
-
-    //creates a shived element
-    createElement: createElement,
-
-    //creates a shived documentFragment
-    createDocumentFragment: createDocumentFragment
-  };
-
-  /*--------------------------------------------------------------------------*/
-
-  // expose html5
-  window.html5 = html5;
-
-  // shiv the document
-  shivDocument(document);
-
-}(this, document));
-
 {% endhighlight %}
+
+<a href="javascript:" data-download = "/assets/download/html5shiv.js" class="download">点击下载html5shiv</a>
 
 只需外部引用一下就能实现兼容了
 
@@ -2071,6 +1784,7 @@ drawImage( 图片对象 , 中心点坐标 );
 然后在使用drawImage方法绘制在canvas上面
 
 ### 一个图片旋转功能
+
 {% highlight Javascript %}
 === html ===
 <input type ="button" value="←">
@@ -2158,8 +1872,133 @@ function draw(obj)
 	}
 }
 
+
 {% endhighlight %}
 
+## canvas里面的createPattern方法
+
+这个方法允许我们在canvas里面给绘制的圆或者矩形三角形插入图片背景
+和drawImage相比,createPattern显得更加自由
+
+
+createPattern( 图片对象 背景平铺方式 )
+
+图片对象直接就new Image(); 然后修改src
+
+平铺方式和background相同:repeat 、 repeat-x 、 repeat-y 、 no-repeat
+
+demo:
+{% highlight Javascript %}
+=== html ===
+<canvas id = "Canvas1" width=400 height=400 ></canvas>
+
+=== Css === 
+
+body{background: black;}
+canvas{background: white;}
+
+=== Javascript ===
+
+var oCanvas = document.querySelector('#Canvas1');
+var oGc = oCanvas.getContext("2d");
+var yImg = new Image();
+yImg.src = '这里填写你的图片路径';
+
+yImg.onload = function()
+{
+	draw(this);
+}
+
+function draw( obj )
+{
+	var bg = oGc.createPattern( obj , 'repeat' );
+
+	oGc.fillStyle = bg;
+	
+	oGc.fillRect( 0 , 0 , 300 , 300 );
+}
+
+{% endhighlight %}
+
+## 使用canvas实现渐变
+
+canvas给我们提供了实现颜色渐变的方法
+
+### 线性渐变
+
+createLinearGradient( x1 , y1 , x2 , ,y2 );
+addColorStop( 渐变线端点值 , 添加的渐变线颜色 )
+
+渐变的方向和程度由一条渐变线和渐变色占的比例来控制
+其中( x1 , y1 )是渐变线的起点 ( x2 , y2 ) 是渐变线的终点
+用渐变线的起点表示0,渐变线的终点表示1
+那么我们就可以在这条线段中添加不的色段,但是前提是色段点不能超过1
+
+所以createLinearGradient方法会返回一个对象,这个对象底下有一个方法是addColorStop()
+通过它我可以在这条渐变线上面添加各种颜色的色段点。但是注意色段点不能超过一
+
+下面我们看一个demo
+{% highlight Javascript %}
+
+css和html上同
+var oCanvas = document.querySelector('#Canvas1');
+var oGc = oCanvas.getContext("2d");
+
+var obj = oGc.createLinearGradient( 150 , 100 , 150 , 150 );
+
+obj.addColorStop( 0 , 'red');
+obj.addColorStop( 0.2 , 'blue');
+obj.addColorStop( 0.8 , 'pink');
+obj.addColorStop( 1 , 'yellow');
+
+oGc.fillStyle = obj;
+
+oGc.fillRect( 150 , 100 , 100 , 100 );
+
+{% endhighlight %}
+
+由此我们可以总结出:canvas中依靠渐变线来控制渐变的起始、终点和方向,addColorStop()控制渐变的程度和颜色
+
+### 放射性渐变
+
+
+和线性渐变相比我更喜欢放射性渐变。
+
+createRadialGradient( x1 ,y1 , r1 , x2 , y2 , r2 );
+原理就是将线性渐变的两个点换成两个圆
+
+其中(x1 , y1)是第一个圆的圆心 r1是这个圆的半径
+( x2 , y2 )是第二个院的圆心  r2是这个院的半径
+
+但是放射性渐变和线性渐变有所不同, 线性渐变在渐变过程中将会填充整个绘制的矩形
+但是放射性渐变会先过两条圆的切线,将位于矩形内的圆和两条切线组成的面积填充
+![shootpic](/assets/img/RadialGradient.png)
+
+{% highlight Javascript %}
+css和html上同
+
+var oCanvas = document.querySelector('#Canvas1');
+var oGc = oCanvas.getContext("2d");
+
+var obj = oGc.createRadialGradient( 150 , 100 , 25 , 250 , 200 , 0 );
+
+console.log(obj);
+obj.addColorStop( 0 , 'red');
+obj.addColorStop( 1 , 'yellow');
+
+oGc.fillStyle = obj;
+
+oGc.fillRect( 150 , 100 , 100 , 100 );
+
+{% endhighlight %}
+
+### 关于线性渐变和放射性渐变两者总结
+
+| || 控制点 || 是否支持多个色阶 || 渐变方式 || 是否全部填充 |
+|:--------------||:--------------||:--------------||:--------------||:--------------|
+| 线性渐变 || 点 || 是 || 由渐变线开始渐变 || 是 |
+|:--------------||:--------------||:--------------||:--------------|:--------------|
+| 放射性渐变 || 点(r=0)或者圆 || 是 || 由第一个圆的圆心开始渐变,到第二个圆结束 || 从第一个圆到第二个院部分填充 |
 
 
 ## 感谢
