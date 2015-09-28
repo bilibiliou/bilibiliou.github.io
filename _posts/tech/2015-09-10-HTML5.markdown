@@ -211,7 +211,7 @@ figcation的子元素 用来解释
 
 {% endhighlight %}
 
-<a href="javascript:" data-download = "/assets/download/html5shiv.js" class="download">点击下载html5shiv</a>
+[点击下载html5shiv](/assets/download/html5shiv.js)
 
 只需外部引用一下就能实现兼容了
 
