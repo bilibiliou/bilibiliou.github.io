@@ -14,7 +14,7 @@ title: Welcome
 
 另外还要特别感谢适兕老师给我的[影响](http://www.ocselected.org/planet/)还有[他的博客](http://iaaslee.blogspot.hk/)，半个暑假的学习确实没有白费，在Eayun，我学到了很多，不单是技术，还有一些其他东西。
 
-我把博客的源码托管在[Github](https://github.com/NumerHero/NumerHero.github.io)上，如果有任何改进意见，欢迎讨论。
+我把博客的源码托管在我的Github上，如果有任何改进意见，欢迎讨论。
 
 ## 一些优秀的博客
 
@@ -22,9 +22,9 @@ title: Welcome
 
 [Junyu Xu](http://imhype.github.io/)
 
+[鬼少博客](http://tv1314.com/)
 
-
-
+[小胖轩](http://codeboy.me/)
 
 
 

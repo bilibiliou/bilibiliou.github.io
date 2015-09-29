@@ -3,6 +3,32 @@
    @author 欧阳湘粤 (Owen)
    https://github.com/Numerhero/NumerHero.github.io
 \*---------------------------------*/
+  $(function(){
+    var oWeixin = document.querySelector("#weixin");
+    var oQR = document.querySelector("#QR-Code");
+    var oQrImg = oQR.getElementsByTagName('img')[0];
+    var l = $("#QR-Code").css("left"); 
+    var t = $("#QR-Code").css("top"); 
+    oWeixin.onmouseover = function()
+    {
+      $("#QR-Code").css("left",l);
+      $("#QR-Code").css("top",t);
+      $("#QR-Code").css("width",'160');
+      oQR.style.display = "block";
+      startMove(oQrImg , { width:150 , height :　150 , opacity:70})
+      startMove(oQR , { height :　160 , opacity:70});
+    }
+
+    oWeixin.onmouseout = function()
+    {
+        startMove(oQrImg , { width:0 , height :　0 ,  opacity:0} );
+        startMove(oQR , { width:0 , height :　0 ,  opacity:0 , top : 20 , left : 15 });   
+    }
+
+  });
+
+
+
 
 $(function()
 {
@@ -98,9 +124,7 @@ $(function()
       }
      
 });
-      
-
- 
+       
 function callback( data )
 {
   var oSearchInput = document.getElementById('search-input'),

@@ -4,6 +4,9 @@
    https://github.com/P233/3-Ghost
 \*---------------------------------*/
 body{ cursor: url("../img/cursor.png"),default; }
+a{ cursor: url("../img/cursor.png"),default; }
+li{ cursor: url("../img/cursor.png"),default !important;}
+i{ cursor: url("../img/cursor.png"),default !important;}
 table{ border: 1px solid black ;}
 table td{ border: 1px solid #f90 ;}
 /*table th{ border: 1px solid red ;}*/
@@ -744,26 +747,43 @@ iframe {
     #post__share > .fontello:hover, #post__share > .post__toc-li:hover:before {
       box-shadow: 0 0 0 2px rgba(125, 139, 153, 0.15); }
 
-#icon-twitter {
+#icon-github {
   margin-left: -90px; }
-  #icon-twitter:hover {
+  #icon-github:hover {
     color: #4099ff; }
-  #icon-twitter:before {
-    content: "\e805"; }
 
-#icon-cc {
+#icon-qq {
   margin-left: -20px; }
-  #icon-cc:hover {
+  #icon-qq:hover {
     color: #f8ce5e; }
-  #icon-cc:before {
-    content: "\e803"; }
 
 #icon-weibo {
   margin-left: 50px; }
   #icon-weibo:hover {
     color: #d40220; }
-  #icon-weibo:before {
-    content: "\e804"; }
+
+#icon-weixin {
+  margin-left: 120px; }
+  #icon-weixin:hover {
+    color: #EE00EE; }
+
+#QR-Code{
+  width: 160px;
+  height: 0px; 
+  background: #DBDBDB;
+  opacity: 0;
+  padding: 5px;
+  border-radius: 10px;
+  position: absolute;
+  left:-168%;
+  top:-480%;
+  z-index: 999;
+  display: none;
+}
+#QR-Code img{
+  width: 0px;
+  height: 0px;
+}
 
 /*disqus 评论系统*/
 /*
@@ -781,7 +801,6 @@ iframe {
   #sidebar.fullscreen {
     margin-left: -585px; } }
 @media screen and (max-device-width: 1280px) {
-  #sidebar.fullscreen {
     -webkit-transform: translateX(-585px);
     -moz-transform: translateX(-585px);
     -ms-transform: translateX(-585px);
@@ -839,7 +858,6 @@ iframe {
 
 /*按钮内容*/
 #icon-arrow {
-  padding: 10px;
   -webkit-transform: rotate(0deg);
   -moz-transform: rotate(0deg);
   -ms-transform: rotate(0deg);
@@ -851,11 +869,6 @@ iframe {
   -o-transition: -o-transform 0.5s cubic-bezier(0.77, 0, 0.175, 1);
   transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1);
   display: block; }
-  #icon-arrow:before {
-    content: "\e801";
-    margin-left: -1px;
-    font-size: 20px;
-    line-height: 1; }
   #icon-arrow.fullscreen {
     -webkit-transform: rotate(180deg);
     -moz-transform: rotate(180deg);
