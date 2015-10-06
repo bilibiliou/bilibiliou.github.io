@@ -424,7 +424,7 @@ animation-name: swing;
     letter-spacing:2px;
     overflow: hidden;
   }
-  #search-list li:hover{
+  .search-onfoucs-li{
     background: #9AFF9A;
     color: white;
   }

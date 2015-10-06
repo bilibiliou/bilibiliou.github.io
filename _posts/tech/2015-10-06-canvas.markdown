@@ -1,0 +1,895 @@
+---
+layout: post
+title: Canvas基础
+category: 技术
+keywords: 技术,canvas
+---
+
+## canvas画布
+
+canvas是一个梦幻的标签，利用它配合JS控制，可以在页面上绘制出你想要的任何图案，并且还可以绘制3D效果
+首先canvas的引入非常简单
+
+{% highlight Javascript %}
+
+<canvas>
+	<span>您的浏览器十分落后，请及时更换</span>
+</canvas>
+
+直接在body中引用就行
+{% endhighlight %}
+
+引用后，它有一个缺省的宽高值，即300px × 150px
+
+### 基本的操作代码
+
+{% highlight Javascript %}
+首先所有的操作都需要先声明绘制环境
+getContext('2d');
+这个方法会返回一个 CanvasRenderingContext2D 对象，该对象实现了一个画布所使用的大多数方法。
+截至目前只支持2d绘图，也许在不久的将来会支持3d
+当然没有这样的绘制环境不代表不能实现3d绘图，我们可以使用一些hack手法,但这不是今天我们讨论的重点
+
+canvas的主线是路径，一切基础图形的绘制都需要根据路径来实现
+
+下面是一些基础方法：
+fillRect( left , top , width , height) 绘制一个实心矩形
+strokeRect( left , top , width , height)  绘制一个空心带边框矩形
+fillStyle 填充样式属性可以用来修改颜色
+strokeStyle 填充边框样式属性可以用来修改边框的颜色
+lineWidth 填充边框大小可以修改边线大小
+lineJoin 端点样式 有这么些属性 miter 默认 bevel 斜角 round 圆角
+lineCap 端点样式 butt(默认) round(圆角) square(高度多出为要一半的值)
+beginPath()  开始绘制路径(线条)
+closePath()  结束绘制路径
+moveTo( x , y ) 移动到绘制的新目标点
+lineTo( x , y ) 新的目标点
+Rect( left , top , width , height) 绘制一个矩形路径(不进行填充)
+stroke() 根据路径画线
+fill() 根据路径填充
+clearRect( left , top , width , height ) 清除画布中的某个区域
+save() 保存路径
+resave() 恢复路径 
+
+然后是基础代码
+demo1:
+=== css ===
+body{background: black;}
+canvas{background: white;}
+
+=== html ===
+<canvas id = 'canvas1' width='400' height='400'>
+
+=== Javascript ===
+var oCanvas = document.querySelector('#canvas1');
+var oGc = oCanvas.getContext('2d');
+oGc.fillRect(50,50,100,100); 
+oGc.strokeRect(50.5,50.5,100,100);
+
+大多数情况下canvas绘制的图片默认是黑色或者黑色透明
+空心带边框矩形的边框默认是1px黑色
+然而这里会出现两个小问题
+
+1.空心带边距的矩形是按线进行定位而不是按像素点进行定位的
+所以如果定位坐标是整数的话，会在这个整数像素点的两边各取半个像素点进行填充(也就是所谓的1px边框)
+但是显示器不可能显示半个像素，所以会把这两个只有一半的像素取整，也就是会显示成2px的边框
+如果要解决这个问题也很简单，只要绘制的时候将定位坐标设置为多半个像素，就可以了
+
+2.oGc.fillRect(50,50,100,100); 和 oGc.strokeRect(50.5,50.5,100,100);的顺序问题
+一个是先填充 一个是先画边框，所以效果会进行覆盖
+
+demo2:
+=== css ===
+body{background: black;}
+canvas{background: white;}
+
+=== html ===
+<canvas id = 'canvas1' width='400' height='400'>
+
+=== Javascript ===
+var oCanvas = document.querySelector('#canvas1');
+var oGc = oCanvas.getContext('2d');
+oGc.beginPath();       //开启路径
+oGc.moveTo(100 , 100); //定位起始端点
+oGc.lineTo(200 , 200); //定位一个端点
+oGc.lineTo(300 , 100); //定位另一个端点
+oGc.closePath();       //结束绘制并自动将最后一个定位端点和起始点相连接
+oGc.stroke();          //根据路径绘制图形
+
+这里有个小问题，每次我们绘制图形的时候 需要有一个beginPath 和 closePath的闭合 
+也就是说确认绘制的路径需要闭合，否则会使不同的绘制操作 对所有路径都起效果
+简单来说就是需要我们绘制一个图形的时候，一定要有beginPath closePath
+
+demo3:
+=== css ===
+body{background: black;}
+canvas{background: white;}
+
+=== html ===
+<canvas id = 'canvas1' width='400' height='400'>
+
+=== Javascript ===
+var oCanvas = document.querySelector('#canvas1');
+var oGc = oCanvas.getContext('2d');
+
+oGc.save();
+oGc.beginPath();       
+oGc.moveTo(100 , 100); 
+oGc.lineTo(200 , 200); 
+oGc.lineTo(300 , 100); 
+oGc.closePath();       
+oGc.stroke();
+oGc.resave();          
+//使用save和resave 包含路径 和 路径操作的代码
+//如果对路径有样式的操作，这样就不会影响
+
+oGc.beginPath();       
+oGc.moveTo(100 , 100); 
+oGc.lineTo(200 , 200); 
+oGc.lineTo(300 , 200); 
+oGc.closePath();       
+oGc.stroke();
+
+再介绍一个基本的画图功能
+
+demo4:
+=== css ===
+body{background: black;}
+canvas{background: white;}
+
+=== html ===
+<canvas id = 'canvas1' width='400' height='400'>
+
+=== Javascript ===
+var oCanvas = document.querySelector('#canvas1');
+var oGc = oCanvas.getContext('2d');
+var oInput = document.querySelector('#input1');
+
+oGc.strokeStyle = 'red';
+oCanvas.onmousedown = function(ev)
+{
+	var ev = ev || event;
+	oGc.moveTo(ev.clientX - oCanvas.offsetLeft , ev.clientY - oCanvas.offsetTop);
+	document.onmousemove = function(ev)
+	{
+		var ev = ev || event;
+		oGc.lineTo(ev.clientX - oCanvas.offsetLeft , ev.clientY - oCanvas.offsetTop);
+		oGc.stroke();
+	}
+	document.onmouseup = function()
+	{
+		document.onmousemove = null;
+		document.onmouseup = null;
+	}
+}
+
+还有一个问题需要注意：
+canvas的宽高一定需要在行列样式中设置，不能在内置的样式表中设置
+因为内置的样式表中，宽高是根据父元素的宽高等比例设置的
+而行列样式才是根据确定数值来设置的
+
+{% endhighlight %}
+
+## 使用canvas绘制圆
+
+使用绘制环境下arc可以绘制圆
+
+arc( x轴半径 , y轴半径 , 圆的半径 , 起始弧度 , 终止弧度 , 是否逆时针绘制 )
+
+1.需要注意的地方是x 、y 和圆的半径 跟上面一样不需要带单位，
+2.起始弧度和终止弧度是以弧度制为单位的( 弧度 = 角度*Math.PI/180 );
+3.false 是顺时针旋转 true是逆时针旋转
+4.绘制的起点是过圆心半径长的x轴正方向方向上的一点,终点当然就是过圆心半径长的x轴负方向上的一点喽。
+5.顺时针弧度为正，逆时针弧度为负。
+
+demo如下
+{% highlight Javascript %}
+
+css html 上同
+
+=== Javascript ===
+
+var oCanvas = document.querySelector("#canvas1");
+var oGc = oCanvas.getContext("2d");
+
+oGc.moveTo(200 , 200);
+oGc.arc(200 , 200 , 100 , 0 , 180*Math.PI/180 , true );
+oGc.stroke();
+
+{% endhighlight %}
+
+制作一个与本地时间同步的时针
+
+{% highlight Javascript %}
+function DrawClock()
+{
+	var oCanvas = document.querySelector('#canvas1');
+	var oGc = oCanvas.getContext('2d');
+
+	var oDate = new Date();
+	var oHours = oDate.getHours();
+	var oMinutes = oDate.getMinutes();
+	var oSeconds = oDate.getSeconds();
+	var x = 200;
+	var y = 200;
+	var r = 150;
+	oGc.clearRect( 0 , 0 , oCanvas.width , oCanvas.height );
+	// -90度是为了使刻度回归12点与时钟刻度起点保持一致
+	var oSecvalues = (-90 + oSeconds*6 ) * Math.PI/180;
+	var oMinvalues = (-90 + oMinutes*6 ) * Math.PI/180;  
+	//分针每走一格子，时针就要移动2°
+	var oHoursValues = (-90 +　oHours*30 + oMinutes * 2) * Math.PI/180;
+
+	oGc.beginPath();
+	for(var i = 0;i<60;i++)
+	{
+		//注意moveTo( x , y )需要每次循环都添加，因为画完一段弧长后需要重新定位绘制点
+		oGc.moveTo( x , y );
+		oGc.arc( x , y , r , (6*i)*Math.PI/180 , (6*(i+1)*Math.PI/180));
+	}
+	oGc.closePath();
+	oGc.stroke();
+
+	oGc.fillStyle = 'white';
+	oGc.beginPath();
+	oGc.moveTo( x , y );
+	oGc.arc( x , y , r*19/20 , 0 , 360*Math.PI/180);
+	oGc.closePath();
+	oGc.fill();
+
+	oGc.lineWidth = 3;
+	oGc.strokeStyle = '#edc';
+	oGc.beginPath();
+	for(var i = 0 ; i<12; i++)
+	{	
+		oGc.moveTo( x , y );
+		oGc.arc( x , y , r , (30*i)*Math.PI/180 , (30*(i+1)*Math.PI/180));
+	}
+	oGc.closePath();
+	oGc.stroke();
+
+	oGc.fillStyle = 'white';
+	oGc.beginPath();
+	oGc.moveTo( x , y );
+	oGc.arc( x , y , r*16/20 , 0 , 360*Math.PI/180);
+	oGc.closePath();
+	oGc.fill();
+
+	oGc.strokeStyle = 'red';
+	oGc.lineWidth = 4;
+	oGc.lineJoin = 'round';
+	oGc.beginPath();
+	oGc.moveTo( x ,y );
+	oGc.arc( x , y , r*10/20 , oHoursValues , oHoursValues  );
+	oGc.closePath();
+	oGc.stroke();
+
+	oGc.strokeStyle = '#F90';
+	oGc.lineWidth = 2;
+	oGc.lineJoin = 'round';
+	oGc.beginPath();
+	oGc.moveTo( x ,y );
+	oGc.arc( x , y , r*12/20 , oMinvalues , oMinvalues );
+	oGc.closePath();
+	oGc.stroke();
+
+	oGc.strokeStyle = 'green';
+	oGc.lineWidth = 1;
+	oGc.lineJoin = 'round';
+	oGc.beginPath();
+	oGc.moveTo( x ,y );
+	oGc.arc( x , y , r*15/20 , oSecvalues , oSecvalues );
+	oGc.closePath();
+	oGc.stroke();
+
+}
+
+setInterval(DrawClock , 1000);
+{% endhighlight %}
+
+## 使用canvas绘制曲线
+
+我们还可以使用canvas绘制出曲线
+arcTo() : arcTo( 第一组坐标xy  第二组坐标xy 曲线半径 )
+什么意思呢？
+我们用一张图来了解一下
+
+![shootPic](/assets/img/arcTo-showPic.png)
+
+如图我们可以很好的了解arcTo方法的含义
+结合上图，我们可以得到下列代码
+{% highlight Javascript %}
+
+html css 上同
+
+var oCanvas = document.querySelector('#canvas1');
+var oGc = oCanvas.getContext('2d');
+
+oGc.moveTo( 100 , 200 );
+
+oGc.arcTo( 100 , 100 , 200 , 100 , 50 );
+oGc.stroke();
+	
+{% endhighlight %}
+
+## 用canvas绘制贝塞尔曲线
+
+具体了解贝塞尔曲线，可在本站[关于贝塞尔曲线知识个人理解](http://numerhero.github.io/2015/09/24/about-Bezier-curve.html)了解。
+
+quadraticCurveTo( dx , dy , x1 , y1 ) 一个控制点的贝塞尔曲线
+也就是一个二阶的贝塞尔曲线
+
+(dx , dy)是控制点的坐标， (x1 , y1)是结束点的坐标
+{% highlight Javascript %}
+demo1:
+css html 上同
+
+=== Javascript ===
+
+var oCanvas = document.querySelector('#canvas1');
+var oGc = oCanvas.getContext('2d');
+
+oGc.moveTo( 100 , 200 );
+
+oGc.quadraticCurveTo( 100 , 50 , 200 , 100 );
+oGc.stroke();
+
+{% endhighlight %}
+
+html5还提供了另外一种绘制贝塞尔曲线的方法
+bezierCurveTo( dx1 , dy1 , dx2 , dx2 , x1 , y1 ) 两个控制点的贝塞尔曲线
+也就是一个三阶的贝塞尔曲线
+
+{% highlight Javascript %}
+demo2:
+css html 上同
+
+=== Javascript ===
+
+var oCanvas = document.querySelector('#canvas1');
+var oGc = oCanvas.getContext('2d');
+
+oGc.moveTo( 100 , 200 );
+
+oGc.bezierCurveTo( 100 , 50 , 200 , 100 , 200 , 50 );
+oGc.stroke();
+
+{% endhighlight %}
+
+## 使用canvas变换
+
+### 移动translate
+
+translate( x , y )
+以起始点为起点,移动到translate设定的点
+
+### 旋转rotate
+
+rotate( 45*Math.PI/180 ) [注意参数是弧度制,旋转45°]
+以起始点为旋转点,旋转到设定的角度
+
+这里有一点需要注意:
+
+如果一个语句里面有两句旋转
+rotate( 20*Math.PI/180 );
+rotate( 25*Math.PI/180 );
+
+那么旋转的效果会叠加,也就是说会旋转成45°
+
+如果需要产生一个旋转渐变的效果(先旋转20°在到25°)
+
+需要将每个旋转语句用save() 和 restore() 语句包起来
+这样就不会出现角度叠加的问题
+
+### 缩放scale
+
+scale( 宽的缩放倍数 , 高的缩放倍数 ) 
+
+scale( 2 , 2 ) 宽高同时放大两倍,面积扩大四倍
+
+### 一个自转缩放的运动的矩形demo
+
+{% highlight Javascript %}
+var oCanvas = document.querySelector('#canvas1');
+var oGc = oCanvas.getContext('2d');
+
+
+var num = 0;
+var num2 = 0;
+var switched = 1;
+
+setInterval(function(){
+	num++;
+
+	oGc.save();
+	//每次绘制新的画面的时候清除上一帧的画布
+	oGc.clearRect( 0 , 0 , oCanvas.width , oCanvas.height );
+	
+	//移动到正中间
+	oGc.translate(200,200);
+
+	if( num2 == 60 )
+	{
+		switched = -1;
+	}else if( num2 == 10 ){
+		switched = 1;
+	}
+
+	num2 += switched;
+	
+	// 根据当前计算的num2的值 算出这一帧 需要缩放的度数
+	oGc.scale( num2*1/50  , num2*1/50 );
+
+	// 根据当前计算的num1的值 算出这一帧 需要旋转的度数
+	oGc.rotate( num*Math.PI/180 );
+
+	// 移动到栋中心点
+	oGc.translate( -50 , -50 );
+
+	oGc.fillRect( 0 , 0 , 100 , 100 );
+	
+	oGc.restore();
+},30);
+
+
+这里有一点要特别注意:就是操作变换的语句执行顺序不能变,如果改变可能会得到不同的效果
+
+比如将控制旋转的语句oGc.rotate( num*Math.PI/180 ); 放在oGc.translate(200,200);之前
+那么就会成为一个先按移动前的点旋转,在移动到点( 200 ,200 ) 那就不是自转了！
+{% endhighlight %}
+
+## canvas里面drawImage方法
+
+我们可以使用drawImage方法来加载一张图片
+drawImage( 图片对象 , 中心点坐标 );
+
+我们可以使用js中的 new Image()方法 创建一个图片对象 并添加它的src
+然后在使用drawImage方法绘制在canvas上面
+
+### 一个图片旋转功能
+
+{% highlight Javascript %}
+=== html ===
+<input type ="button" value="←">
+<input type ="button" value="→">
+<div>
+	<img src="替换成需要添加的图片路径" id="img1">
+</div>
+=== css ===
+
+body{background: black;}
+canvas{background: white;}
+
+=== Javascript ===
+
+var oInput = document.querySelectorAll('input');
+var oImg = document.querySelector('#img1');
+var yImg = new Image();
+var iNow = 0;
+yImg.src = oImg.src;
+
+yImg.onload = function()
+{
+	draw(this);
+}
+
+function change( iNow , obj , oCanvas , oGc )
+{
+	switch( iNow )
+	{
+		case 1:
+		
+			// 首先画布大小要随图片旋转的改变而改变
+			// 将页面旋转90°后,绘制的时候需要重新定位绘制点
+			// 绘制点坐标即旋转后左上角顶点坐标
+			oCanvas.width = obj.height;
+			oCanvas.height = obj.width;
+			oGc.rotate( 90*Math.PI/180 );
+			oGc.drawImage( obj , 0 ,-oCanvas.width );
+			break;
+
+		case 2:
+
+			oCanvas.width = obj.width;
+			oCanvas.height = obj.height;
+			oGc.rotate( 180*Math.PI/180 );
+			oGc.drawImage( obj , -oCanvas.width , -oCanvas.height );
+			break;
+
+		case 3:
+
+			oCanvas.width = obj.width;
+			oCanvas.height = obj.height;
+			oGc.rotate( 0 );
+			oGc.drawImage( obj , 0 , 0 );
+			break;
+	}
+}
+
+function draw(obj)
+{
+	//根据添加的图片创建一个canvas
+	var oCanvas = document.createElement('canvas');
+	var oGc = oCanvas.getContext('2d');
+
+	oCanvas.width = obj.width;
+	oCanvas.height = obj.height;
+	
+	//将页面中的<img> 标签替换成 canvas标签
+	oImg.parentNode.replaceChild( oCanvas , oImg );
+	
+	//先初始化，绘制图片 绘制点为 (0 , 0) 点
+	oGc.drawImage( obj , 0 , 0 );
+	
+	//添加点击事件
+	oInput[0].onclick = function()
+	{
+		iNow == 0 ? iNow = 3 : iNow-- ;
+		change( iNow , yImg , oCanvas , oGc );		
+	}
+
+	oInput[1].onclick = function()
+	{
+		iNow == 3 ? iNow = 0 : iNow++ ;
+		change( iNow , yImg , oCanvas , oGc );
+	}
+}
+
+
+{% endhighlight %}
+
+## canvas里面的createPattern方法
+
+这个方法允许我们在canvas里面给绘制的圆或者矩形三角形插入图片背景
+和drawImage相比,createPattern显得更加自由
+
+
+createPattern( 图片对象 背景平铺方式 )
+
+图片对象直接就new Image(); 然后修改src
+
+平铺方式和background相同:repeat 、 repeat-x 、 repeat-y 、 no-repeat
+
+demo:
+{% highlight Javascript %}
+=== html ===
+<canvas id = "Canvas1" width=400 height=400 ></canvas>
+
+=== Css === 
+
+body{background: black;}
+canvas{background: white;}
+
+=== Javascript ===
+
+var oCanvas = document.querySelector('#Canvas1');
+var oGc = oCanvas.getContext("2d");
+var yImg = new Image();
+yImg.src = '这里填写你的图片路径';
+
+yImg.onload = function()
+{
+	draw(this);
+}
+
+function draw( obj )
+{
+	var bg = oGc.createPattern( obj , 'repeat' );
+
+	oGc.fillStyle = bg;
+	
+	oGc.fillRect( 0 , 0 , 300 , 300 );
+}
+
+{% endhighlight %}
+
+## 使用canvas实现渐变
+
+canvas给我们提供了实现颜色渐变的方法
+
+### 线性渐变
+
+createLinearGradient( x1 , y1 , x2 , ,y2 );
+addColorStop( 渐变线端点值 , 添加的渐变线颜色 )
+
+渐变的方向和程度由一条渐变线和渐变色占的比例来控制
+其中( x1 , y1 )是渐变线的起点 ( x2 , y2 ) 是渐变线的终点
+用渐变线的起点表示0,渐变线的终点表示1
+那么我们就可以在这条线段中添加不的色段,但是前提是色段点不能超过1
+
+所以createLinearGradient方法会返回一个对象,这个对象底下有一个方法是addColorStop()
+通过它我可以在这条渐变线上面添加各种颜色的色段点。但是注意色段点不能超过一
+
+下面我们看一个demo
+{% highlight Javascript %}
+
+css和html上同
+var oCanvas = document.querySelector('#Canvas1');
+var oGc = oCanvas.getContext("2d");
+
+var obj = oGc.createLinearGradient( 150 , 100 , 150 , 150 );
+
+obj.addColorStop( 0 , 'red');
+obj.addColorStop( 0.2 , 'blue');
+obj.addColorStop( 0.8 , 'pink');
+obj.addColorStop( 1 , 'yellow');
+
+oGc.fillStyle = obj;
+
+oGc.fillRect( 150 , 100 , 100 , 100 );
+
+{% endhighlight %}
+
+由此我们可以总结出:canvas中依靠渐变线来控制渐变的起始、终点和方向,addColorStop()控制渐变的程度和颜色
+
+### 放射性渐变
+
+
+和线性渐变相比我更喜欢放射性渐变。
+
+createRadialGradient( x1 ,y1 , r1 , x2 , y2 , r2 );
+原理就是将线性渐变的两个点换成两个圆
+
+其中(x1 , y1)是第一个圆的圆心 r1是这个圆的半径
+( x2 , y2 )是第二个院的圆心  r2是这个院的半径
+
+但是放射性渐变和线性渐变有所不同, 线性渐变在渐变过程中将会填充整个绘制的矩形
+但是放射性渐变会先过两条圆的切线,将位于矩形内的圆和两条切线组成的面积填充
+![shootpic](/assets/img/RadialGradient.png)
+
+{% highlight Javascript %}
+css和html上同
+
+var oCanvas = document.querySelector('#Canvas1');
+var oGc = oCanvas.getContext("2d");
+
+var obj = oGc.createRadialGradient( 150 , 100 , 25 , 250 , 200 , 0 );
+
+console.log(obj);
+obj.addColorStop( 0 , 'red');
+obj.addColorStop( 1 , 'yellow');
+
+oGc.fillStyle = obj;
+
+oGc.fillRect( 150 , 100 , 100 , 100 );
+
+{% endhighlight %}
+
+### 关于线性渐变和放射性渐变两者总结
+
+| || 控制点 || 是否支持多个色阶 || 渐变方式 || 是否全部填充 |
+|:--------------||:--------------||:--------------||:--------------||:--------------|
+| 线性渐变 || 点 || 是 || 由渐变线开始渐变 || 是 |
+|:--------------||:--------------||:--------------||:--------------|:--------------|
+| 放射性渐变 || 点(r=0)或者圆 || 是 || 由第一个圆的圆心开始渐变,到第二个圆结束 || 从第一个圆到第二个院部分填充 |
+
+## Canvas文本
+
+我们可以在canvas中添加文本
+
+文本轮廓
+strokeText( 文本 , 基准线起点坐标 )
+
+填充文本
+fillText( 文本  , 基准线起点坐标 )
+
+字体大小
+font( 大小(带单位)  , 文字样式(必填) )
+
+文字对齐(默认向左对齐)
+textAlign
+
+基准线对齐(上下对齐)
+textBaseline [默认是以英文书写方式对齐(alphabetic) 位置是离文字下面往上一点的位置]
+我们可以调成top向上对齐或者bottom向下对齐,以方便我们定位文字
+
+measureText(文本内容).width 获取文本内容的宽
+但是没有专门的方法获取高,具体的高实际上就是我们的字体大小
+
+{% highlight Javascript %}
+demo:
+
+var oCanvas = document.querySelector('#Canvas1');
+var oGc = oCanvas.getContext("2d");
+
+oGc.font = '60px impact';
+oGc.textBaseline = 'top';
+
+var w = oGc.measureText('Hello world').width;
+//这里我们通过获取文本的宽度 和 高度 , 通过画布的宽高减去文本的宽高处以2 可以得到文本精确的居中位置
+oGc.strokeText('Hello world', (oCanvas.width - w)/2 , (oCanvas.height  - 60)/2 );
+{% endhighlight %}
+
+## Canvas阴影
+
+我们还可以添加阴影属性(无需单位直接赋值)
+ShadowColor 阴影颜色 默认是rgb( 0 , 0 , 0 , 0 ) 黑色透明
+ShadowOffsetX x轴偏移量 默认0
+ShadowOffsetY y轴偏移量 默认0
+ShadowBlur 高斯模糊 默认0
+
+## Canvas像素
+
+我们居然可以获得画布上的某一块的像素值
+oGc.getImageData( 左上角基准点位置坐标 , 获取的范围 )
+这个方法会以数组的形式返回像素点控制参数r-g-b-a并保存在data这个数组中
+
+red - green - black - alpha(透明度) 取值范围都是 0 - 255 
+
+设置像素集合
+putImageData( rgba数组 , 范围 )
+我们可以先get一个区域的像素,设置一下新样式,在Put到另外的区域 
+
+新建像素矩阵
+createImageData( 左上角基准点坐标 )
+
+我们可以先新建一个像素矩阵，然后通过修改data的rgba
+在put上去
+{% highlight Javascript %}
+var oCanvas = document.querySelector('#Canvas1');
+var oGc = oCanvas.getContext("2d");
+
+var oImg = oGc.createImageData( 100 , 100 );
+
+for(var i = 0; i<oImg.width * oImg.height ; i++)
+{
+  oImg.data[4*i] = 255;
+  oImg.data[4*i + 1] = 0;
+  oImg.data[4*i + 2] = 0;
+  oImg.data[4*i + 3] = 100;
+}
+
+oGc.putImageData(oImg, 100 , 100);
+
+{% endhighlight %}
+
+### 通过坐标来获取像素
+
+canvas里面也有通过坐标对像素进行操作的方法,其优点是这样我们可以对一区域内的像素点成行成列的进行操作
+但是ECMA5并没有提供相应的封装方法,我们需要自己来封装一个通过坐标获取像素的function
+如果需要操作的像素区域宽w,高h,要得到的像素点的坐标 x , y  获取的坐标区域的data
+其最核心的一个语句就是
+`data[4*(y*w+x)]`
+
+{% highlight Javascript %}
+
+//获取坐标点rgba函数
+function getXY( obj , x , y )
+{
+  var w = obj.width;
+  var h = obj.height;
+  var d = obj.data;
+
+  var color = [];
+  
+  color[0] = d[4*(y*w+x)];
+  color[1] = d[4*(y*w+x)+1];
+  color[2] = d[4*(y*w+x)+2];
+  color[3] = d[4*(y*w+x)+3];
+
+  return color;
+}
+
+//设置坐标点rgba函数
+function setXY( obj , x , y  , color )
+{
+  var w = obj.width;
+  var h = obj.height;
+  var d = obj.data;
+
+  d[4*(y*w+x)] = color[0];
+  d[4*(y*w+x)+1] = color[1];
+  d[4*(y*w+x)+2] = color[2];
+  d[4*(y*w+x)+3] = color[3];
+}
+
+xy表示需要与操作的像素点 obj是需要操作的已获取的像素矩阵的对象
+
+{% endhighlight %}
+
+### 反色、渐变、图片反转、马赛克操作
+
+首先了解一下什么叫反色
+一张正常的图片每个像素点都有rgb三个值
+而如果我们将每个像素点的的rgb值 替换成 255 - 正常图片的的rgb值 而组成的图片
+我们便成这张图片是正常图片的反色
+
+渐变就是将图片的透明度随水平和竖直方向线性递增变化来实现
+
+图片反转就是将每行的像素上下对掉就可以实现
+
+马塞克的远离就是将一张照片分成若干个大格子，将格子中随机去出一个像素的颜色，并将这个rgb值域赋值给大格子内所有的像素,这样就能实现马赛克的效果
+
+本人根据妙味课堂的视频将这些功能封成了一个小框架
+
+[图片特效小框架](/assets/download/draweffect.js)
+
+{% highlight Javascript %}
+
+调用方法：
+
+var oCanvas = document.querySelector('#Canvas1');
+var oGc = oCanvas.getContext("2d");
+
+//参数是一个json , effect 是图片的效果(缺省为default), 效果可以根据输入的顺序进行叠加 , ImageSrc 是图片的路径 , x y 是图片在画布中的基准点 , MosaicValue是马赛克效果的放大倍数(缺省为5)
+
+//效果包括: default 默认  inverseColor 反色 GradientX 竖直渐变 GradientY 水平渐变 invertedImage 图片取反 MosaicImage 马赛克
+
+draweffect( { effect : ['invertedImage'] , ImageSrc : './123.jpg' , x : 0 , y : 0 , MosaicValue : 5 } );
+
+{% endhighlight %}
+
+## 图形的合成
+
+### 全局透明度值
+globalAlpha
+设置这个属性后面绘制的图形的透明度
+可以不断改变这个值来控制绘制图形的透明度
+
+### 覆盖合成
+
+globalCompositeOperation
+
+源source 也就是绘制的新图形
+目标destination 也就是已经绘制的旧图形
+
+设置这个属性,你可以控制源和目标的覆盖关系
+source-over新图形覆盖着旧图形之上
+source-atop取新图形和旧图形的交集,取交集覆盖在旧图形上
+source-in取新图形和旧图形的交集,仅仅取新图形覆盖的交集
+source-out将交集和目标图形去掉留剩下的新图形
+
+destination-over旧图形覆盖在新图形之上
+destination-atop取交集覆盖在新图形上
+destination-in 取新图形和旧图形的交集,仅仅取旧图形覆盖的交集
+destination-out 将交集和源图形去掉留剩下的旧图形
+
+lighter显示源图像 + 目标图像
+copy 显示源图像。忽略目标图像
+xor 去掉交集剩下的图形
+
+{% highlight Javascript %}
+
+var oCanvas = document.querySelector('#Canvas1');
+var oGc = oCanvas.getContext("2d");
+
+oGc.fillRect( 0 , 0 , 100 , 100 );
+
+oGc.fillStyle = 'red';
+//oGc.globalAlpha = 0.5;
+//oGc.globalCompositeOperation = 'source-over';
+//oGc.globalCompositeOperation = 'source-atop';
+//oGc.globalCompositeOperation = 'source-in';
+//oGc.globalCompositeOperation = 'source-out';
+//oGc.globalCompositeOperation = 'destination-over';
+//oGc.globalCompositeOperation = 'destination-atop';
+//oGc.globalCompositeOperation = 'destination-in';
+//oGc.globalCompositeOperation = 'destination-out';
+//oGc.globalCompositeOperation = 'lighter';
+//oGc.globalCompositeOperation = 'xor';
+//oGc.globalCompositeOperation = 'copy';
+
+oGc.fillRect( 50 , 50 , 100 ,100 );
+
+{% endhighlight %}
+
+## 导出图片
+
+在canvas标签底下有一个方法toDateURL()
+可以返回一个base64的图片地址
+而火狐下可以直接鼠标图片另存为
+
+## 感谢
+
+[妙味课堂](http://www.miaov.com)
+
+
+
+
+
+
+
+
+
+
+
