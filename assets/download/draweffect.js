@@ -1,3 +1,4 @@
+// Îª¼æÈİwebkitä¯ÀÀÆ÷ ĞŞ¸Ä±àÂëÎªGBK
 function draweffect( obj )
 {
 
@@ -8,8 +9,8 @@ function draweffect( obj )
 	var MosaicValue = obj.MosaicValue || 5;
 	if(!obj.ImageSrc)
 	{
-		console.log( '%c è¯·è¾“å…¥æ‚¨çš„å›¾ç‰‡å¼•ç”¨æº:' , 'background:red; color:white;' );
-		console.log( '%c åœ¨å¯¹è±¡æƒ³ä¸­æ·»åŠ  ImageSRc : "å›¾ç‰‡è·¯å¾„" ' , 'background:#edc; color:yellow;'); 
+		console.log( '%c ÇëÊäÈëÄúµÄÍ¼Æ¬ÒıÓÃÔ´:' , 'background:red; color:white;' );
+		console.log( '%c ÔÚ¶ÔÏóÏëÖĞÌí¼Ó ImageSRc : "Í¼Æ¬Â·¾¶" ' , 'background:#edc; color:yellow;'); 
 		return;
 	}
 
@@ -31,7 +32,7 @@ function draweffect( obj )
 				case effect[t] == 'default':
 				break;
 
-				//åè‰²
+				//·´É«
 				case effect[t] == 'inverseColor':
 				var oImg = oGc.getImageData( x , y , yImg.width , yImg.height );
 				for( var i = 0 ; i<h ; i++ )
@@ -51,7 +52,7 @@ function draweffect( obj )
 				oGc.putImageData( oImg , x , y );
 				break;
 
-				//ç«–ç›´æ–¹å‘æ¸å˜
+				//ÊúÖ±·½Ïò½¥±ä
 				case effect[t] == 'GradientX':
 				var oImg = oGc.getImageData( x , y , yImg.width , yImg.height );
 				for( var i = 0 ; i<h ; i++ )
@@ -71,7 +72,7 @@ function draweffect( obj )
 				oGc.putImageData( oImg , x , y );
 				break;
 
-				//æ°´å¹³æ–¹å‘æ¸å˜
+				//Ë®Æ½·½Ïò½¥±ä
 				case effect[t] == 'GradientY':
 				var oImg = oGc.getImageData( x , y , yImg.width , yImg.height );
 				for( var j = 0 ; j<w ; j++ )
@@ -91,7 +92,7 @@ function draweffect( obj )
 				oGc.putImageData( oImg , x , y );
 				break;
 
-				//å›¾ç‰‡å–å
+				//Í¼Æ¬È¡·´
 				case effect[t] == 'invertedImage':
 				var oImg = oGc.getImageData( x , y , yImg.width , yImg.height );
 				var newImage = oGc.createImageData(yImg.width , yImg.height);
@@ -112,7 +113,7 @@ function draweffect( obj )
 				oGc.putImageData( newImage , x , y );
 				break;
 
-				//é©¬èµ›å…‹
+				//ÂíÈü¿Ë
 				case effect[t] == 'MosaicImage':
 				var oImg = oGc.getImageData( x , y , yImg.width , yImg.height );
 				var newMosaicImage = oGc.createImageData(yImg.width,yImg.height);
@@ -125,7 +126,7 @@ function draweffect( obj )
 				{
 					for( var j = 0; j<stepW ; j++)
 					{
-						//æ¯ä¸€ä¸ª MosaicValue*MosaicValue å¤§æ ¼ä¸­å–ä¸€ä¸ªå°æ ¼çš„åƒç´ çš„é¢œè‰² å¹¶ä»¥è¿™ä¸ªé¢œè‰²ç»™æ•´ä¸ªå¤§æ ¼çš„æ‰€æœ‰åƒç´ èµ‹å€¼
+						//Ã¿Ò»¸ö MosaicValue*MosaicValue ´ó¸ñÖĞÈ¡Ò»¸öĞ¡¸ñµÄÏñËØµÄÑÕÉ« ²¢ÒÔÕâ¸öÑÕÉ«¸øÕû¸ö´ó¸ñµÄËùÓĞÏñËØ¸³Öµ
 						var color = getXY( oImg , j*MosaicValue + Math.floor(Math.random()*MosaicValue) , i*MosaicValue + Math.floor(Math.random()*MosaicValue) );
 						
 						for( var k = 0 ; k<MosaicValue ; k++ )
@@ -147,7 +148,7 @@ function draweffect( obj )
 	
 	
 
-	/* å†…ç½®å‡½æ•° */
+	/* ÄÚÖÃº¯Êı */
 	function setXY( obj , x , y  , color )
 	{
 	  var w = obj.width;

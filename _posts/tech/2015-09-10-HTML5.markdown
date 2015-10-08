@@ -1226,6 +1226,7 @@ window.onload = function()
 [一个购物车实例](/assets/download/dragdemo.html)
 
 原码自己查看
+
 ## 同域窗口间通信的两种模式
 
 什么叫同域呢
@@ -1343,6 +1344,8 @@ window.onload = function()
   oBtn.onclick = function()
   {
     //window.open会返回被打开窗口的window对象
+    //但是这里有一点要注意,如果多次打开同新的页面
+    //newWindow这个变量会被覆盖
     newWinodw = window.open('被打开的新窗口的src','_blank');
   }
 
@@ -1419,7 +1422,10 @@ window.onload = function()
 
 这样浏览器就会产生一个跨域安全权限不够的错误提示
 
-解决的方法有挺多的,但是html5给了我们这样一种方法
+解决的方法有挺多的,但是html5给了我们这样一种方法：
+通过postMessage来发送请求,跨域页面获得请求
+根据请求在对自身的dom进行操作
+
 postMessage( msg , url )
 
 msg是需要传给b域底下被嵌套的页面的信息(代码)
@@ -1428,8 +1434,62 @@ url是b域下面的地址 (一定要带上http协议)
 而且我们需要在被嵌套的页面下面调用postMessage();
 `例: oMyIframe.contentWindow.postMessage( '需要传递信息' , 'http://www.b.com' );`
 
+然后www.b.com就可以接受到请求的信息
+并且得到一个data属性和origin属性
+
+data属性就是接受的信息
+origin属性就是发送请求的域名
+
+demo:
+
+{% highlight Javascript %}
+
+=== 发送请求的页面html ===
+<input id="btn" type="button" value="点我发送跨域发送数据">
+<iframe id="myIframe" src="http://www.b.com/iframeb.html"></iframe>
+
+=== Javascript ===
+window.onload = function()
+{
+  var omyIframe = document.querySelector("#myIframe");
+  var oBtn = document.querySelector("#btn");
+
+  oBtn.onclick = function()
+  {
+    //这里发送的信息可以用中文
+    omyIframe.contentWindow.postMessage( '修改背景颜色' , 'http://www.b.com' );
+  }
+}
+
+=== 接受请求的html ===
+<input type="button" id="btn" value="点我改变父级的颜色">
+<h1>这是一个跨域iframe</h1> 
+
+=== 接受请求的Javascript ===
+window.onload = function()
+{
+  var oBtn = document.querySelector("#btn");
+  
+  //通过监听message来获得请求
+  window.addEventListener("message" , function(ev)
+  {
+    //判断如果请求符合,则进行相应的dom操作,当然判断条件根据需求可以省略,
+    if( ev.data == '修改背景颜色' && ev.origin == 'http://www.a.com' )
+    {
+      document.body.style.background = 'red';
+    }
+  },false);
+} 
+
+{% endhighlight %}
+
 
 ### 跨域window.open窗口间通信
+
+与上文iframe同理
+通过window.open返回来的window对象进行postMessage请求就行了
+
+## 
 
 ## 感谢
 

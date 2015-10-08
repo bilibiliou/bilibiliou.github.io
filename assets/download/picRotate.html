@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>图片旋转</title>
+
+<style>
+body{background: black;}
+canvas{background: white;}
+</style>
+<script>
+window.onload = function()
+{
+	var oInput = document.querySelectorAll('input');
+var oImg = document.querySelector('#img1');
+var yImg = new Image();
+var iNow = 0;
+yImg.src = oImg.src;
+
+yImg.onload = function()
+{
+	draw(this);
+}
+
+function change( iNow , obj , oCanvas , oGc )
+{
+	switch( iNow )
+	{
+		case 1:
+		
+			// 首先画布大小要随图片旋转的改变而改变
+			// 将页面旋转90°后,绘制的时候需要重新定位绘制点
+			// 绘制点坐标即旋转后左上角顶点坐标
+			oCanvas.width = obj.height;
+			oCanvas.height = obj.width;
+			oGc.rotate( 90*Math.PI/180 );
+			oGc.drawImage( obj , 0 ,-oCanvas.width );
+			break;
+
+		case 2:
+
+			oCanvas.width = obj.width;
+			oCanvas.height = obj.height;
+			oGc.rotate( 180*Math.PI/180 );
+			oGc.drawImage( obj , -oCanvas.width , -oCanvas.height );
+			break;
+
+		case 3:
+
+			oCanvas.width = obj.width;
+			oCanvas.height = obj.height;
+			oGc.rotate( 0 );
+			oGc.drawImage( obj , 0 , 0 );
+			break;
+	}
+}
+
+function draw(obj)
+{
+	//根据添加的图片创建一个canvas
+	var oCanvas = document.createElement('canvas');
+	var oGc = oCanvas.getContext('2d');
+
+	oCanvas.width = obj.width;
+	oCanvas.height = obj.height;
+	
+	//将页面中的<img> 标签替换成 canvas标签
+	oImg.parentNode.replaceChild( oCanvas , oImg );
+	
+	//先初始化，绘制图片 绘制点为 (0 , 0) 点
+	oGc.drawImage( obj , 0 , 0 );
+	
+	//添加点击事件
+	oInput[0].onclick = function()
+	{
+		iNow == 0 ? iNow = 3 : iNow-- ;
+		change( iNow , yImg , oCanvas , oGc );		
+	}
+
+	oInput[1].onclick = function()
+	{
+		iNow == 3 ? iNow = 0 : iNow++ ;
+		change( iNow , yImg , oCanvas , oGc );
+	}
+}
+}
+</script>
+</head>
+
+<body>
+<input type ="button" value="←">
+<input type ="button" value="→">
+<div>
+	<img src="../img/avatar.png" id="img1">
+</div>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+<style>
+body{background: black;}
+canvas{background: white;}
+</style>
+<script>
+window.onload = function()
+{
+	function DrawClock()
+	{
+		var oCanvas = document.querySelector('#canvas1');
+		var oGc = oCanvas.getContext('2d');
+	
+		var oDate = new Date();
+		var oHours = oDate.getHours();
+		var oMinutes = oDate.getMinutes();
+		var oSeconds = oDate.getSeconds();
+		var x = 200;
+		var y = 200;
+		var r = 150;
+		oGc.clearRect( 0 , 0 , oCanvas.width , oCanvas.height );
+		// -90度是为了使刻度回归12点与时钟刻度起点保持一致
+		var oSecvalues = (-90 + oSeconds*6 ) * Math.PI/180;
+		var oMinvalues = (-90 + oMinutes*6 ) * Math.PI/180;  
+		//分针每走一格子，时针就要移动2°
+		var oHoursValues = (-90 +　oHours*30 + oMinutes * 2) * Math.PI/180;
+	
+		oGc.beginPath();
+		for(var i = 0;i<60;i++)
+		{
+			//注意moveTo( x , y )需要每次循环都添加，因为画完一段弧长后需要重新定位绘制点
+			oGc.moveTo( x , y );
+			oGc.arc( x , y , r , (6*i)*Math.PI/180 , (6*(i+1)*Math.PI/180));
+		}
+		oGc.closePath();
+		oGc.stroke();
+	
+		oGc.fillStyle = 'white';
+		oGc.beginPath();
+		oGc.moveTo( x , y );
+		oGc.arc( x , y , r*19/20 , 0 , 360*Math.PI/180);
+		oGc.closePath();
+		oGc.fill();
+	
+		oGc.lineWidth = 3;
+		oGc.strokeStyle = '#edc';
+		oGc.beginPath();
+		for(var i = 0 ; i<12; i++)
+		{	
+			oGc.moveTo( x , y );
+			oGc.arc( x , y , r , (30*i)*Math.PI/180 , (30*(i+1)*Math.PI/180));
+		}
+		oGc.closePath();
+		oGc.stroke();
+	
+		oGc.fillStyle = 'white';
+		oGc.beginPath();
+		oGc.moveTo( x , y );
+		oGc.arc( x , y , r*16/20 , 0 , 360*Math.PI/180);
+		oGc.closePath();
+		oGc.fill();
+	
+		oGc.strokeStyle = 'red';
+		oGc.lineWidth = 4;
+		oGc.lineJoin = 'round';
+		oGc.beginPath();
+		oGc.moveTo( x ,y );
+		oGc.arc( x , y , r*10/20 , oHoursValues , oHoursValues  );
+		oGc.closePath();
+		oGc.stroke();
+	
+		oGc.strokeStyle = '#F90';
+		oGc.lineWidth = 2;
+		oGc.lineJoin = 'round';
+		oGc.beginPath();
+		oGc.moveTo( x ,y );
+		oGc.arc( x , y , r*12/20 , oMinvalues , oMinvalues );
+		oGc.closePath();
+		oGc.stroke();
+	
+		oGc.strokeStyle = 'green';
+		oGc.lineWidth = 1;
+		oGc.lineJoin = 'round';
+		oGc.beginPath();
+		oGc.moveTo( x ,y );
+		oGc.arc( x , y , r*15/20 , oSecvalues , oSecvalues );
+		oGc.closePath();
+		oGc.stroke();
+	
+	}
+
+setInterval(DrawClock , 1000);
+}
+</script>
+</head>
+
+<body>
+	<canvas id = 'canvas1' width='400' height='400'>
+</body>
+</html>
