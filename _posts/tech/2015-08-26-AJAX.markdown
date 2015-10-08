@@ -471,7 +471,7 @@ HTTP响应中应包含帖子的创建状态以及帖子的URI。
 ## 封装AJAX函数
 
 这里把这个AJAX函数文件名命名为
-[Ajax.js](/assets/download/Ajax.js)
+[Ajax.js](/assets/download/Ajax.markdown)
 
 ## AJax实例:关于简单的瀑布流实现
 
