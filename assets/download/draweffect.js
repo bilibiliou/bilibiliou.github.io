@@ -1,4 +1,4 @@
-// Îª¼æÈİwebkitä¯ÀÀÆ÷ ĞŞ¸Ä±àÂëÎªGBK
+
 function draweffect( obj )
 {
 
