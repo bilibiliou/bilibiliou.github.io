@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">	
+<title>html5</title>
+<style>
+*{ margin:0; padding: 0;}
+#ul1 li{ list-style: none; width: 200px; font-weight: bold; color:blue; margin:10px; border:1px solid #eda; float:left;}
+#ul1 li img{ width: 200px; }
+p{ height:20px;border-bottom:1px black dashed; }
+#div1{ width:600px; border: 1px solid #000; height: 300px; clear: both; position: relative;}
+.box1{float: left;width: 200px;}
+.box2{float: left;width: 200px;}
+.box3{float: left;width: 200px;}
+#allPrice{ position: absolute; bottom: 0; right: 0;}
+</style>
+<script>
+window.onload = function()
+{
+	var aLi = document.getElementsByTagName('li');
+	var oDiv = document.getElementById('div1');
+	var obj = {};
+	var allPrice = null;
+	var iNum = 0;
+	for(var i=0; i<aLi.length ; i++)
+	{
+		aLi[i].ondragstart = function(ev)
+		{
+		
+			var aP = this.getElementsByTagName('p');
+			ev.dataTransfer.setData('title' , aP[0].innerHTML);
+			ev.dataTransfer.setData('price' , aP[1].innerHTML);
+			
+			//设置拖拽时候的图片
+			// ev.dataTansfer.setDragImage(this,0,0);
+
+		}
+	}
+
+	oDiv.ondragover = function(ev)
+	{
+		//允许拖拽
+		ev.preventDefault();
+	}
+
+	oDiv.ondrop = function(ev)
+	{
+		ev.preventDefault();
+
+		var sTitle = ev.dataTransfer.getData('title');
+		var sPrice = ev.dataTransfer.getData('price');
+		
+		if( !obj[sTitle] )
+		{
+			var oP = document.createElement('p');
+			var oSpan = document.createElement('span');
+			oSpan.className = 'box1';
+			oSpan.innerHTML = 1;
+			oP.appendChild( oSpan );
+		
+			var oSpan = document.createElement('span');
+			oSpan.className = 'box2';
+			oSpan.innerHTML = sTitle;
+			oP.appendChild( oSpan );
+
+			var oSpan = document.createElement('span');
+			oSpan.className = 'box3';
+			oSpan.innerHTML = sPrice;
+			oP.appendChild( oSpan );
+
+			oDiv.appendChild(oP);
+
+			obj[sTitle] = true;
+		}else{
+			var box1 = document.getElementsByClassName('box1');
+			var box2 = document.getElementsByClassName('box2');
+
+			for(var i = 0;i<box1.length;i++)
+			{
+				//根据box2的索引找到对应的box1的值
+				if(box2[i].innerHTML == sTitle)
+				{
+					box1[i].innerHTML = parseInt(box1[i].innerHTML) + 1;
+				}
+			}
+		}
+
+		if(!allPrice)
+		{
+			allPrice = document.createElement('div');
+			allPrice.id = 'allPrice';
+			oDiv.appendChild( allPrice );
+		}
+		
+		iNum += parseInt(sPrice);
+		allPrice.innerHTML = iNum + '￥'
+		
+		
+	}
+}
+</script>
+</head>
+<body>
+	<ul id="ul1">
+	<li draggable="true">
+		<img src="./demopic/img1.jpg">
+		<p>Javascript语言精粹</p>
+		<p>40￥</p>
+	</li>
+	<li draggable="true">
+		<img src="./demopic/img2.jpg">
+		<p>Javascript权威指南</p>
+		<p>120￥</p>
+	</li>
+	<li draggable="true">
+		<img src="./demopic/img3.jpg">
+		<p>精通Javascript</p>
+		<p>35￥</p>
+	</li>
+	<li draggable="true">
+		<img src="./demopic/img4.jpg">
+		<p>DOM编程艺术</p>
+		<p>60￥</p>
+	</li>
+</ul>
+<div id="div1">
+</div>
+</body>
+</html>
