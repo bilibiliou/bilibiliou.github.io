@@ -124,7 +124,7 @@ keywords: 技术,jekyll,github,markdown,建站
 首先，我们下载[安装包]() 
 因为，python2 和 python3 是两个区别度比较大的版本，所以大家不要下载3.0+ 这里下载的是2.7的
 然后，就出现问题了。
-window 8.1(估计win7也会出现)下会因为权限问题导致安装失败,解决这个办法,网上有很多种
+window 8.1(估计win7也会出现)下会因为权限问题(报错 2503 2502 安装nodejs的时候也会出现类似问题)导致安装失败,解决这个办法,网上有很多种
 这里，我就介绍我亲自尝试过的方法
 win + x 打开有管理员权限的cmd
 ![shootpic](/assets/img/python-install2.png)

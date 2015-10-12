@@ -631,7 +631,6 @@ getShortHeight() //遍历数组每个元素 ， 返回最小元素值的索引
 iPage //表示调用的数据源的页数(如果数据源不同，视自己情况改)
 switched //开关变量 用来控制加载
 
-
 主函数调用了上文封装的ajax.js
 并且传入两个匿名函数success 和 faild函数
 success函数使用DOM操作将加载的数据内容
@@ -815,6 +814,171 @@ AJAX无法实现跨域传输的解决方案
 因为只能使用GET方式的缺陷
 会有安全隐患
 
+XMLHttpResquest 的缺陷
+1.只支持文本数据的传送，无法用来读取和上传二进制文件。
+2.传送和接收数据时，没有进度信息，只能提示有没有完成。
+3.受到"同域限制"（Same Origin Policy），只能向同一域名的服务器请求数据。(使用jsonp 兼容)
+
+
+## 补充
+
+现在的标准浏览器已经可以支持Ajax的跨域请求了
+也就是说 当你 调用 
+Ajax( 'get' , "" , "http://www.b.com/getPics.php" , function(){ ... });的时候
+
+只需要在php页面中添加一句
+`header('Access-Control-Allow-Origin-:http://www.a.com');`
+
+那么a域下就可以使用Ajax调用b域下的getPics文件
+或者如果没有什么重要文件的话还可以
+
+`header('Access-Control-Allow-Origin-:*');`
+
+那么所有的网站都能调用b域下的文件了
+
+还要注意一点的是关于 XMLHttpResquest() level 2 已经不推荐我们使用 onreadystatechange 来监听了
+(但是还能用)
+
+[w3c档案](http://www.w3.org/TR/2012/WD-XMLHttpRequest-20120117/#event-handlers)
+
+新增添了如下这些事件
+
+onloadstart 当请求开始的时候触发
+onload 当请求完成并且成功获取到数据 和 readystate == 4 和 xhr.state == 200 的情况是一样的
+onloadend 发送请并且回应了,但不代表回应的就是正确的东西
+ontimeout 请求超时的时候触发
+onerror 请求错误的时候触发
+onabort 当请求取消的时候触发
+
+### IE的兼容
+
+虽然现在的标准浏览器已经可以支持Ajax的跨域了,但是IE却不支持
+
+它是自己弄了这么个XDomainRequest(); (IE 7+都支持)
+
+[英文原档](https://msdn.microsoft.com/library/cc288060.aspx)
+
+其中send() 和 open() 方法都还在
+
+但是已经把onreadystatechange()取消了
+
+改成下面这些事件
+onerror	上同
+onload	上同
+onprogress 正在加载的时候
+ontimeout 上同
+
+### 总结一下
+
+标准浏览器: 同域使用XMLHttpResquest 跨域 可以使用jsonp 和 XMLHttpResquest
+(两种方法都需要后端配合) 
+
+IE7+ : 跨域 使用XDomainRequest()或jsonp(需要后端配合) 同域 使用XMLHttpResquest
+
+IE6 : 同域使用 ActiveXObject() 跨域使用jsonp
+
+## 使用ajax无刷新上传
+
+我们以前如果需要上传数据需要刷新
+
+{% highlight html %}
+
+<form method = "post" action = "提交到的后端脚本的路径(不是上传文件保存的路径)" enctype="multipart/form-data">
+<input type="file" name="一定要和后端约定好保持相同">
+<input type="submit" value="上传">
+</form>
+
+{% endhighlight %}
+
+但是现在我们可以用Ajax异步的上传
+
+{% highlight Javascript %}
+=== html ===
+<input type="file"  id="myiframe" >
+<input type="button" id="btn" value="上传">
+<div id="div1">
+	<div id="div2"></div>
+	<div id="div3">0%</div>
+</div>
+
+=== css ===
+#div1{ width:300px; height:30px; bordr:1px soild #000; position:relative; }
+#div2{ width:0px; height:30px; background:#CCC; }
+#div3{ width:300px; height:30px; position:absolute; line-height:30px; text-align:center; top:0; left:0;}
+
+=== JavaScript ===
+window.onload = function()
+{
+	var omyIframe = document.querySelector("#myiframe");
+	var oBtn = document.querySelector("#btn");
+	var oDiv1 = document.querySelector("#div1");
+	var oDiv2 = document.querySelector("#div2");
+	var oDiv3 = document.querySelector("#div3");
+	
+	oBtn.onclick = function()
+	{
+		try
+		{
+			var xhr = new XMLHttpResquest();
+		}catch()
+		{
+			var xhr = new XDomainRequest();
+		}
+		
+		xhr.open( 'open' , '后端脚本文件路径' , true );
+		
+		// 首先当你浏览本地目录上传文件的时候,表单将数据
+		// 保存在 omyIframe.files 这个属性里面
+		// 而omyIframe.value 是这个上传文件的文件名称
+		console.log( omyIframe.value );
+		console.log( omyIframe.files );
+		
+		// 当我们需要上传文件的时候不能像之前用post传数据那样 xhr.send( 'file=' + omyIframe.files[0] );
+		// 这样传递的并不是个文件,而是一个[object File]的一个字符串
+		// 解决方法是将这文件对象转化为二进制文件,在把二进制文件对象发送过去
+
+		xhr.setRequestHeader( 'X-Resquest-With' , 'XMLHttpResquest' );
+
+		// 声明一个二进制数据转化对象
+		var oFormData = new FormData();
+		
+		// 调用append方法 append( '和后端约定好的文件名' , 文件对象 );
+		oFormData.append('file' , omyIframe.files[0] );
+
+		// 发送 
+		xhr.send(oFormData);
+
+		// 当文件传输成功后后端返回信息
+		xhr.onload = function()
+		{
+			var data = JSON.parse(this.responseText);
+
+			alert( data.msg ) // 返回上传成功的信息
+		}
+
+		var oUpload = xhr.upload;
+
+		// 监控上传进度事件
+		// 包含ev.total(总共要发送的量) 和 ev.loaded(已经发送的量)
+		// 我们可以通过他们的比例来 制作进度条
+		oUpload.onprogress = function(ev)
+		{
+			console.log( ev.total + " : " + ev.loaded );
+			var iScale = ev.loaded / ev.total;
+			
+			// 加载过程中动态改变进度条的div
+			oDiv2.style.width = 300 * iScale + "px";
+			// 值动态修改
+			oDiv3.innerHTML = iScale*100 + "%";
+		}
+	}
+}
+
+{% endhighlight %}
+
+
+
+
 ## 感谢
 
 [妙味课堂](http://www.miaov.com/)
@@ -828,6 +992,8 @@ AJAX无法实现跨域传输的解决方案
 [引用了yibuyisheng前辈的一些话](http://blog.sina.com.cn/s/blog_9f6de58301018axo.html)
 
 [JSONP 引自 bob.ippoli.to ](http://bob.ippoli.to/archives/2005/12/05/remote-json-jsonp/)
+
+[itwriter XMLHttpRequest Level 2 使用指南](http://news.cnblogs.com/n/157042/)
 
 ## 引用书籍
 

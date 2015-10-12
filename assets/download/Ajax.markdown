@@ -1,4 +1,3 @@
-// 为兼容webkit浏览器 修改编码为GBK
 function ajax( method , data , url , success , faild )   
 {
   // 设置形参缺省值
@@ -56,11 +55,11 @@ function ajax( method , data , url , success , faild )
   {
     if(data)
     {
-      if(data != 'object')
+      if( typeof(data) != 'object')
       {
         //当data是其他数据类型的时候
         //(其他类型以字符串形传参，并且保证符合url格式不然会出错误)
-        url = url + '?' +　data;
+        url = url + '?' +　data + new Date().getTime();
       }
       else
       {
@@ -70,7 +69,9 @@ function ajax( method , data , url , success , faild )
           // 这里的 i 就是遍历对象的属性名 data[i] 是属性的值
           url = addURLParam(url , i , data[i]);
         }
-      }
+
+        url += new Date().getTime();
+      }  
     }
   }
 

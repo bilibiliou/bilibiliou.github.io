@@ -1,0 +1,50 @@
+---
+layout: post
+title: NodeJs学习历程
+category: 技术
+keywords: 技术,nodejs
+---
+
+![nodejs](/assets/img/nodejs.jpg)
+
+## Hello World
+
+首先要明白一点,每门语言的实现都需要一个解析器,尽管是同一门语言,
+
+解析器不同就可能导致具体实现的功能不同,对于前端页面来说,解析器便是浏览器程序。
+Ecmascript5 的用处是操作各种DOM结点来完成页面的各种功能、布局样式的修改和特效，
+所以浏览器便提供了Document Object Model 和 Brower Object Model 来方便Ecmascript5 操纵页面
+
+所以说在浏览器端 
+
+由Ecmascript5 + DOM + BOM 就组成了我们所谓的Javascript
+
+而在后端服务器方面
+
+因为具体需要用来操作磁盘文件和搭建服务器,所以这时候的解析器就不是浏览器程序了。
+而nodejs就充当了解析器这么一个角色
+
+也就是说`nodejs并不是一门语言,而是一个后端的解析器,或者说一种后端的运行环境`
+
+nodejs为了能让我们更好的完成它的用途也给我们提供了如 http , fs 等等的内置模块
+
+作为由Ecmascript实现的后端高性能的脚本,nodejs可以说是前端人员了解后端的一个切入点所在(当然php也很适合)
+这样前端人员就可以在他们的老本行的基础上调用封装好后端脚本框架了
+
+
+
+nodejs实现功能是以不同个模块来完成的
+
+首先使用前我们都需要这样加载这样一个http模块
+
+{% highlight Javascript %}
+var http = require('http');
+{% endhighlight %}
+
+## 感谢
+
+[妙味课堂](http://www.miaov.com)
+
+[cNode 关于http模块基础](https://cnodejs.org/topic/513b5601df9e9fcc58a9efae)
+
+[7天学会nodejs ? ](http://nqdeng.github.io/7-days-nodejs/)
