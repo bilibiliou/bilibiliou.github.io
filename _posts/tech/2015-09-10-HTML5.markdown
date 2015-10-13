@@ -811,72 +811,13 @@ defer="defer"属性可以让加载的脚本延迟加载
 当我们需要在一个主页面内不断的切换内容(域名只是添加哈希值)也就是一站式页面的时候，应考虑用户需要历史管理的情况
 当用户需要前后切换历史内容的时候,缺省的浏览器历史管理方法就无效了
 这时候我们就需要调用HTML5中特定的onhashchange方法
-{% highlight Javascript %}
 
-demo:
-
-=== html ===
-
-<input type="button" value="随机选择" id="Input">
-<br/>
-<span id="text"></span>
-
-=== Javascript ===
-
-window.onload = function()
-{
-	var 
-	oInput = document.querySelector("#Input"),
-	oText = document.querySelector("#text"),
-	json = {};//模拟一个散列表
-	
-	oInput.onclick = function()
-	{
-		//随机数模拟产生一个散列值
-		var num = Math.random();
-		
-		var arr = random( 50 , 5 );
-
-		json[num] = arr ; //保存映射关系
-
-		oText.innerHTML = arr;
-
-		window.location.hash = num;//url添加散列值
-	}
-	
-	window.onhashchange = function()
-	{
-		//通过window.location.hash获取散列值 保证url和散列表的映射关系
-		oText.innerHTML = json.[window.location.hash.substring(1)];
-	}
-	function random(iAll , n)
-	{
-		一个数组池，从里面抽取n个数
-		var arr = [];
-		一个数组，用来存放抽取的随机值
-		var newArr = [];
-		
-		压栈iAll个数
-		for(var i=1 ; i<iAll ; i++)
-		{
-			arr.push(i);
-		}
-
-
-		for(var i=0; i<n ; i++)
-		{
-			从总池中抽取数，因为每次抽取都是出栈，所以将改变随机函数的取值范围，
-			所以不会出现无值可取的情况	
-			newArr.push( arr.splice(Math.floor(Math.random()*arr.length) , 1 ) );
-		}
-		return newArr;
-	}
-}
+[demo-详细自行查看网页原码](/assets/download/hash-history.html)
 
 原理是通过window.location.hash保存散列值,使每一次页面的url都不同,
 使浏览器产生历史管理并且保存url和对应的随机数的映射关系,并且通过onhashchange,依据每次url的散列值来修改不同的数据。
 
-{% endhighlight %}
+
 
 ### history新对象
 
@@ -1147,9 +1088,9 @@ FileReader下面有这么几个方法
 readAsDataURL([format])读取fileList文件中的数据 format必填,填fileList中的文件
 FileReader().onload 加载该文件数据该方法中一个result的值,返回的是文件base64的内容
 
-onloadend
-onloadstart
-onprogress 
+onloadend 当文件加载结束后执行
+onloadstart 当文件读取的时执行
+onprogress  当文件加载时执行
 
 
 demo:
@@ -1488,8 +1429,6 @@ window.onload = function()
 
 与上文iframe同理
 通过window.open返回来的window对象进行postMessage请求就行了
-
-## 
 
 ## 感谢
 
