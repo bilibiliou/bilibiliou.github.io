@@ -28,8 +28,19 @@ Websocket是一个HTML5下的一个新的协议,美名曰:浏览器与服务器�
 Websocket应用层的一门协议 nodeJs 是一个脚本运行环境
 Websocket 所以运行在nodeJs之中的
 
+## Websocket原理
+
+Websocket
+
+## socket.io
+
+socket.io一个是基于Nodejs架构体系的，支持websocket的协议用于时时通信的一个软件包。socket.io 给跨浏览器构建实时应用提供了完整的封装，socket.io完全由javascript实现。
+
+
 ## 感谢
 
 [妙味课堂](http://www.miaov.com)
+
+[socket.io粉丝日志](http://blog.fens.me/nodejs-socketio-chat/)
 
 [WebSocket是什么原理](http://www.zhihu.com/question/20215561)

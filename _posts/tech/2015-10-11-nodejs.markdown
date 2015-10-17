@@ -148,6 +148,10 @@ var httpServer = http.createServer(function(request , respone)
 
 [妙味课堂](http://www.miaov.com)
 
+[在nodeJs 下部署功能模块](http://m.blog.csdn.net/blog/designpc/9722549)
+
 [cNode 关于http模块基础](https://cnodejs.org/topic/513b5601df9e9fcc58a9efae)
 
 [7天学会nodejs ? ](http://nqdeng.github.io/7-days-nodejs/)
+
+[npm包管理工具](http://www.tuicool.com/articles/VB7nYn)

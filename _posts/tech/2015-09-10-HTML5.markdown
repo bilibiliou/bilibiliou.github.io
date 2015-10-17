@@ -1430,6 +1430,403 @@ window.onload = function()
 与上文iframe同理
 通过window.open返回来的window对象进行postMessage请求就行了
 
+## 离线存储
+
+离线存储可以让我们在网络环境不太好的情况一下依然浏览到一些信息
+原理是当有网络的时候,加载一些信息在cache中保存,当网络条件缺乏的时候就可以调用cache中的资源
+
+搭建一个Html5的离线应用需要经历这些步骤
+
+① 服务器设置头信息
+{% highlight Javascript %}
+AddType text/cache-manifest manifest
+{% endhighlight %}
+② html标签添加引用离线清单
+{% highlight Javascript %}
+<html manifest="path/to/NAME.manifest">
+{% endhighlight %}
+③ 编写离线加载清单
+
+离线清单格式:
+{% highlight Javascript %}
+
+# Version 0.1
+
+# 版本号强烈推荐填写
+# 虽然只是一行注释但是改变文件可以重新缓存，这样写上版本号，想更新的时候修改版本号来重新缓存
+
+CACHE MANIFEST
+#需要缓存的文件
+CACHE:
+a.js
+b.css
+background.png
+
+#不需要缓存的文件(白名单),离线的时候是不可用的
+NETWORK:
+login.asp
+
+#无法访问页面(替代方案),及离线的时候可以用一个页面替代
+#比如说我的页面文件全部放在html5中,下面这种写法可以让我用404.html 替代/html5中的所有文件
+#这种替代关系可以写很多个
+
+FALLBACK:
+/html5/ 404.html
+
+{% endhighlight %}
+
+### 存在的问题
+1.自动缓存引用了 manifest 文件的页面即使在NETWORK中指定"*"（所有的页面都）使用网络,还是不能
+解决它自动缓存当前页面。 
+
+这使得这个页面在 manifest 没有变更的情况下，会一直以"类静态"存在。比如，你后台更新了一篇文章，这个动态的首页，还是像第一次缓存的时候一样，没有变。这对于静态页面还好，但应用在一个动态系统就很麻烦了，因为你的内容是时时要更新的。
+
+2.火狐底下会弹提示
+
+### 注意事项
+
+① 站点离线存储的容量限制是5M
+② 如果manifest文件，或者内部列举的某一个文件不能正常下载，整个更新过程将视为失败,浏览器继续全部使用老的缓存
+③ 引用manifest的html必须与manifest文件同源，在同一个域下
+④ FALLBACK中的资源必须和manifest文件同源
+⑤ CACHE MANIFEST字符串应在第一行，且必不可少
+⑥ 当manifest文件发生改变时，资源请求本身也会触发更新
+⑦ 在manifest中使用的相对路径，相对参照物为manifest文件
+⑧ manifest文件中CACHE则与NETWORK，FALLBACK的位置顺序没有关系，如果是隐式声明需要在最前面
+  
+## Workers
+
+### 进程和线程
+Html5底下有这么个Wokers对象可以允许我们在服务器端口多开一条线程
+我们先解释一下线程是什么 在了解一下和它意思很容易混淆的进程
+
+所谓线程是程序执行的最小单位,进程是程序具有一定独立功能的程序关于某个数据集合上的一次运行活动
+所谓进程就是你点开一个程序,用它做了一些工作(基于某个数据集合上的一次运行获得)也就是开启了一次进程
+而且线程是进程分出来的实体,一个进程可以有很多线程。如果说吃饭是一次进程的话,那么吃饭要先盛饭,夹菜,再咀嚼。这一系列动作就是线程。
+
+① 所以一个线程只能属于一个进程,但是一个进程可以有多个线程
+② 资源分配给进程，同一进程的所有线程共享该进程的所有资源
+③ 处理机分给线程，即真正在处理机上运行的是线程
+④ 线程在执行过程中，需要协作同步。不同进程的线程间要利用消息通信的办法实现同步
+
+进程有并发性,线程也有并发性。也就是说你可以开着QQ这个进程和老妈汇报,同时也可以开着微信和女朋友聊天
+这就是所谓的进程的并发性
+
+而QQ下面不单单可以敲字，同时还可以视频聊天两不误,这就是所谓的线程的并发性
+
+虽然实际运作的是各个线程,但是统一向系统得到资源的还是进程, 每个进程再向下将资源分配给底下的线程
+虽然统一得到资源的是进程,但是CPU统一调度的还是基本单位还是线程。说白了线程是工作的各个模块
+
+但是如果一个进程崩溃了,虽然对其他进程没有什么影响,其底下的线程却会全部挂掉(因为线程的资源是依靠进程提供的嘛)
+
+### javascript多线程
+传统上的线程可以解释为轻量级进程，它和进程一样拥有独立的执行控制，一般情况下由操作系统负责调度。而在 HTML5 中的多线程是这样一种机制，它允许在 Web 程序中并发执行多个 JavaScript 脚本，每个脚本执行流都称为一个线程，彼此间互相独立，并且有浏览器中的 JavaScript 引擎负责管理。
+
+以前我们写一个js脚本,都是单线程的,也就是window.onload 走完全部的语句然后程序就停止了。
+(各种事件监听只是挂在那里，但是主程已运行完了)
+
+如果我们多开辟多个线程在服务器端口,把一些运算交个服务器去做,只需把运算好的结果返回给客户端。
+这样用户上网浏览加载的速度就会快很多,客户体验也就上来了
+
+javascript支持两种多线程模式
+
+### 专用型dedicated web worker
+
+首先强调一下,Webworker只能运作在服务端环境下,不然会有安全性错误
+
+```
+Uncaught SecurityError: Failed to construct 'SharedWorker': Script at 'file:///D:/Wampserver/html5test/b/WebWokers/worker.js' cannot be accessed from origin 'null'.
+```
+
+开启专用型多线程很简单
+{% highlight Javascript %}
+var w1 = new Worker('test.js');// 只需要将需要在进程里运行的js文件的文件名写上就行了
+w1.postMessage('owen'); // 我们可以传递一个消息给服务器端的支线程
+{% endhighlight %}
+
+那么在我们这个主线程中就已经开辟了一个支线程了,那么怎么进行主支线程的通信呢？
+在服务器端的支线程里,我们可以使用self来调用全局的 worker对象,
+那么我们在test.js这个脚本里面可以这样写道
+{% highlight Javascript %}
+self.onmessage = function(ev)
+{ 
+   self.postMessage(ev.data + "you are welcome!"); 
+   // 我们可以使用postMessage再将新的信息传回客户端去
+}
+{% endhighlight %}
+
+相比较共享型而言,专用型worker通信开启了一个隐式的端口通信,当专用线程被创建的时候，MessagePort 的端口消息队列便被主动启用。因此，这也和工作线程接口中定义的 start 方法作用一致。
+
+而共享型worker则使用一个port()对象来开启显式的端口通信(下文会提到)
+
+这里需要我们注意和明白的一点是我们开启的支线程序的运行环境是在服务器端的
+所以,在服务端的js脚本不支持浏览器提供的任何API操作(DOM alert() console 等等都不能用)
+
+能用的有什么呢？
+
+Ecmascript 所有语法和对象
+Navigator  浏览器信息对象
+location   底下的所有属性都能读取,但是不能修改(只读)
+self       指向全局的worker对象
+XMLHttpResquest 构造器
+setTimeout 和 setInterval
+close() 方法停止多线程
+importScript() 引入其他线程的JS脚本
+JSON以及配套的方法
+
+然后客户端口再接受服务端传递回来的消息
+{% highlight Javascript %}
+var w1 = new Worker('test.js');// 只需要将需要在进程里运行的js文件的文件名写上就行了
+w1.postMessage('owen '); // 我们可以传递一个消息给服务器端的支线程
+
+w1.onmessage = function(ev)
+{
+  console.log(ev.data);
+}
+{% endhighlight %}
+
+数据量多的时候,也可以传递JSON
+{% highlight Javascript %}
+var w1 = new Worker('test.js');
+w1.postMessage({ "name" : owen , "sex" : boy , "age" : 19 }); 
+{% endhighlight %}
+
+如果我们需要传递一个二进制数据的时候,还需要在第二个参数中指定
+{% highlight Javascript %}
+var w1 = new Worker('test.js');
+w1.postMessage({ operation: 'list_all_users', //操作
+  input: buffer,
+  threshold: 0.8, //阈值
+ }, [buffer]); //需要在后面指定二进制对象
+{% endhighlight %}
+
+当我们在服务器端的任务运行完成后,还可以使用close()方法自行进行关闭
+{% highlight Javascript %}
+self.onmessage = function(ev)
+{ 
+   self.postMessage(ev.data + "you are welcome!"); 
+}
+close();
+{% endhighlight %}
+
+或者在主线程中,使用terminate方法进行关闭
+{% highlight Javascript %}
+w1.terminate();
+{% endhighlight %}
+
+我们甚至可以通过importScripts() 在服务器端引入外部的JS文件但是要注意引入的而文件也不能有DOM的语法,而且不能跨域
+
+{% highlight Javascript %}
+importScripts("test2.js" , "test3.js");
+self.onmessage = function(ev)
+{ 
+   self.postMessage(ev.data + "you are welcome!"); 
+}
+close();
+{% endhighlight %}
+
+而且我们还能使用importScripts来预加载资源,这样就可以为客户端节省资源,提高用户体验了。
+
+当我们开启的支线程出现了错误的时候我们需要及时的进行回调函数,然后返回给主线程,以便进行相应的处理
+{% highlight Javascript %}
+var w1 = new Worker('test.js');// 只需要将需要在进程里运行的js文件的文件名写上就行了
+
+w1.onerror = function(error){
+  console.log( "It 's error need doSomthing " + error.message );
+  console.log( error.filename );
+  console.log( error.lineno );
+}
+{% endhighlight %}
+
+`甚至我们还可以在支线程下开辟新的支线程,各种操作是一样的`
+
+还要注意一点的是Dedicated web worker会随着当前页面的关闭而结束
+
+### 共享型shared web worker
+
+共享型Worker我们主要用来解决多并发连接问题,在这一点上和专用型WorkerAPI有区别,而在其他方面也和专用型Worker一样不能访问DOM也不支持跨域通信  
+
+Shared web worker 和 Dedicated web worker 的主要区别在于, 共享型线程是对多个页面进行使用的
+如果多个页面都需要加载或者计算同样的数据和资源这时候我们就需要使用Shared web worker
+当然,Shared web worker也需要等全部页面关闭了才会结束
+
+{% highlight Javascript %}
+var w1 = new SharedWorker('shareworker.js','sharedworker1'); //如果指定了第二个参数,将被用做定义该共享型线程的名称
+{% endhighlight %}
+
+由于共享型多线程需要对多个页面进行广播,所以就不能使用对单一对象使用的postMessage方法了
+这里HTML5中卫共享型多线程提供了一个port()方法,
+我们就可以通过port方法 + postMessage方法来对多个页面进行广播了
+{% highlight Javascript %}
+var w1 = new SharedWorker('shareworker.js','Owen's Sharedworker');
+w1.port.start();                             // 显示的开启端口
+w1.port.postMessage("hi");                   // 向端口发送请求
+
+w1.port.postMessage = function(ev)
+{
+  console.log(ev.data);                      //得到线程发送的abc 然后console出来
+}
+{% endhighlight %}
+
+模拟多个页面只要将上面的代码复制粘贴多份
+
+然后我们来看看引入的线程代码
+{% highlight Javascript %}
+(function(){
+  self.onconnect = function(ev){
+      var port = ev.ports[0];         // 获得端口
+      port.postMessage('abc');        // 当连接成功后,向页面发送abc
+    } 
+})()
+{% endhighlight %}
+
+具体的关于共享型多线程的内容还很多,本人能力不足。实验的时候也出现了许多问题,还是尽可能的将对的东西分享出来。而且html5还不算太完善.
+
+等日后学习到了关于共享型多线程其他知识再继续补充
+
+[这里火狐的官方文档对多线程有很详细的讲解](https://develo
+per.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers)
+
+## HTML5的一些其他小功能
+
+### 内容编辑
+
+如果细心的同学会发现Qzone上发表说说的功能是通过div实现的而不是textarea
+
+其中的魔法就是contentEditable
+HTML5允许其他非`<textarea></textarea>` 或 `<input type="text">` 的元素进行内容编辑
+只需在该元素标签内加上
+{% highlight Javascript %}
+contenteditable="true" 
+{% endhighlight %}
+
+或者在js中加上
+{% highlight Javascript %}
+document.getElementById('div1').contentEditable = true;
+{% endhighlight %}
+
+就可以使大多数标签能够进行内容的修改
+
+这个属性兼容的效果特别好 支持IE6 及其以上版本并且全部的标准浏览器都支持
+
+### 语音输入
+
+webkit强大的一个功能,允许用户通过语音提交表单
+原本出chrome允许我们这样使用语言输入功能
+{% highlight Javascript %}
+<input type="text"  x-webkit-speech >
+{% endhighlight %}
+
+但是不知道什么原因这个功能已经被遗弃了,但是我们还是可以用其他的方式去实现语言输入
+
+<a href="https://github.com/Daniel-Hug/speech-input" target="_blank"><i class="fa fa-github fa-2x" ></i> Daniel-Hug's repositorys about speech-input</a>
+
+这样我们只需要在需要这样在项目中调用就行了
+{% highlight Html %}
+<div class="si-wrapper">
+    <input type="text" class="si-input" placeholder="What's up?">
+    <button class="si-btn">
+        speech input
+        <span class="si-mic"></span>
+        <span class="si-holder"></span>
+    </button>
+</div>
+{% endhighlight %}
+
+其中的CSS和fontsome根据自己项目需求来改变
+
+该功能只支持webkit浏览器!
+
+### 桌面提醒功能
+原先旧的API已经全部被新的浏览器所抛弃了,也就是说原先使用`window.webkitNotifications` 来建立消息提醒的对象已经被废除了
+
+而且这是一个正在试验中的功能,未来还有其他变数也说不定。
+这个功能最明显的用例之一是一个网页版电子邮件应用程序，每当用户收到了一封新的电子邮件都需要通知用户
+
+要使用桌面提醒功能必须得到用户同意(火狐直接默认用户同意)
+所以首先我们先查看一下浏览器默认的权限情况
+{% highlight Javascript %}
+console.log(Notification.permission)// 火狐默认为granted  webkit 为default
+{% endhighlight %}
+
+default
+
+用户还未被询问是否授权，所以通知不会被显示。参看 Getting permission 以了解如何请求显示通知的权限。
+
+granted
+表示之前已经询问过用户，并且用户已经授予了显示通知的权限。
+
+denied
+用户已经明确的拒绝了显示通知的权限。
+
+由此看来用户在使用火狐的时候是默认可以的
+但是在使用谷歌及其webkit浏览器的时候,就需要询问用户更改权限到granted才可以使用
+查看完权限以后让我们来看下如何创建一个实例对象
+首先我们先通过浏览器向用户发送一个请求,如果用户同意则进行下一步,如果不同意则改为alert发送
+
+{% highlight Javascript %}
+// 向用户询问,并修改权限
+window.addEventListener('load', function () {
+  Notification.requestPermission(function (status) {
+    // 这将使我们能在 Chrome/Safari 中使用 Notification.permission
+    
+    if (Notification.permission !== status) {
+      Notification.permission = status; 
+      // 如果原本的权限和请求后得到的结果状态不符合则修改
+      // 注意Notification.permission在其他状态下都是只读
+      // 只有当我们通过Notification.requestPermission这个方法向用户获取权限后
+      // 才能将获得的结果修改Notification.permission(译: 消息提醒.权限 );
+    }
+  });
+});
+{% endhighlight %}
+
+然后我们可以试着创建一个Notification的实例对象
+{% highlight Javascript %}
+var n = new Notification("Hi!",{icon:"./avatar.png",body:"欢迎来到我的博客",tag:"777",dir:"rtl");
+console.log(n.tag); // 输出777 
+{% endhighlight %}
+
+Notification( title , option )
+其中
+
+title : 提醒文章的标题 [必填]
+icon : 传递一个图片url 提醒对象的头像
+body : 提醒的内容
+dir : 定义标题内容和头像的布局 auto自动默认 和 ltr 都是从左到右布局 rtl是从右到左布局
+lang: 指定提醒中所使用的语言。这个字符串必须在 BCP 47 language tag 文档中是有效的。
+tag: 赋予提醒一个ID，以便在必要的时候对提醒进行刷新、替换或移除。
+
+生成的实例还支持4个事件
+onclick 当用户点击提醒消息的时候查看(点击关闭按钮不会触发)
+onshow  当提醒消息弹出的时候触发
+onerror 当出现错误的时候触发
+onclose 当用户点击关闭消息的时候触发
+
+{% highlight Javascript %}
+var n = new Notification("Hi!",{icon:"./avatar.png",body:"欢迎来到我的博客"});
+
+n.onshow = function(){
+	console.log("欢迎欢迎 热烈欢迎");
+}
+n.onclick = function(){
+	console.log("欢迎你处理该消息提醒");
+}
+n.close = function(){
+	console.log("谢谢你使用消息提醒");
+}
+{% endhighlight %}
+
+
+[Demo](/assets/download/Notification.html)
+注意：如果使用webkit只能弹出alert 说明你的设置了永不弹出提醒消息,请使用火狐测试
+
+建议大家看一下详细的MDN归档
+
+[MDN notification使用文档](https://developer.mozilla.org/zh-CN/docs/Web/API/Notification)
+
+[此功能中文译者的使用归档](https://developer.mozilla.org/zh-CN/docs/Web/API/notification/Using_Web_Notifications)
+
 ## 感谢
 
 本博文，有相当一部分内容COPY 和 引用了他人的知识，特此陈列，以表感谢
@@ -1438,6 +1835,15 @@ window.onload = function()
 [IAN MCNALLY 's blog](http://ianmcnally.me/blog/2015/6/25/input-validity-in-the-html-spec)
 [history对象](http://blog.csdn.net/hdchangchang/article/details/41959313)
 [act262的博客](http://www.cnblogs.com/act262/p/3983039.html)
+[brainmao html5离线存储](http://www.cnblogs.com/brainmao/archive/2011/09/27/2193495.html)
+[html5 离线存储](http://www.kuqin.com/shuoit/20141027/342888.html)
+[煜子的博客关于contenteditable属性](http://www.ynpxrz.com/n792044c2022.aspx)
+[Daniel-Hug 关于语音输入API使用](https://github.com/Daniel-Hug/speech-input)
+[进程和线程的区别](http://www.3lian.com/edu/2015/07-28/233571.html)
+[web worker 多线程](http://blog.sina.com.cn/s/blog_63940ce201018lyh.html)
+[Using_web_worker](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers)
+[借助web worker解决资源预加载的问题](http://www.cnblogs.com/_franky/archive/2010/12/09/1901720.html)
+[关于桌面提醒,mozilla的官方文档](https://developer.mozilla.org/zh-CN/docs/Web/API/notification)
 
 ## 引用出自
 
