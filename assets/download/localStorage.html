@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">	
+<title>本地存储实例</title>
+	<style type="text/css">
+	</style>
+	<script>
+	window.onload = function()
+	{
+		var aInput = document.getElementById('aInput')
+		var Radios = document.querySelectorAll('[type=radio]');
+		var oTextarea = document.getElementById('T');
+
+		if( window.localStorage.getItem( 'client' ) )
+		{
+
+			aInput.value = window.localStorage.getItem( 'client' );
+		}
+
+
+		if( window.localStorage.getItem('sex') )
+		{
+			for( var i = 0 ;i<Radios.length ; i++ )
+			{
+				if( Radios[i] == window.localStorage.getItem('sex') )
+				{
+					Radios[i].checked = true;
+					console.log(window.localStorage.getItem('sex'));
+				}
+			}
+		}
+
+		if( window.localStorage.getItem( 'T' ) )
+		{
+			oTextarea.value = window.localStorage.getItem('T');
+		}
+
+
+		window.onunload = function()
+		{
+			if( aInput.value )
+			{
+				window.localStorage.setItem( 'client' , aInput.value );
+			}
+
+			for( var i = 0 ; i<Radios.length ; i++ )
+			{
+				if( Radios[i].checked == true )
+				{
+					window.localStorage.setItem( 'sex' , Radios[i] );
+				}
+			}
+
+			if( oTextarea.value )
+			{
+				window.localStorage.setItem( 'T' , oTextarea.value );
+			}
+		}
+	}
+
+	
+	</script>
+</head>
+<body>
+	<p>
+		用户名 : <input type="text" id="aInput">
+	</p>
+
+	<!-- 切记单选框需要设置相同name值 , 才能进行单选 -->
+	<p>
+		男 :<input type="radio" name="user-sex"> 女 :<input type="radio" name="user-sex">
+	</p>
+
+	<p>
+		<textarea id="T"></textarea>
+	</p>
+
+	<p>
+		输入完对应的值后,关闭页面重新打开,你就会发现原先设置的值依然保存
+	</p>
+</body>
+</html>

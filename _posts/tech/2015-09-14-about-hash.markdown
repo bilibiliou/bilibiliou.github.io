@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 关于散列表、散列函数和加密的一些浅层理解
+title: 关于散列表、散列函数和MD5加密
 category: 技术
 keywords: 技术,散列表,哈希函数,哈希表格,算法,MD5
 ---

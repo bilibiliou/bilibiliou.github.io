@@ -598,7 +598,7 @@ var oDiv = document.querySeletor('[title=Owen]');
 甚至是自定义属性<div abc="Owen"></div>
 
 var oDiv = document.querySeletor('[abc=Owen]');
-
+(如果有多个同样具有 abc="Owen" 属性的标签,则获取到的仅是第一个)
 
 获取继承标签组
 
@@ -660,7 +660,7 @@ console.log(oLi);
 
 | || 是否能识别多个标签组 || 是否能识别单个属性或自定义属性 || 是否能识别多个属性或自定义属性 |
 |:--------------||:--------------||:--------------||:--------------|
-| querySelector|| 是 || 是 || 是 |
+| querySelector|| 是 || 是 || 否 |
 |:--------------||:--------------||:--------------||:--------------|
 | querySelectorAll|| 是 || 是 || 是 |
 
@@ -676,10 +676,12 @@ console.log( box[0] );
 还有一点需要注意的是，使用querySelectorAll / querySelector来获取HTML5新功能
 自定义属性的时候 需要加上data-
 
+{% highlight Javascript %}
 <div data-Owen="abc" ></div>
 var box = document.querySelectorAll("data-Owen=abc");
 而不是 
 var box = document.querySelectorAll("Owen=abc");
+{% endhighlight %}
 
 ### getElementsByClassName
 
@@ -1827,6 +1829,164 @@ n.close = function(){
 
 [此功能中文译者的使用归档](https://developer.mozilla.org/zh-CN/docs/Web/API/notification/Using_Web_Notifications)
 
+## 地理定位
+
+我们可以在服务器环境下,通过浏览器来获取当前访问我们页面的用户的地理位置信息
+
+### 单次定位请求
+
+{% highlight Javascript %}
+navigator.geolocation.getCurrentPosition( success , error , options );
+// 调用这么对象然后向用户申请是否允许获取地理位置
+{% endhighlight %}
+
+该API返回三个参数
+
+success : 用户允许并且位置获取成功后返回的回调函数,该函数返回一个对象参数
+
+例:
+{% highlight Javascript %}
+navigator.geolocation.getCurrentPosition(function(position){
+	oT.value += '经度' + position.coords.longitude + '\n';
+	oT.value += '纬度' + position.coords.latitude + '\n';
+	oT.value += '精确度' + position.coords.accuracy + '\n';
+	oT.value += '海拔' + position.coords.altitude + '\n';
+	oT.value += '海拔准确度' + position.coords.altitudeAccuracy + '\n';
+	oT.value += '行进方向' + position.coords.heading + '\n';
+	oT.value += '地面速度' + position.coords.speed + '\n';
+	oT.value += '时间戳' + new Date(position.timestamp) + '\n';
+});
+// 当成功的时候,返回一个function(position){ ... }, 然后进行相应的操作 
+{% endhighlight %}
+[Demo](/assets/download/html5geo.html)
+
+error : 用户允许但位置并没有获取成功返回的回调函数,该函数返回一个对象参数
+{% highlight Javascript %}
+navigator.geolocation.getCurrentPosition(function(position){ ... } , function(error){
+	// 错误的函数一定要写在第二个参数,也就是说一定要写了成功的函数才能写错误的函数
+		
+	// error对象返回错误对应错误的错误码
+	switch(error.code)
+	{
+		case 1: console.log("用户拒绝访问");break;
+		case 2: console.log("由于某种原因,获取用户信息失败(例如网速太慢)");break;
+		case 3: console.log("请求没有在设置的时限内完成");break;
+		case 0: console.log("除以上三种错误外的其他未知错误");break;
+	}
+});
+{% endhighlight %}
+
+options : 其他功能选择(更好的数据收集)
+这个选项是以JSON的形式设置的
+{% highlight Javascript %}
+// 因为是第三个参数,所以一定要先写成功的函数和失败的函数
+navigator.geolocation.getCurrentPosition(function(position){ ... } , function(error){
+ ... },{ enableHighAcuracy : true , timeout : 5000 , maximumAge : 5000});
+{% endhighlight %}
+
+enableHighAcuracy 是否获取更精确的地理信息(更加消耗网络资源) 缺省值为flase
+
+timeout : 请求的最高时限,超过这一时限停止请求。以毫秒为单位
+(为保证网络资源不全部消耗在请求位置上)
+
+maximumAge : 缓存单次位置的最长时间(超过这一时间,自动将此次位置信息从缓存中删除)
+
+
+### 多次定位请求
+
+多次请求和单次请求的语法基本相同
+{% highlight Javascript %}
+var timer = navigator.geolocation.watchPosition( success , error , options );
+{% endhighlight %}
+
+和单次请求不同的是,多次请求会返回一个Id,便于我们去关闭
+
+多次请求在PC端效果不明显(因为你不能运动,除非你是在交通工具上使用电脑)
+一般在移动设备上使用的较多。
+而多次请求,为了节省网络资源,如果你当前的终端没用移动的话,那么则不会进行请求
+(如果你设置了timeout  则 error.code 会连续的返回 3)
+
+如果我们需要关闭多次请求
+{% highlight Javascript %}
+var timer = navigator.geolocation.clearWatch( timer );
+{% endhighlight %}
+
+除此之外,多次请求还允许我们在第三个参数中设置更新频率
+timeout : 5000 , frequency : 5000 
+// 每5秒发出一次请求,如果请求超过5秒则再等5秒再进行一次请求
+
+## 本地存储
+
+Storage 和 Cookie 很相似都是可以存储一些用户经常需要输入的,或者是没有输入完成的内容,存储下来。
+
+Storage比Cookie的好处在于(或者说Cookie的缺点)
+① Cookie有存储限制,每个域名(domain)下只能存储20条,而且每条Cookie长度不能过4kb
+② 如果Cookie被人拦截下来存在安全性问题
+③ Cookie需要指定作用域,不可以跨域调用
+④ 使用Cookie还需要自己封装操作函数
+⑤ Storage有高达5M的存储空间,并且支持跨域存储
+
+### sessionStorage
+
+当我们需要处理一些临时的信息的时候,就可以使用到sessionStorage来进行临时的存储,当然当页面被关闭的时候,这些临时信息就会被自动删除
+
+sessionStorage有这么几个方法使用
+
+① 设置sessionStorage
+
+window.sessionStorage.setItem( Storage的key , 需要存储的内容[字符串] )
+
+{% highlight Javascript %}
+window.sessionStorage.setItem('name','Owen');
+{% endhighlight %}
+
+这样就能让我们设置一个临时的Storage来存储(注意:Storage不单单可以存储字符串,还能够存储对应的DOM结点)
+
+② 获取sessionStorage
+
+window.sessionStorage.getItem( Storage的key )
+
+{% highlight Javascript %}
+window.sessionStorage.getItem( 'name' );
+{% endhighlight %}
+
+这样就能根据我们提供的key值来获取之前已经存储了的Storage
+(如果key提供错误,则返回null)
+
+③ 删除sessionStorage
+window.sessionStorage.removeItem(Storage的key)
+
+{% highlight Javascript %}
+window.sessionStorage.removeItem( 'name' );
+{% endhighlight %}
+
+这样我们就能根据提供的key值,在关闭页面之前就吧已经存储的Storage删除
+
+④ 清空sessionStorage
+
+{% highlight Javascript %}
+window.sessionStorage.clear();
+{% endhighlight %}
+
+通过这个方法我们就可以,在关闭页面之前就将已经存储的Storage列表全部清空
+
+### localStorage
+
+localSotrage和sessionStorage用法类似,不过localStorage可以永久存储在电脑中(上限是5M)
+
+{% highlight Javascript %}
+window.localStorage.setItem('name', 'owen');
+window.localStorage.getItem( 'name' );
+window.localStorage.removeItem( 'name' );
+window.sessionStorage.clear();
+{% endhighlight %}
+
+再次注意: setItem 不单单可以存储字符串,还能存储DOM结点
+
+### 本地存储实例
+
+[Demo](/assets/download/localStorage.html)
+
 ## 感谢
 
 本博文，有相当一部分内容COPY 和 引用了他人的知识，特此陈列，以表感谢
@@ -1844,6 +2004,8 @@ n.close = function(){
 [Using_web_worker](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers)
 [借助web worker解决资源预加载的问题](http://www.cnblogs.com/_franky/archive/2010/12/09/1901720.html)
 [关于桌面提醒,mozilla的官方文档](https://developer.mozilla.org/zh-CN/docs/Web/API/notification)
+[前端大全](http://hao.uisdc.com/)
+[web storage和cookie的区别](http://www.cnblogs.com/yuzhongwusan/archive/2011/12/19/2293347.html)
 
 ## 引用出自
 
