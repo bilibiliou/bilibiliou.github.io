@@ -1884,7 +1884,7 @@ navigator.geolocation.getCurrentPosition(function(position){ ... } , function(er
  ... },{ enableHighAcuracy : true , timeout : 5000 , maximumAge : 5000});
 {% endhighlight %}
 
-enableHighAcuracy 是否获取更精确的地理信息(更加消耗网络资源) 缺省值为flase
+enableHighAcuracy 是否获取更精确的地理信息(更加消耗网络资源) 缺省值为false
 
 timeout : 请求的最高时限,超过这一时限停止请求。以毫秒为单位
 (为保证网络资源不全部消耗在请求位置上)
@@ -1986,6 +1986,51 @@ window.sessionStorage.clear();
 ### 本地存储实例
 
 [Demo](/assets/download/localStorage.html)
+
+### Storage事件
+
+我们可以绑定Storage事件,来监控localStorage存储的缓存发生修改的时候,做一些相应的操作。
+
+首先强调一下,通过localStorage存储的Storage事件被激发的条件是当另外一个同域的页面修改了Storage,
+那么为了同步新的缓存数据,Storage事件才会被激发来处理一些操作。
+最先创建缓存的页面,无论怎么修改缓存,都不会激发Storage事件
+并且,如果后来修改的缓存内容与之前的相同,也不会激发Storage事件。
+
+但是如果是sessionStorage的话,因为存储的内容随着当前页面关闭就会被清空,所以Storage事件可以是通过iframe 来触发, 其实道理也是相同的,就是当缓存被修改的时候。
+
+还有一点就是webStorage事件只能够在服务器环境下面被触发,但是Storage存储(session 、 local 两个方法)都可以在本地环境和服务器环境下使用。
+
+总的来说,Storage事件激发的条件是
+
+① 缓存被修改了
+② 服务器环境
+
+
+绑定Storage事件可以有两种方法
+{% highlight Javascript %}
+① window.addEventListener( 'storage' , function(ev){} , false );
+
+② window.onstorage = function(ev){};
+{% endhighlight %}
+
+返回的回调函数接受一个Storage的回调参数,在参数底下有这么几个属性
+ev.key ： 缓存被修改的全部key的集合 如果是被删除的则返回null
+ev.newValue : 新设置的缓存值 如果是被删除的则返回null
+ev.oldValue : 之前被修改的值 
+ev.storageArea : 当前域名下保存的所有存储的缓存值(包括没有被修改的)
+ev.url : 修改缓存页面的url
+
+### 一个简单缓存同步的Demo
+
+测试时,请打开两个页面来模拟同步
+
+[Demo](/assets/download/synchronousStorage.html)
+
+### 一个简单的行走日记
+
+[Demo](/assets/download/daliy-walk.html)
+
+注意：尽量使用火狐测试,原码自行右键,本人做了更多改进
 
 ## 感谢
 

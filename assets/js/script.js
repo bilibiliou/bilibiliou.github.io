@@ -24,7 +24,6 @@
   {
 
     var n = new Notification("仰望星空的天台",{icon:"../../../assets/img/avatar.png",body:"欢迎来到我的博客"});
-    console.log(n.icon);
   }
   else 
     if(window.Notification && Notification.permission !== "denied")
@@ -207,7 +206,7 @@ function callback( data )
 
 
 
-// 微信淡入淡出 使用Move.js运动框架
+//微信淡入淡出 使用Move.js运动框架
 (function (){
           var oWeixin = document.querySelector("#weixin");
           var oQR = document.querySelector("#QR-Code");
@@ -240,7 +239,6 @@ function callback( data )
        @Theme author Peiwen Lu (P233)
        https://github.com/P233/3-Jekyll
     \*---------------------------------*/
-
     // Detect window size, if less than 1280px add class 'mobile' to sidebar therefore it will be auto hide when trigger the pjax request in small screen devices.
     if ($(window).width() <= 1280) {
       $('#sidebar').addClass('mobile')
@@ -378,7 +376,7 @@ function callback( data )
       //   dsThreadLikeText.innerHTML = '喜欢就戳戳吧';
       // })();
     }
-    afterPjax();    
+    afterPjax();   
 
 
 
