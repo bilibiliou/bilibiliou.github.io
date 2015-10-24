@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+	<head>
+		<title></title>
+		<meta charset="utf-8">
+		<script>
+		window.onload = function()
+		{
+			var oUl = document.getElementById('ul1');
+			var oLi = oUl.getElementsByTagName('li');
+			var oDiv = document.getElementById('div1');
+
+			for(var i = 0 ; i<oLi.length ; i++)
+			{
+				oLi[i].index = i;
+				oLi[i].ondragstart = function(ev)
+				{
+					var oEvent = ev || event;
+					oEvent.dataTransfer.setData( 'Zyz' , this.index );
+					this.style.background = 'green';
+					oDiv.ondragenter = function()
+					{
+						this.style.background = 'blue';
+					}
+				}
+				
+				oLi[i].ondragend = function()
+				{
+					this.style.background = 'yellow';
+				}
+			}
+
+			oDiv.ondragstart = function(ev)
+			{
+				var oEvent = ev || event;
+
+				var Y = oEvent.clientY - this.offsetTop;
+				var X = oEvent.clientX - this.offsetLeft;
+				oDiv.ondrag = function(ev)
+				{
+					var oEvent = ev || event;
+					
+					var l  = oEvent.clientX - X + 'px';
+					var t = oEvent.clientY - Y + 'px';
+					this.style.left = l;
+					this.style.top = t;
+				}
+			}
+
+			oDiv.ondragend = function(ev)
+			{
+				var oEvent = ev || event;
+			}
+
+			oDiv.ondragleave = function()
+			{
+				this.style.background = 'red';
+			}
+
+			oDiv.ondrop = function(ev)
+			{
+				var oUl = document.getElementById('ul1');
+				//需要进行判断的两点理由
+
+				//要li元素要拖拽的时候才能回setData,如果一开始就拖动垃圾桶会产生错误
+				//拖拽目标元素也会触发ondrop事件
+				
+				if(ev.dataTransfer.getData('Zyz'))
+				{
+					oUl.removeChild(oLi[ev.dataTransfer.getData('Zyz')]);
+					this.style.background = 'black';
+				}
+				
+			}
+
+			oDiv.ondragover = function(ev){ev.preventDefault();}
+		}
+		</script>
+		<style>
+			#ul1 li{ list-style:none; width:200px; height:30px; background:#ccc; margin-bottom: 5px; border-radius: 5px;}
+
+			#div1{ width: 100px; height: 100px; background: red;position: absolute;}
+		</style>
+	</head>
+	<body>
+		<ul id="ul1">
+			<li draggable="true" >a</li>
+			<li draggable="true" >s</li>
+			<li draggable="true" >c</li>
+		</ul>
+
+		<div draggable="true" id="div1">垃圾桶</div>
+	</body>
+</html>

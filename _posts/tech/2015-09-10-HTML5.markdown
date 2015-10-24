@@ -960,98 +960,13 @@ effectAllowed : 当拖拽元素进入目标元素的时候鼠标的光标样式(
 
 setDragImage(element,x,y):设置拖放操作的自定义图标。其中element设置自定义图标，x设置图标与鼠标在水平方向上的距离，y设置图标与鼠标在垂直方向上的距离。
 
-{% highlight Javascript %}
 demo:
 一个垃圾桶删除功能的demo  垃圾桶可以拖拽
 
-==== html ====
-<ul id="ul1">
-	<li draggable="true" >a</li>
-	<li draggable="true" >s</li>
-	<li draggable="true" >c</li>
-</ul>
-
-<div draggable="true" id="div1">垃圾桶</div>
-
-==== css ====
-
-#ul1 li{ list-style:none; width:200px; height:30px; background:#ccc; margin-bottom: 5px; border-radius: 5px;}
-
-#div1{ width: 100px; height: 100px; background: red;position: absolute;}
-
-==== Javascript ====
-
-var oUl = document.getElementById('ul1');
-var oLi = oUl.getElementsByTagName('li');
-var oDiv = document.getElementById('div1');
-
-for(var i = 0 ; i<oLi.length ; i++)
-{
-	oLi[i].index = i;
-	oLi[i].ondragstart = function(ev)
-	{
-		var oEvent = ev || event;
-		oEvent.dataTransfer.setData( 'Zyz' , this.index );
-		this.style.background = 'green';
-		oDiv.ondragenter = function()
-		{
-			this.style.background = 'blue';
-		}
-	}
-	
-	oLi[i].ondragend = function()
-	{
-		this.style.background = 'yellow';
-	}
-}
-
-oDiv.ondragstart = function(ev)
-{
-	var oEvent = ev || event;
-
-	var Y = oEvent.clientY - this.offsetTop;
-	var X = oEvent.clientX - this.offsetLeft;
-	oDiv.ondrag = function(ev)
-	{
-		var oEvent = ev || event;
-		
-		var l  = oEvent.clientX - X + 'px';
-		var t = oEvent.clientY - Y + 'px';
-		this.style.left = l;
-		this.style.top = t;
-	}
-}
-
-oDiv.ondragend = function(ev)
-{
-	var oEvent = ev || event;
-}
-
-oDiv.ondragleave = function()
-{
-	this.style.background = 'red';
-}
-
-oDiv.ondrop = function(ev)
-{
-	var oUl = document.getElementById('ul1');
-	//需要进行判断的两点理由
-
-	//要li元素要拖拽的时候才能回setData,如果一开始就拖动垃圾桶会产生错误
-	//拖拽目标元素也会触发ondrop事件
-	
-	if(ev.dataTransfer.getData('Zyz'))
-	{
-		oUl.removeChild(oLi[ev.dataTransfer.getData('Zyz')]);
-		this.style.background = 'black';
-	}
-	
-}
-
-oDiv.ondragover = function(ev){ev.preventDefault();}
+[拖拽demo](/assets/download/rubbish-bin.html)
 
 请在chrome下测试,不兼容火狐
-{% endhighlight %}
+
 
 ### file
 
@@ -1082,11 +997,13 @@ oDiv.ondrop = function(ev)
 {% endhighlight %}
 
 FileReader对象
+
 {% highlight Javascript %}
 当我们接受完文件之后,还需要能读取这些文件
 所以,我们需要用到这么一个对象FileReader
 
 FileReader下面有这么几个方法
+
 readAsDataURL([format])读取fileList文件中的数据 format必填,填fileList中的文件
 FileReader().onload 加载该文件数据该方法中一个result的值,返回的是文件base64的内容
 
@@ -2030,7 +1947,128 @@ ev.url : 修改缓存页面的url
 
 [Demo](/assets/download/daliy-walk.html)
 
-注意：尽量使用火狐测试,原码自行右键,本人做了更多改进
+注意：尽量使用火狐测试,原码自行右键,本人做了一些优化,
+同步服务器有兴趣的可以下载下来原码自己调用ajax , 本人这里就没有写了
+
+## audio video
+
+音频和视频标签,可以允许我们导入一段音频和视频
+
+{% highlight Html %}
+<audio src="音频地址"></audio>
+<video src="视频地址"></video>
+{% endhighlight %}
+
+音频视频标签拥有以下属性,来控制不同的功能
+
+controls: 显示或隐藏用户控制界面
+autoplay: 媒体加载完后是否自动播放
+loop: 媒体是否循环播放
+currentTime: 开始到播放现在所用的时间
+duration: 媒体播放需要的总时间( read-only )
+volume: 0.0 - 1.0的音量相对值
+muted: 是否静音
+
+preload: 如果出现这个属性,那么在页面加载的时候同时加载视频,并准备播放,如果有autoplay属性,则这个属性自动忽略
+
+paused: 媒体是否暂停( read-only )
+ended: 是否播放结束( read-only )
+error: 是否出现错误( read-only )
+currentSrc: 播放源地址( read-only )
+
+play() : 视频播放
+pause() : 视频暂停
+load() : 重新加载媒体 (如果我们source的地址修改了,需要重新加载一遍媒体才能更新视频内容)
+
+只有视频才有的属性
+width: 播放器的宽度
+height: 播放器的高度
+poster: 规定视频加载的时候或者用户点击播放前,播放器显示的图像
+videoWidth: 视频的实际宽
+videoHeight: 视频的实际高
+
+但是一开始视音频导入后并不能播放,是因为默认并没有开始,如果需要开始播放,则需要我们显示用户控制界面
+再点击开始播放
+
+怎么显示用户控制界面呢？只要添加一个controls属性就行了
+{% highlight Html %}
+<audio controls src="音频地址"></audio>
+<video controls src="视频地址"></video>
+{% endhighlight %}
+
+如果我们需要一开始就播放只要再加一个autoplay属性就OK了
+{% highlight Html %}
+<audio controls autoplay src="音频地址"></audio>
+<video controls autoplay src="视频地址"></video>
+{% endhighlight %}
+
+如果我们需要获取到已经播放的时间,这时候就需要使用JS了
+{% highlight Javascript %}
+
+<audio controls autoplay src="音频地址"></audio>
+
+window.onload = function()
+{
+	var oA = document.getElementsByTagName('audio');
+
+	// 这个属性可以每一秒获取当前的时间进度
+	// setInterval(function(){
+	//	console.log( oA.currentTime );
+	// },1000);
+
+	// 当然我们可以通过js控制其时间进度
+	oA.currentTime = 60; //从音频的一分钟后开始
+	
+	// 我们还可以通过duration 获取媒体将播放的总时间(秒)
+	console.log( oA.duration );
+	// 通过volume来获取媒体播放的相对音量
+	console.log( oA.volume );
+	// 是否静音? 若静音了返回true 没有静音返回false
+	console.log( oA.muted );
+	// 媒体是否暂停
+	console.log( oA.paused );
+	// 音频视频是否播放结束
+	console.log( oA.ended );
+	// 播放是否出现错误,如果错误则返回错误代码
+	console.log( oA.error );
+	// 返回媒体源地址
+	console.log( oA.currentSrc );
+}
+
+视频也一样这里就不再赘余
+{% endhighlight %}
+
+
+
+
+### 编解码器的概念
+
+因为视频或音频文件存储所需的空间通常是比较大的,所以各个浏览器厂商都会将浏览器中添加一个或多个编解码器程序,当读取较大的视频音频文件的时候,
+会先通过编码将文件进行压缩。因为这样压缩会损失部分视音频的质量,所以将这样的编码压缩方式称之为为有损压缩,
+当压缩完之后然后再传输过来,传输完之后再进行解码播放。
+这样就算网络环境不稳定也能在较短时间内读取较大的音频视频文件
+
+但是,因为编码程序有的是开源框架,有的是收费的框架,所以也就导致了不同的浏览器所支持的视频文件类型不同。
+
+那么怎样兼容不同的浏览器,来播放视频文件呢？
+
+### source
+
+上面我们提到如果需要引入一个视频或音频文件,可以通过src属性引入对应的文件源
+但是由于编码程序的不同,我们需要做不同浏览器厂商视音频的兼容。
+
+当然首先要兼容我们就需要准备几个同一个视音频,类型名不同的文件,
+
+
+我们可以通过source标签引入不同类型名的视频源
+
+{% highlight Html %}
+<audio controls>
+	<source src="视频地址">
+</audio>
+<video controls ></video>
+{% endhighlight %}
+
 
 ## 感谢
 
