@@ -4,8 +4,8 @@
 <meta  charset="utf-8" />
 <title>一个自定义的单选框</title>
 <style type="text/css">
-	label{ float: left; margin:0 auto;  position:relative; }
-	label input{ position:absolute; }
+	label{ float: left; margin:0 auto; overflow:hidden;  position:relative; }
+	label input{ position:absolute;  top:-50px; left: -50px;}
 	span{ float:left; width:50px; height:50px; margin:5px;border:3px solid #000;}
 	input:checked~span {background:red;}   /*~ 选择被选元素后面的全部元素*/
 </style>
