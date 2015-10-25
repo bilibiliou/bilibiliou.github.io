@@ -1,0 +1,398 @@
+---
+layout: post
+title: Css3 学习历程
+category: 技术
+keywords: 技术,css3
+---
+
+## 属性选择器
+
+我们可以通过属性选择器,选出带有特定的属性的标签元素
+
+{% highlight html %}
+
+<style>
+	li{height:30px; border:1px solid #000; list-style:none; margin:5px;}
+	li[lavender]{background: red;}
+</style>
+
+<ul>
+	<li lavender="owen" >owen</li>
+	<li lavender="zye"  >zye</li>
+	<li lavender="ppt"  >ppt</li>
+</ul>
+
+{% endhighlight %}
+
+想上面demo演示一样,我们可以通过同一种属性找到所对应的标签元素,并将他们全部变成红色
+
+{% highlight css %}
+	
+	li[lavender=owen]{background:yellow;}
+
+{% endhighlight %}
+
+如果想修改特定的属性的标签样式,可以这么写
+
+每一个属性都是一个词列表,也就是说多个标签里面可以有多个属性名(以空格隔开),如果需要从这个列表中选择特定的属性可以使用~=来选出具有特定属性名的标签元素
+
+{% highlight html %}
+
+<style>
+	li{height:30px; border:1px solid #000; list-style:none; margin:5px;}
+	li[lavender~=owen]{background: yellow;}
+</style>
+
+<ul>
+	<li lavender="owen handsome" >owen</li>
+	<li lavender="zye"  >zye</li>
+	<li lavender="ppt"  >ppt</li>
+</ul>
+
+{% endhighlight %}
+
+注意:~= 和 = 的区别, = 是要属性名完全相同才可以选取, 而~=是属性中只要有这个属性就能选取
+
+当然上面这样获取可能比较麻烦,如果不想每次获取属性都打一次属性名的话,可以使用^=来获取
+
+这样
+
+{% highlight css %}
+	li[lavender^=o]{background:yellow;}
+{% endhighlight %}
+
+这样只要是o开头的属性名就能被获取到,如果有多个o开头的属性,可以再加上后面的字母直到完全和其他属性名不同为止
+
+这里owen handsome 就获取到了o开头的标签
+
+当然能获取第一个属性开头也就有获取第一个属性结尾的方法,这里我们使用$=
+
+{% highlight css %}
+	li[lavender$=n]{background:yellow;}
+{% endhighlight %}
+
+这样通过$= 我们可以找到属性owen handsome结尾的e,然后将这个标签变成黄色
+
+我们还可以通过*= 找到含有特定字母的标签
+
+比如 zye 和 owne handsome 两个属性中都有e
+{% highlight css %}
+	li[lavender*=e]{background:yellow;}
+{% endhighlight %}
+
+我们就可以*=e找到对应的两个标签
+
+最后一个也是最特殊的属性选择器,他规定只要是 `某个特定字母-` 和 `单独的某个特定字母` 开头的属性
+{% highlight html %}
+
+<style>
+	li{height:30px; border:1px solid #000; list-style:none; margin:5px;}
+	li[lavender|=b]{background: yellow;}
+</style>
+
+<ul>
+	<li lavender="b-owen handsome" >owen</li>
+	<li lavender="g-zye"  >zye</li>
+	<li lavender="bppt"  >ppt</li>
+	<li lavender="b"  >b</li>
+</ul>
+
+{% endhighlight %}
+
+如上面所示, 含有b-owen handsome 和 b的元素都会被获取到,然而有b开头的 bppt 和 g-zye都不会被获取到
+
+## 结构性伪类选择器 
+
+除了通过属性选择html元素外,Css3还允许我们通过结构伪类来选择对应的元素
+
+{% highlight html %}
+
+<style>
+	p{height:30px; border:1px solid #000;}
+</style>
+
+<p>
+	p1
+</p>
+<p>
+	p2
+</p>
+<p>
+	p3
+</p>
+<p>
+	p4
+</p>
+<p>
+	p5
+</p>
+
+{% endhighlight %}
+
+例如这里所有的p标签,我们可以通过结构选择器来选择其中任意的p标签来实现不同的样式
+{% highlight css %}
+
+	p:nth-child(1){background:yellow;}
+	p:nth-child(2){background:red;}
+	p:nth-child(3){background:red;}
+{% endhighlight %}
+
+
+
+p:nth-child(数字)   即所有p标签对应的父级的第几个p标签,这样理解起来很拗口,还是再举个例子吧
+{% highlight html %}
+<ul>
+	<p></p>
+	<li></li>
+	<p></p>
+</ul>
+
+<ul>
+	<p></p>
+	<li></li>
+	<p></p>
+</ul>
+
+上面有两个Ul ul下有p标签有li标签
+这时候加一句
+<style> 	
+	p:nth-child(2){background:red;}
+</style>
+
+这样就会先找到所有p标签的父节点, 也就是两个ul标签 然后再找到这个父节点下的第二个结点,
+然后判断是否也是p结点,如果也是p结点那么就修改样式
+
+那么上面这么的布局结构,所有ul下的第二个结点都是li,那p:nth-child就没有任何效果
+
+如果我们改变一下他们的位置
+<ul>
+	<p></p>
+	<p></p>
+	<li></li>
+</ul>
+
+<ul>
+	<p></p>
+	<p></p>
+	<li></li>
+</ul>
+
+就可以发现所有ul 下的p 标签效果出现了
+{% endhighlight %}
+
+注意:这里结构性伪类选择器是以1开始计数的,不同于js
+
+同时,nth-child后面不单单填数字,还可以选择奇数(odd)和偶数(even)
+我们还可以让所有的奇数行变色
+{% highlight css %}
+
+	p:nth-child(odd){background:yellow;}
+
+{% endhighlight %}
+
+偶数行
+{% highlight css %}
+
+	p:nth-child(even){background:pink;}
+
+{% endhighlight %}
+
+结构性伪类选择器还支持n这么一个参数,n取0到正无穷.然后从n到∞开始遍历,知道遍历完成所有的标签
+我们这样我们就可以通过添加参数n的写法来获取奇偶数行了
+
+注意：元素获取是从1开始的,但是n确实从0开始的
+
+奇数行:
+{% highlight css %}
+
+	p:nth-child(2n-1){background:pink;}
+
+{% endhighlight %}
+
+偶数行:
+{% highlight css %}
+
+	p:nth-child(2n){background:pink;}
+
+{% endhighlight %}
+
+和nth-child所对应的还有一个nth-last-child 
+他俩唯一的区别就是nth-child从前往后数 , nth-last-child是从后往前数,其他的功能都相同
+
+还有一个nth-of-type,我们还是以刚刚那个例子为例
+{% highlight html %}
+<ul>
+	<p></p>
+	<li></li>
+	<p></p>
+</ul>
+
+<ul>
+	<p></p>
+	<li></li>
+	<p></p>
+</ul>
+
+<style> 	
+	p:nth-of-type(2){background:red;}
+</style>
+
+刚刚使用nth-child的时候,我们获取的是每个ul下的第二个结点,然后判断是否是p结点,如果是则加样式,不是则不加
+
+所以每个ul下的第二个标签是li和所选取的p不符合,也就没有任何样式
+
+但是,如果我们这里写的是nth-of-type的话,却能将每个ul下的第二个p结点找到并加样式
+说明,nth-of-type获取的不是每个ul下的第二个结点 而是根据选取的标签来匹配第几个元素
+
+{% endhighlight %}
+
+
+
+但是,如过我们现在把所匹配的东西换成类呢？
+{% highlight html %}
+
+<ul>
+	<p class="abc"></p>
+	<li class="abc"></li>
+	<p class="abc"></p>
+</ul>
+
+<ul>
+	<p class="abc"></p>
+	<li class="abc"></li>
+	<p class="abc"></p>
+</ul>
+
+我们再style里添加这个语句
+<style>
+	.abc:nth-of-type(2){background: red;}
+</style>
+
+那么会以什么形式获取呢？
+
+结果是获取每个ul下的第二个p
+
+如果我们把结构再换一下
+<ul>
+	<li class="abc"></li>
+	<p class="abc"></p>
+	<li class="abc"></li>
+</ul>
+
+<ul>
+	
+	<li class="abc"></li>
+	<p class="abc"></p>
+	<li class="abc"></li>
+</ul>
+
+那么这时候获取的又是li
+
+如果我们再换一下这样
+<ul>
+	<p class="abc"></p>
+	<li class="abc"></li>
+	<p class="abc"></p>
+</ul>
+
+<ul>
+	<li class="abc"></li>
+	<p class="abc"></p>
+	<li class="abc"></li>
+</ul>
+
+那么获取的是 第一个ul里的第二个p  和 第二个ul 里面的第一个p
+
+那么我们就看出来了,如果是获取类的话,流程是:先根据不同父级的第一个类的标签获取父级,再从该父级中找到对应标签的第几个元素
+
+那么以此类推 nth-child再获取类的时候也是如此,都是根据第一个类来决定获取什么元素
+{% endhighlight %}
+
+当然一样的 也有nth-last-of-type 和 nth-of-type寻取元素顺序相反,但其他功能相同
+
+
+当然还有什么
+
+first-child 
+last-child
+first-of-type
+last-of-type
+only-child
+only-of-type
+empty
+
+感觉比较鸡肋
+
+只要牢牢记住
+nth-child是 根据结点寻找,并且找的结点要和选择的结点标签(或者类名)要一致      (不一定能找的到)
+nth-of-type 是根据所匹配的标签(或者第一个类名)寻找                           (一定能找的到)
+
+结构性伪类我认为基本上就够了
+
+nth-child  和 nth-of-type 个人认为实在弄得太复杂,但是功能还是很强大的.慎用
+
+
+## 伪类和伪类元素
+
+:target
+当我们点击锚点,产生目标的时候触发修改其样式
+
+[demo](/assets/download/Pseudo-class1.html)
+
+表单伪类
+
+:enabled
+当表单可以执行的时候呈现的样式
+
+:disabled
+当表单不可执行的时候呈现的样式
+
+[enabled 和 disabled 的 demo](/assets/download/Pseudo-class2.html)
+
+:checked
+当选框选中时候呈现的样式(可以是单选也可以是多选)
+
+:indeterminate
+单选框还未进行选择的时候的样式
+用户选择后样式消失
+
+[checked 和 indeterminate](/assets/download/Pseudo-class3.html)
+
+我们可以使用checked制作一个自定属性的单选按钮
+
+[一个自定义单选框](/assets/download/Pseudo-class4.html)
+
+文本伪类
+
+:first-line 选取第一行文本并修改样式
+
+:first-letter 选取第一个文字(如果使用了这个伪类那就无法进行选取了)
+
+::selection 改变选取文本高亮样式
+
+::after 和 ::before (在文本前面添加内容 和 后面添加内容)
+也可做:afer 和 :before,还可以用来制作小箭头和解决bfc问题(重要)
+
+
+:not(s)排除多个或者一个的样式
+
+{% highlight html %}
+<style>
+	h1:not(.not){background: red;}
+</style>
+
+<body>
+	<h1>h1</h1>
+	<h1 class="not">h1</h1>
+	<h1 class="not">h1</h1>
+	<h1>h4</h1>
+	<h1>h5</h1>
+	<h1>h6</h1>
+	<h1>h7</h1>
+</body>
+
+这里我给所有h1设置了红色,但是用:not()排除了所有带.not的h1标签
+{% endhighlight %}
+
+## 感谢
+[妙味课堂](www.miaov.com)
