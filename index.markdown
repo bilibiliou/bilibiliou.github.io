@@ -26,5 +26,13 @@ title: Welcome
 
 [小胖轩](http://codeboy.me/)
 
+[imweb腾讯前端圈](http://imweb.io/)
 
+[alloyteam 腾讯全端团队](http://www.alloyteam.com/)
+
+[ISUX 腾讯用户体验团队](http://isux.tencent.com/)
+
+[淘宝UED](http://ued.taobao.org/blog/)
+
+[百度FEX](http://fex.baidu.com/)
 

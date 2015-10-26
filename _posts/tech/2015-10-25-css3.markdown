@@ -200,7 +200,7 @@ p:nth-child(数字)   即所有p标签对应的父级的第几个p标签,这样�
 结构性伪类选择器还支持n这么一个参数,n取0到正无穷.然后从n到∞开始遍历,知道遍历完成所有的标签
 我们这样我们就可以通过添加参数n的写法来获取奇偶数行了
 
-注意：元素获取是从1开始的,但是n确实从0开始的
+注意：元素获取是从1开始的,但是n却是从0开始的
 
 奇数行:
 {% highlight css %}
@@ -339,7 +339,7 @@ nth-child  和 nth-of-type 个人认为实在弄得太复杂,但是功能还是�
 
 [demo](/assets/download/Pseudo-class1.html)
 
-表单伪类
+### 表单伪类
 
 :enabled
 当表单可以执行的时候呈现的样式
@@ -362,7 +362,7 @@ nth-child  和 nth-of-type 个人认为实在弄得太复杂,但是功能还是�
 
 [一个自定义单选框](/assets/download/Pseudo-class4.html)
 
-文本伪类
+### 文本伪类
 
 :first-line 选取第一行文本并修改样式
 
@@ -394,5 +394,265 @@ nth-child  和 nth-of-type 个人认为实在弄得太复杂,但是功能还是�
 这里我给所有h1设置了红色,但是用:not()排除了所有带.not的h1标签
 {% endhighlight %}
 
+## 新增颜色模式
+
+Css3里面新增了rgba颜色模式,可以允许我们单独调节调节单层文本或者布局的透明度
+(不影响父级或子级的透明度)
+
+我们还可以使边框变成半透明
+{% highlight css %}
+	#box{ width:100px; height:100px; border:10px solid rgba(255,255,255,0.5);}
+{% endhighlight %}
+
+## 新增颜色HSL模式
+
+## 文字阴影
+
+text-shadow: x轴偏移 , y轴偏移 , 向外扩展度 , 颜色;
+
+通过文字阴影我们可以制作文字描边
+{% highlight css %}
+	text-shadow: 0 , 0 , 1px red;
+{% endhighlight %}
+可替代 只有 -webkit- 支持的文字描边 -webkit-text-stroke: 宽度 颜色;
+
+我们可以对文字添加多层阴影
+{% highlight css %}
+	text-shadow: 0 0 5px red,5px 0 5px pink,0 5px 5px yellow;
+{% endhighlight %}
+
+用逗号隔开可以添加多次阴影(多次添加阴影会影响浏览器性能)
+
+我们可以来看一下妙味给我们提供的一些文字效果
+
+[光晕效果](/assets/download/text-shadow1.html)
+
+[文字模糊](/assets/download/text-shadow2.html)
+
+[火焰文字](/assets/download/text-shadow3.html)
+
+## 文本排列
+
+direction 定义文字排列方式
+
+direction: rtl 或者 ltr; (right to left 或者 left to right)
+
+如果设置了rtl,则文本整个从右到左排列,但是文本阅读方向还是默认的从右到左
+
+如果需要设置文本阅读方向,我们在加上uncode-bi-di:bidi-override;
+实现文本从右到左阅读
+
+兼容ie6+
+
+## 超出文字显示省略号
+
+当我们需要应对超出文字的时候(标题太长超出范围的时候)
+可以使用overflow:hidden;来隐藏文本, 但是这样有时候会将处于超出边缘的文字一分两半,就影响效果。
+
+这样我们需要一种既能隐藏超出文字,有不影响用户体验的方法,就可以加省略号来代替隐藏
+
+首先浏览器对超出文字的处理默认是超出自动换行的,我们需要将其设置为非默认隐藏
+{% highlight css %}
+	white-space:nowrap;
+{% endhighlight %}
+然后overflow:hidden;将溢出的文字隐藏,这时候就会出现上文提到的问题
+
+这时候就使用css3给我们提供的 text-overflow:Ellipsis (显示省略号)
+如果我们不想要省略号可以写clip 这样就能处理掉那些溢出一半的文字
+
+## FontFace
+
+当我们需要在网页中添加一些特殊的字体,可以使用facefont引用字体包让用户一起加载
+
+但是不同的浏览器对字体文件的格式支持的不同,所以我们需要将一个字体文件格式化
+为不同的字体格式
+
+老外呢就给我们提供了这么一个网站
+[fontsquirrel](http://www.fontsquirrel.com/fontface/generator)
+
+当我们获得不同格式的字体文件之后,我们只要在css中添加这样的代码
+{% highlight css %}
+@font-face {
+    font-family: 'newfontstyle'; /*字体类名可以自定义*/
+    src: url('需要引用的字体文件名.eot');
+    src: url('需要引用的字体文件名.eot?#iefix') format('embedded-opentype'),
+         url('需要引用的字体文件名.woff') format('woff'),
+         url('需要引用的字体文件名.ttf') format('truetype'),
+         url('需要引用的字体文件名.svg#untitledregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/*这样就可以直接用这种字体了*/
+
+h1{font-family:'newfontstyle';}
+{% endhighlight %}
+
+但是中文字体比较麻烦,中文常用的字都有几千个,而英文就那26个字母
+这就产生了问题:
+
+① 中文字体文件转格式特别麻烦
+② 中文字体文件特别大影响网页加载
+
+而腾讯的ISUX团队开发了字蛛中文字体压缩器(基于node)
+
+从而解决了这个问题
+具体可见
+
+[设计师的春天：中文WebFont解决方案Font-Spider(字蛛)](http://isux.tencent.com/zh-hans/font-spider.html)
+
+[字蛛官网](http://font-spider.org/)
+
+## 弹性盒模型
+
+### display:box 和 box-flex
+
+我们先来看一个例子
+
+[demo](/assets/download/display-box.html)
+
+{% highlight html %}
+
+<style>
+	.wrap{
+		width:600px;
+		height: 200px;
+		display:box;  /*也可以设置成inline-box效果都是一样的*/
+	}
+	.sectionFirst{
+		background:orange; 
+		box-flex:3; 
+	}
+	.sectionSecond{ 
+		background:purple; 
+		box-flex:2;
+	}
+	.sectionThird{
+		background:green; 
+		box-flex:1;
+	}
+</style>
+
+<article class="wrap">
+	<section class="sectionFirst">01</section>
+	<section class="sectionSecond">02</section>
+	<section class="sectionThird">03</section>
+</article>
+
+/*注:这里我将浏览器内核前缀省略了,因为我希望技术讨论应该注重精华*/
+
+{% endhighlight %}
+
+
+这里有一个大的盒子,当我们给wrap。当我们给他设置`display:box;`的时候我们就可以对他进行弹性分配了
+
+注意这里底下的子标签 01 02 03 我都没有给他们设置宽高,
+但是给了他们这么一个东西`box-flex` 更具它设置子级所获得的父级的空间期权
+这样父级的空间就这么按照期权的比例分成 1 + 2 + 3 = 6 份 那么一份就是 width:100px; height:200px;
+
+然后根据根据1:2:3的比例子级进行分割父级的空间
+
+但是如果我们将其中一个只设为固定宽高呢？
+{% highlight css %}
+	.sectionSecond{ 
+		background:purple;
+		width:200px;
+		height:100px;
+	}
+{% endhighlight %}
+
+这样父级就会先为这个设置了固定宽高的子级分配宽高,然后在将剩下的空间根据flex期权来分配
+
+如果固定宽高已经将父级的空间分配完毕了,那么flex及失效
+
+如果一个元素既分配固定宽高又有flex期权,那么两者不冲突,两种效果将叠加
+
+其次,眼尖的同学一定会发现,我并没有给子级设置`float:left;` 但是子级却可以从左到右排列开来,而且子级还可以设置自己的固定样式
+
+这说明如果给父子设置display:box; 那么子级等于自动加上了`display:inline-box;`
+(尽管firebug中显示的子级的布局还是`display:block`)至于为什么,下文会提到
+
+这里还有一个问题,我很疑惑,在其他标准浏览器中,我可以给添加了`display:box;`的盒子再加上居中`margin:0 auto;` 但是在火狐下,却无法设置左右居中
+看来C3的标准制定还是任重道远
+
+### box-orient
+
+从上文看来只要给父级设置了`display:box;`我们就可以对父级底下的子级进行一系列操作了
+除了用flex来动态的分配空间外,我们还可以使用orient来控制子级的排列
+
+orient(英:标定方向,东方的)可选的值有:
+
+horizontal(水平) | vertical(垂直) | inline-axis(内联轴) | block-axis(块轴) | inherit
+
+这个值设置对象是父级,作用效果是全部子级元素(不能给某个子级单独设置)
+
+上面提到了,当我们给父级设置`display:box` 自己会默认`display:inline-block`
+这就是因为 `box-orient` 的初始值是`inline-axis` 然后子级默认就是`display:block`
+
+所以两个效果叠加起来就变成了`display:inline-block`的效果 
+
+如果把orient修改成block-axis那么就等于取消了inline-block的效果,那么这时候所有的子级元素都会变成像块状元素一样独占一行了。
+(但是注意即使变成了默认的块状元素也不能加浮动,如果加了浮动就会脱离父级`display:box;`的控制)
+
+而垂直和水平呢,则是单纯的控制子级的水平垂直排列,不会改变元素的display
+
+这个属性感觉特别有用,这样我们再也不需要使用`margin:0 auto;`和`position:absolute; top:50%; left:50%来进行居中了
+
+
+### box-direction
+
+上文我们曾提到text-direction来控制文字的排列,那么类比文字的排列,我们就很容易理解box-direction的用处了
+
+这个值同样只给父级设定,作用全部子级
+
+可选的值有:
+
+Normal | Reverse(反向) | inherit
+
+### box-ordinal-group
+
+ordinal(英:序数的)-group可以设定不同子级元素的初始位置
+
+{% highlight css %}
+	.sectionFirst{background:orange; 
+		box-flex:3;
+		box-ordinal-group:2
+	}
+	.sectionSecond{ background:purple;  
+		box-flex:2;
+		box-ordinal-group:1;
+	 }
+	.sectionThird{ background:green;
+		box-flex:1;
+		box-ordinal-group:3;
+	}
+
+	/*同样的我还是省略浏览器内核前缀*/
+{% endhighlight %}
+
+这样我们就可以随意打乱所布局好的子级元素,又不脱离文档流。
+
+### box-pack
+
+我们可以在父级设定`box-pack`来对子级和空闲空间进行管理
+
+当然如果已经子级已经通过flex把父级的空间全部分配完了,那么这个属性设置了也没什么用了
+
+pack(英:包,一组)可选的值
+
+Start | End | Center | Justify(英:证明,整齐排列) | inherit
+
+如果设置了start 那么所有子元素在盒子左侧显示，空闲空间在右侧
+end 那么所有子元素在盒子右侧显示，空闲空间在左侧
+center 那么所有子元素居中,空闲空间在两侧
+Justify 那么空闲空间与子元素之间整齐分布
+
+还有注意浏览器兼容问题 至少在本人撰写这篇文章的时候关于`display:box;`的相关Css属性还是需要添加浏览器内核前缀
+
+我们可以给body标签设置`display:box;`这样就能更好的控制底下的子元素和空闲空间了,布局也就会轻松很多
+
 ## 感谢
+
 [妙味课堂](www.miaov.com)
+
+[张鑫旭的博客](http://www.zhangxinxu.com/wordpress/2010/12/css-box-flex%E5%B1%9E%E6%80%A7%EF%BC%8C%E7%84%B6%E5%90%8E%E5%BC%B9%E6%80%A7%E7%9B%92%E5%AD%90%E6%A8%A1%E5%9E%8B%E7%AE%80%E4%BB%8B/)
