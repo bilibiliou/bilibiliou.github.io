@@ -83,7 +83,6 @@
     // Up Arrow
     if( oEvent.keyCode == 38 && oSearchInput.value != '' && oSearchList.style.display == 'block' )
     {
-      console.log('www');
       if( index == 0 )
       {
         index = oLi.length - 1;

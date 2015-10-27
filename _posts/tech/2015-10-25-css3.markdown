@@ -638,7 +638,7 @@ ordinal(英:序数的)-group可以设定不同子级元素的初始位置
 
 当然如果已经子级已经通过flex把父级的空间全部分配完了,那么这个属性设置了也没什么用了
 
-pack(英:包,一组)可选的值
+pack(英:包,一组)可选的值:
 
 Start | End | Center | Justify(英:证明,整齐排列) | inherit
 
@@ -647,9 +647,179 @@ end 那么所有子元素在盒子右侧显示，空闲空间在左侧
 center 那么所有子元素居中,空闲空间在两侧
 Justify 那么空闲空间与子元素之间整齐分布
 
+### box-align
+
+上文说到的`box-pack` 如果我们设置为center那么就可以实现x轴水平居中,但是如果我们需要对y轴进行居中,却要用到box-align
+
+align()可选的值:
+
+Start | End | Center 
+
+start 自然就是让全部子元素屯在父级顶部了,默认值也是Start
+
+End 以此类推当然就是让全部子元素屯在父级底部了
+
+center 实现垂直方向水平居中
+
 还有注意浏览器兼容问题 至少在本人撰写这篇文章的时候关于`display:box;`的相关Css属性还是需要添加浏览器内核前缀
 
 我们可以给body标签设置`display:box;`这样就能更好的控制底下的子元素和空闲空间了,布局也就会轻松很多
+
+## box-sizing
+
+## 响应式布局
+
+## 圆角
+
+如果需要在原来的浏览器上实现圆角的效果,需要通过切图,再使用双层嵌套来实现
+但是在Css3便很容易就可以实现圆角的效果。而且圆角对各个标准浏览器都已经实现兼容
+
+圆角的实现原理
+
+![picshoot](/assets/img/broder-radius.png)
+
+如图,在Css3中圆角的实现是依靠,对一个角x轴偏移 和 y轴偏移来实现的
+
+{% highlight css %}
+	border-radius:5px;	
+{% endhighlight %}
+
+这是最简单的实现4个角呈圆角,即令四个角的X、Y轴都偏移5像素
+
+在X、Y偏移量相同的情况下,如果我们想要让四个角的的X、Y偏移量不同,可以尝试这种写法
+
+{% highlight css %}
+	border-radius:5px 10px 15px 20px;	
+{% endhighlight %}
+
+那么顺序是从左上→右上→右下→左下(顺时针排列)
+
+如果需要对角相同的话,可以尝试2个参数的写法
+
+{% highlight css %}
+	border-radius:10px 20px;	
+{% endhighlight %}
+
+这样写的顺序是左上角和右上角 → 右上角和右下角
+
+{% highlight css %}
+	border-radius:10px 15px 20px;	
+{% endhighlight %}
+
+如果是三个参数呢,那么就是从左上角 → 右上角和左下角 → 右下角
+
+以上的情况都是X、Y轴相同,但是角不同的例子
+如果需要细致的控制X Y轴的偏移度的话,可以这么写
+
+{% highlight css %}
+	border-radius:10px/20px;	
+{% endhighlight %}
+
+这种情况就是,四个角都相同,都是X轴偏移10px , Y轴偏移20px
+
+两个参数、三个参数、四个参数的写法(所对应的角的顺序都是相同的)
+
+两个参数:
+{% highlight css %}
+	border-radius:10px 15px/20px 25px;	
+{% endhighlight %}
+
+三个参数:
+{% highlight css %}
+	border-radius:10px 15px 20px/20px 25px 30px;	
+{% endhighlight %}
+
+四个参数:
+
+{% highlight css %}
+	border-radius:10px 15px 20px 25px/20px 25px 30px 35px;	
+{% endhighlight %}
+
+如果我们要画一个圆那么最简单的方法保证宽高相等
+
+{% highlight css %}
+	border-radius:50% 50%;	
+{% endhighlight %}
+
+绘制一个椭圆的话
+{% highlight css %}
+	border-radius:50%/50%;	
+{% endhighlight %}
+
+## 边框背景
+
+### border-image-sourceg
+
+Css3中还提供了这么一个属性border-image来允许我们给边框添加自定义的图片
+如果单纯只设border-image的话,那么自定义的图片将会分配在盒子的四个角上
+
+{% highlight css %}
+	border-image:url(边框背景路径);	
+{% endhighlight %}
+
+[demo](/assets/download/border-image-demo1.html)
+
+### border-width
+
+这个边框的宽度直接设置就行
+{% highlight css %}
+	border-width:100px;	
+{% endhighlight %}
+
+或者上下左右
+{% highlight css %}
+	border-top-width:100px;
+	border-bottom-width:100px;
+	border-left-width:100px;
+	border-right-width:100px;	
+{% endhighlight %}
+
+但是如果我们要真正的将背景变成一个边框背景而不是四个角的背景的话
+我们需要对背景图片进行切割
+
+### border-image-slice
+
+当然边框背景所需要的图片也不是,随随便便就能拿张图片过来用的,一张标准的边框背景图片需要以一种九宫格的方式呈现
+
+![picshoot](/assets/img/border-image2.png)
+
+如图所示,当我们拿到一张边框背景图的时候,我们需要先将其切四刀分成九份
+
+其中四个角格子所占的图片,分别对应一个盒子的四个角。而上下左右的格子则会被拉伸,平铺或者重复成为一个盒子的四条边
+
+![picshoot](/assets/img/border-image1.gif)
+
+如图我们来写border-image最基本的语句
+{% highlight css %}
+	border-image:url(边框背景路径) 从左位移n个像素竖直切割 从上位移n个像素水平切割
+	从右位移n个像素竖直切割 从下位移n个像素水平切割 四边延伸方法	
+{% endhighlight %}
+
+切割方向也是采用顺时针的方式
+
+或者两重参数
+{% highlight css %}
+	border-image:url(边框背景路径) 上下两边切 左右两边切 四边延伸方法	
+{% endhighlight %}
+
+当进行完图片分割后,就能看到成形的边框背景了
+(这里说明一点,当没有设置四边延伸方法的时候,默认的方式是拉伸,所以demo2中四边被拉伸了)
+[demo2](/assets/download/border-image-demo2.html)
+
+### border-image-repeat 
+当然切割完图片还不够,需要配合合适的延伸方法才可以
+
+拉伸(stretch) 将四边图片背景进行拉伸(即demo2相同)
+
+平铺(round) 将四边图片进行平铺,首先会计算是否会以整数个四边背景平铺,如果不能整齐的平铺,则会将四边图片合理的缩小一些,在进行平铺
+
+[demo3](/assets/download/border-image-demo3.html)
+
+重复(repeat) 直接简单的将四边背景进行重复,边缘可能会出现残缺
+
+[demo4](/assets/download/border-image-demo4.html)
+
+
 
 ## 感谢
 

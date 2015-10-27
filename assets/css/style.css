@@ -3,12 +3,10 @@
    @author Peiwen Lu (P233)
    https://github.com/P233/3-Ghost
 \*---------------------------------*/
-body{ cursor: url("../img/cursor.png"),default; }
-a{ cursor: url("../img/cursor.png"),default; }
 li{ cursor: url("../img/cursor.png"),default !important;}
 i{ cursor: url("../img/cursor.png"),default !important;}
 table{ border: 1px solid black ;}
-table td{ border: 1px solid #f90 ;}
+table td{ border: 1px solid rgba(255,210,189,0.5);}
 /*table th{ border: 1px solid red ;}*/
 /*---------------------------------*\
    Fonts
@@ -54,7 +52,9 @@ html, body {
   font: 100 16px/1.5 Avenir, sans-serif;
   -webkit-font-smoothing: subpixel-antialiased;
   -webkit-text-size-adjust: none;
-  overflow: hidden; }
+  overflow: hidden; 
+  cursor: url("../img/cursor.png"),default;
+}
 
 a {
   color: inherit;
@@ -63,7 +63,9 @@ a {
   -moz-transition: color .35s;
   -ms-transition: color .35s;
   -o-transition: color .35s;
-  transition: color .35s; }
+  transition: color .35s; 
+  cursor: url("../img/cursor.png"),default;
+}
 
 /*---------------------------------*\
    Sidebar => Tags & Posts List
@@ -82,7 +84,8 @@ a {
   @media screen and (max-width: 1280px) {
     #sidebar {
       position: absolute;
-      z-index: 97; } }
+      z-index: 97; } 
+    }
   @media screen and (max-device-width: 1280px) {
     #sidebar {
       -webkit-transform: translateX(0);
@@ -316,6 +319,7 @@ animation-name: swing;
   -ms-user-select: none;
   -o-user-select: none;
   user-select: none; }
+
   @media screen and (max-width: 585px) {
   #posts-list {
    width: 100%; } }
@@ -514,16 +518,15 @@ animation-name: swing;
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch; }
+  
+  #post ::selection 
+  {
+    color: white;
+    background: none;
+    text-shadow:0 0 3px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #ff00de, 0 0 30px #ff00de, 0 0 40px #ff00de, 0 0 50px #ff00de, 0 0 60px #ff00de;; 
+    font-weight: 400;
+  }
 
-  /*代码高亮默认背景*/
-  /*#post ::selection {
-    color: white;
-    background: #33caa6;
-    text-shadow: none; }
-  #post ::-moz-selection {
-    color: white;
-    background: #33caa6;
-    text-shadow: none; }*/
   @media screen and (max-width: 585px) {
     #post {
       font-size: 14px; } 

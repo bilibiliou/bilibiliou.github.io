@@ -155,3 +155,5 @@ var httpServer = http.createServer(function(request , respone)
 [7天学会nodejs ? ](http://nqdeng.github.io/7-days-nodejs/)
 
 [npm包管理工具](http://www.tuicool.com/articles/VB7nYn)
+
+[粉丝日记](http://blog.fens.me/series-nodejs/)
