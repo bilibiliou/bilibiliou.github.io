@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">	
+<title>Css3</title>
+<style>
+	.border-colors{width:900px; height: 700px; border:20px solid #000; margin:150px auto 0;
+		
+		color: #fff;
+		padding: 10px;
+		
+		/* Firefox */
+		-moz-border-top-colors: red pink yellow green;
+		-moz-border-left-colors: red pink yellow green;
+		-moz-border-bottom-colors: red pink yellow green;
+		/* WebKit - not working */
+		-webkit-border-top-colors: red pink yellow green;
+		-webkit-border-left-colors: red pink yellow green;
+		-webkit-border-bottom-colors: red pink yellow green;
+		/* IE9, Opera 10.5+ - not working */
+		border-top-colors: red pink yellow green;
+		border-left-colors: red pink yellow green;
+		border-bottom-colors: red pink yellow green;
+
+	}
+</style>
+
+</head>
+<body>
+	<div class="border-colors"></div>
+</body>
+</html>

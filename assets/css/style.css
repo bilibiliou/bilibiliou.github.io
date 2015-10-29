@@ -5,8 +5,8 @@
 \*---------------------------------*/
 li{ cursor: url("../img/cursor.png"),default !important;}
 i{ cursor: url("../img/cursor.png"),default !important;}
-table{ border: 1px solid black ;}
-table td{ border: 1px solid rgba(255,210,189,0.5);}
+table{ border: 5px solid black ;}
+table td{ border: 3px solid rgba(255,210,189,0.5);}
 /*table th{ border: 1px solid red ;}*/
 /*---------------------------------*\
    Fonts
@@ -559,7 +559,7 @@ animation-name: swing;
 h1, h2, h3, h4, h5, h6 {
   font-weight: 400; }
 h2{color:#AFDEE4;}                                                       /*惯用标签*/
-h3{color:#FF8B00;}
+h3{color:#AA5566;}
 
 #post__title {
   margin: 0;
@@ -573,8 +573,12 @@ h3{color:#FF8B00;}
 
 @media all and (-webkit-min-device-pixel-ratio:0) and (min-resolution: .001dpcm) { 
     #post__title{
-        background-image: -webkit-linear-gradient(left, #147B96, #E6D205 25%, #147B96 50%, #E6D205 75%, #147B96);
+        background-image: -webkit-linear-gradient(63deg, #147B96, #E6D205 25%, #147B96 50%, #E6D205 75%, #147B96);
+        
+        /*将颜色设置为透明,方便渐变替换*/
         -webkit-text-fill-color: transparent;
+        /*color:rgba(0,0,0,0);*/
+        
         -webkit-background-clip: text;
         -webkit-background-size: 200% 100%;
         -webkit-animation: masked-animation 4s infinite linear;
