@@ -404,7 +404,23 @@ Css3里面新增了rgba颜色模式,可以允许我们单独调节调节单层�
 	#box{ width:100px; height:100px; border:10px solid rgba(255,255,255,0.5);}
 {% endhighlight %}
 
-## 新增颜色HSL模式
+## 新增颜色HSLA模式
+
+HSLA模式即声明使用 色调(Hue) 、 饱和度(Saturation) 、 亮度(Lightness) 和 透明度(Alpha) 来设定颜色,使用和上文提到的rgba颜色模式相同
+
+{% highlight css %}
+	#box{ width:100px; height:100px; background:hsla(165, 35%, 50%, 0.2);}
+{% endhighlight %}
+
+其中Hue衍生于色盘 0和360是红色，接近120的是绿色，240是蓝色。
+
+Saturation值是一个百分比：0%是灰度，100%饱和度最高
+
+Lightness值也是一个百分比：0%是最暗，50%均值，100%最亮。
+
+Alpha 使用和上文相同
+
+而HSLA模式在各大标准浏览器中都获得了良好的支持而且无需添加浏览器内核前缀
 
 ## 文字阴影
 
@@ -665,9 +681,91 @@ center 实现垂直方向水平居中
 
 我们可以给body标签设置`display:box;`这样就能更好的控制底下的子元素和空闲空间了,布局也就会轻松很多
 
+## box-shadow
+
+就想text-shadow Css3也可以为盒模型提供阴影
+
+box-shadow : 投影方式(选填) X轴偏移量 Y轴偏移量 阴影模糊半径 阴影扩展半径(选填) 颜色
+
+来看一个简单demo
+{% highlight css %}
+	box-shadow: 0 0 30px 30px pink;	
+{% endhighlight %}
+
+[demo1](/assets/download/box-shadow1.html)
+
+如果我们要内阴影那么只要再加一个参数就ok了
+{% highlight css %}
+	box-shadow:inset 0 0 30px 30px pink;	
+{% endhighlight %}
+
+如果不填写那么就是默认的外投影
+
+[demo2](/assets/download/box-shadow2.html)
+
+## box-reflect
+
+我们可以使用box-reflect来制作盒的投影
+
+box-felect 方向 投影和本影间距 渐变(选填)
+
+{% highlight css %}
+	box-felect: right;
+
+	/*省略了浏览器内核前缀*/	
+{% endhighlight %}
+
+[demo1](/assets/download/box-reflect1.html)
+
+这样可以镜像出一个右原本的倒影
+
+如果给倒影加上渐变呢？
+
+{% highlight css %}
+box-reflect:right 50px linear-gradient(left,rgba(0,0,0,1) 0,rgba(0,0,0,0) 100%);	
+/*省略了浏览器内核前缀*/
+{% endhighlight %}
+
+[demo2](/assets/download/box-reflect2.html)
+
+## resize
+
+Css3中允许我们让盒子自由的拖拽(重新改变盒子的大小)
+
+只要给盒子加上resize属性 并且吧overflow：属性设置为auto 你就可以拖动右下角来改变盒子的宽高
+{% highlight css %}
+ #box{width: 100px; height: 100px;  resize:both; overflow:auto;}
+{% endhighlight %}
+
+[demo](/assets/download/resize1.html)
+
+其中resize可有的属性:
+
+both 水平垂直都可以缩放
+horizontal 只有水平方向可以缩放
+vertical 只有垂直方向可以缩放
+none 不拖拽
+
+textarea标签默认resize:both
+如果不希望用户玩坏你的页面最好清一下
+{% highlight css %}
+ texttarea{ resize:none; }
+{% endhighlight %}
+
 ## box-sizing
 
-## 响应式布局
+很逆天的一玩意,可以修改盒模型尺寸计算的规则
+
+可选参数:
+content-box: border和padding不计算入width之内
+
+padding-box: padding计算入width内
+
+border-box: border和padding计算入width之内，其实就是怪异模式了~
+
+使用的时候需要加上浏览器内核前缀
+
+[demo](/asset/download/box-sizing.html)
 
 ## 圆角
 
@@ -826,3 +924,7 @@ Css3中还提供了这么一个属性border-image来允许我们给边框添加�
 [妙味课堂](www.miaov.com)
 
 [张鑫旭的博客](http://www.zhangxinxu.com/wordpress/2010/12/css-box-flex%E5%B1%9E%E6%80%A7%EF%BC%8C%E7%84%B6%E5%90%8E%E5%BC%B9%E6%80%A7%E7%9B%92%E5%AD%90%E6%A8%A1%E5%9E%8B%E7%AE%80%E4%BB%8B/)
+
+[CSS3系列教程:HSL 和HSLA](http://www.hen9hen9.com/seo/html/?658.html)
+
+[zhaoran关于box-sizing的解释](http://www.cnblogs.com/zhaoran/archive/2013/05/24/3097482.html)
