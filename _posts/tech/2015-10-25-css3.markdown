@@ -1001,7 +1001,7 @@ CSS3 Gradient 分为 linear-gradient（线性渐变）和 radial-gradient（径�
 
 先写一个简单的从顶向下的渐变
 {% highlight css %}
-box{background-image:linear-gradient:top,red,blue;}
+.box{background-image:linear-gradient:top,red,blue;}
 /* 从上到下由红色渐变成蓝色 */
 {% endhighlight %}
 
@@ -1009,20 +1009,20 @@ box{background-image:linear-gradient:top,red,blue;}
 
 当然如果是左上呢
 {% highlight css %}
-box{background-image:linear-gradient:top left,red,blue;}
+.box{background-image:linear-gradient:top left,red,blue;}
 /* 第二个方向用空格隔开 */
 {% endhighlight %}
 
 那么我们再看deg(多数时候使用的都是deg,因为比较自由),当0deg的时候方向是从左到右
 {% highlight css %}
-box{background-image:linear-gradient:30deg,red,blue;}
+.box{background-image:linear-gradient:30deg,red,blue;}
 /* 正deg从X轴逆时针旋转,负deg从X轴顺时针旋转 */
 {% endhighlight %}
 
 第一个参数之后就全部是渐变的颜色,这个颜色什么时候开始渐变的参数了
 
 {% highlight css %}
-box{background-image:linear-gradient(45deg,red 160px,blue 480px,yellow 960px);}
+.box{background-image:linear-gradient(45deg,red 160px,blue 480px,yellow 960px);}
 {% endhighlight %}
 
 [demo](/assets/download/linear-gradient2.html)
@@ -1042,12 +1042,143 @@ box{background-image:linear-gradient(45deg,red 160px,blue 480px,yellow 960px);}
 
 只要在渐变的前面加上repeating就可以实现重复渐变的效果
 {% highlight css %}
-box{background-image:repeating-linear-gradient(45deg,red 160px,blue 480px,yellow 960px)}
+.box{background-image:repeating-linear-gradient(45deg,red 160px,blue 480px,yellow 960px);}
 {% endhighlight %}
 
 [demo](/assets/download/linear-gradient3.html)
 
+线性渐变现在兼容情况还可以,不需要加浏览器内核前缀
+
 ### 径向渐变
+
+径向渐变内容大致和线性渐变内容差不多,但有不同,还有就是兼容性没有线性渐变好,需要加浏览器内核前缀。
+我们先来看下一个简单的小[demo](/assets/download/radial-gradient1.html)
+
+{% highlight css %}
+.box{background-image:radial-gradient(red,blue);}
+{% endhighlight %}
+
+如果不给径向渐变设置方向,那么它的默认点就是在盒子的中心向两边渐变
+
+和线性渐变一样,径向渐变的第一个参数也是设置他的渐变方向,但是和线性渐变不同的是,径向渐变没有deg单位了,只支持英文关键字、坐标或者百分比
+
+比如说左上角
+{% highlight css %}
+.box{background-image:radial-gradient(left top,red,blue);}
+{% endhighlight %}
+
+坐标和盒子模型的坐标是一样的,百分比也是相对于盒子的尺寸来决定的
+
+坐标写法支持1到2个参数,如果只有一个参数那么X轴根据参数来,Y轴则是原来的盒子高度的一半
+{% highlight css %}
+.box{background-image:radial-gradient(160px,red,blue);}
+{% endhighlight %}
+什么意思呢？一开始如果不设置任何参数,那么默认渐变的起点是盒子的中心点,现在只写一个参数,则只改变了X的坐标,但是Y轴还是原来的位置也就是盒子高度的一半
+
+[demo](/assets/download/radial-gradient2.html)
+
+两个坐标就是分别设置XY的坐标了
+{% highlight css %}
+.box{background-image:radial-gradient(160px 160px,red,blue);}
+{% endhighlight %}
+
+[demo](/assets/download/radial-gradient3.html)
+
+百分比就是对应的盒子的百分比,和上面坐标规则也是一样的,这里就不再赘余
+
+除了设置渐变点坐标,我们还可以设置渐变的形状,Css3支持两种形状
+
+ellipse 椭圆
+circle  圆
+
+默认是椭圆,我们可以把它设置成圆
+
+{% highlight css %}
+.box{background-image:radial-gradient(160px 160px,circle,red,blue);}
+{% endhighlight %}
+
+[demo](/assets/download/radial-gradient4.html)
+
+我们还可以直接为他的形状设置大小,其中100px是椭圆的a 20px是椭圆的b,如果要是圆的话只要设置相同就可以了
+
+{% highlight css %}
+.box{background-image:radial-gradient(160px 160px,100px 20px,red,blue);}
+{% endhighlight %}
+
+[demo](/assets/download/radial-gradient5.html)
+
+但是本人测试的时候火狐下不支持,(demo我还是做了火狐的兼容)
+
+渐变点位置还可以使用关键字实现
+
+closest-side
+closest-corner
+farthest-side
+farthest-corner
+contain or cover
+
+{% highlight css %}
+.box{background-image:radial-gradient(closest-side,100px 20px,red,blue);}
+{% endhighlight %}
+
+这个也用的不多,大家有兴趣可以试试
+
+## background新增属性
+
+### background-size
+
+我们可以根据这属性来设置盒子背景的大小
+
+background-size:宽度 高度
+
+{% highlight css %}
+.box{background-size:160px 60px;}
+{% endhighlight %}
+
+还可以调两个值
+
+cover 将整个盒子填满(如果宽度和高度不够大则进行等比放大,如果背景大于盒子则有裁切)
+
+contain 完全填入整个盒子(如果背景比盒子小则不处理,如果比盒子大泽进行等比缩小)
+
+如果一个盒子有多个背景,不同背景的大小用逗号隔开
+{% highlight css %}
+.box{
+		background:url(1.png),url(2.png);
+		background-size:160px 60px,contain;
+	}
+{% endhighlight %}
+
+### background-origin
+
+通过这个属性我们可以设置背景图的起始点这么三个属性
+border-box： 从border区域开始显示背景。 
+padding-box： 从padding区域开始显示背景。(初始值) 
+content-box： 从content区域开始显示背景。
+
+[border-box](/assets/download/background-origin1.html)
+[padding-box](/assets/download/background-origin2.html)
+[content-box](/assets/download/background-origin3.html)
+
+### background-clip
+
+通过这个属性我们可以设置背景图的显示的区域(和origin的区别是clip只能显示某一区域的背景,而origin只是调节了背景的起始位置,通过背景位移还是能够显现的)
+
+border-box： 从border区域开始向内显示背景。 [demo](/assets/download/background-clip1.html)
+padding-box： 从padding区开始向内显示背景 [demo](/assets/download/background-clip2.html)
+content-box： 只content区域背景。 [demo](/assets/download/background-clip3.html)
+
+-webkit-text： 剪裁非文字区域(暂时只有webkit支持) [demo](/assets/download/background-clip4.html)
+
+## mask
+
+我们可以使用一个背景图片(一定要支持透明的png)来作为一个遮罩层来遮罩背景
+{% highlight css %}
+.box{
+		url(mask.png) no-repeat 30px 20px;
+	}
+{% endhighlight %}
+用法和Background差不多
 
 ## 感谢
 

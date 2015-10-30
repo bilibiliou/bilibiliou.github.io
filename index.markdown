@@ -18,6 +18,8 @@ title: Welcome
 
 ## 一些优秀的博客
 
+[张鑫旭的博客](http://www.zhangxinxu.com/)
+
 [Excellent Front End](http://ecomfe.github.io/)
 
 [Junyu Xu](http://imhype.github.io/)

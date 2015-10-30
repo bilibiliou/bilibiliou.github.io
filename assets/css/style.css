@@ -522,8 +522,10 @@ animation-name: swing;
   #post ::selection 
   {
     color: white;
-    background: none;
-    text-shadow:0 0 3px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #ff00de, 0 0 30px #ff00de, 0 0 40px #ff00de, 0 0 50px #ff00de, 0 0 60px #ff00de;; 
+    background: rgba(0,0,0,0);
+    text-shadow:0 0 3px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #ff00de, 0 0 30px #ff00de, 0 0 40px #ff00de, 0 0 50px #ff00de, 0 0 60px #ff00de;
+    -moz-text-shadow:0 0 3px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #ff00de, 0 0 30px #ff00de, 0 0 40px #ff00de, 0 0 50px #ff00de, 0 0 60px #ff00de; 
+    -o-text-shadow:0 0 3px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #ff00de, 0 0 30px #ff00de, 0 0 40px #ff00de, 0 0 50px #ff00de, 0 0 60px #ff00de; 
     font-weight: 400;
   }
 
@@ -573,7 +575,7 @@ h3{color:#AA5566;}
 
 @media all and (-webkit-min-device-pixel-ratio:0) and (min-resolution: .001dpcm) { 
     #post__title{
-        background-image: -webkit-linear-gradient(63deg, #147B96, #E6D205 25%, #147B96 50%, #E6D205 75%, #147B96);
+        background-image: -webkit-linear-gradient(left, #147B96, #E6D205 25%, #147B96 50%, #E6D205 75%, #147B96);
         
         /*将颜色设置为透明,方便渐变替换*/
         -webkit-text-fill-color: transparent;
