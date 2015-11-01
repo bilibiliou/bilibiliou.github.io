@@ -1180,6 +1180,146 @@ content-box： 只content区域背景。 [demo](/assets/download/background-clip
 {% endhighlight %}
 用法和Background差不多
 
+## trasition
+
+终于开始Css3最重要,也是最梦幻的动画部分
+
+trasition(英:过渡)可以让我们在网页中显示两个状态的变化过程
+
+[demo](/assets/download/transition1.html)
+
+上面这个圆设置了:hover属性和trasition:1s,这样从正常到hover状态之间的变化就会以动画的形式过渡
+
+全过度:trasition: 过渡的时间 不需要过渡的属性 过渡的形式(默认全部属性同时开始改变)
+
+运动的形式包括
+
+ease：(逐渐变慢)默认值
+linear：(匀速)
+ease-in：(加速)
+ease-out：(减速)
+ease-in-out：(先加速后减速)
+cubic-bezier 贝塞尔曲线( x1, y1, x2, y2 ) 
+
+[自动生成贝塞尔曲线参数](http://matthewlein.com/ceaser/)
+
+如果我们需要进行多样式过度
+
+trasition: 过渡的时间 延迟执行时间 参与过度的属性,...
+
+{% highlight css %}
+.box{
+		trasition:1s width ease-out,2s 1s height ease-in-out, 3s background;
+	}
+{% endhighlight %}
+
+[demo](/assets/download/transition2.html)
+
+运动流程是这样的:
+
+一开始的1s钟内,宽度和背景先开始改变,但是高度不变(因为高度延迟了1s),接下来宽度到达500px停止改变,接下来的2秒钟内,背景继续变化到红色,高度开始从200px改变到300px
+
+当鼠标退出hover区之后,也是宽度和背景开始变,然后再是高度
+
+### trasition事件
+
+我们可以监听过渡动画,结束之后触发TransitionEnd事件
+{% highlight Javascript %}
+obj.addEventListener('transitionend',function(){},false); 		/*其他标准浏览器*/
+obj.addEventListener('webkitTransitionEnd',function(){},false); /*兼容webkit浏览器*/
+{% endhighlight %}
+
+## transform
+
+我们可以通过transform属性操作对盒子的变换
+
+### 旋转rotate
+
+{% highlight css %}
+.box{trasition:1s; }
+.box:hover{ transform:rotate:(45deg);}
+{% endhighlight %}
+
+当鼠标移动到盒子上时,盒子就会从中心点顺时针旋转45deg
+
+[demo](/assets/download/transform1.html)
+
+### 旋转原点transform-origin
+
+如果我们给其再加上`transform-origin`就会改变旋转点位置
+依据什么来改变呢？
+
+这个属性可以接收一到两个参数,两个参数的时候分别对应X轴和Y轴,一个参数的时候,代表XY轴同时改变,也就是在对角线上
+
+如果我们不设置transform-origin属性的时候,旋转默认的点是盒子的中心点,但是如果我们设置了这个属性,希望能改变旋转原点的时候,那么浏览器就以盒子的左上角为原点来计算,也就是说,如果transform-origin设置为0那么盒子就会按照左上角进行旋转
+
+[demo](/assets/download/transform2.html)
+
+
+如果我们像这样给其设置X Y的值
+{% highlight css %}
+.box{trasition:1s; }
+.box:hover{ transform:rotate:(45deg); transform-origin:20% 30%;}
+{% endhighlight %}
+
+那么就会根据设置的值计算出相应的旋转点,来进行旋转
+
+
+### 斜切skew
+
+我们现在可以再保证盒子还是四边形的情况下随意的改变他的形状了
+只要通过`transform`的斜切就能实现
+{% highlight css %}
+.box{transform:skewX(45deg); }
+{% endhighlight %}
+
+[demo](/assets/download/transform3.html)
+
+这样就能实现在X轴方向上顺时针45deg实现斜切
+
+当然我们也可以用skewY实现在Y轴上的斜切
+
+如果我们使用skew就能在两个方向同时进行斜切了
+
+{% highlight css %}
+.box{transform:skew(45deg,30deg); }
+{% endhighlight %}
+
+### scale缩放
+
+我们还可以使用scale来任意的缩放盒子的宽高
+用处和zoom很像
+{% highlight css %}
+.box{transform:scale(.5); }
+{% endhighlight %}
+
+这样就能使盒子缩小一倍
+
+[demo](/assets/download/transform4.html)
+
+但是和zoom比较来看,两者除了兼容性之外还有一些不同的地方。zoom缩放会将元素保持在左上角，而scale默认是中间位置，可以通过transform-origin来设置。
+另外他们执行的渲染顺序也不同zoom可能影响到盒子的计算。
+
+和斜切差不多,缩放也可以分别对X轴和Y轴进行控制
+
+分别对scaleX 和 scaleY设置缩放倍数就能实现,单独对一方面进行缩放控制  
+
+### translate位移
+
+可以使盒子进行位置的移动,看起来和通过position:absolute 来控制 top left bottom right差不多
+
+translate和上面几个属性都一样,也支持XY单方面或者双方面
+
+{% highlight css %}
+.box{transform:translate(-100em,200em); }
+{% endhighlight %}
+
+这样就可以使盒子像左下方移动了,移动的基准点也是盒子的左上角
+
+[demo](/assets/download/transform5.html)
+
+其次也可以单独对其设置translateX 和 translateY
+
 ## 感谢
 
 [妙味课堂](www.miaov.com)
@@ -1191,3 +1331,5 @@ content-box： 只content区域背景。 [demo](/assets/download/background-clip
 [zhaoran关于box-sizing的解释](http://www.cnblogs.com/zhaoran/archive/2013/05/24/3097482.html)
 
 [web骇客 关于分栏式布局的用法](http://www.webhek.com/css3-multi-columns)
+
+[CSS中zoom和scale的区别](http://www.cnblogs.com/qingxinblog/articles/4495393.html)

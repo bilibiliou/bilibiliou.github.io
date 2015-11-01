@@ -3,6 +3,93 @@
    @author Peiwen Lu (P233)
    https://github.com/P233/3-Ghost
 \*---------------------------------*/
+
+  .container{
+      width:100%;
+      height: 1300px;      
+      margin: 0;
+      padding: 0;
+      font: 12px normal Verdana, Arial, Helvetica, sans-serif;
+      position: absolute;
+      top:0;
+      left: 0;
+      z-index: 5201314;
+      overflow: hidden;
+    }
+    .box{
+      width:100%;
+      height: 100%;
+      background: #C3B090;
+      position: absolute;
+    }
+    .header_progress_avatar
+    {
+      width:500px;
+      height:600px;
+      background: url(../img/progress_pic.jpg) -50px 0;
+      margin:20px auto;
+      border-radius: 50%;
+       box-shadow: 0 0 4px 4px white, 0 0 4px 4px #eee;
+    }
+    .header_progress_title{
+      display:-webkit-box;
+      display:-moz-box;
+      display:-o-box;
+      display:box;
+      -webkit-box-pack:center;
+      -moz-box-pack:center;
+      -o-box-pack:center;
+      box-pack:center;
+    }
+    .header_progress_title > span{
+      font:bold 40px/80px "微软雅黑";
+      text-shadow:0 0 30px #2187e7,0 0 45px #2187e7;
+      color:white;
+    }
+    #header_progress_content { 
+      width:100%; 
+      height:5px; 
+      margin:20px auto 0; 
+    }
+    
+    .header_progress_fullwidth .header_progress_expand { 
+      width:100%; 
+      height:1px; 
+      margin:2px 0; 
+      background:#2187e7; 
+      position:absolute;
+      box-shadow:0px 0px 10px 1px rgba(0,198,255,0.7);
+        -moz-animation:fullexpand 10s ease-out;
+      -webkit-animation:fullexpand 10s ease-out;
+    }
+    .header_progress_precentage{
+      display:-webkit-box;
+      display:-moz-box;
+      display:-o-box;
+      display:box;
+      -webkit-box-pack:center;
+      -moz-box-pack:center;
+      -o-box-pack:center;
+      box-pack:center;
+    }
+    @-moz-keyframes fullexpand{
+      0%  { width:0px;}
+      100%{ width:100%;}  
+    }
+    @-webkit-keyframes fullexpand{
+      0%  { width:0px;}
+      100%{ width:100%;}  
+    }
+
+
+
+
+
+
+
+
+
+body{overflow: hidden;}
 li{ cursor: url("../img/cursor.png"),default !important;}
 i{ cursor: url("../img/cursor.png"),default !important;}
 table{ border: 5px solid black ;}

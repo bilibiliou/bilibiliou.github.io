@@ -3,6 +3,34 @@
    @author 欧阳湘粤 (Owen)
    https://github.com/Numerhero/NumerHero.github.io
 \*---------------------------------*/
+// 开场进度条
+(function(){
+  var oContainer = document.querySelector(".container");
+  var oContent = document.querySelector("#header_progress_content");
+  var oProgress = document.querySelector(".header_progress_expand");
+  var oT = document.querySelector(".header_progress_precentage");
+  var oP = document.querySelector(".precent");
+  var oBox = document.querySelector(".box");
+  var MaxWidth = oContent.offsetWidth;
+  
+  var timer = null;
+  timer = setInterval(function(){
+    var NowWidth = oProgress.offsetWidth;
+    if(NowWidth >= MaxWidth)
+    {
+      clearInterval(timer);
+      oP.innerHTML = 100;
+      startMove(oBox , {opacity:0}, function(){
+        oContainer.style.display = "none";
+        oBox.style.display = "none";
+      });
+    }else{
+      var t = (NowWidth/MaxWidth);
+      oP.innerHTML = Math.floor(t * 100);
+    }
+  },30);
+})();
+
 
 
 
