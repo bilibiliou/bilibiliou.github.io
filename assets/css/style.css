@@ -15,6 +15,7 @@
     left: 0;
     z-index: 5201314;
     overflow: hidden;
+    background: #C3B090;
   }
   .box{
     width:100%;
@@ -27,11 +28,15 @@
     width:500px;
     height:500px;
     background: url(../img/progress_pic.jpg) -50px 0;
-    margin:20px auto;
+    margin:40px auto;
     border-radius: 50%;
-     box-shadow: 0 0 4px 4px white, 0 0 4px 4px #eee;
+    box-shadow: 0 0 4px 4px white, 0 0 4px 4px #eee;
   }
   .header_progress_title{
+    /*兼容火狐*/
+    width:100%;
+
+
     display:-webkit-box;
     display:-moz-box;
     display:-o-box;
@@ -60,10 +65,14 @@
     background:#2187e7; 
     position:absolute;
     box-shadow:0px 0px 10px 1px rgba(0,198,255,0.7);
-      -moz-animation:fullexpand 10s ease-out;
+    -moz-animation:fullexpand 10s ease-out;
     -webkit-animation:fullexpand 10s ease-out;
   }
   .header_progress_precentage{
+    /*兼容火狐*/
+    width:100%;
+
+
     display:-webkit-box;
     display:-moz-box;
     display:-o-box;
