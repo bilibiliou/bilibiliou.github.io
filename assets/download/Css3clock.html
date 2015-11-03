@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">	
+<title>Css3</title>
+
+<style id="css">
+	body{
+		width: 100%;
+		display:-webkit-box;
+		display:-moz-box;
+		display:-o-box;
+		display:-khtml-box;
+
+		-webkit-box-pack:center;
+		-moz-box-pack:center;
+		-o-box-pack:center;
+		-khtml-box-pack:center;
+
+		-webkit-box-align:center;
+		-moz-box-align:center;
+		-o-box-align:center;
+		-khtml-box-align:center;
+ 		
+ 		min-height: 600px;
+
+	}
+	ul{ margin:0px; padding:0px; list-style:none; }
+	.clock{width:200px; height:200px; border-radius:50%; border:3px solid #000;  position:relative;}
+	.scale{height:200px; position:relative;}
+	.scale li{ width:2px; height:10px;background:#000;position: absolute; top:0; left:100px; transform-origin:center 100px;}
+	.scale li:nth-of-type(5n+1){ height: 14px; transform: skewY(60deg); background: red;}
+	.hour{ width:6px; height: 30px; position:absolute; top:65px; left: 97px; background: #000; transform-origin:bottom;}
+	.min{ width:4px; height: 40px; position:absolute; top:55px; left: 98px; background: #999;
+	transform-origin:bottom;}
+	.second{ width: 2px; height: 60px; position: absolute; top:35px; left: 99px; background: #F90;
+	transform-origin:bottom;}
+	.ico{width:20px; height:20px; border-radius:50%; background: #999; position: absolute; top:90px; left: 90px; }
+	
+	.scale span{width:5px; height:5px; display: block; position:absolute; top:-25px; left: 94px; transform-origin: center 125px; }
+</style>
+
+<script>
+	window.onload = function()
+	{
+		var oClock = document.querySelector(".clock");
+		var oScale = document.querySelector(".scale");
+		var oHour = document.querySelector(".hour");
+		var oMin = document.querySelector(".min");
+		var oSecond = document.querySelector(".second");
+		var oCss = document.querySelector("#css");
+
+		var aScale = "";
+		var aCss = "";
+		var aTime = "";
+		var aTime_css = "";
+
+		var timer = null;
+		for(var j = 0; j<12 ; j++)
+		{
+			aTime_css += "	.scale span:nth-of-type("+ (j+1) +"){ transform:rotate("+ (j+1)*30 +"deg);}"
+			aTime += "<span>"+ (j+1) +"</span>";
+		}
+		for(var i = 0 ; i<60; i++)
+		{
+			aCss += "	.scale li:nth-of-type("+ (i+1) +"){ transform:rotate("+ i*6 +"deg);}";
+			aScale += "<li></li>";
+		}
+		oCss.innerHTML += aCss;
+		oCss.innerHTML += aTime_css;
+		oScale.innerHTML += aTime;
+		oScale.innerHTML += aScale;
+
+		toTime();
+		timer = setInterval(function(){
+			toTime();
+		},1000);
+
+		function toTime()
+		{
+			var date = new Date();
+			var oSeconds = date.getSeconds();
+			var oMinutes = date.getMinutes() + oSeconds/60;
+			var oHours = date.getHours() + oMinutes/60;
+
+			oSecond.style.transform = "rotate("+ (oSeconds * 6) +"deg)";
+			oMin.style.transform = "rotate("+ (oMinutes * 6) +"deg)";
+			oHour.style.transform = "rotate("+ (oHours * 30) +"deg)";
+		}
+	}
+</script>
+</head>
+<body>
+<section class="clock">
+	<ul class="scale"></ul>
+	<div class="hour"></div>
+	<div class="min"></div>
+	<div class="second"></div>
+	<div class="ico"></div>
+</section>
+</body>
+</html>

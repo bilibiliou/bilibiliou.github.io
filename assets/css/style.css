@@ -870,9 +870,11 @@ iframe {
     color: #d40220; }
 
 #icon-weixin {
-  margin-left: 120px; }
-  #icon-weixin:hover {
-    color: #EE00EE; }
+  margin-left: 120px; 
+}
+  #icon-weixin:hover{
+    color: #EE00EE; 
+  }
 
 #QR-Code{
   width: 160px;
