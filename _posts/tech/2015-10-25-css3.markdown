@@ -1390,6 +1390,23 @@ body:hover .box:nth-of-type(2){ transform:scale(0.5) translateX(100px);}
 
 需要注意: 列表弹出,弹入 点击的时候都需要修改每个按钮的过渡(是否需要延迟时间)
 
+## 3D-transform
+
+Css3甚至还推出了3D变换场景,
+
+包括:3D旋转和位移,哦对了还有一个Perspective(景深透视),有点美术功底的同学当然不难了解了
+
+### rotateXYZ
+
+关于立体旋转,首先我们来看一张图
+
+![shootpic](/assets/img/3D-rotate.png)
+
+
+## 3D图片实例
+
+[demo](/assets/download/3D-pics.html)
+
 ## 感谢
 
 [妙味课堂](www.miaov.com)
@@ -1403,3 +1420,5 @@ body:hover .box:nth-of-type(2){ transform:scale(0.5) translateX(100px);}
 [web骇客 关于分栏式布局的用法](http://www.webhek.com/css3-multi-columns)
 
 [CSS中zoom和scale的区别](http://www.cnblogs.com/qingxinblog/articles/4495393.html)
+
+[CSS3 3D transform变换，不过如此!](http://www.zhangxinxu.com/wordpress/2012/09/css3-3d-transform-perspective-animate-transition/)
