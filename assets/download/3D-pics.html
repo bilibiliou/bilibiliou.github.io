@@ -8,10 +8,10 @@
 	li{list-style: none;  }
 	.wrap{width:800px; margin:100px auto 0; }
 	.piclist{width:800px; height:360px;
-				perspective:800px;
+				perspective:200px;
 				
 		 	}
-	.piclist li{width:25px; height:360px; 
+	.piclist li{width:50px; height:360px; 
 				position:relative;
 				/*这里给position：relative的原因是为了调整层级,*/
 				transform-style:preserve-3d;
@@ -52,11 +52,11 @@
 		var aLi ="";
 		var sCss = "";
 		var iZindex = 0;
-		for(var i = 0; i<32; i++)
+		for(var i = 0; i<16; i++)
 		{
-			i > 16 ? iZindex--:iZindex++;
+			i > 8 ? iZindex--:iZindex++;
 			aLi += '<li><a href="#"></a><a href="#"></a><a href="#"></a><a href="#"></a></li>';
-			sCss += '.piclist li:nth-of-type('+ (i+1) +') a{background-position:'+ (-i*25) +'px 0}';
+			sCss += '.piclist li:nth-of-type('+ (i+1) +') a{background-position:'+ (-i*50) +'px 0}';
 
 			sCss+=".piclist li:nth-of-type("+(i+1)+"){z-index:"+iZindex+"}";
 		}

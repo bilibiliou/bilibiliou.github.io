@@ -1407,6 +1407,8 @@ Css3甚至还推出了3D变换场景,
 
 [demo](/assets/download/3D-pics.html)
 
+safari下貌似不支持
+
 ## 感谢
 
 [妙味课堂](www.miaov.com)
