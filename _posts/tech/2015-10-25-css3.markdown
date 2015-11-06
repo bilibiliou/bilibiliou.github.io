@@ -1481,6 +1481,62 @@ transform-origin:center center -1492.8px;
 
 [demo](/assets/download/3D-pics-change.html)
 
+## will-change加速
+
+我们平时加载浏览器页面的时候默认使用基本上都是CPU来加载
+如果遇到一些页面需要加载Css3的动画的话,那么难免会是CPU负担加重,如果CPU比较差的话,还可能使页面崩溃
+
+所以我们可以试试使用GPU(Graphics Processing Unit)也就是位于显卡上的图像处理器来进行3d动画的加载
+
+但是这也是有代价的,不代表使用GPU加载也会占用RAM和GPU的存储空间(移动端有限)
+所以尽量应该在需要的地方使用
+
+那么怎么告诉浏览器,哪里需要用到GPU硬件加速,哪里不用
+那么使用Css3 的 will-change属性
+
+{% highlight css %}
+will-change:transform,opacity;
+/*多个样式以逗号隔开*/
+{% endhighlight %}
+
+这样,当一个盒子里面有这么些变化的时候,就会启用GPU来加速页面渲染的效果
+
+还有一点,就是我们需要给浏览器充足的时间来完成从CPU到GPU的转变
+{% highlight css %}
+
+也就是说我们要以这种写法
+.box{will-change:transform,transition;}
+.box:hover{transform:rotateY(45deg);transition:1s;}
+
+来代替这种写法
+.box:hover{
+	will-change:transform,transition;
+	transform:rotateY(45deg);
+	transition:1s;
+}
+{% endhighlight %}
+
+如果我们要关闭will-change,就可以使用js监听来清除
+
+例如一个点击触发的动画效果
+{% highlight Javascript %}
+var el = document.getElementById('element');
+
+el.addEventListener('mouseenter', hintBrowser);
+el.addEventListener('animationEnd', removeHint);
+
+function hintBrowser() {
+    this.style.willChange = 'transform, opacity';
+}
+
+function removeHint() {
+    this.style.willChange = 'auto';
+}
+{% endhighlight %}
+
+你还可以在[CSS will-change 属性](http://www.cnblogs.com/yuzhongwusan/p/4186405.html)
+得到更详细的关于CSS will-change的说明
+
 ## 感谢
 
 [妙味课堂](www.miaov.com)
@@ -1496,3 +1552,5 @@ transform-origin:center center -1492.8px;
 [CSS中zoom和scale的区别](http://www.cnblogs.com/qingxinblog/articles/4495393.html)
 
 [CSS3 3D transform变换，不过如此!](http://www.zhangxinxu.com/wordpress/2012/09/css3-3d-transform-perspective-animate-transition/)
+
+[CSS will-change 属性](http://www.cnblogs.com/yuzhongwusan/p/4186405.html)
