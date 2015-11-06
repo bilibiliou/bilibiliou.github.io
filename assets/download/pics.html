@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+	<head>
+		<title>3D图片轮询</title>
+		<meta charset="utf-8">
+	</head>
+	<style>
+		*{margin:0; padding:0;}
+		li{list-style: none;}
+		body{overflow: hidden;}
+		
+		.stage{width:800px; height: 600px;  margin:90px auto; perspective:400px; }
+		
+		.stage div{ position:relative; transform-style:preserve-3d;transform-origin:center center -1492.8px;cursor:pointer;}
+		.stage img{ position: absolute; /*backface-visibility:hidden;*/}
+		.stage img:nth-of-type(1){ top:0;left:0;}
+		.stage img:nth-of-type(2){ right:-1480px; transform-origin:left; transform:translateZ(-400px) rotateY(60deg); }
+		.stage img:nth-of-type(3){ right:-680px; transform-origin:right; transform:translateZ(-2585.6px) rotateY(120deg);}
+		
+		.stage img:nth-of-type(4){ transform: translateZ(-2985.6px) rotateY(-180deg);}
+		
+		.stage img:nth-of-type(5){ left:-680px; transform-origin:left; transform: translateZ(-2585.6px) rotateY(-120deg); }
+		
+		.stage img:nth-of-type(6){left:-1480px; transform-origin:right; transform:translateZ(-400px) rotateY(-60deg); }
+
+		}
+	</style>
+	<script>
+	window.onload = function()
+	{
+		var oImg = document.querySelectorAll("img");
+
+		var oDiv = document.querySelector(".stage div");
+		var iNow = 1;
+		for( var i = 0;i<oImg.length; i++)
+		{
+			oImg[i].onclick =function()
+			{
+				oDiv.style.transition = "2s";
+				oDiv.style.transform = "rotateY(-"+ (iNow)*60 +"deg)";
+				iNow++;
+			}
+		}
+
+	}
+	</script>
+	<body>
+		<section class="stage">
+			<div>
+				<img src="./demopic/3D-pics-change/1.jpg" alt="1">
+				<img src="./demopic/3D-pics-change/2.jpg" alt="2">
+				<img src="./demopic/3D-pics-change/3.jpg" alt="3">
+				<img src="./demopic/3D-pics-change/4.jpg" alt="4">
+				<img src="./demopic/3D-pics-change/5.jpg" alt="5">
+				<img src="./demopic/3D-pics-change/6.jpg" alt="6">
+			</div>
+		</section>
+	</body>
+</html>

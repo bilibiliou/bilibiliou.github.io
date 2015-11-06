@@ -1209,17 +1209,17 @@ content-box： 只content区域背景。 [demo](/assets/download/background-clip
 {% endhighlight %}
 用法和Background差不多
 
-## trasition
+## transition
 
 终于开始Css3最重要,也是最梦幻的动画部分
 
-trasition(英:过渡)可以让我们在网页中显示两个状态的变化过程
+transition(英:过渡)可以让我们在网页中显示两个状态的变化过程
 
 [demo](/assets/download/transition1.html)
 
-上面这个圆设置了:hover属性和trasition:1s,这样从正常到hover状态之间的变化就会以动画的形式过渡
+上面这个圆设置了:hover属性和transition:1s,这样从正常到hover状态之间的变化就会以动画的形式过渡
 
-全过度:trasition: 过渡的时间 延迟执行时间 不需要过渡的属性 过渡的形式
+全过度:transition: 过渡的时间 延迟执行时间 不需要过渡的属性 过渡的形式
 
 运动的形式包括
 
@@ -1230,15 +1230,15 @@ ease-out：(减速)
 ease-in-out：(先加速后减速)
 cubic-bezier 贝塞尔曲线( x1, y1, x2, y2 ) 
 
-[自动生成贝塞尔曲线参数](http://matthewlein.com/ceaser/)
+[自动生成贝塞尔曲线参数](http://xuanfengge.com/easeing/ceaser/)
 
 如果我们需要进行多样式过度
 
-trasition: 过渡的时间 延迟执行时间 参与过度的属性 过渡的形式,...
+transition: 过渡的时间 延迟执行时间 参与过度的属性 过渡的形式,...
 
 {% highlight css %}
 .box{
-		trasition:1s width ease-out,2s 1s height ease-in-out, 3s background;
+		transition:1s width ease-out,2s 1s height ease-in-out, 3s background;
 	}
 {% endhighlight %}
 
@@ -1250,7 +1250,7 @@ trasition: 过渡的时间 延迟执行时间 参与过度的属性 过渡的形
 
 当鼠标退出hover区之后,也是宽度和背景开始变,然后再是高度
 
-### trasition事件
+### transition事件
 
 我们可以监听过渡动画,结束之后触发TransitionEnd事件
 {% highlight Javascript %}
@@ -1371,7 +1371,7 @@ body:hover .box:nth-of-type(1){ transform:translateX(100px) scale(0.5);}
 body:hover .box:nth-of-type(2){ transform:scale(0.5) translateX(100px);}
 {% endhighlight %}
 
-[demo](/assets/download/transform5.html)
+[demo](/assets/download/transform6.html)
 
 这里我给两个盒子添加的样式相同但是顺序不同,但是出现的结果是盒子2少位移了50px
 其原因就是因为,第二个盒子是先缩放后位移,在位移前已经缩放了一倍了,所以之后的位移会根据正在缩放的盒子来位移就少了25px,而第一个盒子,是先位移后缩放,又多位移了25px,一加一减正好50px
@@ -1396,18 +1396,90 @@ Css3甚至还推出了3D变换场景,
 
 包括:3D旋转和位移,哦对了还有一个Perspective(景深透视),有点美术功底的同学当然不难了解了
 
+当我们给一个元素设置了`transform-style:preserve-3d`后
+{% highlight css %}
+perspective:500px;             /*景深透视*/
+transform-style:preserve-3d;  /*3D场景*/
+{% endhighlight %}
+
+就可以对其下的子元素进行3D变换了(注意transform-style:preserve-3d只会影响子元素)
+
 ### rotateXYZ
 
 关于立体旋转,首先我们来看一张图
 
 ![shootpic](/assets/img/3D-rotate.png)
 
+首先最基本的rotateX和rotateY分别是正对屏幕和侧对屏幕进行旋转
+
+初学者的一个难点就是分不清顺逆方向,
+
+其实很简单,你视角转换一下,顺着X轴相对的方向和Y轴相对的方向来看
+
+![shootpic](/assets/img/3D-rotate2.png)
+
+这里以顺着Y轴旋转盒子为例,X轴同理
+
+Z轴旋转也就是和我们在2D环境下旋转盒子是一样的
+
+### translateZ
+
+设置了translateZ就会使盒子像垂直屏幕方向进行移动,如果是正值,则向外,负值向里
+并且遵从近大远小的原则
+
+### perspective
+
+景深即一个舞台 观众到舞台间的距离
+
+景深设置的越大,观众离舞台越近,所看的事物就越大,越小离得就远,看到的事物就越小
+(近大远小)
+
+布局方面一般怎么布局3D场景呢？
+
+{% highlight html %}
+<舞台盒子>
+	<3D场景盒子>
+		<进行3D切换的图片1>
+		<进行3D切换的图片2>
+		<进行3D切换的图片3>
+		<进行3D切换的图片4>
+	</3D场景盒子>
+</舞台盒子>
+{% endhighlight %}
+
+景深perspective 一定要给舞台盒子设置,也就是用户从浏览器看3D场景的距离,
+transform-style:preserve-3d 3D场景给3D场景设置,并且要设置好转动轴的坐标
+然后对需要进行3D切换的图片进行各种3D转换,布局就算完事了。
+
+最后在通过程序添加效果就OK了
+
+![perspective](/assets/img/perspective.jpg)
+
+为了更好的了解景深,请看这个[demo](/assets/download/pics.html)
+
+【兼容最新的火狐 chrome 欧鹏 不支持苹果和360】
+
+这里我给整个舞台`.stage`设置了500px的景深,因为我的图片比较大
+
+正常如果图片不是很大一般都是800px
+
+然后设置整个3D场景盒子的旋转轴坐标使其旋转点居中
+{% highlight css %}
+transform-origin:center center -1492.8px;
+{% endhighlight %}
+
+让他居中,然后给每个图片设置各种3D变换
+最后在给每张图片添加点击事件,这样就算完事了
 
 ## 3D图片实例
 
 [demo](/assets/download/3D-pics.html)
 
-safari下貌似不支持
+【兼容最新的火狐 chrome 欧鹏 不支持苹果和360】
+
+## animation图片切换实例
+
+[demo](/assets/download/3D-pics-change.html)
 
 ## 感谢
 
