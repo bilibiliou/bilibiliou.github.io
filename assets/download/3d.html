@@ -44,26 +44,32 @@
 		
 		
 		.set_perspective{perspective:800px;  /*景深透视*/}
-		
+		.set_perspective2{perspective:500px;}
 		
 	</style>
 	<script>
 	window.onload = function()
 	{
 		var oB = document.querySelectorAll("button");
-		var oSection = document.querySelectorAll("section");
+		var oStage = document.querySelector(".stage");
 
 		oB[0].onclick = function()
 		{
-			oSection[0].className = "set_perspective";
+			oStage.className = "set_perspective";
 		}
 		oB[1].onclick = function()
 		{
-			oSection[1].className = "";
+			oStage.className = "set_perspective2";
 		}
+		oB[2].onclick = function()
+		{
+			oStage.className = "";
+		}
+
 	}
 	</script>
 	<body>
+	<div class="stage">
 		<section>
 			<div>1</div>
 			<div>2</div>
@@ -72,7 +78,9 @@
 			<div>5</div>
 			<div>6</div>
 		</section>
+	</div>
 		<button>设置景深800px</button>
+		<button>设置景深500px</button>
 		<button>还原</button>
 		<p>初始状态设置了3D场景,但是没有设置景深</p>
 	</body>

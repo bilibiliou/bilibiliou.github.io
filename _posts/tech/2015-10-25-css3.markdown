@@ -1453,9 +1453,7 @@ transform-style:preserve-3d 3D场景给3D场景设置,并且要设置好转动�
 
 最后在通过程序添加效果就OK了
 
-![perspective](/assets/img/perspective.jpg)
-
-为了更好的了解景深,请看这个[demo](/assets/download/pics.html)
+为了更好的了解景深,请看这个[demo](/assets/download/3d.html)
 
 【兼容最新的火狐 chrome 欧鹏 不支持苹果和360】
 
@@ -1473,13 +1471,122 @@ transform-origin:center center -1492.8px;
 
 ## 3D图片实例
 
-[demo](/assets/download/3D-pics.html)
+[demo1](/assets/download/3D-pics.html)
 
+[demo2](/assets/download/pics.html)
 【兼容最新的火狐 chrome 欧鹏 不支持苹果和360】
 
-## animation图片切换实例
+## animation
+
+Css3 实现动画的第二大属性,实现是通过添加动画帧来实现
+{% highlight css %}
+@keyframes show1{
+	0%{
+		background:red;
+	}
+	50%{
+		background:blue;
+	}
+	100%{
+		background:pink;
+	}
+}
+{% endhighlight %}
+
+当我们在Css3中添加如上动画帧之后就可以在盒子的样式中调用了
+{% highlight css %}
+.show1{animation:2s show1 linear;}
+{% endhighlight %}
+
+{% highlight Javascript %}
+var oBox = document.querySelector(".box");
+
+oBox.onclick = function()
+{
+	oBox.className = "box show1";
+}
+{% endhighlight %}
+
+这样就能看到如下效果[demo](/assets/download/animation_box.html)
+
+那么具体的动画应该怎么的调用呢？
+
+animation: 动画总时间 延迟时间 调用的动画帧名 重复执行次数(infinite为重复执行无限次) 运动形式 
+
+看起来和transition也差不多
+
+但是,这里有个一个问题,细心的同学在上一个demo里面已经发现了
+那就是动画结束后,盒子又回到了红色,这是什么原因呢？
+
+这是因为Css3默认动画结束以后返回这个盒子原本的样式
+
+如果我们想让它有点过渡的效果呢？
+使用js来控制这个盒子的类,Css3允许我们通过js来监控动画是否完成
+这里就得介绍animationEnd事件了
+
+{% highlight Javascript %}
+var oBox = document.querySelector(".box");
+		var boff = true;
+		oBox.onclick = function()
+		{
+			if(boff)
+			{
+				oBox.className = "box show1";
+			}else{
+				return ;
+			}
+		}
+		oBox.addEventListener("webkitAnimationEnd",fn,false);
+		// 同时兼容chrome safari Opera
+
+
+		oBox.addEventListener("animationEnd",fn,false);
+		
+		function fn()
+		{
+			oBox.className = "box show2";
+		}
+},false)
+{% endhighlight %}
+
+然后我们在添加一个show2的动画帧
+{% highlight css %}
+@keyframes show2{
+	0%{
+		background:pink;
+	}
+	50%{
+		background:blue;
+	}
+	100%{
+		background:red;
+	}
+}
+.show2{animation:1s show2 linear;}
+{% endhighlight %}
+
+这样就能使盒子有个良好的过度了[demo](/assets/download/animation_box2.html)
+
+但是可能有同学会有疑问,我在切换成show2动画后,当我从粉色变成红色的时候,动画再次结束
+并且再次执行了fn函数,为什么show2动画没有再次执行呢？那是因为我没有给show2 的animation设置执行次数呀,所以即使我再次修改了类名,也同样只执行之前的仅仅一次
+
+还有动画事件不知道为什么现在暂时不支持火狐浏览器=_=
+
+其实动画不只有End事件
+
+开始事件 animationStart 
+结束事件 animationEnd 
+重复运动事件 animationIteration 
+
+大伙可以挨个去实验实验吧
+
+### animation图片切换实例
 
 [demo](/assets/download/3D-pics-change.html)
+
+### 仿智能社碎片切换banner
+
+[demo](/assets/download/zhinengshe-demo.html)
 
 ## will-change加速
 
@@ -1554,3 +1661,5 @@ function removeHint() {
 [CSS3 3D transform变换，不过如此!](http://www.zhangxinxu.com/wordpress/2012/09/css3-3d-transform-perspective-animate-transition/)
 
 [CSS will-change 属性](http://www.cnblogs.com/yuzhongwusan/p/4186405.html)
+
+[css3 Animation事件](http://blog.csdn.net/kongjiea/article/details/38614695)
