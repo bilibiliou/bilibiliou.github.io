@@ -3,8 +3,19 @@
    @author 欧阳湘粤 (Owen)
    https://github.com/Numerhero/NumerHero.github.io
 \*---------------------------------*/
+window.console && console.log && console.log("%c          ___________             ___     ___\n         /   /       \\           /  /__  /  /__\n        /   /         \\         /_____/ /_____/\n       /    |__________\\       |    _______    |\n      /     |_________|        |_  |_______|  _|\n     /  /|  | | |___| |            |__________\n    /__/ |__| |_______|            |__________| \n \n        __    __                               __\n    ___|  |__|  |___            ___       __  |  | \n   |____   __    ___|          |   |     |  |_|  |__ \n  ___|____|_ _|____|___      __|   |__   |   _    __|\n |_____________________|    |___   ___|  |  | |  |\n   /  ____|___|____  \\         |   |     |  | |__|    _\n /___/  __|   |__  \\___\\   ____|   |__   |  |________| |\n      |___________|       |___________|  |_____________|","color:transparent;text-shadow:0 0 1px rgb(240,107,134);");
+window.console && console.log && console.log("\n      欢迎加入信管创业基地 %c 面试时请附上console","font:15px/20px '微软雅黑';  background-image: -webkit-linear-gradient(left, #147B96, #E6D205 25%, #147B96 50%, #E6D205 75%, #147B96);-webkit-text-fill-color: transparent;-webkit-background-clip: text; color:red;");
+
+
+//console.log模糊
+var _log = console.log;
+console.log = function() {
+  _log.call(console, '%c' + [].slice.call(arguments).join(' '), 'color:transparent;text-shadow:0 0 6px rgba(0,0,0,.5);');
+};
+
+
 // 开场进度条
-(function(){
+$(function kaichang(){
   var oContainer = document.querySelector(".container");
   var oContent = document.querySelector("#header_progress_content");
   var oProgress = document.querySelector(".header_progress_expand");
@@ -12,7 +23,8 @@
   var oP = document.querySelector(".precent");
   var oBox = document.querySelector(".box");
   var MaxWidth = oContent.offsetWidth;
-  
+
+
   var timer = null;
   timer = setInterval(function(){
     var NowWidth = oProgress.offsetWidth;
@@ -29,13 +41,13 @@
       oP.innerHTML = Math.floor(t * 100);
     }
   },30);
-})();
+});
 
 
 
 
 // 消息提醒功能
-(function(){
+$(function (){
   window.addEventListener('load',function(){
     if(window.Notification && Notification.permission !== "granted")
     {
@@ -73,7 +85,7 @@
           }
         });
     }
-})();
+});
 
 
 
@@ -86,7 +98,7 @@
 
 
 // 搜索框功能
-(function(){
+$(function sousuo(){
   var oSearchInput = document.getElementById('search-input'),
       oSearchList  = document.getElementById('search-list'),
       oSearchButton= document.getElementById('search-button'),
@@ -172,7 +184,7 @@
     }
   }
 
-})();
+});
 
 // 搜索框回调函数
 function callback( data )
@@ -229,37 +241,6 @@ function callback( data )
 
 
 
-
-
-
-
-//微信淡入淡出 使用Move.js运动框架
-(function (){
-          var oWeixin = document.querySelector("#weixin");
-          var oQR = document.querySelector("#QR-Code");
-          var oQrImg = oQR.getElementsByTagName('img')[0];
-          var l = $("#QR-Code").css("left"); 
-          var t = $("#QR-Code").css("top"); 
-          oWeixin.onmouseover = function()
-          {
-            $("#QR-Code").css("left",l);
-            $("#QR-Code").css("top",t);
-            $("#QR-Code").css("width",'160');
-            oQR.style.display = "block";
-            startMove(oQrImg , { width:150 , height :　150 , opacity:70})
-            startMove(oQR , { height :　160 , opacity:70});
-          }
-
-          oWeixin.onmouseout = function()
-          {
-              startMove(oQrImg , { width:0 , height :　0 ,  opacity:0} );
-              startMove(oQR , { width:0 , height :　0 ,  opacity:0 , top : 20 , left : 15 });   
-          }
-      }
-)();
-
-
-
     /*!--------------------------------*\
        My blog Theme Peiwen Lu & Owen
        
@@ -297,28 +278,11 @@ function callback( data )
       }
     });
 
-    // Enable fullscreen.
-    $('#js-fullscreen').on('click', function() {
-      if (button.hasClass('fullscreen')) {
-        sidebar.removeClass('fullscreen');
-        button.removeClass('fullscreen');
-        content.delay(300).queue(function(){
-          $(this).removeClass('fullscreen').dequeue();
-        });
-      } else {
-        sidebar.addClass('fullscreen');
-        button.addClass('fullscreen');
-        content.delay(200).queue(function(){
-          $(this).addClass('fullscreen').dequeue();
-        });
-      }
-    });
-
     $('#mobile-avatar').on('click', function(){
       $('#sidebar, #pjax, #icon-arrow').addClass('fullscreen');
     });
 
-    // Pjax
+    // Pjax 无刷新站内刷新
     $(document).pjax('#avatar, #mobile-avatar, .pl__all', '#pjax', { fragment: '#pjax', timeout: 10000 });
     $(document).on({
       'pjax:click': function() {
@@ -346,7 +310,7 @@ function callback( data )
       // Empty TOC and generate an entry for h1
       toc.empty().append('<li class="post__toc-li post__toc-h1"><a href="#post__title" class="js-anchor-link">' + $('#post__title').text() + '</a></li>');
 
-      // Generate entries for h2 and h3
+      // Generate entries for h2 and h3  目录随机5位哈希值
       $('#post__content').children('h2,h3').each(function() {
         // Generate random ID for each heading
         $(this).attr('id', function() {
@@ -366,7 +330,7 @@ function callback( data )
         }
       });
 
-      // Smooth scrolling
+      // Smooth scrolling  目录平滑滚动
       $('.js-anchor-link').on('click', function() {
         var target = $(this.hash);
         container.animate({scrollTop: target.offset().top + container.scrollTop() - 70}, 500, function() {
@@ -376,6 +340,49 @@ function callback( data )
         });
       });
 
+      // 解决pjax 加载页面后无法收放全屏的问题(暂行)
+      $('#js-fullscreen').on('click', function() {
+      if (button.hasClass('fullscreen')) {
+        sidebar.removeClass('fullscreen');
+        button.removeClass('fullscreen');
+        content.delay(300).queue(function(){
+          $(this).removeClass('fullscreen').dequeue();
+        });
+      } else {
+        sidebar.addClass('fullscreen');
+        button.addClass('fullscreen');
+        content.delay(200).queue(function(){
+          $(this).addClass('fullscreen').dequeue();
+        });
+      }
+    });
+
+
+    //微信淡入淡出 使用Move.js运动框架
+    $(function(){
+            var oWeixin = document.querySelector("#weixin");
+            var oQR = document.querySelector("#QR-Code");
+            var oQrImg = oQR.getElementsByTagName('img')[0];
+            var l = $("#QR-Code").css("left"); 
+            var t = $("#QR-Code").css("top"); 
+            oWeixin.onmouseover = function()
+            {
+              $("#QR-Code").css("left",l);
+              $("#QR-Code").css("top",t);
+              $("#QR-Code").css("width",'160');
+              oQR.style.display = "block";
+              startMove(oQrImg , { width:150 , height :　150 , opacity:70})
+              startMove(oQR , { height :　160 , opacity:70});
+            }
+
+            oWeixin.onmouseout = function()
+            {
+                startMove(oQrImg , { width:0 , height :　0 ,  opacity:0} );
+                startMove(oQR , { width:0 , height :　0 ,  opacity:0 , top : 20 , left : 15 });   
+            }
+        });
+
+      pajx_loadDuodsuo();
       //加载Disqus 
       // Lazy Loading Disqus
       // http://jsfiddle.net/dragoncrew/SHGwe/1/
@@ -405,7 +412,20 @@ function callback( data )
     }
     afterPjax();   
 
-
+/**
+ * pjax回调函数.加载多说
+ */
+function pajx_loadDuodsuo(){
+  var dus=$(".ds-thread");
+  if($(dus).length==1){
+    var el = document.createElement('div');
+    el.setAttribute('data-thread-key',$(dus).attr("data-thread-key"));//必选参数
+    el.setAttribute('data-url',$(dus).attr("data-url"));
+    DUOSHUO.EmbedThread(el);
+    $(dus).html(el);
+    
+  }
+}
 
 
 

@@ -1511,16 +1511,59 @@ oBox.onclick = function()
 
 那么具体的动画应该怎么的调用呢？
 
-animation: 动画总时间 延迟时间 调用的动画帧名 重复执行次数(infinite为重复执行无限次) 运动形式 
+animation: 动画总时间 延迟时间 调用的动画帧名 运动形式 重复执行次数(infinite 无限次播放) 动画效果可见状态 动画执行顺序
 
 看起来和transition也差不多
+
+### animation-fill-mode
 
 但是,这里有个一个问题,细心的同学在上一个demo里面已经发现了
 那就是动画结束后,盒子又回到了红色,这是什么原因呢？
 
 这是因为Css3默认动画结束以后返回这个盒子原本的样式
 
-如果我们想让它有点过渡的效果呢？
+如果我们需要让他保持结束后的状态,只需要添加forwards就可以了
+{% highlight Javascript %}
+.show1{animation:2s show1 forwards linear;}
+{% endhighlight %}
+
+（1）none：默认值，回到动画没开始时的状态。
+（2）backwards：让动画回到第一帧的状态。
+（3）forwards: 让动画保持在最后停止的状态。
+（4）both: 根据animation-direction（见后）轮流应用forwards和backwards规则。
+
+### animation-direction
+
+这个属性可以让我们设置动画的执行次序
+
+缺省值为normal
+
+其他可选值分别为:
+alternate: 跳次播放,动画在奇数次（1、3、5...）正向播放(0%到100%),在偶数次（2、4、6...）反向播放（100%到0%）。,结合播放设置播放次数使用
+reverse: 反序播放 从100%到0%
+alternate-reverse: 反序跳次播放 
+动画在奇数次（1、3、5...）反向播放，在偶数次（2、4、6...）正向播放。
+
+### animation-play-state
+
+我们还可以实时的控制动画的暂停和播放,可以通过修改animation-play-state来实现
+
+当盒子添加了
+{% highlight css %}
+animation-play-state: paused;
+{% endhighlight %}
+
+那么当前的动画就会暂停
+
+如果给盒子添加了
+{% highlight css %}
+animation-play-state: running;
+{% endhighlight %}
+
+那么当前暂停的动画就会继续播放
+
+### animationEnd事件
+
 使用js来控制这个盒子的类,Css3允许我们通过js来监控动画是否完成
 这里就得介绍animationEnd事件了
 
@@ -1644,6 +1687,50 @@ function removeHint() {
 你还可以在[CSS will-change 属性](http://www.cnblogs.com/yuzhongwusan/p/4186405.html)
 得到更详细的关于CSS will-change的说明
 
+## userSelect
+
+有些时候我们制作了一些按钮类的特效,在测试的时候会触发选中文本的效果,弄得一大块蓝整个UI都不好不好的了。
+
+要解决这个方法可以使用JS来解决
+{% highlight Javascript %}
+onselectstart = function(){
+	return false;
+}
+{% endhighlight %}
+
+但是现在CSS3推出了一个新的方法userSelect,我们可以直接设置为none就可以不让用户选中文本
+{% highlight css %}
+user-select:none;
+{% endhighlight %}
+
+除了none以外,user-select还支持如下几个值
+text:可以选择文本(缺省)
+all:当所有内容作为一个整体时可以被选择。如果双击或者在上下文上点击子元素，那么被选择的部分将是以该子元素向上回溯的最高祖先元素。
+element:可以选择文本，但选择范围受元素边界的约束
+
+至今还需要添加浏览器内核前缀
+
+## calc
+
+Css3 还可以使用calc()来计算各种属性的值.
+
+例如
+{% highlight css %}
+box{ width:calc(100% + 20px);}
+{% endhighlight %}
+
+这里100%就先获取父级的宽度,然后在加20px,calc()支持不同单位的自动换算,也就是说我们以后工作完全可以把计算的任务大部分丢给calc
+
+那么calc() 是怎么使用的呢？
+
+calc支持 + - * / 四种运算 不支持%;
+其中+-运算两个运算符号之间一定要用空格隔开
+即 `运算成员 空格 + 空格 运算成员`
+
+但是乘法和除法却无这样的规则(感觉是个bug,但是建议写法统一)
+
+ 
+
 ## 感谢
 
 [妙味课堂](www.miaov.com)
@@ -1663,3 +1750,7 @@ function removeHint() {
 [CSS will-change 属性](http://www.cnblogs.com/yuzhongwusan/p/4186405.html)
 
 [css3 Animation事件](http://blog.csdn.net/kongjiea/article/details/38614695)
+
+[CSS3 animation-direction 属性](http://outofmemory.cn/css/reference/css3-pr-animation-direction.html)
+
+[Css3动画 阮一峰](http://www.ruanyifeng.com/blog/2014/02/css_transition_and_animation.html)

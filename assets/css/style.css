@@ -15,6 +15,11 @@
     left: 0;
     z-index: 5201314;
     overflow: hidden;
+    -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
   }
   .box{
     width:100%;
@@ -112,7 +117,10 @@ table td{ border: 3px solid rgba(255,210,189,0.5);}
 @font-face {
   font-family: "fontello";
   src: url("../font/fontello.eot");
-  src: url("../font/fontello.eot#iefix") format("embedded-opentype"), url("../font/fontello.woff") format("woff"), url("../font/fontello.ttf") format("truetype"), url("../font/fontello.svg#fontello") format("svg");
+  src: url("../font/fontello.eot#iefix") format("embedded-opentype"), 
+  url("../font/fontello.woff") format("woff"), 
+  url("../font/fontello.ttf") format("truetype"), 
+  url("../font/fontello.svg#fontello") format("svg");
   font-weight: normal;
   font-style: normal; }
  
@@ -652,7 +660,7 @@ animation-name: swing;
       max-width: 100%; } }
   @media screen and (max-width: 1280px) {
     #pjax {
-      max-width: 800px;
+      max-width: 1200px;
       margin: 0 auto; } }
 
 /*自定义文本控制*/
@@ -764,6 +772,9 @@ iframe {
   @media screen and (max-device-width: 1280px) {
     #post__toc-trigger {
       display: none; } }
+
+
+/* 文章目录 */
 
 #post__toc {
   width: 260px;
@@ -910,6 +921,7 @@ iframe {
   #sidebar.fullscreen {
     margin-left: -585px; } }
 @media screen and (max-device-width: 1280px) {
+  #sidebar.fullscreen {
     -webkit-transform: translateX(-585px);
     -moz-transform: translateX(-585px);
     -ms-transform: translateX(-585px);
@@ -928,8 +940,8 @@ iframe {
 
 /*调整按钮位置*/
 #js-fullscreen, #nprogress .spinner {
-  top: 10px;
-  right: 50px; }
+  top: 12px;
+  right: 20px; }
 
 #js-fullscreen {
   margin: 0;
@@ -940,7 +952,7 @@ iframe {
   border: none;
   box-shadow: 0 0 20px 0  #EBEAEF;
   outline: none;
-  cursor: pointer;
+  cursor:  url("../img/cursor.png"),default !important;
   position: fixed;
   -webkit-transition: box-shadow .35s;
   -moz-transition: box-shadow .35s;
@@ -953,6 +965,7 @@ iframe {
   -ms-appearance: none;
   -o-appearance: none;
   appearance: none; }
+
   #js-fullscreen:hover {
     color: #2eb695;
    /* background: ;*/
@@ -1206,7 +1219,7 @@ iframe {
   border: solid 2px transparent;
   border-top-color: #f8645a;
   border-left-color: #f8645a;
-  /*border-radius: 50%;*/
+  border-radius: 50%;
   -webkit-animation: spin 400ms linear infinite;
   -moz-animation: spin 400ms linear infinite;
   -ms-animation: spin 400ms linear infinite;
