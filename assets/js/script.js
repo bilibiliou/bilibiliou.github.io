@@ -16,29 +16,40 @@ console.log = function() {
 
 // 开场进度条
 $(function kaichang(){
-  var oContainer = document.querySelector(".container");
-  var oContent = document.querySelector("#header_progress_content");
-  var oProgress = document.querySelector(".header_progress_expand");
-  var oT = document.querySelector(".header_progress_precentage");
-  var oP = document.querySelector(".precent");
-  var oBox = document.querySelector(".box");
-  var MaxWidth = oContent.offsetWidth;
+  var oContainer = $(".container");
+  var oContent = $("#header_progress_content");
+  var oProgress = $(".header_progress_expand");
+  var oT = $(".header_progress_precentage");
+  var oP = $(".precent");
+  var oBox = $(".box");
+
 
 
   var timer = null;
+
+  // 响应式改变进度条长度
+  $(document).on("resize",function()
+  {
+    oProgress.css("width", t*oContent.outerWidth());
+  });
+
   timer = setInterval(function(){
-    var NowWidth = oProgress.offsetWidth;
-    if(NowWidth >= MaxWidth)
+
+    var MaxWidth = oContent.outerWidth();
+    var NowWidth = oProgress.outerWidth();
+    var t = (NowWidth/MaxWidth);
+
+    if(t >= 1)
     {
       clearInterval(timer);
-      oP.innerHTML = 100;
-      startMove(oBox , {opacity:0}, function(){
-        oContainer.style.display = "none";
-        oBox.style.display = "none";
+      oP.html(100);
+      oBox.animate({opacity:0} , 500 , function(){
+        oContainer.css('display','none');
+        oBox.css('display','none');
       });
     }else{
-      var t = (NowWidth/MaxWidth);
-      oP.innerHTML = Math.floor(t * 100);
+      var precentage = Math.floor(t * 100);
+      oP.html(precentage);
     }
   },30);
 });

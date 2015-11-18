@@ -16,7 +16,7 @@ title: Welcome
 
 我把博客的源码托管在我的Github上，如果有任何改进意见，欢迎讨论。
 
-## 一些优秀的博客
+## 一些优秀的博客及网站
 
 [张鑫旭的博客](http://www.zhangxinxu.com/)
 
@@ -37,4 +37,8 @@ title: Welcome
 [淘宝UED](http://ued.taobao.org/blog/)
 
 [百度FEX](http://fex.baidu.com/)
+
+[尤小右(vue.js作者)的博客(BFW)](http://evanyou.me/)
+
+[segmentfault](http://segmentfault.com/)
 

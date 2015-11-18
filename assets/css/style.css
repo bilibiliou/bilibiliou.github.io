@@ -36,11 +36,12 @@
     border-radius: 50%;
     box-shadow: 0 0 4px 4px white, 0 0 4px 4px #eee;
   }
+  @media screen and (max-width: 774px) {
+  .header_progress_avatar{display: none;}
+  }
   .header_progress_title{
     /*兼容火狐*/
     width:100%;
-
-
     display:-webkit-box;
     display:-moz-box;
     display:-o-box;
@@ -95,7 +96,7 @@
     100%{ width:100%;}  
   }
 
-@media screen and (max-width: 860px) {
+@media screen and (max-width: 585px) {
   .container{display: none;}
   }
 
@@ -440,7 +441,15 @@ animation-name: swing;
     #search-form {
       height: 51px;
       display: -webkit-flex;
-      display: flex; } }
+      display: flex; }
+     #search-button{
+      display: none;
+     }
+
+     #search-input{
+     display: none;
+      }
+     }
 
 #mobile-avatar {
   width: 50px;
@@ -468,6 +477,7 @@ animation-name: swing;
   right: 10px;
   cursor: url("../img/cursor.png"),default;
 }
+
 #search-button:active{
   background: #2A7BEB;
 }
@@ -660,7 +670,7 @@ animation-name: swing;
       max-width: 100%; } }
   @media screen and (max-width: 1280px) {
     #pjax {
-      max-width: 1200px;
+      max-width: 800px;
       margin: 0 auto; } }
 
 /*自定义文本控制*/
@@ -930,7 +940,7 @@ iframe {
 
 /*浏览模式最大宽度*/
 #pjax.fullscreen {
-  max-width: 1200px;
+  max-width: 800px;
   margin: 0 auto; }
 
 #js-fullscreen, #nprogress .spinner-icon {
@@ -1657,8 +1667,3 @@ display:none;
   padding: 0;
   cursor:  url("../img/cursor.png"),default;
 }
-
-
-
-
-
