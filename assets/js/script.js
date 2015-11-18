@@ -371,27 +371,26 @@ function callback( data )
 
     //微信淡入淡出 使用Move.js运动框架
     $(function(){
-            var oWeixin = $("#icon-weixin");
-            var oQR = $("#QR-Code");
-            var oQrImg = $(".QR-img");
+            var oWeixin = document.querySelector("#weixin");
+            var oQR = document.querySelector("#QR-Code");
+            var oQrImg = oQR.getElementsByTagName('img')[0];
             var l = $("#QR-Code").css("left"); 
             var t = $("#QR-Code").css("top"); 
-            oWeixin.hover(function()
+            oWeixin.onmouseover = function()
             {
               $("#QR-Code").css("left",l);
               $("#QR-Code").css("top",t);
               $("#QR-Code").css("width",'160');
-              oQR.css("display","block");
-              oQR.animate({ height :　160 , opacity:0.7},600);
-              oQrImg.animate({width:150 , height :　150 , opacity:0.7},600);
-             
-            },function()
+              oQR.style.display = "block";
+              startMove(oQrImg , { width:150 , height :　150 , opacity:70})
+              startMove(oQR , { height :　160 , opacity:70});
+            }
+
+            oWeixin.onmouseout = function()
             {
-              oQrImg.animate({width:0 , height :　0 ,  opacity:0},600);
-              oQR.animate({ width:0 , height :　0 ,  opacity:0 , top : 20 , left : 15 },600,function(){
-                oQR.css("display","none");
-              });  
-            });
+                startMove(oQrImg , { width:0 , height :　0 ,  opacity:0} );
+                startMove(oQR , { width:0 , height :　0 ,  opacity:0 , top : 20 , left : 15 });   
+            }
         });
 
       pajx_loadDuodsuo();
