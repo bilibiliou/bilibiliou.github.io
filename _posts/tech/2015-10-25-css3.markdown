@@ -1771,10 +1771,15 @@ drop-shadow			阴影     (类似box-shadow,为图片添加阴影)
 其他所有的效果都是采用 filter:属性名(百分比对应的小数值)来实现的,例如
 
 {% highlight css %}
-.img{
- filter:saturate(0.5);
-}      
+.img{filter:saturate(0.5);}
 /*设置饱和度为一半*/
+{% endhighlight %}
+
+
+{% highlight css %}
+
+      
+
 {% endhighlight %}
 
 现在滤镜的兼容性依然很差所以还是要添加上浏览器内核前缀
