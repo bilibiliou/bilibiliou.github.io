@@ -1729,7 +1729,61 @@ calc支持 + - * / 四种运算 不支持%;
 
 但是乘法和除法却无这样的规则(感觉是个bug,但是建议写法统一)
 
+## 滤镜
+
+Css3还提供了滤镜功能,让我们实现一些对图片甚至插入的video标签进行类似ps的效果
+
+可以实现的效果有这些
+
+grayscale        	灰度     (把图片变为黑白色,灰度越大,黑色程度越深,默认值是100%)
+
+sepia            	色偏     (使图片变得古老,色偏越大,古老程度越深,默认值是100%)
+
+saturate			饱和度   (色彩饱和度)
+
+hue-rotate	 		色相旋转 (改变图片色相,默认值为0deg)
+
+invert				反色     (255-当前rgb的值取反色,默认值是100%)
+
+opacity				透明度   (图片透明程度)
+
+brightness			亮度     (图片显示的局部亮度)
+
+contrast			对比度   (设置图片对比度,默认值是100%)
+
+blur				模糊	 (使图片变得模糊不清,很实用的一个属性默认值是0)
+
+drop-shadow			阴影     (类似box-shadow,为图片添加阴影)
+
+虽然这些很艺术的东西一般都是UI妹纸去做的,但是,我们也需要了解一下,毕竟如果有时候真的要用到,也不可能老是去麻烦人家(众:...怪不得泡不到妹子)
+
+从网上扒了张图下来,让我们看看具体实现的效果
  
+![pic](/assets/img/filter-demo.png)
+
+那么具体应该如何实现这些功能呢？
+
+
+除了色相偏转 是filter:hue-rotate(角度deg)
+
+和模糊 是filter:blur(像素)
+
+其他所有的效果都是采用 filter:属性名(百分比对应的小数值)来实现的,例如
+
+{% highlight css %}
+.img{
+ filter:saturate(0.5);
+}      
+/*设置饱和度为一半*/
+{% endhighlight %}
+
+现在滤镜的兼容性依然很差所以还是要添加上浏览器内核前缀
+
+我们可以使用滤镜这个属性来做一点小效果出来
+
+[模糊按钮demo](/assets/download/filter-demo.html)
+
+依然不支持苹果和360
 
 ## 感谢
 
@@ -1754,3 +1808,5 @@ calc支持 + - * / 四种运算 不支持%;
 [CSS3 animation-direction 属性](http://outofmemory.cn/css/reference/css3-pr-animation-direction.html)
 
 [Css3动画 阮一峰](http://www.ruanyifeng.com/blog/2014/02/css_transition_and_animation.html)
+
+[张鑫旭-CSS3 Filter的十种特效](http://www.w3cplus.com/css3/ten-effects-with-css3-filter)
