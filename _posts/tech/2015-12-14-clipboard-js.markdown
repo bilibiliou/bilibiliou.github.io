@@ -51,6 +51,8 @@ new Clipboard('.btn');
 
 ### 剪切
 
+同理,我们也可以实现剪切文本框里面的内容
+
 {% highlight html %}
 <!-- Target -->
 <textarea id="Target">我是需要被剪切的内容</textarea>
@@ -61,7 +63,6 @@ new Clipboard('.btn');
 </button>
 {% endhighlight %}
 
-同理,我们也可以实现剪切文本框里面的内容
 
 ### 固定内容复制
 

@@ -751,8 +751,10 @@ console.log( box.dataset.owenZyz ) // cba
 console.log( box.dataset.owenzyz ) // undefined
 console.log( box.dataset ) // { owen : abc , owenZyz : cba }
 
-实验说明 使用自定义属性的时候一定要注意大小写的问题
+实验说明 浏览器在解析的时候采用驼峰命名法
+并且使用自定义属性的时候一定要注意大小写的问题
 或者说我们应该尽量在自定义属性的时候不使用大写
+
 如果说一定要使用大写字母的时候,应先将dataset弹出来看一下具体的属性名
 再进行DOM操作:
 
@@ -768,13 +770,28 @@ data这个属性广泛用于jQuery Mobile上
 然后在标签里面配属性就基本可以完成一些手机端的开发
 和一些简单的特效
 {% highlight html %}
-
 <div data-theme="a" ></div> //把div设置成黑色
 {% endhighlight %}
 
 当然除jQuery Mobile 的库
 还可以用Knockout 手机端库
 [Knockout](http://www.knockoutjs.com)
+
+### Css访问
+
+Css也可以访问data属性
+
+{% highlight html %}
+<article data-parent="cars"></article>
+{% endhighlight %}
+
+{% highlight css %}
+article::before {
+  content: attr(data-parent);
+}
+{% endhighlight %}
+
+但是这个功能对于大多数浏览器来说暂时还是Partial support
 
 ## defer 和 async
 
