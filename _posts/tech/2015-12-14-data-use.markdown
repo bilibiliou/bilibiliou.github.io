@@ -64,10 +64,10 @@ character.dataset.score = 10;
         text-shadow: 0 0 2px blue;
     }
 
-    .sprite[data-score='60']::after {
-        color : red;
-        text-shadow: 0 0 2px blue;
-    }
+.sprite[data-score='60']::after {
+    color : red;
+    text-shadow: 0 0 2px blue;
+}
 {% endhighlight %}
 
 但是css中并不支持值域判断，所以分数判断还是需要写在js里比较好
