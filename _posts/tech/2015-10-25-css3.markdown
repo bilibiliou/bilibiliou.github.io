@@ -1250,6 +1250,8 @@ transition: 过渡的时间 延迟执行时间 参与过度的属性 过渡的�
 
 当鼠标退出hover区之后,也是宽度和背景开始变,然后再是高度
 
+还有一点: transition 目前对display并不支持,如果你的属性中有display 之间的变换的话,那么所有的过渡效果都会消失
+
 ### transition事件
 
 我们可以监听过渡动画,结束之后触发TransitionEnd事件

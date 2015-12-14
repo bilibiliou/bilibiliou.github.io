@@ -575,34 +575,34 @@ $('#box') $('.box') $('ol li');
 
 通过获取ID 来获取元素
 
-var oDiv = document.querySeletor('#box');
+var oDiv = document.querySelector('#box');
 
 
 通过获取类名 来获取元素
 
-var oDiv = document.querySeletor('.box');
+var oDiv = document.querySelector('.box');
 
 但是注意一点
 当获取类元素的时候，是不支持两个获取的
 也就是说如果有两个DOM结点 都有class="box"
-那么querySeletor 无法获取，会返回undefined
+那么querySelector 无法获取，会返回undefined
 
 
 通过获取属性名称来获取元素
 
 比如<div tilte="Owen"></div>
-我们也可以通过querySeletor获取
+我们也可以通过querySelector获取
 
-var oDiv = document.querySeletor('[title=Owen]');
+var oDiv = document.querySelector('[title=Owen]');
 
 甚至是自定义属性<div abc="Owen"></div>
 
-var oDiv = document.querySeletor('[abc=Owen]');
+var oDiv = document.querySelector('[abc=Owen]');
 (如果有多个同样具有 abc="Owen" 属性的标签,则获取到的仅是第一个)
 
 获取继承标签组
 
-虽然querySeletor不能获取多个类 的DOM元素
+虽然querySelector不能获取多个类 的DOM元素
 但是可以获取 继承标签组的多个DOM元素
 <ul id="ul1">
 	<li></li>
@@ -610,31 +610,31 @@ var oDiv = document.querySeletor('[abc=Owen]');
 	<li></li>
 </ul>
 
-var oLi = document.querySeletor('ul li');
+var oLi = document.querySelector('ul li');
 console.log(oLi.length);
 
 或者
 
 你也可以
-var oUl1 = document.querySeletor('#ul1');
-var oLi = oUl1.querySeletor('li');
+var oUl1 = document.querySelector('#ul1');
+var oLi = oUl1.querySelector('li');
 console.log(oLi.length);
 
 {% endhighlight %}
 
-### querySeletorAll
+### querySelectorAll
 
 {% highlight Javascript %}
 
-上面，我们说到不能通过querySeletor获取多个同类元素
+上面，我们说到不能通过querySelector获取多个同类元素
 但是我们可以通过querySelectorAll方法来获取多个同类元素
 
 
-var oDivs = document.querySeletorAll('.box');
+var oDivs = document.querySelectorAll('.box');
 console.log(oDivs.length);
 
 同样的
-我们也可以使用querySeletorAll()
+我们也可以使用querySelectorAll()
 来获取多个 甚至是自定义的属性
 
 <ul>
