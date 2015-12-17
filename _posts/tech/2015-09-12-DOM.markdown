@@ -1,0 +1,188 @@
+---
+layout: post
+title:  DOM和BOM学习笔记
+category: 技术
+keywords: 技术,DOM,javascript,js
+---
+
+## document object model and browser object model
+
+众所周知，js是由 ecmascript + BOM + DOM 组成的
+
+ecmascript 指的是js的各种基本语法，数据类型，继承，对象，原型等等等
+
+而BOM和DOM是w3c组织为了我们使用ecmascript能够更好的操控html页面和css，来写的一套程序接口,
+有了BOM（browser object model）我们就可以获取当前用户正在使用的浏览器的相关参数，信息
+窗口的位置、大小及以下这几个对象
+[document frames history location navigator screen]
+
+document下面又包括了
+[anchors forms images links location]
+
+而bom之上则是window对象
+
+这里请允许我盗张图
+![pic](/assets/img/browser-object-model.png)
+
+有了DOM我们就可以把html想成一棵节点树
+![dom-tree](/assets/img/DOM.png)
+
+有了这棵树，及其配套的方法，我们就可以通过html任意的控制document下的任意节点，包括他们的子级，父级，兄弟，及其对应的css等等等
+
+我们可以简单的认为 window 包含 bom，bom下面包含了dom
+
+## DOM
+
+DOM下面包含的类型有十二种
+|  | NodeType | Named Constant | 
+
+|:----- |:--------:|
+|1 | ELEMENT_NODE |
+
+|:----- |:--------:|
+|2 | ATTRIBUTE_NODE |
+
+|:----- |:--------:|
+|3 | TEXT_NODE |
+
+|:----- |:--------:|
+|4 | CDATA_SECTION_NODE |
+
+|:----- |:--------:|
+|5 | ENTITY_REFERENCE_NODE |
+
+|:----- |:--------:|
+|6 | ENTITY_NODE |
+
+|:----- |:--------:|
+|7 | PROCESSING_INSTRUCTION_NODE |
+
+|:----- |:--------:|
+|8 | COMMENT_NODE |
+
+|:----- |:--------:|
+|9 | DOCUMENT_NODE |
+
+|:----- |:--------:|
+|10 | DOCUMENT_TYPE_NODE |
+
+|:----- |:--------:|
+|11 | DOCUMENT_FRAGMENT_NODE |
+
+|:----- |:--------:|
+|12 | NOTATION_NODE |
+	
+我们可以使用`nodeType`来查看DOM树下的某个元素的属性类型
+
+## childNodes & children
+
+对于任意的一个DOM树下的结点，我们可以访问他的childNodes属性来获取他底下所有子结点
+
+
+childNodes是一个类数组，所以也可以访问其下的length方法，并且你还可以访问并修改其下的元素
+
+例如如下html结构：
+{% highlight html %}
+<ul id="ul"><li></li><li></li><li></li></ul>
+{% endhighlight %}
+
+你可以通过遍历来为ul下面的子节点添加背景色
+{% highlight javascript %}
+var oUl = document.getElementById("ul");
+
+for(var i = 0; i < oUl.childNodes.length ; i++)
+{
+	oUl.childNodes[i].style.background = "red";
+}
+{% endhighlight %}
+
+细心的同学可能就会发现，为什么上面的html结构，我没有给li添加缩进
+这是因为，缩进也是字符，算是文本结点，也会被标准的浏览器获取到（但是低版本的IE浏览器不能够获取到文本结点），而文本节点并没有style这个属性，如果直接给循环添加颜色，就会报错。
+
+当然没有缩进肯定是令人无法忍受的，如果我们需要使用childNodes来遍历子节点，就需要能判断子节点的类型。
+
+那么，如何判断子节点的类型呢？
+
+这就需要我们使用`nodeType`属性进行判断了
+
+如果对应缩进的html
+{% highlight html %}
+<ul id="ul">
+	<li></li>
+	<li></li>
+	<li></li>
+</ul>
+{% endhighlight %}
+
+可以这么写JS
+{% highlight javascript %}
+var oUl = document.getElementById("ul");
+
+for(var i = 0; i < oUl.childNodes.length ; i++)
+{
+	if( oUl.childNodes[i].nodeType == 1 ) // 标号1对应元素结点
+	{
+		oUl.childNodes[i].style.background = "red";
+	}
+}
+{% endhighlight %}
+
+children 和 childnodes用法差不多，但是children只是获取父级下的元素节点，除元素结点之外的子节点都不会获取，所以平时我们可能用的children多一些
+
+## child
+
+上面我们介绍了两个集合方法的属性，其实还有其他的属性可以访问父级下的结点
+
+例如`firstChild`,我们就可以访问父级下的第一个结点，当然如果是有缩进的html结构，在标准浏览器下，获取的是缩进的文本节点，低版本IE浏览器获取的是元素了
+
+那么如果我们要获取第一个元素节点呢？可以标准浏览器为我们提供的`firstElementChild`(这个属性在低版本浏览器下并不支持)
+
+兼容的写法就是
+{% highlight javascript %}
+var oUl = document.getElementById("ul");
+var oFirstChild = oUl.firstElementchild || oUl.firstChild
+{% endhighlight %}
+
+同理也就有`lastChild`和`lastElementChild`
+
+## 兄弟结点
+
+我们还可以同通过`nextSibling` 来获取同级的下一个节点 用`nextElementSibling` 来获取同级的下一个元素节点
+
+那么同理,获取上一个节点和元素节点我们就可以使用`previousSibling`和`previousElementSibling`
+
+兼容方法也类似
+{% highlight javascript %}
+var oPreviousChild = oUl.previousElementSibling || oUl.previousSibling;
+var oNextChild = oUl.nextSibling || oUl.nextElementSibling;
+{% endhighlight %}
+
+## attributes
+这里还有一个有意思的东西，属性结点.
+我们可以通过属性结点，来获取一个元素的属性
+
+通过获取元素，并访问其下的`attributes`属性（只读）
+
+例如一个div
+{% highlight html %}
+<div id="owen" class="zyz"></div>
+{% endhighlight %}
+
+我们通过attributes 就能获取div的两个属性 id 和 class
+{% highlight javascript %}
+var oDiv = document.getElementById("owen");
+
+for(var i = 0; i < oDiv.attributes.length ; i++)
+{
+	console.log("第"+ i +"个属性的名称是" + oDiv.attributes[i].name + " 值是" + pDiv.attributes[i].value);
+}
+{% endhighlight %}
+
+
+## 感谢
+
+[妙味课堂](www.miaov.com)
+
+## 引用出自
+
+### 《javascript高级程序设计》
