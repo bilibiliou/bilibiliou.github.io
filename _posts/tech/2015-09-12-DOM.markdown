@@ -178,6 +178,112 @@ for(var i = 0; i < oDiv.attributes.length ; i++)
 }
 {% endhighlight %}
 
+## 父结点
+
+如果我们希望通过子级来访问父级的话呢？
+
+我们可以使用`ParentNode`这个只读属性来访问父节点
+
+例如如下布局:
+{% highlight html %}
+<ul>
+	<li>段落一 <a href="javascript:;">隐藏</a></li>
+	<li>段落二 <a href="javascript:;">隐藏</a></li>
+	<li>段落三 <a href="javascript:;">隐藏</a></li>
+	<li>段落四 <a href="javascript:;">隐藏</a></li>
+</ul>
+{% endhighlight %}
+
+如果我们平时需要实现点击隐藏的功能，可以当点击的时候获取点击标签索引，然后再根据索引将li隐藏
+
+现在我们可以直接省略获取索引这一步，直接使用`parentNode`来控制父节点的隐藏
+{% highlight javascript %}
+var oA = document.getElementsByTagName('a');
+
+for(var i in oA)
+{
+	oA[i].onclick = function() {
+		this.parentNode.style.display = "none";
+	}
+}
+{% endhighlight %}
+
+除了`parentNode` 还有 `offsetParent` , 这个属性是获取的子级的定位父级
+
+例如如下布局:
+{% highlight html %}
+<div id="div1">
+	<div id="div2">
+		<div id="div3"></div>
+	</div>
+</div>
+{% endhighlight %}
+
+如果div3的所有父级都没有设置position，那么就是没有定位的元素
+如果这时候我获取div3的定位父级，那么获取的是body
+{% highlight javascript %}
+var oDiv3 = document.getElementById("div3");
+
+console.log(oDiv3.offsetParent.tagName); // body
+{% endhighlight %}
+
+但是如果我给div1 或者 div2 添加了position,那么被添加了position的div父级 就成了 div3的 
+`定位父级`
+
+如果div1 和 div2 都添加了position 那么浏览器会选取距div3最近的父级也就是div2作为div3的定位父级 
+{% highlight html %}
+<div id="div1">
+	<div id="div2" style="positon:relative;">
+		<div id="div3"></div>
+	</div>
+</div>
+{% endhighlight %}
+
+{% highlight javascript %}
+var oDiv3 = document.getElementById("div3");
+
+console.log(oDiv3.offsetParent.id); // div2
+{% endhighlight %}
+
+IE7- 的浏览器还有一些不qi合pa群的特性，如果你要兼容IE7以下的浏览器的话，需要考虑
+例如
+上面div3之上的父级都没有定位，这时候div3默认的定位父级就是body标签，但是如果给div3添加了定位，那么div3的父级就变成了html
+
+还有IE7的 `layout` , 有些特殊的Css属性会触发layout 把当前元素变成定位元素 例如 zoom属性
+
+## offsetLeft[Top]
+
+offsetLeft 和 Top 可以获取自己元素到`定位父级`的距离
+
+{% highlight javascript %}
+var oDiv3 = document.getElementById("div3");
+
+console.log(oDiv3.offsetLeft);
+{% endhighlight %}
+
+如果要获取一个元素到浏览器最顶部的距离（最左部的距离）呢？
+我们可以封装一个函数
+{% highlight javascript %}
+var obj = document.getElementById("div3");
+var Left = 0;
+var Top  = 0;
+
+while( obj ) {	
+	Top += obj.offsetTop;
+	Left += obj.offsetLeft;
+	obj = obj.offsetParent;
+}
+{% endhighlight %}
+
+思路就是，不断的取到定位父级的距离，一直到`Body`， 而Body的定位父级是Null(不是html) Body的offsetTop(Left)是0 所以当循环到Body的时候，循环停止，返回的就是一个元素到最顶端的距离
+
+## 盒模型的三种宽高
+
+style.width & height 内容区域宽高 包括: 实际宽高 (带px单位)
+offsetWidth & Height 可视区域宽高 包括: 实际宽高 + padding
+clientWidth & Height 盒子实际宽高 包括: 实际宽高 + padding + border
+
+
 
 ## 感谢
 
