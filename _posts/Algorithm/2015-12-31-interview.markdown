@@ -18,7 +18,7 @@ a[b] = 123;
 a[c] = 456;
 
 console.log(a);
-{% highlightend %}
+{% endhighlight %}
 
 
 答:
@@ -43,7 +43,7 @@ console.log(JSON.stringify(a));
 console.log(String(b));
 console.log(a)
 
-{% highlightend %}
+{% endhighlight %}
 
 ## 理解Timer类callback机制
 
@@ -52,7 +52,7 @@ console.log(a)
 console.log(1);
 setTimeout(function(){console.log(2)},0);
 console.log(3);
-{% highlightend %}
+{% endhighlight %}
 
 答:
 
@@ -77,7 +77,7 @@ console.log(a);
 var a = 1;
 
 console.log(a);
-{% highlightend %}
+{% endhighlight %}
 
 答: undefined , 1
 
@@ -94,7 +94,7 @@ function b(x, y, a) {
     console.log(a);
 }
 b(1, 2, 3); // 10
-{% highlightend %}
+{% endhighlight %}
 
 答:
 
