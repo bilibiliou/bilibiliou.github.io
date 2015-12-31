@@ -154,7 +154,7 @@ var oFirstChild = oUl.firstElementchild || oUl.firstChild
 兼容方法也类似
 {% highlight javascript %}
 var oPreviousChild = oUl.previousElementSibling || oUl.previousSibling;
-var oNextChild = oUl.nextSibling || oUl.nextElementSibling;
+var oNextChild = oUl.nextElementSibling || oUl.nextSibling ;
 {% endhighlight %}
 
 ## attributes
@@ -283,7 +283,184 @@ style.width & height 内容区域宽高 包括: 实际宽高 (带px单位)
 offsetWidth & Height 可视区域宽高 包括: 实际宽高 + padding
 clientWidth & Height 盒子实际宽高 包括: 实际宽高 + padding + border
 
+## 动态操纵元素
 
+使用createElement 添加元素
+{% highlight javascript %}
+document.createElement("需要创建的标签名");
+{% endhighlight %}
+
+使用appendChild 创建元素
+{% highlight javascript %}
+被添加的元素对象.appendChild( 添加的元素对象 );
+{% endhighlight %}
+
+我们也可以使用insertBefore 在每个元素的之上插入元素
+{% highlight javascript %}
+插入元素的父级.insertBefore( 被添加的元素 , 某个定位元素 );
+{% endhighlight %}
+
+但是如果在父级元素一个子节点都没有的情况下
+在IE下，使用insertBefore会报告错误
+但是在标准浏览器下，使用insertBefore会默认以appendChild进行插入
+
+所以如果我们需要兼容IE和标准浏览器的话，可以这样写
+{% highlight javascript %}
+if( !父级.children[0] )
+{
+	父级.appendChild( 被添加的元素对象 );
+}else {
+	父级.insertBefore( 被添加的元素对象 ， 某个定位元素 );
+}
+{% endhighlight %}
+
+除此之外，我们还可以使用removeChild 删除元素
+{% highlight javascript %}
+父级.removeChild( 被删除的元素 );
+{% endhighlight %}
+
+还可以使用replaceChild 来替换元素
+{% highlight javascript %}
+父级.replaceChild( 替换元素 , 被替换元素 );
+{% endhighlight %}
+
+需要注意的是,以上的全部方法，都需要在父级下进行操作，也就是说如果需要动态的操作元素，一定要获取到这些元素的父级
+
+## 自己封装一个getByClassName
+
+选取页面的元素，我们可以使用getElementById 或者 getElementsByTagName
+但是有没有一个方法能够通过class来选取元素呢？
+
+在标准浏览器下是有的， `getElementsByClassName`
+但是在非标准浏览器下却没有这个函数，所以如果需要兼容，就的自己写一个
+{% highlight javascript %}
+function getByClass( parent  , sClass , tag ) {
+	var tag = tag || '*';
+	var aTag = parent.getElementsByTagName(tag);
+	var result = [];
+
+	for( var i = 0 ; i < aTag.length ; i++ )
+	{
+		var aTagClass = aTag[i].className.split(' ');
+
+		for( var j in aTagClass )
+		{
+			if( aTagClass[j] == sClass )
+			{
+				result.push(aTag[i]);
+				break;
+			}
+		}
+	}
+
+	return result;
+}
+{% endhighlight %}
+
+调用的时候就将需要 第一个参数获取类元素的父级传参，第二个参数为匹配的class类名，第三个参数选填，为匹配的标签名称(如果没填默认全部选中)
+
+注意:使用的时候返回的是一个数组,如果获取的类只有一个,那么就需要使用[0]
+
+## 表格的DOM方法
+
+如下表格结构
+{% highlight html %}
+<table width="100%" boder="1px">
+	<thead>
+		<tr>
+			<th>编号</th>
+			<th>姓名</th>
+			<th>性别</th>
+			<th>年龄</th>	
+		</tr>
+	</thead>
+
+	<tbody>
+		<td>01</td>
+		<td>欧阳</td>
+		<td>男</td>
+		<td>19</td>
+	</tbody>
+
+	<tbody>
+		<td>02</td>
+		<td>老王</td>
+		<td>男</td>
+		<td>20</td>
+	</tbody>
+
+	<tbody>
+		<td>03</td>
+		<td>老李</td>
+		<td>女</td>
+		<td>21</td>
+	</tbody>
+
+	<tfoot>
+		<td>平均年龄</td>
+		<td></td>
+		<td></td>
+		<td>20</td>
+	</tfoot>
+</table>
+{% endhighlight %}
+
+如果我们需要对表格进行操作，DOM为我们提供了一些DOM方法进行操作
+例如我们要把每行都变色
+{% highlight javascript %}
+var oTable = document.getElementsByTagName('table')[0];
+		
+	oTable.tBodies[0].style.background = 'yellow';
+	oTable.tBodies[1].style.background = 'red';
+	oTable.tBodies[2].style.background = 'pink';
+
+{% endhighlight %}
+
+我们可以操作每个`tBodies`属性来进行改变
+
+
+如果我们只需要修改表格头,那么就使用`tHead`
+{% highlight javascript %}
+var oTable = document.getElementsByTagName('table')[0];
+	oTable.tHead.style.background = 'yellow';
+{% endhighlight %}
+
+当然我们也可以操作他们的`tfoot`
+{% highlight javascript %}
+var oTable = document.getElementsByTagName('table')[0];
+	oTable.tFoot.style.background = 'yellow';
+{% endhighlight %}
+
+但是如果我们需要修改某个表格内的元素呢？
+例如第一行列第四列，希望将其值修改成20
+{% highlight javascript %}
+var oTable = document.getElementsByTagName('table')[0];
+	oTable.tBodies[0].rows[0].cells[3].innerHTML = "20";
+{% endhighlight %}
+
+当然我的例子里面是一个body对应一行,当然也可以一个body里有任意多行，照葫芦画瓢
+
+## DOM表单
+
+表单这个东西十分常用，当我们需要操纵表单的时候，DOM也给我们提供了操纵的方法
+例如:
+{% highlight html %}
+<form>
+	<input type="text" name="text1" value="内容">
+</form>
+{% endhighlight %}
+在表单中，最有用的一个属性就是`name`属性了，通过name我们可以标识发送给后端的内容是什么,也就是说name在JS里面基本可以替代ID 和 class来获取和操控表单元素,所以DOM也为name提供了相应的方法
+
+例如我们可以这样来获取一个表单底下的表单元素的内容
+{% highlight javascript %}
+var oForm = document.getElementsByTagName("form")[0];
+
+console.log(oForm.text1.value);// 内容
+{% endhighlight %}
+
+当然，DOM
+
+,DOM还为表单元素提供了一个事件
 
 ## 感谢
 
@@ -292,3 +469,5 @@ clientWidth & Height 盒子实际宽高 包括: 实际宽高 + padding + border
 ## 引用出自
 
 ### 《javascript高级程序设计》
+
+

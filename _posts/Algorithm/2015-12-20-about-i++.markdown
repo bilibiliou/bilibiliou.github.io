@@ -18,7 +18,7 @@ printf("%d",i);
 
 通过Vc6.0编译执行出来的 i == 3
 
-![shootpic](/assets/img/++i+i++c.png)
+![shootpic](/assets/img/++i+i++C.png)
 
 但是我使用了js试了试
 
