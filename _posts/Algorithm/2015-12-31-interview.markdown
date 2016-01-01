@@ -41,7 +41,7 @@ a[c] = 456;
 // 所以这时候不会在创建新的字面量，而是直接覆盖掉原先的123
 console.log(JSON.stringify(a));
 console.log(String(b));
-console.log(a)
+console.log(a);
 
 {% endhighlight %}
 
