@@ -100,3 +100,155 @@ b(1, 2, 3); // 10
 
 a一开始赋值了3，通过arguments[2] 访问并修改了a对应内存中的值（变成了10）
 也就是说a 和 arguments[2] 都是存储内存的索引
+
+## call 和 apply方法的区别 和 继承
+
+首先说明call方法和 apply的区别，
+两者都是用于扩展函数的生存域的方法，第一个函数都是改变函数执行过程中的内部this的指向
+而唯一区别就是在第二个参数开始，传参的形式不同。
+
+call方法是通过多个参数进行传递的，即参数列表进行传递
+{% highlight Javascript %}
+func.call(func1,var1,var2,var3)
+{% endhighlight %}
+
+apply方法是通过传递一个JSON 或者 一个数组来实现函数传递的，且参数规定只能有两个
+{% highlight Javascript %}
+func.apply(func1,[{"name" : "var1"} , {"age" : "19"} , {"sex" : "男"}]);
+{% endhighlight %}
+
+当我们需要实现继承的时候，可以这样写
+{% highlight Javascript %}
+	function Animal(name){    
+	    this.name = name;    
+	    this.showName = function(){    
+	        alert(this.name);    
+	    }    
+	}    
+	    
+	function Cat(name){  
+	    Animal.apply(this, [name]);
+	    //Animal.call(this, name);  
+	}    
+	    
+	var cat = new Cat("Black Cat");   
+	cat.showName();
+	console.log(cat);
+{% endhighlight %}
+
+来看看下一个实例
+{% highlight Javascript %}
+function Person(name,age){      
+        this.name = name;        
+        this.age = age;   
+        this.sayhello = function() {
+        	console.log(this.name)
+        };  
+    } 
+
+function Print(){            // 显示类的属性   
+    this.funcName="Print";   // 这里一定要有this，即实例的属性
+    this.show=function(){  
+        var msg=[];  
+        for(var key in this){  
+            if(typeof(this[key])!="function"){  
+                msg.push([key,":",this[key]].join(""));  
+            }  
+        }  
+        console.log(msg.join(" "));  
+    };  
+}
+
+function Student(name,age,grade,school){    //学生类   
+    Person.apply(this,arguments);           //比call优越的地方   
+    Print.apply(this,arguments);  
+    this.grade=grade;                       //年级   
+    this.school=school;                     //学校   
+}
+
+var p1 = new Person("Zyz",20);  
+p1.sayhello();  
+
+var s1 = new Student("owen",19,95,"黑龙江大学");  
+s1.show();  
+
+s1.sayhello();  
+console.log(s1.funcName);
+{% endhighlight %}
+这个实例很直接的实现了一次继承，我们可以认为`apply`起到的是一个接口的作用，可以将子级和父级相连接
+
+仔细想想，既然call 和 apply 的基本作用是一样的，那为什么还有设置两个呢？
+实际上apply还有一些其他的妙用，重点突出在它的第二个参数上
+他可以让第二个参数的数组对象，变成一个个参数传入函数中
+
+例如push 方法
+如果我们需要将两函数合并，如果使用`contact`方法，但是contact方法会产生新数组，如果
+使用`push`方法，但是直接push的话传递进去的会是一个整个数组，访问也必须按照二维数组的形式进行访问
+
+{% highlight Javascript %}
+//使用contact方法
+var a = [1 , 2 , 3 , 4];
+var b = [5 , 6 , 7 , 8];
+
+var k = a.contact(b);// [1 , 2 , 3 , 4 , 5 , 6 , 7 , 8] 但是需要新声明一个变量k
+{% endhighlight %}
+
+
+{% highlight Javascript %}
+// 简单的时候push方法
+var a = [1 , 2 , 3 , 4];
+var b = [5 , 6 , 7 , 8];
+
+a.push(b);
+console.log(a);// [ 1 , 2 , 3 , 4 , [5 , 6 , 7 , 8] ]
+{% endhighlight %}
+
+这两种方法肯定都是不方便我们遍历数组的，解决这个问题，我们可以使用apply
+
+apply 重点就是`可以把第二个参数的数组转变成一个个参数传递进来`
+
+{% highlight Javascript %}
+var a = [5,6,7,8];
+
+var b = [1,2,3,4];
+
+b.push.apply(b , a);
+console.log(b);
+{% endhighlight %}
+
+但是这里一定要注意一个问题，就是第一个参数一定不能为null 或者 undefined，最好设置为被插入的数组的引用
+
+还有一个就是max和min函数
+max和min函数接收参数的方式是
+{% highlight Javascript %}
+var max = Math.max(var1 , var2 , var3 , var 4);
+{% endhighlight %}
+
+但是不支持这样接收参数,也就是不能接收数组
+{% highlight Javascript %}
+var max = Math.max([var1 , var2 , var3 , var 4]);
+{% endhighlight %}
+
+
+如果我们需要找到一个数组中的最大值和最小值的时候，就很不方便了
+
+解决方法还是可以apply
+{% highlight Javascript %}
+var max = Math.max.apply(max , [var1 , var2 , var3 , var4]);
+{% endhighlight %}
+
+这样就可以直接对max(min)函数引用数组中的内容了
+
+## 感谢
+
+[JavaScript中call()与apply()有什么区别？](http://my.oschina.net/warmcafe/blog/74973)
+
+
+
+
+
+
+
+
+
+

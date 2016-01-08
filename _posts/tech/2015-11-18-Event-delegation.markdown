@@ -85,7 +85,7 @@ oUl.addEventListener("click",function(ev){
 				....
 				break;
 
-			cass "function2" :
+			case "function2" :
 
 				....
 				break;

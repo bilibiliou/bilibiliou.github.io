@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">	
+<title>效果</title>
+<style>
+	
+</style>
+
+<script>
+	window.onload = function() {	
+	var otext = document.getElementById('text');
+
+	otext.onfocus = function() {
+		if( this.value === '输入内容' )
+		{
+			this.value = '';
+		}
+	}
+
+	otext.onblur = function() {
+		if( this.value === '' )
+		{
+			this.value = '输入内容';
+		}
+	}
+}
+</script>
+</head>
+<body>
+	<input type="text" value = "输入内容" id="text">
+</body>
+</html>
+
+
+

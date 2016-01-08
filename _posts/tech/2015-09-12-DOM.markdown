@@ -251,7 +251,9 @@ IE7- 的浏览器还有一些不qi合pa群的特性，如果你要兼容IE7以�
 
 还有IE7的 `layout` , 有些特殊的Css属性会触发layout 把当前元素变成定位元素 例如 zoom属性
 
-## offsetLeft[Top]
+## 定位、宽高的获取
+
+### offsetLeft[Top]
 
 offsetLeft 和 Top 可以获取自己元素到`定位父级`的距离
 
@@ -277,11 +279,42 @@ while( obj ) {
 
 思路就是，不断的取到定位父级的距离，一直到`Body`， 而Body的定位父级是Null(不是html) Body的offsetTop(Left)是0 所以当循环到Body的时候，循环停止，返回的就是一个元素到最顶端的距离
 
-## 盒模型的三种宽高
+### 盒模型的三种宽高
 
 style.width & height 内容区域宽高 包括: 实际宽高 (带px单位)
 offsetWidth & Height 可视区域宽高 包括: 实际宽高 + padding
 clientWidth & Height 盒子实际宽高 包括: 实际宽高 + padding + border
+
+### 获取页面滚动距离
+
+获取页面滚动距离使用的`scrollTop`这个属性来获取，但是依然存在一些兼容性问题
+
+① 火狐和iE认为，滚动条类属于`documentElement`
+② chrome认为，滚动条类属于`body`
+
+所以当我们需要获取页面已经滚动的高度的时候，就需要做这样的兼容
+{% highlight javascript %}
+var ScrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+{% endhighlight %}
+
+scrollLeft也可以类比如此
+
+## 获取滚动条总高度
+
+如果一个盒子带有滚动条，那么如果要获取总高度的话，使用上文提到的
+style.width & height
+offsetWidth & Height
+clientWidth & Height
+
+获取的高度是不包括被滚动条隐藏的高度，所以如果需要获取包含隐藏条隐藏的高度的内容，我们必须使用`scrollHeight` 这一属性
+
+{% highlight javascript %}
+var ScrollHeight = document.body.scrollHeight;
+{% endhighlight %}
+
+同时Width也是如此
+
+这里为什么不获取`documentElement的scrollHeight呢？ 因为body有外marin和padding，如果使用documentElement获取的话会把body的外边距和内边距包含进来，如果我们没有对body进行reset的话,就会有一定的偏差(body的内外边距)。
 
 ## 动态操纵元素
 
@@ -458,9 +491,377 @@ var oForm = document.getElementsByTagName("form")[0];
 console.log(oForm.text1.value);// 内容
 {% endhighlight %}
 
-当然，DOM
+## submit 和 onsubmit
+表单内有一个特殊的按钮`submit`提交，使用这个可以进行表单的提交，提交的结果会在URI后面添加一个信息项
 
-,DOM还为表单元素提供了一个事件
+?提交按钮的name=其value
+
+当我们进行提交的时候，我们可以使用`onsubmit`来控制提交
+{% highlight html %}
+<form action="http://www.baidu.com">
+	<input type="text" name="text1" >
+	<input type="submit" name="dosubmit" value="提交">
+</form>
+{% endhighlight %}
+
+{% highlight javascript %}
+var oForm = document.getElementById('oform');
+
+	oForm.onsubmit = function() {
+		if( this.text1.value == '' ) {
+			alert("请输入内容");
+			return false;
+		}
+	}
+{% endhighlight %}
+
+当用户没有输入任何东西的时候，我们就可以阻止用户提交数据
+
+除了`onsubmit`还有一个`submit`事件，`submit`事件可以让我们使用js动态的触发提交表单
+{% highlight javascript %}
+setTimeout(function() {
+	oForm.submit();
+},1000)
+{% endhighlight %}
+例如我们可以让js加载1秒后，自动提交表单。
+
+## reset 和 onreset
+当我们需要重置输入内容的时候，我们可以使用reset
+{% highlight html %}
+<form action="http://www.baidu.com" id="oform">
+	<input type="text" name="text1" >
+	<input type="reset" name="doreset" value="reset">
+</form>
+{% endhighlight %}
+
+点击reset事件就可以重置输入框内的内容
+
+当这个按钮被点击的时候，我们可以使用`onreset`来控制callback
+{% highlight javascript %}
+var oForm = document.getElementById('oform');
+
+	oForm.onreset = function() {
+		return confirm("你是否要重置文本框的内容");
+	}
+{% endhighlight %}
+
+`reset`事件类比submit事件，功能也是使用js动态控制内容重置
+
+## BOM
+
+Browser object model 浏览器对象模型，我们通过这个模型可以操控窗口的各种方法
+
+## open
+open方法可以接受4个参数，但是后两个参数，存在兼容性问题，所以暂不介绍，可以在`《javascript高级程序设计》` 中查找到相关方法。
+
+{% highlight javascript %}
+window.open();
+{% endhighlight %}
+如果什么参数都不加，则默认新创建一新窗口，并打开一个空白页
+
+第一个参数是需要打开的网页url，例如
+{% highlight javascript %}
+window.open('www.baidu.com');
+{% endhighlight %}
+则创建一个新窗口，并跳转到百度
+
+第二个参数是打开方式，默认为`_blank`
+{% highlight javascript %}
+window.open('www.baidu.com','_self');
+{% endhighlight %}
+当我们给其设置`_self`的时候，则在本页面跳转到百度
+
+window.open方法可以返回一个返回值
+即返回打开新窗口的`window`对象
+
+通过窗口的`window`对象我们可以控制新打开窗口的内容
+{% highlight javascript %}
+var newWindow = null;
+
+newWindow = window.open();
+console.log(newWindow);
+{% endhighlight %}
+不过如果是非服务器环境，则会被浏览器阻止弹窗...
+
+还有一个问题，就是跨域控制问题，也就是说我们并不能被允许控制打开的有域名的页面的内容
+{% highlight javascript %}
+var newWindow = null;
+
+newWindow = window.open('http://www.baidu.com');
+
+newWindow.document.body.background = "red";
+{% endhighlight %}
+你当然是没有权利去改百度提供的页面的DOM内容的
+
+当然如果要解决这个问题，可以参考[html5跨域通信](http://numerhero.github.io/2015/09/10/HTML5.html)
+
+## close
+
+我们可以使用close方法来关闭窗口
+{% highlight javascript %}
+setTimeout(function() {
+	window.close()
+} , 3000);
+{% endhighlight %}
+例如,我们可以打开窗口后3秒使用close方法来关闭窗口
+
+但是close方法存在兼容性问题
+
+① chrome下我们可以正常关闭
+② firefox下我们的关闭操作被禁止
+③ iE 下会弹出是否运行关闭的对话框
+
+所以，平时我们可能比较少使用关闭方法
+
+但是，如果是我们使用代码新打开的一个窗口的话，各个浏览器就不会有限制性问题
+例如如下布局:
+{% highlight html %}
+<input type="button" value = "打开新窗口" id="btn1">
+<input type="button" value = "关闭新窗口" id="btn2">
+{% endhighlight %}
+
+{% highlight javascript %}
+var oBtn1 = document.getElementById("btn1");
+	var oBtn2 = document.getElementById("btn2");
+
+	var newWindow = [];
+
+	oBtn1.onclick = function() {
+		newWindow.push(window.open());
+	}
+
+	oBtn2.onclick = function() {
+		if( newWindow.length != 0 )
+		{
+			newWindow[(newWindow.length-1)].close();
+			newWindow.length--;	
+		}
+	}
+{% endhighlight %}
+
+我们打开新的页面在不同浏览器下都能关闭
+
+## navigator
+
+window底下其中有一个对象是`navigator`(英:领航者)我们可以根据这个对象底下的`userAgent`属性来获知用户的浏览器类型，以及版本型号。
+
+{% highlight javascript %}
+console.log(window.navigator.userAgent);
+{% endhighlight %}
+
+这样我们就可以判断用户的浏览器类型了，并且可以简单的判断用户是否使用的是IE浏览器
+{% highlight javascript %}
+if( window.navigator.userAgent.indexOf("MSIR") != -1 )
+{
+	console.log("用户用的是标准浏览器");
+}else {
+	console.log("用户用的是IE浏览器");
+}
+{% endhighlight %}
+
+{% highlight javascript %}
+console.log(window.navigator);
+{% endhighlight %}
+navigator底下还有许多属性和方法，我们可以console一下
+
+appCodeName: "Mozilla"
+appName: "Netscape"
+
+appVersion: "5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"
+
+cookieEnabled: true
+
+doNotTrack: null
+
+geolocation: GeolocationhardwareConcurrency: 4
+language: "zh-CN"
+languages: Array[2]
+maxTouchPoints: 0
+mimeTypes: MimeTypeArray
+onLine: false
+permissions: Permissions
+platform: "Win32"
+plugins: PluginArray
+product: "Gecko"
+productSub: "20030107"
+serviceWorker: ServiceWorkerContainer
+
+userAgent: "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"
+
+vendor: "Google Inc."
+vendorSub: ""
+webkitPersistentStorage: DeprecatedStorageQuota
+webkitTemporaryStorage: DeprecatedStorageQuota__proto__: Navigator
+
+基本上很多都是表明当前浏览器的信息的属性内容，大家可以自己深入研究
+
+## location
+
+location则是一个表明当前浏览器地址栏信息的一个对象。
+
+直接`alert`会默认调用location的`href`方法，然后打印出当前地址栏上的全部信息
+{% highlight javascript %}
+alert(window.location);
+{% endhighlight %}
+
+但是如果使用console.log则会打印出location对象底下的全部方法和属性
+
+hash: ""
+search: ""
+
+pathname: "/E:/Html/%E7%A8%8B%E5%BA%8F/%E7%BB%83%E4%B9%A0/JavaScript%E7%BB%83%E4%B9%A0.html"
+
+port: ""
+hostname: ""
+
+href: "file:///E:/Html/%E7%A8%8B%E5%BA%8F/%E7%BB%83%E4%B9%A0/
+JavaScript%E7%BB%83%E4%B9%A0.html"
+
+ancestorOrigins: DOMStringList
+protocol: "file:"
+reload: reload()
+replace: ()
+arguments: null
+caller: null
+length: 1
+name: ""
+toString: toString()
+valueOf: valueOf()
+__proto__: Location
+
+主要的属性有这么些
+
+### href
+
+打印出当前地址栏目的全部地址
+
+### search
+主地址?之后的内容(结果会包含?)
+
+如果需要把?去掉的话可以这样写
+{% highlight javascript %}
+console.log(window.location.search.substring(1));
+{% endhighlight %}
+
+获取这些东西有什么用处呢？
+当我们学到前后端交互的时候，就知道有两种方式进行交互`get`和`post`
+使用get方式进行信息的发送的时候就需要以 网址?name=owen&age=18 这样的形式进行
+所以获取?后面的内容是必要的
+
+### hash
+我们可以使用location的另外一个属性`hash`来获取地址栏后面#的内容
+这个方法也是会带有一个#的
+
+去除的方法上同
+{% highlight javascript %}
+console.log(window.location.hash.substring(1));
+{% endhighlight %}
+
+hash音译哈希，我们可以通过动态的添加哈希值来给每个网页标记索引，或者解决缓存问题
+简单来说就是让同一类网页不同的信息进行不同的标记
+
+## 用户输入交互事件
+
+### focus 和 onfocus
+当用户需要进行内容的交互的时候，需要标中焦点才可以进行输入
+而标中焦点常用的方法有三种
+① 使用鼠标点击
+② 使用Tab切换
+③ Js控制
+
+我们可以使用 `focus` 来主动为用户标中焦点
+例如 如下布局
+{% highlight html %}
+<input type="text" value = "输入内容" id="text">
+{% endhighlight %}
+
+{% highlight javascript %}
+var otext = document.getElementById('text');
+
+otext.focus();
+{% endhighlight %}
+
+当某元素的被标中焦点的时候，我们可以使用`onfocus`来执行标中焦点事件
+{% highlight javascript %}
+var otext = document.getElementById('text');
+
+otext.focus();
+otext.onfocus = function() {
+	console.log(焦点被标中了);
+}
+{% endhighlight %}
+
+### blur 和 onblur
+
+我们还可以使用 `blur` 来主动取消已被标中的焦点,不过可能不太常用
+
+使用`onblur`激发焦点被取消时候的callback
+{% highlight javascript %}
+var otext = document.getElementById('text');
+
+otext.focus();
+otext.onblur = function() {
+	console.log(焦点被取消了);
+}
+{% endhighlight %}
+
+结合`blur` 和 `focus` , 我们可以做出一点小效果
+
+{% highlight javascript %}
+var otext = document.getElementById('text');
+
+otext.onfocus = function() {
+	if( this.value === '输入内容' )
+	{
+		this.value = '';
+	}
+}
+
+otext.onblur = function() {
+	if( this.value === '' )
+	{
+		this.value = '输入内容';
+	}
+}
+{% endhighlight %}
+
+[demo](/assets/download/onfocus-onblur.html)
+
+### select 和 onselect
+
+使用`select`可以主动选取一个结点对象中的文本内容
+{% highlight html %}
+<input type="text" value = "输入内容" id="text">
+<input type="button" value ="选取内容" id="btn">
+{% endhighlight %}
+
+{% highlight javascript %}
+var otext = document.getElementById('text');
+var obtn  = document.getElementById('btn');
+
+obtn.onclick = function() {
+	otext.select();	
+}
+{% endhighlight %}
+
+[demo](/assets/download/select.html)
+
+我们当然，还有一个`onselect`当我们选中文本内容的时候触发
+
+{% highlight javascript %}
+var otext = document.getElementById('text');
+var obtn  = document.getElementById('btn');
+
+obtn.onclick = function() {
+	otext.select();	
+}
+
+otext.onselect = function() {
+		alert("文本被选中了");
+}
+{% endhighlight %}
+
+[demo](/assets/download/onselect.html)
 
 ## 感谢
 
