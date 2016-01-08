@@ -547,6 +547,131 @@ var oForm = document.getElementById('oform');
 
 `reset`事件类比submit事件，功能也是使用js动态控制内容重置
 
+## event对象
+
+所谓event对象就是当事件执行的时候，存储事件执行的各种属性的对象。
+在ie/chrome底下 event对象是一个全局的内置对象
+但是在标准浏览器下 event对象是根据事件执行的时候传入的（chrome既有全局event又有根据第一参数传入）
+
+但是在非标准浏览器下，只有一个全局的内置对象
+
+如果我们需要兼容两者的话可以这样写
+{% highlight javascript %}
+document.click = function(ev) {
+	var ev = ev || event; // event兼容非标准的IE浏览器
+}
+{% endhighlight %}
+
+## 鼠标位置ClientX/Y
+
+通过访问ev下的ClientX/Y，我们可以得到鼠标在页面可视区中的位置
+例如
+{% highlight html %}
+<style>
+	#div{
+		width: 100px; height: 100px; border-radius: 50%; background: blue; transition: .6s;
+	  	margin-left: -50px;
+	  	margin-top:  -50px;
+	  	position: absolute;
+	  }
+</style>
+
+</head>
+<body>
+	<div id="div"></div>
+</body>
+{% endhighlight %}
+
+{% highlight javascript %}
+var oDiv = document.getElementById("div");
+
+document.onmousemove = function(ev) {
+	var ev = ev || event;
+	var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+	
+	oDiv.style.left = ev.clientX + "px";
+	oDiv.style.top  = ev.clientY + scrollTop + "px";
+}
+{% endhighlight %}
+
+[demo](/assets/download/clientX-onmousemove.html)
+
+这里注意一点，就是clientXY是在可视区的定位，而style.top[left] 是面对整个页面进行定位，所以我们在給盒子进行定位的时候，一定要加上 scrollTop[left] 及被卷起来的那部分的高度[宽度]
+
+## 事件流
+
+### 事件冒泡
+
+我们先看一个栗子
+[demo](/assets/download/Bubble.html)
+
+{% highlight html %}
+<style>
+	#div1 {
+		height: 200px;
+		background: blue;
+		padding: 50px;
+	}
+
+	#div2 {
+		height: 100px;
+		background: red;
+		padding: 50px;
+	}
+
+	#div3 {
+		height: 100px;
+		background: yellow;
+	}
+</style>
+
+</head>
+<body>
+	<div id="div1">
+		<div id="div2">
+			<div id="div3"></div>
+		</div>
+	</div>
+</body>
+{% endhighlight %}
+
+{% highlight javascript %}
+var oDiv1 = document.getElementById("div1");
+var oDiv2 = document.getElementById("div2");
+var oDiv3 = document.getElementById("div3");
+
+function fn() {
+	alert(this.id);
+}
+
+oDiv1.onclick = fn;
+oDiv2.onclick = fn;
+oDiv3.onclick = fn;
+{% endhighlight %}
+
+当我们点击黄色盒子的时候，会发现不单单是黄色盒子的点击事件被触发了，第二层的红色盒子也被触发了，然后是最上层的蓝色盒子的点击事件被触发
+
+为什么会发生这种事呢？因为，当我们点击一个盒子的时候，浏览器会把我们点击的这个行动传递给父级，就像鱼吐气冒泡那样一直传递到最上级
+
+这种机制，我们称之为事件冒泡机制
+
+为什么需要这种机制呢？
+
+比如当我们需要在蓝色盒子上添加事件，但是蓝色盒子里面有红色和黄色盒子被挡住了，如果没有冒泡机制的话，点击的面积是不是大幅度减小了(我们只能点击蓝色的区域) 但是如果有了事件冒泡机制，当我们点击黄色盒子的时候，点击的动作就会传递到蓝色盒子，然后就能执行蓝色盒子附带的事件函数
+
+如果有些时候，我们不希望事件传入到父级呢？
+
+我们可以使用事件对象下的一个方法`cancelbubble`
+
+{% highlight javascript %}
+ev.cancelbubble = "true";
+{% endhighlight %}
+
+这样就能取消当前对象的当前事件的冒泡机制
+
+## 第二种声明事件的方法
+
+我们之前一般都是使用on + 事件名 来申明一个事件的
 ## BOM
 
 Browser object model 浏览器对象模型，我们通过这个模型可以操控窗口的各种方法
