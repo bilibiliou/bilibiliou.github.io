@@ -672,6 +672,55 @@ ev.cancelbubble = "true";
 ## 第二种声明事件的方法
 
 我们之前一般都是使用on + 事件名 来申明一个事件的
+
+但是样声明事件，只能有且设置一个事件，如果需要对同一个对象设置另外一个事件的时候，那么上一个事件的函数就会被覆盖
+
+那么怎么解决这个问题呢？
+
+我们可以使用第二种声明事件的方法来实现，这里有一美名曰：事件监听
+在IE下，我们使用`attachEvent`来实现监听事件
+但是在标准浏览器下，我们使用`addEventListener`来实现监听事件
+obj.attachEvent(on + 事件名称 ， 事件函数)
+obj.addEventListener(事件名称 ， 事件函数 ， 是否捕获)
+
+例如如果我要同时给`document`添加fn1 和 fn2两个函数
+{% highlight javascript %}
+// 低版本的IE
+document.attachEvent(onclick , fn1);
+document.attachEvent(onclick , fn2);
+
+// 实现标准的IE和其他标准浏览器
+document.addEventListener(onclick , fn1);
+document.addEventListener(onclick , fn2);
+{% endhighlight %}
+
+而关于是否事件捕获呢？
+
+默认是false 也就是冒泡 ， 如果写true的话则是捕获
+
+这里还有一个bug
+如果使用的是`attachEvent`的时候，我们还会遇到一个bug，那就是使用attachEvent来绑定事件函数的时候，其中的this会指向`window`
+
+我们可以使用call和apply方法来扩展绑定函数的生存域
+{% highlight javascript %}
+document.attachEvent(onclick , function() {
+	fn1.call(document , 参数)
+});
+{% endhighlight %}
+
+我们可以声明一个函数bind来实现兼容
+{% highlight javascript %}
+function bind(obj , evname , fn) {
+	if(obj.addEventListener) {
+		obj.addEventListener(evname , fn , false);
+	} else {
+		obj.attachEvent("on" , evname , function() {
+			fn.call(obj);
+		});
+	}
+}
+{% endhighlight %}
+
 ## BOM
 
 Browser object model 浏览器对象模型，我们通过这个模型可以操控窗口的各种方法
