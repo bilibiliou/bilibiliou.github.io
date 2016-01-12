@@ -31,8 +31,105 @@ nodejs为了能让我们更好的完成它的用途也给我们提供了如 http
 nodejs可以说是前端人员了解后端的一个切入点所在(当然php也很适合)
 这样前端人员就可以在他们的老本行的基础上调用封装好后端脚本框架了
 
+## 配置sublime 快速编译
 
+很简单（个人觉得比webstrom 简单）
+
+只需要在sublime中找到
+
+工具-->编译系统-->新编译系统
+
+然后sublime就会弹出一个 `untitled.sublime-build`,将untitled 改成nodejs 然后再将里面原有的文本替换成
+{% highlight Javascript %}
+{
+    "cmd": ["node", "$file"],
+    "file_regex": "^[ ]*File \"(...*?)\", line ([0-9]*)",
+    "working_dir": "${project_path:${folder}}",
+    "selector": "source.js",
+    "shell": true,
+    "encoding": "utf-8",
+    "windows": {
+        "cmd": ["node", "$file"]
+    }
+}
+{% endhighlight %}
+
+保存到默认的目录下，就可以了，sublime会自动检测已经安装好的nodeJS
+然后再
+工具-->编译系统-->自动编译
+
+这样sublime 会根据程序来识别不同的script，进行不同编译
+
+这样，当你写好一个js文件，只要直接 `ctrl + b` sublime 就会自动调用nodeJS进行编译
+
+## node基础
+
+nodeJs 基础 和 js 基础一致，都是ecmascript
+
+所以ecmascript底下的所有东西，都可以使用
+
+{% highlight Javascript %}
+var  a = new Date();
+console.log( a.getFullYear() );
+console.log( a.getMonth() + 1 );
+console.log( a.getDate() );
+console.log( a.getHours() );
+console.log( a.getMinutes() );
+console.log( a.getSeconds() );
+
+
+var arr = [];
+
+arr.push.apply( arr , [1,2,3] );
+arr.push.apply( arr , [4,5,6] );
+arr.push.apply( arr , [7,8,9] );
+
+console.log(arr);
+
+function run(name) {
+	this.name = name;
+}
+
+run.prototype.runfuc = function() {
+	console.log( this.name );
+}
+
+var b = new run('owen');
+b.runfuc();
+{% endhighlight %}
+
+以上代码都可以编译运行
+
+还有一点，就是在nodeJs中，最上层的对象不是`window`而是`global`
+global 也是ecmascript中定义的一个最上层的对象，但不对外访问，js中的window其实是global的一个引用
+
+## 模块
 nodejs实现功能是以不同个模块来完成的
+
+nodejs规定一个js文件就是一个模块，不同模块有自己的作用域
+我们使用`var` 在一个js文件里面声明的变量只是该模块下的局部变量
+如果需要声明全局变量，我们可以使用`global`声明
+{% highlight Javascript %}
+global.a = 200;
+console.log(global.a); // 200
+{% endhighlight %}
+
+我们还可以通过`__filename`变量来访问当前被解析模块的路径字符串
+每一个模块中都有一个`__filename` 
+{% highlight Javascript %}
+console.log(__filename); // D:\NodeJs\text\global-problem.js
+{% endhighlight %}
+
+## 模块加载系统
+
+我们可以使用`require`来引入模块，类似java中的`import`
+{% highlight Javascript %}
+require('模块路径');
+{% endhighlight %}
+
+所引入的模块会自动被解析执行。
+
+
 
 首先使用前我们都需要这样加载这样一个http模块
 
