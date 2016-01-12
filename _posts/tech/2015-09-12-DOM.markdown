@@ -669,7 +669,7 @@ ev.cancelbubble = "true";
 
 这样就能取消当前对象的当前事件的冒泡机制
 
-## 第二种声明事件的方法
+### 第二种声明事件的方法
 
 我们之前一般都是使用on + 事件名 来申明一个事件的
 
@@ -720,6 +720,209 @@ function bind(obj , evname , fn) {
 	}
 }
 {% endhighlight %}
+
+### 事件捕获
+
+在事件冒泡之前还会发生事件的捕获机制
+
+什么意思呢？让我们看一张图
+
+![shootpic](/assets/img/bubble-and-catch.png)
+
+当我们将addEventListener的第三个参数设置为true的时候，就会实行事件捕获机制，这样绑定的事件函数，就会在捕获阶段执行，如果设置为false 则绑定的事件函数就会在冒泡阶段执行
+
+对比冒泡和捕获，无非就是遍历父级底下的全部子元素，并给它们刺激事件，不同点是执行的顺序不同
+
+我们一般使用的是冒泡机制，因为冒泡机制相对于捕获机制的兼容性要好，所以一般 使用addEventListener的第三个参数都是设置为false
+
+事件冒泡机制还有一个好处，就是可以执行事件委托 ， 具体内容可以看本站的[关于事件委托](http://numerhero.github.io/2015/11/18/Event-delegation.html)
+
+### 删除事件
+
+当我们不需要在某个事件上绑定函数的时候，我们就可以将其清空了
+
+清空的方式有两种
+
+① 当我们使用on + 事件 绑定函数的时候
+{% highlight javascript %}
+document.onclick = null;
+{% endhighlight %}
+很简单直接给赋值为`null`就行了
+
+② 当我们使用`attachEvent` 或者 `addEventListener` 的时候
+我们得需要使用特殊的取消事件方法来取消，因为`attachEvent` 和 `addEventListener` 可以绑定多个执行函数，并且 `addEventListener` 还可以声明捕获和冒泡机制，在不同机制下还可以绑定同一个函数。所以取消执行函数需要明确声明是那个函数 并且是那个机制下绑定的函数
+
+{% highlight javascript %}
+document.detachEvent("onclick" , fn1);
+{% endhighlight %}
+
+{% highlight javascript %}
+document.removeEventListener("click" , fn1 , false);
+{% endhighlight %}
+
+## 拖拽运动
+
+我们可以使用根据三个事件来实现拖拽
+
+① 被拖拽对象的.onmousedown
+② document.onmousemove
+③ document.onmouseup
+
+[demo](/assets/download/dragmove.html)
+代码比较简单，可以自行查看源码理解
+
+这里会有一个问题，如果有文字被选中的时候，会出现问题
+因为当鼠标按下的时候，如果页面中有文字被选中，就会触发浏览器默认的文字拖拽效果
+
+在标准中很简单解决，需要在down事件下使用`return false`阻止默认事件就可以
+
+但是在非标准的IE下这种方法还是无法解决这个问题
+所以我们可以在鼠标按下的时候添加一句全局捕获
+
+{% highlight javascript %}
+obj.setCapture && obj.setCapture();
+{% endhighlight %}
+
+全局捕获是只在IE下才会有的一句代码，如果有了这句代码，那么在鼠标按下的过程中，会把浏览器默认的事件捕获到拖拽函数中，这样浏览器的默认事件就不会触发了
+
+当鼠标放开的时候在把全局捕获去掉，不至于影响其他事件的执行
+{% highlight javascript %}
+obj.releaseCapture && obj.releaseCapture();
+{% endhighlight %}
+
+### 拖拽限制
+
+我们可以把拖拽的范围限制在可视区范围内
+只要在给对象的定位赋值前，对其范围进行控制就行
+
+我们可以先把ev.clientX - disX 和 ev.clientY - disY
+
+{% highlight javascript %}
+var L = ev.clientX - disX;
+var T = ev.clientY - disY;
+{% endhighlight %}
+
+{% highlight javascript %}
+( L <= 0 ) && L = 0;
+( L >= document.documentElement.clientWidth - obj.offsetWidth ) && L = document.documentElement.clientWidth - obj.offsetWidth;
+
+( T <= 0 ) && T = 0;
+( T >= document.documentElement.clientHeight - obj.offsetHeight ) && T = document.documentElement.clientWidth - obj.offsetHeight;
+
+// 然后再把L 和 T 赋值给对象定位就可以
+obj.style.width = L + "px";
+obj.style.Height = T + "px";
+
+{% endhighlight %}
+
+### 碰撞检测
+
+我们如果要检测两个对象是否相撞，可以根据九宫格原理来实现
+![pic](/assets/img/check-cash.png)
+
+当蓝盒子的四个条边的位置都不在 黑盒子内 那么就是未碰撞状态
+如果四边位置进入了黑盒子内，那么就是碰撞状态
+
+所以我们要获取这八条边的位置
+{% highlight javascript %}
+var T1 = obj1.offsetTop;
+var L1 = obj1.offsetLeft;
+var R1 = obj1.offsetLeft + obj1.offsetWidth;
+var B1 = obj1.offsetTop  + obj1.offsetHeight;
+ 
+var T2 = obj2.offsetTop;
+var L2 = obj2.offsetLeft;
+var R2 = obj2.offsetLeft + obj2.offsetWidth;
+var B2 = obj2.offsetTop  + obj2.offsetHeight;
+
+if( B1 < T2 || R1 < L2 || T1 > B2 || L1 > R2 ) {
+	// 未碰撞执行的代码
+} else {
+	// 碰撞了执行的代码
+}
+{% endhighlight %}
+
+### 改变拖拽对象的大小
+
+栗子：
+[demo](/assets/download/dragchange.html)
+
+这里我设定的边距是 10px 也就是在10px的内边距内拖动盒子会改变盒子的大小
+
+主要思路就是要将盒子的
+
+定位 offsetTop 和 offsetLeft
+宽高 offsetWidth 和 offsetHeight
+点击位置 clientX/Y
+scrollTop  scrollLeft  
+
+8个值全部获取到
+在点击的时候获取到点击位置（要加上scrollTop 和 scrollLeft）
+
+然后判断点击位置（如果在四边就给b赋值）
+
+如果在中间则进行位移
+
+## 键盘事件
+
+键盘事件有两个 `onkeyup` 和 `onkeydown` 
+
+onkeyup  的效果是弹起按钮 ，按钮的值输入过之后执行绑定函数
+onkeydown的效果是按下按钮 ， 按钮的值输入之前执行绑定函数 如果一直按住按钮，则会连续执行
+
+我们怎么判断用户按下了什么按钮呢？
+这里我们需要使用event对象下的一个属性，`keyCode`,键码
+
+键码是每一个按钮的Ascii码值，功能相同的按键（比如左右shift）的键码相同
+
+{% highlight javascript %}
+document.addEventListener = function("keydown" , function(ev) {
+	var ev = ev || event;
+	alert(ev.keyCode);
+},false);
+{% endhighlight %}
+
+浏览器还给我们提供了三个功能键, shift ctrl alt
+
+因为 `keyCode` 一次只能获取一个值，如果需要组合键 就需要使用功能键
+
+我们使用键盘事件可以来实现一个留言本的功能
+
+{% highlight html %}
+<input type="text" id="text1">
+<ul id="list"></ul>
+{% endhighlight %}
+
+{% highlight javascript %}
+var oText = document.getElementById('text1');
+var oList = document.getElementById('list');
+
+oText.addEventListener('keyup' , function(ev) {
+	
+	var ev = ev || event;
+	if( this.value != '' )
+	{
+		if( ev.keyCode == 13 && ev.ctrlKey )
+		{
+			var aLi = document.createElement('li');
+			aLi.innerHTML = this.value;
+
+			if( oList.children[0] )
+			{	
+				oList.insertBefore( aLi , oList.children[0] );
+			} else {
+				oList.appendChild( aLi );
+			}
+		}
+	}
+} , false);
+{% endhighlight %}
+
+[demo](/assets/download/keyCode-text-book.html)
+
+还有一点需要强调 ： `不是所有的元素都能响应键盘事件`
+
+只有能获取焦点的元素才可以响应键盘事件
 
 ## BOM
 
@@ -1039,10 +1242,10 @@ otext.onselect = function() {
 
 ## 感谢
 
-[妙味课堂](www.miaov.com)
+[妙味课堂](http://www.miaov.com)
+
+[事件流](http://segmentfault.com/a/1190000000749838)
 
 ## 引用出自
 
 ### 《javascript高级程序设计》
-
-

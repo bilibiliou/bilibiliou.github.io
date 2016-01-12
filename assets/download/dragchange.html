@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">	
+<title>练习</title>
+<script>
+window.onload = function() {
+	var oDiv1 = document.getElementById("div1");
+	
+	oDiv1.onmousedown = function(ev) {
+		var disW = this.offsetWidth;
+		var disH = this.offsetHeight;
+
+		var disL = this.offsetLeft;
+		var disT = this.offsetTop;
+
+		var disX = ev.clientX;
+		var disY = ev.clientY;
+
+		var scrollLeft = document.body.scrollLeft || document.documentElement.scrollLeft;
+		var scrollTop  = document.body.scrollTop || document.documentElement.scrollTop;
+		
+		
+		var oldX = disX + scrollLeft - disL;
+		var oldY = disY + scrollTop  - disT ;
+
+		var b = "";
+
+		if( ( disX + scrollLeft ) < ( disL + 10 ) ) {
+			b = "left";
+		}
+		
+		if( ( disX + scrollLeft ) > ( disL + disW - 10 ) ) {
+		    b = "right";
+		}
+		
+		if( (disY + scrollTop) < ( disT + 10 ) ) {
+			b = "top";
+		}
+
+		if( (disY + scrollTop) > (disT + disH - 10 ) ) {
+			b = "bottom";
+		} 
+			
+		document.onmousemove = function(ev) {
+
+			switch (b) {
+				case "left" : 
+					oDiv1.style.width = disW - (ev.clientX - disX) + "px";
+					oDiv1.style.left  = disL + (ev.clientX - disX) + "px";
+					break;
+
+				case "right" :
+					oDiv1.style.width = disW + (ev.clientX - disX) + "px";
+					break;
+			
+				case "top" :
+					oDiv1.style.height = disH - (ev.clientY - disY) + "px";
+					oDiv1.style.top = disT + (ev.clientY - disY) + "px";
+					break;
+
+				case "bottom" :
+					oDiv1.style.height = disH + (ev.clientY - disY) + "px";
+					break;
+				default : 
+					oDiv1.style.top  = ev.clientY + scrollTop  - oldY + "px";
+					oDiv1.style.left = ev.clientX + scrollLeft - oldX + "px";
+				break;
+			}
+		}
+
+		document.onmouseup   = function() {
+			document.onmousemove = document.onmouseup = null;
+		}
+
+		return false;
+	}
+}
+</script>
+<style>
+	#div1{
+		width: 190px;
+		height: 190px;
+		
+		border: 10px solid #f5f5f5;
+		background: blue;
+		position: absolute;
+		left: 500px;
+		top: 300px;
+	}
+</style>
+
+</head>
+<body style="height:2000px; width:2000px;">
+	盒子可拖动可改变大小
+	<div id="div1"></div>
+</body>
+</html>
+
+
+
