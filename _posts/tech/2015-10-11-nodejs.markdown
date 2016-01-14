@@ -120,6 +120,11 @@ console.log(global.a); // 200
 console.log(__filename); // D:\NodeJs\text\global-problem.js
 {% endhighlight %}
 
+还有一个`__dirname`变量 可以来访问当前被解析模块的文件夹路径字符串
+{% highlight Javascript %}
+console.log(__dirname); // D:\NodeJs\text\
+{% endhighlight %}
+
 ## 模块加载系统
 
 我们可以使用`require`来引入模块，类似java中的`import`
@@ -128,6 +133,369 @@ require('模块路径');
 {% endhighlight %}
 
 所引入的模块会自动被解析执行。
+
+nodeJs的解析顺序是这样的
+
+① 首先按照文件名来查找
+② 如果未找到，并且填写的路径中文件名没有带后缀的话，会自动加上.Js 的后缀，然后继续查找
+③ 如果还没找到，就会在文件名后缀加上.json ，继续查找
+④ 如果还是没找到，就会在文件名后缀加上.node，继续查找
+⑤ 如果还是没找到，就会报出一个错误
+
+{% highlight Javascript %}
+require('./text1');
+{% endhighlight %}
+
+例如如上代码，nodeJS会先在目录下查找text1文件，如果没有找到，就会自动在后面加上.js
+然后按照text1.js来进行查找。
+
+如果text1.js没找到，就会改成text1.json 进行查找
+同理，还没找到就会改成 text1.node 进行查找
+
+并且在nodejs中 是认可相对路径和绝对路径的
+
+但是要注意一点，那就是，在node中，如果需要引入的文件在同目录下面
+一定要这样写
+{% highlight Javascript %}
+require('./practice.js');
+{% endhighlight %}
+
+但是不能这样写
+{% highlight Javascript %}
+require('practice.js');
+{% endhighlight %}
+
+因为上述这样直接写文件名的方式，在nodeJS中会被认为是从核心模块（node_modules）中加载文件
+而你的核心模块中没有practice.js 那么就会报错
+
+## module 对象
+
+`module` 对象是每一个模块都特有的一个对象
+例如这样一个模块 module1 
+{% highlight Javascript %}
+// module1
+var a = "owen";
+
+console.log("这是module1");
+
+{% endhighlight %}
+
+我们可以console一下它的module
+{% highlight Javascript %}
+Module {
+  id: '.',
+  exports: {},
+  parent: null,
+  filename: 'D:\\NodeJs\\text\\module1.js',
+  loaded: false,
+  children: [],
+  paths: 
+   [ 'D:\\NodeJs\\text\\node_modules',
+     'D:\\NodeJs\\node_modules',
+     'D:\\node_modules' ] }
+{% endhighlight %}
+
+由此可以看到了，一个模块下包含如下属性
+id : 可以标明一个模块的唯一标识
+exports : 输出对象
+parent  : 
+filename: 模块路径
+loaded  : 
+children: 引入模块的模块对象的集合
+paths   :
+
+## 模块作用域
+
+一个模块中，如果要声明变量可以有这么几种方式
+
+① 使用var
+上面也说过了，这样声明的变量，作用域只在该模块内有效，如果这个模块被另一个模块加载了
+那么另一个模块是无法访问使用var声明的变量的
+
+② 使用global
+在全局下使用在global对象下声明属性，这样变量的作用域就被提升到了全局范围，就不会出现加载后无法访问的问题，但是这样声明变量的方法不被推荐
+
+③ 使用module.exports
+
+例如如下两个模块
+{% highlight Javascript %}
+// module1
+var a = "owen";
+
+console.log("这是module1");
+
+module.exports.a = a;
+// 也可以这样写 exports.a = a;
+{% endhighlight %}
+
+{% highlight Javascript %}
+// module2
+var m1 = require("./module1.js");
+
+console.log("这是module2");
+
+console.log( m1.a ); // owen
+{% endhighlight %}
+当module2 中使用require引入了module1的时候会返回module1中模块对象下的exports
+所以，只要在module1 中 将私有变量赋值给export对象的属性，就能够实现跨模块变量的访问
+
+可以把一个模块类比为函数，exports就是其返回值
+
+## global.process
+
+
+process（英：进程、过程） 对象是global 对象下的一个子对象，它可以在全局范围内被使用，访问的时候可以简写 process
+
+### process.argv
+
+通过这个我们能访问，当前进程的一些内容
+{% highlight Javascript %}
+console.log( process.argv );
+{% endhighlight %}
+
+会返回一个数组，该数组中第一个值 是编译这个模块的编译器路径
+第二个值 是这个模块的绝对路径（即 __filename）
+
+之后的值就是执行模块的时候所带的参数
+
+### process.execPath
+
+开启当前进程的这个可执行文件的绝对路径
+
+### process.env 
+
+返回用户环境信息(包括使用的操作系统 ， 系统盘符 ， 系统的根目录 .....)
+
+### process.version
+
+返回当前node的版本信息
+
+### process.versions
+
+返回当前node的版本信息,以及依赖包的版本信息
+
+### process.pid
+
+返回进程的PID
+
+### process.title
+
+返回进程的显示名称
+
+### process.arch
+
+返回当前的处理器架构
+
+还有很多process下的操作可以参考nodeJs手册
+
+### process下的IO流
+
+## Buffer（英：缓冲、缓冲器）
+
+感觉后端的基础就是要对Buffer进行合适的操作
+
+{% highlight Javascript %}
+var bf = new Buffer(5); 
+console.log(bf) // <Buffer 04 00 00 00 00>
+{% endhighlight %}
+
+打印出来的是5个随机的内存值，并且以16进制显现
+
+但是如果我们将单个内存值打印出来，会以10进制显现
+{% highlight Javascript %}
+var bf = new Buffer(5); 
+console.log(bf[0]) // 200
+{% endhighlight %}
+
+我们可以直接以字符串的形式直接存入缓存中,第二个参数声明的是字符串的编码
+{% highlight Javascript %}
+var bf = new Buffer('owen' , 'utf-8'); 
+{% endhighlight %}
+
+不同的编码形式所存储的字节数目是不同的
+GB2312  一个英文为一字节 一中文为两字节
+unicode 英文和中文都是两个字节
+utf-8   因为为一字节 中文为三字节
+
+声明一个有具体大小的缓存区，如未声明大小就会报错
+
+### Buffer.write
+
+声明完缓存区域后，我们可以将值写入到缓存区
+{% highlight Javascript %}
+var bf = new Buffer(4); 
+var str = 'owen';
+bf.write(str);
+console.log(bf.toString())  // owen
+{% endhighlight %}
+
+write方法一定要保证足够的缓存，如果没有开辟足够的内存，后面未存储的部分自动被抛弃
+write 方法的第二个参数 是设置偏移量,即从第几个开始存储
+{% highlight Javascript %}
+var bf = new Buffer(4); 
+var str = 'owen';
+bf.write( str2 , 1 );      // 第二个参数可以设置偏移量，设置在第二位置开始存储
+console.log(bf.toString());// 随机的乱码 owe
+{% endhighlight %}
+
+第三个参数是设置存储个数，即存储多少个字节
+{% highlight Javascript %}
+var bf  = new Buffer(6);
+var str = 'owen';
+bf.write( str , 1 , 2 );   // 第三个参数设置设置存储个数 ， 默认是全部存储
+console.log(bf);           // <Buffer 00 6f 77 00 00 00>
+{% endhighlight %}
+
+第四个参数设置写入的字符串编码
+
+### Buffer.toString
+
+通过Buffer.toString方法与我们以前的toString方法有点不同
+
+如果单个打印Buffer 缓存值可以带上进制参数
+{% highlight Javascript %}
+var str = 'owen';
+var bf  = new Buffer(4);
+console.log(bf[0].toString(8)) // 157 
+{% endhighlight %}
+
+
+如果直接整个buf （不带参数） 则会转化为字符号串
+{% highlight Javascript %}
+var str = 'owen';
+var bf  = new Buffer(4);
+console.log(bf.toString()) // owen 
+{% endhighlight %}
+
+如果有参数
+
+第一个参数是字符编码 默认是 'utf-8'
+
+第二三个参数是 设置偏移量 留始去终原则
+
+{% highlight Javascript %}
+var str = 'owen';
+var bf  = new Buffer(4);
+console.log(bf5.toString('utf-8' , 1 , 3)); // we
+{% endhighlight %}
+
+### Buffer.toJSON
+
+我们还可以将Buffer 打印成json格式
+
+{% highlight Javascript %}
+var bf = new Buffer("owen");
+console.log(bf.toJSON() ); // 将buffer  转化为json格式
+
+// 结果是
+// { type: 'Buffer', data: [ 111, 119, 101, 110 ] }
+{% endhighlight %}
+
+第一个成员是类型 声明为Buffer 类型
+第二个成员是data 数组 以10进制打印出来
+
+### Buffer.slice
+
+和数组方法很像，但是有一点差别
+首先使用都是相同的 都是留始去终原则
+{% highlight Javascript %}
+var bf1  = new Buffer("owen");
+var bf2  = bf1.slice( 0 , 2 );
+
+console.log(bf2.toString()); // ow
+{% endhighlight %}
+
+但是有一点就是，所切割的缓存部分不会开辟新的内存空间存储，只是开辟一个新的引用而已
+也就是说，如果现在对bf2进行操作，会改变bf1的内容
+
+{% highlight Javascript %}
+var bf1  = new Buffer("owen");
+var bf2 = bf1.slice( 0 , 2 );
+console.log(bf1.toString()); // owen
+bf2[0] = 0x65;               // 对剪切的第一个数进行赋值
+console.log(bf1.toString()); // ewen
+{% endhighlight %}
+
+### Buffer.copy
+
+正如上文提到的，我们如果需要开辟新的内存进行对缓存的操作，不能使用slice
+那么我们可以使用Buffer.copy来复制一份新的
+
+{% highlight Javascript %}
+var bf1 = new Buffer('owen');
+var bf2 = new Buffer(2);
+bf1.copy( bf2 , 0 , 0 , 3 ); 
+console.log(bf2);               // <Buffer 6f 77>
+console.log(bf2.toString());    // ow
+{% endhighlight %}
+
+`切记被复制的buffer对象写在前面`
+
+## 静态Buffer方法
+
+以上的方法，都是需要先构造Buffer实例才能进行的
+
+Buffer对象是global 对象下的，所以也会有一些全局的静态方法
+
+### Buffer.isEncoding
+
+判断是否是Buffer对象所支持的编码集
+{% highlight Javascript %}
+console.log( Buffer.isEncoding('utf-8') );  // true
+console.log( Buffer.isEncoding('gbk') );    // false
+console.log( Buffer.isEncoding('hex') );    // true
+{% endhighlight %}
+
+### Buffer.isBuffer
+
+判断是否是Buffer构造出来的实例
+
+{% highlight Javascript %}
+var arr = [1,2,3];
+var bf  = new Buffer(3);
+
+console.log( Buffer.isBuffer(arr) );
+console.log( Buffer.isBuffer(bf) );
+{% endhighlight %}
+
+### Buffer.byteLength
+
+输出存储的字节长度
+
+{% highlight Javascript %}
+var str = "信管";
+console.log(str.length);                        // 2
+console.log(Buffer.byteLength(str));            // 默认的 utf-8下 是6
+console.log(Buffer.byteLength(str1, 'ascii'));  // 2 如果使用不同的编码，返回的内存值也是不同的   
+{% endhighlight %}
+
+### Buffer.concat
+
+concat 以前数组里面也用过，就是连接两个数组的方法
+
+{% highlight Javascript %}
+var s1 = "owen love";
+var s2 = " zyz";
+
+var list = [new Buffer(s1),new Buffer(s2)]; 
+var bf = Buffer.concat(list);
+console.log(bf.toString());        // owen love zyz
+console.log(Buffer.isBuffer(bf));  // true
+{% endhighlight %}
+
+但是，Buffer下的concat方法有点不同 , 接收一个数组 ， 并且返回一个Buffer对象
+
+而concat的第二个参数，是开辟新内存的大小，默认值是拼接的两个Buffer 内存量的总和
+计算两个Buffer内存量 会消耗一部分内存 所以如果在知道值情况下应该尽量写上
+
+{% highlight Javascript %}
+var bf2 = Buffer.concat(list,13);
+console.log(bf2.toString());
+{% endhighlight %}
+
+
+
+
 
 
 

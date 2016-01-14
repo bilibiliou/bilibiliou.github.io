@@ -227,6 +227,15 @@ layout: post(引号和post之间要有一个空格)
 很简单，一般都是同一使用UTF-8编码
 sublime 和 notepad++ 都能保存你的编码设置
 
+## git 使用
+
+因为在本地写好内容之后，就需要使用git分布式版本控制系统进行操作，所以需要掌握一些git的基本操作
+[git - 简易指南](http://www.bootcss.com/p/git-guide/)
+
+要深入学习git 还可以学习《pro git》
+
+[pro git 电子版](http://git-scm.com/book/en/v2)
+
 ## 感谢
 本人，在学过程中看了很多前辈的博客，可惜本人因为机器原因，丢失了一些博文链接，所以现在只记得一些博文连接，对此，深表遗憾
 
