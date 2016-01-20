@@ -1,0 +1,458 @@
+<!doctype html>
+<html>
+	<head>
+		<title>css3特效</title>
+		<meta charset="utf-8">
+		<style>
+			body{ margin: 0; padding: 0;}
+			ul{ list-style: none; padding: 0; margin: 0;}
+			
+			.clearfix{
+				display: block;
+				zoom: 1;
+			}
+			.clearfix::after {
+				content: "";
+				display: block;
+				clear: both;
+				width: 0;
+				height: 0;
+				visibility: hidden;
+			}
+
+			#div{ width: 200px; height: 200px; background:#0C646A; border: 1px solid #69ca62; margin: 100px auto; position: relative; }
+
+			#div::after , #div::before {
+				content: '';
+				display: block;
+
+	            z-index: -1;
+	            margin: -5%;
+
+	            box-shadow: inset 0 0 0 2px;
+	            animation: clipMe 8s linear infinite;
+				
+	            position: absolute;
+	            top: 0;
+			    bottom: 0;
+			    left: 0;
+			    right: 0;	
+			}
+			
+			#div::before {
+				animation-delay: -4s;
+				color: #5CD9EF;
+			}
+
+			#div::after {
+				/*background: red;*/
+				color: #F92672;
+			}
+			
+			@keyframes clipMe {
+				0%, 100% {
+	                 clip: rect(0px, 220px, 4px, 0px);
+	            }
+	            25% {
+	                clip: rect(0px, 4px, 220px, 0px); 
+	            }
+	            50% {
+	                clip: rect(216px, 220px, 220px, 0px);
+	            }
+	            75% {
+	                clip: rect(0px, 220px, 220px, 216px);
+	            }
+			}
+
+			#div2 { width: 200px; height: 200px; background:#0C646A; /*background: transparent;*/ border-radius: 50%; margin: 100px auto; position: relative; }
+			#div2::after , #div2::before {
+				content: "";
+				
+				/* 边可以叠加 */
+				box-shadow: inset 0 0 0 2px , inset 0 0 0 4px #0C646A;
+				margin: -5%;
+				
+				z-index: -1;	
+				
+				border-radius: 50%;
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				animation: clipMet 6s cubic-bezier(0.835, 0.090, 0.120, 0.925) infinite;
+				
+			}
+
+			#div2::before {
+				color: pink;
+				/*background: red;*/
+			}
+
+			#div2::after {
+				color: red;
+				/*background: pink;*/
+				animation-delay: -3s;
+			}
+
+			@keyframes clipMet {
+				0%, 100% {
+					clip: rect(0 , 100px , 100px , 0px);
+					
+				}
+				10% {
+					clip: rect(0 , 100px , 100px , 0px);
+				}
+
+				20% {
+					clip: rect(120px , 100px , 220px , 0);
+				}
+				30% {
+					clip: rect(120px , 100px , 220px , 0);
+				}
+
+				50% {
+					clip: rect( 120px , 220px , 220px , 120px );
+				}
+				60% {
+					clip: rect( 120px , 220px , 220px , 120px );
+				}
+
+				70% {
+					clip: rect(0 , 220px , 100px , 120px);
+				}
+				80% {
+					clip: rect(0 , 220px , 100px , 120px);
+				}
+			}
+			
+			#div3 {width: 200px; height: 200px; background:#0C646A; border: 1px solid #69ca62; margin: 100px auto; position: relative; border-radius: 50%; }
+			
+			#div3::after{
+				content: "";
+				
+				/* 边可以叠加 */
+				box-shadow: inset 0 0 0 2px , inset 0 0 0 4px #0C646A;
+				margin: -5%;
+				
+				z-index: -1;	
+				
+				border-radius: 50%;
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				animation: clipMeth 8s cubic-bezier(0.835, 0.090, 0.120, 0.925) infinite;
+				
+			}
+
+			#div3::before {
+				color: pink;
+				/*background: red;*/
+			}
+
+			@keyframes clipMeth {
+				0%, 100% {
+					clip: rect(0 , 0px , 0px , 0px);
+					
+				}
+				10% {
+					clip: rect(0 , 100px , 100px , 0px);
+				}
+
+				20% {
+					clip: rect(220px , 0px , 220px , 0);
+				}
+				30% {
+					clip: rect(120px , 100px , 220px , 0);
+				}
+
+				50% {
+					clip: rect( 220px , 220px , 220px , 220px );
+				}
+				60% {
+					clip: rect( 120px , 220px , 220px , 120px );
+				}
+
+				70% {
+					clip: rect(0 , 220px , 0px , 220px);
+				}
+				80% {
+					clip: rect(0 , 220px , 100px , 120px);
+				}
+			}
+			
+			#div4 {width: 200px; height: 200px; background:#0C646A; border: 1px solid #69ca62; margin: 100px auto; position: relative; border-radius: 50%; }
+			
+			#div4::after{
+				content: "";
+				
+				/* 边可以叠加 */
+				box-shadow: inset 0 0 0 2px , inset 0 0 0 4px #0C646A;
+				margin: -5%;
+				
+				z-index: -1;	
+				
+				border-radius: 50%;
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				animation: clipMef 8s cubic-bezier(0.835, 0.090, 0.120, 0.925) infinite;
+				
+			}
+
+			#div4::before {
+				color: pink;
+				/*background: red;*/
+			}
+
+			@keyframes clipMef {
+				0%, 100% {
+					clip: rect(0 , 100px , 100px , 0px);
+					
+				}
+				10% {
+					clip: rect(0 , 0px , 0px , 0px);
+				}
+
+				20% {
+					clip: rect(0 , 220px , 100px , 120px);
+				}
+				30% {
+					clip: rect(0 , 220px , 0px , 220px);
+				}
+
+				50% {
+					clip: rect( 120px , 220px , 220px , 120px );
+				}
+				60% {
+					clip: rect( 220px , 220px , 220px , 220px );
+				}
+
+				70% {
+					clip: rect(120px , 100px , 220px , 0);
+				}
+				80% {
+					clip: rect(220px , 0px , 220px , 0);
+				}
+			}
+
+
+
+			#div5 {width: 200px; height: 200px; background:#2EA6C8; margin: 100px auto; position: relative; border-radius: 50%; animation: clipMefiv 2.0s cubic-bezier(0.150, 0.775, 0.000, 1) infinite;  }
+			#div5::before {
+				content:"";
+				display: block;
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				z-index: -1;
+
+				margin: -2%;
+				border-radius: 50%;
+				
+				/*opacity: 0;*/
+				border-radius: 50%;
+				/*tranform:scale(0);*/
+
+				animation: clipMefi 2.0s cubic-bezier(0.835, 0.090, 0.120, 0.925) infinite;
+			}
+			
+			@keyframes clipMefiv {
+				0% { transform: scale(.9); }
+				100% { transfrom: scale(1);}
+			}
+			@keyframes clipMefi {
+				0%{ box-shadow:0px 0px 0px 0px rgba(46,166,200,1); }
+				100%{ box-shadow:0px 0px 0px 15px rgba(46,166,200,0); }
+			}
+			
+			#div6 {width: 200px; height: 200px; background:#2EA6C8; border: 1px solid #69ca62; margin: 100px auto; position: relative; }
+			#ul1 { width: 220px; height: 220px; 
+					position: absolute;
+					top: 0; 
+					bottom: 0; 
+					left: 0; 
+					right: 0;
+				margin-left: -10px;
+				margin-top: -10px;			
+		    }
+
+		    #ul1 li{
+				position: absolute;
+				width: 50px;
+				height: 50px;
+				box-shadow: inset 0px 0px 0px 2px #66D9EF;
+				z-index: -1;
+		    }
+
+		    #ul1 li:nth-of-type(1) { left: 0; top: 0; clip: rect( 0px , 48px , 48px , 0px );}
+			#ul1 li:nth-of-type(2) { left: 0; bottom: 0; clip: rect( 2px , 48px , 50px , 0px );}
+			#ul1 li:nth-of-type(3) { right: 0; bottom: 0; clip: rect( 2px , 50px , 50px , 2px);}
+			#ul1 li:nth-of-type(4) { right: 0; top: 0; clip: rect( 0px , 50px , 48px , 2px );}
+			
+			
+
+			#div7 {width: 200px; height: 200px; background:#2EA6C8; border: 1px solid #69ca62; margin: 100px auto; position: relative; border-radius: 20%; }
+			#ul2 { width: 220px; height: 220px; 
+					position: absolute;
+					top: 0; 
+					bottom: 0; 
+					left: 0; 
+					right: 0;
+				margin-left: -10px;
+				margin-top: -10px;			
+		    }
+
+		    #ul2 li{
+				position: absolute;
+				width: 50px;
+				height: 50px;
+				box-shadow: inset 0px 0px 0px 2px #66D9EF;
+				z-index: -1;
+		    }
+
+		    #ul2 li:nth-of-type(1) { left: 0; top: 0; clip: rect( 0px , 48px , 48px , 0px ); 
+		    	border-radius: 85% 0 0 0;}
+			#ul2 li:nth-of-type(2) { left: 0; bottom: 0; clip: rect( 2px , 48px , 50px , 0px ); 
+				border-radius: 0 0 0 85%;}
+			#ul2 li:nth-of-type(3) { right: 0; bottom: 0; clip: rect( 2px , 50px , 50px , 2px);
+				border-radius: 0  0 85% 0;}
+			#ul2 li:nth-of-type(4) { right: 0; top: 0; clip: rect( 0px , 50px , 48px , 2px );
+				border-radius: 0 85% 0 0;}
+
+
+			#div8 {width: 200px; height: 200px; background:#2EA6C8; border: 1px solid #69ca62; margin: 100px auto; position: relative; border-radius: 20%;}
+			#ul3 { width: 220px; height: 220px; 
+					position: absolute;
+					top: 0; 
+					bottom: 0; 
+					left: 0; 
+					right: 0;
+				z-index: -1;
+				margin-left: -10px;
+				margin-top: -10px;
+				animation: clipMesi 2.0s cubic-bezier(0.835, 0.090, 0.120, 0.925) infinite;			
+		    }
+
+		    #ul3 li{
+				position: absolute;
+				width: 50px;
+				height: 50px;
+				box-shadow: inset 0px 0px 0px 2px #66D9EF;
+				z-index: -1;
+		    }
+
+		    #ul3 li:nth-of-type(1) { left: 0; top: 0; clip: rect( 0px , 48px , 48px , 0px ); 
+		    	border-radius: 85% 0 0 0;}
+			#ul3 li:nth-of-type(2) { left: 0; bottom: 0; clip: rect( 2px , 48px , 50px , 0px ); 
+				border-radius: 0 0 0 85%;}
+			#ul3 li:nth-of-type(3) { right: 0; bottom: 0; clip: rect( 2px , 50px , 50px , 2px);
+				border-radius: 0  0 85% 0;}
+			#ul3 li:nth-of-type(4) { right: 0; top: 0; clip: rect( 0px , 50px , 48px , 2px );
+				border-radius: 0 85% 0 0;}	
+			@keyframes clipMesi {
+				0%{ transform: scale(.9);}
+				100% {transform: scale(1);}
+			}
+
+
+
+
+			#div9{ width: 200px; height: 200px; border: 1px solid #69ca62; margin: 100px auto; position: relative; border-radius: 20%; background: transparent;}
+
+			#div9::after , #div9::before {
+				content: '';
+				display: block;
+
+	            z-index: -1;
+	            margin: -5%;
+
+	            box-shadow: inset 0 0 0 2px;
+	            animation: clipMese 4s linear infinite;
+				
+				border-radius: 20%;
+	            position: absolute;
+	            top: 0;
+			    bottom: 0;
+			    left: 0;
+			    right: 0;	
+			}
+			
+			#div9::before {
+				animation-delay: -2s;
+				color: #5CD9EF;
+			}
+
+			#div9::after {
+				color: #F92672;
+			}
+
+			@keyframes clipMese {
+				0%, 100% {
+	                 clip: rect(0px, 220px, 10px, 0px);
+	            }
+	            25% {
+	                clip: rect(0px, 10px, 220px, 0px);
+	                 
+	            }
+	            50% {
+	                clip: rect(210px, 220px, 220px, 0px);
+	                
+	            }
+	            75% {
+	                clip: rect(0px, 220px, 220px, 210px);
+	                
+	            }
+			}
+		</style>
+		<script>
+		
+		</script>
+	</head>
+	<body>
+		<article>
+			<div id="div"></div>
+			<div id="div2" ></div>
+			<div id="div3" ></div>
+			<div id="div4" ></div>
+			<div id="div5" ></div>
+			<div id="div6" >
+				<ul id="ul1">
+					<li></li>
+					<li></li>
+					<li></li>
+					<li></li>
+				</ul>
+			</div>
+
+			<div id="div7" >
+				<ul id="ul2">
+					<li></li>
+					<li></li>
+					<li></li>
+					<li></li>
+				</ul>
+			</div>
+
+			<div id="div8" >
+				<ul id="ul3">
+					<li></li>
+					<li></li>
+					<li></li>
+					<li></li>
+				</ul>
+			</div>
+
+			<div id="div9"></div>
+		</article>
+
+
+	</body>
+
+</html>

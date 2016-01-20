@@ -1777,13 +1777,6 @@ drop-shadow			阴影     (类似box-shadow,为图片添加阴影)
 /*设置饱和度为一半*/
 {% endhighlight %}
 
-
-{% highlight css %}
-
-      
-
-{% endhighlight %}
-
 现在滤镜的兼容性依然很差所以还是要添加上浏览器内核前缀
 
 我们可以使用滤镜这个属性来做一点小效果出来
@@ -1791,6 +1784,16 @@ drop-shadow			阴影     (类似box-shadow,为图片添加阴影)
 [模糊按钮demo](/assets/download/filter-demo.html)
 
 依然不支持苹果和360
+
+
+## 使用css3 + clip + ab伪类 做的一些小特效
+
+[demo](/assets/download/clipMe.html)
+
+clip 是css2.0就支持的一个属性，用于切割显示 有兴趣的可以参考
+[张鑫旭的CSS clip:rect矩形剪裁功能及一些应用介绍](http://www.zhangxinxu.com/wordpress/2011/04/css-clip-rect/)
+
+after 和 before伪类就不多提了
 
 ## 感谢
 

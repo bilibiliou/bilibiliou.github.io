@@ -496,9 +496,6 @@ console.log(bf2.toString());
 
 
 
-
-
-
 首先使用前我们都需要这样加载这样一个http模块
 
 {% highlight Javascript %}
