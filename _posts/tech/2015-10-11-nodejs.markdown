@@ -493,6 +493,385 @@ var bf2 = Buffer.concat(list,13);
 console.log(bf2.toString());
 {% endhighlight %}
 
+## FileSystem
+
+我们可以使用fileSystem 来控制本地文件
+
+其中 fileSystem 很多方法都有同步和异步的区别 ， 异步执行有回掉函数，同步执行则和我们平时的逻辑思维相同，按顺序执行，所以如果需要代码读写逻辑清晰可以使用同步的方法（Sync） 两种方式得到的结果都会是相同的。
+
+fileSystem 是node内置的模块，所以我们在使用前只需要直接加载就行，nodejs的模块依赖会自动绑定
+
+{% highlight Javascript %}
+var fs = require("fs");
+{% endhighlight %}
+
+其中主要的方法就是 读 、 写 、 查询、 删除等操作文件夹和文件的方法，较为底层的方法我就不太过多缀余了，但是大家要清楚，所有对文件的操作，都是基于这些底层方法来实现的（write 、 read 、 open 、 access etc）
+
+有兴趣的可以参考阅读(nodejs 文档)[http://nodejs.cn/doc/]
+
+## readFile(Sync)
+
+故名思意，就是读取文件，需要提供文件的文件目录
+{% highlight Javascript %}
+var fs = require("fs");
+
+var filePath = "./";
+
+fs.readFile(filePath , function (err , data) {
+	err && console.log(err);
+
+	console.log("文件内容是：" + data.toString("utf-8"));
+})
+{% endhighlight %}
+
+或者使用异步的方式
+{% highlight Javascript %}
+var fs = require("fs");
+
+var filePath = "./";
+
+var file = fs.readFileSync(filePath);
+
+console.log(file.toString("utf-8"));
+{% endhighlight %}
+
+## writeFile(Sync)
+
+写文件，也很简单
+{% highlight Javascript %}
+var fs = require("fs");
+
+var filePath = "./";
+
+fs.writeFile(filePath , "这是写入的内容" , function(err) {
+	// 写完之后需要做的事儿
+});
+{% endhighlight %}
+
+同步就少了个回调罢了
+
+还有一点，如果所提供的路径没有文件，那么就会自动新建一个文件，并写入内容
+并且，写方法会将原有的内容覆盖 要特别注意哦！
+
+## appendFile(Sync)
+
+插入文件内容，不覆盖原有数据，如果没有文件会自动创建
+
+{% highlight Javascript %}
+var fs = require("fs");
+
+var filePath = "./";
+
+fs.appendFile(filePath , "这是写入的内容" , function(err) {
+	// 插入完之后需要做的事儿
+});
+{% endhighlight %}
+
+### Caveats
+
+① 第二个参数也可以是Buffer对象
+② 第三个参数可写可略，{ encoding : "xxx编码" , mode : "默认值0o666" , flag : "索引值 默认是a" }
+
+## readdir(Sync)
+
+查询文件夹，并返回文件夹下的全部文件
+
+{% highlight Javascript %}
+var fs = require("fs");
+
+var dirPath = "./";
+
+fs.readdir(dirPath , function(err , files) {
+	files.foreach( fname ) {
+		console.log( fname );
+	}
+});
+{% endhighlight %}
+
+## mkdir(Sync)
+
+创建文件夹，和读差不多，但是可以设置新建文件夹的权限[第二个参数]
+
+## existsFile(Sync)
+
+判断是否存在此文件，返回`boolean`
+{% highlight Javascript %}
+var fs = require("fs");
+
+var filePath = "./";
+
+fs.existsFile( filePath , function( isexists ) {
+	// 判断是否存在 ，如果存在再写入文件
+
+	if( isexists ) {
+		fs.writeFile(filePath , "Owen" , function(err) {
+			console.log("已覆盖原有文件");
+		});
+	}
+});
+{% endhighlight %}
+
+## link(Sync)
+
+创建一个文件链接
+( srcPath , dstPath , callback )
+
+srcPath : 源目录或文件的路径
+dstPath : 存放转换后的目录的路径，默认为当前工作目录
+callback: 回调
+
+## unlink(Sync)
+
+删除文件或文件夹，要小心，以免删错，不然就找不回来了
+{% highlight Javascript %}
+var fs = require("fs");
+
+var filePath = "./xxx";
+
+fs.existsFile( filePath , function( isexists ) {
+	// 判断是否存在 ，如果存在再进行删除
+
+	if( isexists ) {
+		fs.unlink(filePath ,  function(err) {
+			err && console.log(err);
+			console.log("已删除目标文件(夹)");
+		});
+	}
+});
+{% endhighlight %}
+
+## Watch(Sync)
+
+可以查看文件(夹)发生了什么修改，会返回修改的状态， 状态分为 `rename` 和 `change`， 也就是判断文件(夹)改名了或内容被修改了 ，并且返回被修改的文件名称
+
+{% highlight Javascript %}
+var fs = require("fs");
+
+var filePath = "./xxx";
+
+fs.existsFile( filePath , function(err) {
+	// 判断是否存在 ，如果存在再进行监听
+	
+	if( isexists ) {
+		fs.watch(filePath ,  function( event , filename ) {
+			console.log( "change event is :" + event );
+
+			if( filenames ) {
+				console.log( "The file Which be changed : " + filename  );
+			} else {
+				console.log( "no file be changed" );
+			}
+		});
+	}
+});
+{% endhighlight %}
+
+当然，我这里只是简单的对一个文件进行判断
+
+### Caveats( 注意事项 )
+
+① Watch方法  的Api 是不完整的， 什么意思呢？ 就是说在不同的操作系统下，会在某些原因（例如权限的禁止） 而无法使用
+
+② 第二点就是Watch方法在默认情况下是禁止递归的(recursive)，什么意思呢？ 就是说，如果你查询的文件夹下的子文件夹下，如果有文件被修改了，也不会有提示有文件被修改，因为Watch方法在默认情况下，只是查询路径下的全部文件，其中的子文件夹内的文件不会递归的进行查询
+
+如果需要进行递归查询的话呢，我们可以进行设置，就是在第二个参数中进行设置
+
+{% highlight Javascript %}
+var fs = require("fs");
+
+var filePath = "./xxx";
+
+var options = { persistent: true, recursive: true }; 
+
+// 持续性（persistent） 意思就是当文件被检查状态的时候是否还继续运行，这里默认就是确定的
+// 文档原文为：persistent that indicates whether the process should continue to run as long as files are being watched.
+
+fs.existsFile( filePath , options , function( isexists ) {
+	// 判断是否存在 ，如果存在再进行监听
+	
+	if( isexists ) {
+		fs.watch(filePath ,  function( event , filename ) {
+			console.log( "change event is :" + event );
+
+			if( filenames ) {
+				console.log( "The file Which be changed : " + filename  );
+			} else {
+				console.log( "no file be changed" );
+			}
+		});
+	}
+});
+{% endhighlight %}
+
+这里，直接把 `recursive` 是否进行递归，赋值true 就也会进行子文件夹下的内容判断了
+
+## watchFile
+
+检查文件 函数
+
+一共有三个参数， (文件名 ， [设置项] , [callback] )
+
+设置项是一个对象，可以设置文件在检查过程中是否持续进行（persistent） , 还有一个就是文件持续运行的时间区间（interval）以毫秒为单位，
+因为是检查文件 而不是文件夹，就没有是否递归查询的选项（recursive）
+
+回调函数 ， 回调函数 会返回两个参数，`现在的状态（current）` 和 `之前的状态（prev）` 
+
+这两个参数实际上是从属于`fs.stat`的，返回的文件的详细信息， current 自然不用说就是返回现在的文件信息， prev就是文件被访问前的文件信息
+还有一个需要注意的地方，就是这个回调函数调用的时候是当有人访问了这个文件的时候，才会进行调用
+
+总结来说就是，检查这个文件，并查看是否被修改，如果修改了，可以通过访问current的文件状态进行查询
+
+
+## realpath
+
+我们可以使用这个方法 根据某个文件的相对路径 resolve 成绝对路径
+底层实现是根据`process.cwd` 
+
+参数有三
+
+(需要还原的路径 , [cache] , [callback])
+
+{% highlight Javascript %}
+fs.realpath("./" , cache , function (err , resovlePath) {
+	console.log(resovlePath); // "D:\NodeJs\text"
+});
+{% endhighlight %}
+
+### cavcats
+
+① 可以使用`cache`来进行强制还原 ，什么意思呢？ 就是当是一些特殊路径的情况下，无法直接还原了，借鉴其他非特殊路径的文件，将他们的父级路径映射给需被还原的路径
+
+官网example:
+
+{% highlight Javascript %}
+var cache = {'/etc':'/private/etc'};
+fs.realpath('/etc/passwd', cache, function (err, resolvedPath) {
+  if (err) throw err;
+  console.log(resolvedPath);
+});
+{% endhighlight %}
+
+## stat(Sync)
+
+返回一个文件(夹)的详细信息
+
+( 文件(夹)路径, callback )
+
+{% highlight Javascript %}
+fs.stat(filename , function (err , stats) {
+	if( !err )
+	{
+		console.log(stats);
+	}
+});
+{% endhighlight %}
+
+### caveats
+
+① 其中 callback 可以返回一个 `stats` 这个对象里面包含该文件的各种数据，及其一些方法
+
+```
+stats.isFile() 检查是否是一个文件
+stats.isDirectory() 是否是一个文件夹
+stats.isBlockDevice() 
+stats.isCharacterDevice()
+stats.isSymbolicLink() (只用 fs.lstat() 才存在)
+stats.isFIFO()
+stats.isSocket() 
+
+```
+
+## 简单的文件遍历算法
+
+{% highlight Javascript %}
+var fs = require("fs");
+
+var arr = [];
+function travel(dirname, callback) {
+
+    fs.readdirSync(dirname).forEach(function (file) {
+    	
+    	var pathname = dirname + file + "/";
+        
+        if (fs.statSync(pathname).isDirectory()) {
+            // 如果是文件夹，就继续遍历文件夹
+            travel(pathname, callback);
+        } else {
+        
+        	// 如果是文件的话，将文件名称传入回调函数，执行操作
+            callback(pathname);
+        }
+    });
+}
+
+travel("需要遍历查询的文件夹名" , function(pathname){
+	arr.push({"[文件路径]" : pathname});
+});
+
+console.log( arr );
+{% endhighlight %}
+
+该算法可以遍历一个文件夹，及其子文件内的全部文件并且，每遍历一个文件遍执行一次回调函数，通过这个遍历算法我们就可以比较方便的遍历并给被遍历的文件添加执行事件
+
+## 简单的构建项目算法
+
+{% highlight Javascript %}
+var fs = require("fs");
+
+// 预设项目信息
+var programdata = {
+
+	"name" : "program",
+	"fileData" : [
+				{	
+					"name" : "css",
+					"type" : "dir"
+				},
+				{	
+					"name" : "js",
+					"type" : "dir"
+				},
+				{	
+					"name" : "images",
+					"type" : "dir"
+				},
+				{	
+					"name" : "index.html",
+					"type" : "file",
+					"content" : "<html>\n\t<head>\n\t\t<meta charset='utf-8'>\n\t\t<title>页面模板</title>\n\t</head>\n\n\t<body>\n\t</body>\n</html>"
+				}
+			]	
+};
+// 判断构建项目文件夹是否已经存在，如未存在建立项目文件夹
+programdata.name && !fs.existsSync( programdata.name ) && fs.mkdir(programdata.name);
+
+var fData = programdata.fileData;
+
+// 判断fileData是否是对象
+if( fData && fData.forEach ) {
+
+// 循环建立项目
+	fData.forEach( function( fInfo ) {
+		fInfo.path = programdata.name + "/" + fInfo.name;
+		
+		fInfo.content = fInfo.content || "";
+
+		switch( fInfo.type ) {
+			case  "dir": 
+				!fs.existsSync( "./" + fInfo.path ) && fs.mkdirSync( "./" + fInfo.path );
+				break;
+
+			case "file":
+				fs.writeFileSync(  "./" + fInfo.path , fInfo.content , "utf-8");
+				break;
+
+			default:
+				break;
+		}
+
+	}); 
+}
+{% endhighlight %}
 
 
 
