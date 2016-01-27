@@ -240,10 +240,70 @@ var max = Math.max.apply(max , [var1 , var2 , var3 , var4]);
 
 这样就可以直接对max(min)函数引用数组中的内容了
 
+## 闭包模拟块级作用域
+
+为什么要强调这个呢？
+
+我们先来看个栗子
+
+{% highlight Javascript %}
+var a = "owen";
+(function() {
+    console.log("a:" + a);  // 这是多少呢？
+    var a = "zyz";
+})();
+{% endhighlight %}
+
+我们来看看结果吧:
+
+![shootpic](/assets/img/block-scoping.png)
+
+为什么会是`undefined`呢?
+
+原因就是闭包中也声明了一个a
+
+实际上，上文的代码等效于这样写
+
+{% highlight Javascript %}
+var a = "owen";
+(function() {
+    var a;  // 此a 非彼a
+    console.log("a:" + a); 
+    a = "zyz";
+})();
+{% endhighlight %}
+
+所以，就会被打印出`undefined`
+
+当我们认识到了这一点，我们就知道，闭包是可以拿来模拟一个块级作用域，这样块级直接的变量就不会出现污染了（但是注意，如果没有在闭包中声明变量a 闭包中还是会根据作用域链访问全局的a变量）
+
+{% highlight Javascript %}
+var a = 1;
+
+(function() {
+    var a = 2;      // 这是一个私有变量了
+    console.log(a); // 2
+})();
+
+console.log(a) // 1
+
+#####################
+
+var a = 1;
+
+(function() {
+    console.log(a); // 1 如果没有声明这个私有变量，访问的还会是全局的变量a
+})();
+
+{% endhighlight %}
+
+
+
 ## 感谢
 
 [JavaScript中call()与apply()有什么区别？](http://my.oschina.net/warmcafe/blog/74973)
 
+[Javascript中变量提升](http://www.cnblogs.com/damonlan/archive/2012/07/01/2553425.html)
 
 
 

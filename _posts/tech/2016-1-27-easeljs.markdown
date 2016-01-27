@@ -1,0 +1,85 @@
+---
+layout: post
+title: 搞懂easelJS 
+category: 技术
+keywords: 技术,easeljs,createJs
+---
+
+## HelloWorld
+
+我们开始步入正题
+
+首先引入easelJs 我现在使用的是`easelJs-0.8.2-min-js` 只要这一个文件就ok 
+下载的话直接到官网 或者 中文API 里都有 [中文API](http://www.createjs.cc/)
+
+{% highlight html %}
+<script src="../easeljs-0.8.2.min.js" ></script>
+{% endhighlight %}
+
+首先，先声明一点，`createJS` 是多个JS框架一个统称，就好像 adobe 公司旗下的 PS 、 AI 、 Flash一样， easeljs 只是createJS旗下的一个框架工具
+
+createJS其中包括:
+
+① EaselJS 用于绘制位图，做动画，用户交互
+② TweenJS 用于制作补间动画（不了解的可以自行google） 俗称过渡效果
+③ SoundJS 故名思意，处理音频的音频播放引擎
+④ PrloadJS 简化网站资源预加载，优化加载速度
+⑤ PxLoadr 网页预加载工具
+
+有了这些工具，就可以来弄H5游戏了，当然，我们现在只了解基础的easeljs
+
+## 全局对象
+
+`easeljs`所有的功能都是被一个全局类所包含的，这个全局对象的名称叫`createjs`(打广告嘛)，我们可以console一下这个对象，看看easeljs到底有些什么
+
+{% highlight Javascript %}
+Object {EaselJS: Object}
+	AlphaMapFilter: 
+	AlphaMaskFilter: 
+	Bitmap:             位图，用于引入图片
+	BitmapText:         位图中绘制文字
+	BlurFilter: 		模糊滤镜
+	ButtonHelper: 
+	ColorFilter:        颜色滤镜
+	ColorMatrix: 
+	ColorMatrixFilter: 
+	Container: 
+	DOMElement: 
+	DisplayObject: 
+	DisplayProps: 
+	EaselJS: 			版本信息
+	Event: 
+	EventDispatcher: 
+	Filter: 			滤镜
+	Graphics: 			绘制各种图形
+	Matrix2D: 
+	MouseEvent: 		鼠标事件，用于与用户交互
+	MovieClip:  		动画剪裁
+	Point:      		绘制点
+	Rectangle:  		绘制矩形
+	Shadow:     		绘制阴影
+	Shape:      		新建图层
+	Sprite:     
+	SpriteSheet: 
+	SpriteSheetBuilder: 
+	SpriteSheetUtils: 
+	Stage:      		新建舞台
+	Text:       		绘制文本
+	Ticker: 
+	Touch:      		移动端交互
+	UID:        		生成一个独一无二的序列号
+	extend:     
+	indexOf: 
+{% endhighlight %}
+
+很多功能和方法，先说个简单的把，使用`EaselJS` 可以打印出当前easeljs的版本信息和项目构建时间
+{% highlight Javascript %}
+console.log(createjs.buildDate + " & " + createjs.version);
+{% endhighlight %}
+
+## 先从一个简单的栗子说起
+
+
+
+
+

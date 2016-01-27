@@ -1250,7 +1250,11 @@ transition: 过渡的时间 延迟执行时间 参与过度的属性 过渡的�
 
 当鼠标退出hover区之后,也是宽度和背景开始变,然后再是高度
 
-还有一点: transition 目前对display并不支持,如果你的属性中有display 之间的变换的话,那么所有的过渡效果都会消失
+### caveats
+
+① transition 目前对display并不支持,如果你的属性中有display 之间的变换的话,那么所有的过渡效果都会消失
+
+② transition 一定是在页面元素渲染完成之后才能起效果的，如果，使用了js 动态的添加了页面元素，一定要等到全部元素添加完后，在添加transition动画
 
 ### transition事件
 
@@ -1788,7 +1792,7 @@ drop-shadow			阴影     (类似box-shadow,为图片添加阴影)
 
 ## 使用css3 + clip + ab伪类 做的一些小特效
 
-[demo](/assets/download/clipMe.html)
+[demo](/assets/download/clipme.html)
 
 clip 是css2.0就支持的一个属性，用于切割显示 有兴趣的可以参考
 [张鑫旭的CSS clip:rect矩形剪裁功能及一些应用介绍](http://www.zhangxinxu.com/wordpress/2011/04/css-clip-rect/)

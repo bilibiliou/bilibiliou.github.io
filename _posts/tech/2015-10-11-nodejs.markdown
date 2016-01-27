@@ -737,7 +737,7 @@ fs.realpath("./" , cache , function (err , resovlePath) {
 });
 {% endhighlight %}
 
-### cavcats
+### Caveats
 
 ① 可以使用`cache`来进行强制还原 ，什么意思呢？ 就是当是一些特殊路径的情况下，无法直接还原了，借鉴其他非特殊路径的文件，将他们的父级路径映射给需被还原的路径
 
@@ -766,7 +766,7 @@ fs.stat(filename , function (err , stats) {
 });
 {% endhighlight %}
 
-### caveats
+### Caveats
 
 ① 其中 callback 可以返回一个 `stats` 这个对象里面包含该文件的各种数据，及其一些方法
 
@@ -986,6 +986,8 @@ var httpServer = http.createServer(function(request , respone)
 
 
 ## 感谢
+
+[nodeJs](https://nodejs.org/en/)
 
 [妙味课堂](http://www.miaov.com)
 

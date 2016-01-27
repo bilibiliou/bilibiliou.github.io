@@ -598,6 +598,23 @@ document.onmousemove = function(ev) {
 
 这里注意一点，就是clientXY是在可视区的定位，而style.top[left] 是面对整个页面进行定位，所以我们在給盒子进行定位的时候，一定要加上 scrollTop[left] 及被卷起来的那部分的高度[宽度]
 
+## 鼠标事件 pageX/Y
+
+相对与clientX/Y 而言 pageX/Y 是指鼠标相对于整个页面的位移坐标
+即：
+`pageX[Y] = clientX[Y] + scrollTop[left] - clientTop`
+
+### caveats
+
+① IE678都不支持pageX[Y],也就是说，只有标准浏览器才能支持Page属性
+
+## 鼠标事件 screenX[Y]
+
+有了上面的基础，我们也可以理解screenX[Y]了， clientX[Y] 是鼠标到浏览器的坐标
+而screenX[Y] 则是鼠标到屏幕的坐标
+
+区别就在于浏览器的大小可以改变，但是屏幕的大小是绝对不会改变的
+
 ## 事件流
 
 ### 事件冒泡
@@ -686,12 +703,12 @@ obj.addEventListener(事件名称 ， 事件函数 ， 是否捕获)
 例如如果我要同时给`document`添加fn1 和 fn2两个函数
 {% highlight javascript %}
 // 低版本的IE
-document.attachEvent(onclick , fn1);
-document.attachEvent(onclick , fn2);
+document.attachEvent("onclick" , fn1);
+document.attachEvent("onclick" , fn2);
 
 // 实现标准的IE和其他标准浏览器
-document.addEventListener(onclick , fn1);
-document.addEventListener(onclick , fn2);
+document.addEventListener("click" , fn1 , false);
+document.addEventListener("click" , fn2 , false);
 {% endhighlight %}
 
 而关于是否事件捕获呢？
@@ -703,7 +720,7 @@ document.addEventListener(onclick , fn2);
 
 我们可以使用call和apply方法来扩展绑定函数的生存域
 {% highlight javascript %}
-document.attachEvent(onclick , function() {
+document.attachEvent("onclick" , function() {
 	fn1.call(document , 参数)
 });
 {% endhighlight %}
@@ -714,7 +731,7 @@ function bind(obj , evname , fn) {
 	if(obj.addEventListener) {
 		obj.addEventListener(evname , fn , false);
 	} else {
-		obj.attachEvent("on" , evname , function() {
+		obj.attachEvent("on" + evname , function() {
 			fn.call(obj);
 		});
 	}
