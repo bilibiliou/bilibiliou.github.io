@@ -20,7 +20,7 @@ keywords: 技术,easeljs,createJs
 
 createJS其中包括:
 
-① EaselJS 用于绘制位图，做动画，用户交互
+① EaselJS 用于绘制位图，做动画，用户交互( easel: 画架 )
 ② TweenJS 用于制作补间动画（不了解的可以自行google） 俗称过渡效果
 ③ SoundJS 故名思意，处理音频的音频播放引擎
 ④ PrloadJS 简化网站资源预加载，优化加载速度
@@ -30,10 +30,10 @@ createJS其中包括:
 
 ## 全局对象
 
-`easeljs`所有的功能都是被一个全局类所包含的，这个全局对象的名称叫`createjs`(打广告嘛)，我们可以console一下这个对象，看看easeljs到底有些什么
+`easeljs`所有的功能都是被一个全局类所包含的，这个全局对象的名称叫`createjs`(每当调用createjs旗下的一个库的时候，都会保存在这个对象中)，我们可以console一下这个对象，看看easeljs到底有些什么
 
 {% highlight Javascript %}
-Object {EaselJS: Object}
+Object {EaselJS: Object}  这个对象里只有一个easel库
 	AlphaMapFilter: 
 	AlphaMaskFilter: 
 	Bitmap:             位图，用于引入图片
@@ -58,13 +58,13 @@ Object {EaselJS: Object}
 	Point:      		绘制点
 	Rectangle:  		绘制矩形
 	Shadow:     		绘制阴影
-	Shape:      		新建图层
+	Shape:      		新建图形图层
 	Sprite:     
 	SpriteSheet: 
 	SpriteSheetBuilder: 
 	SpriteSheetUtils: 
 	Stage:      		新建舞台
-	Text:       		绘制文本
+	Text:       		绘制文本图层
 	Ticker: 
 	Touch:      		移动端交互
 	UID:        		生成一个独一无二的序列号
@@ -74,12 +74,99 @@ Object {EaselJS: Object}
 
 很多功能和方法，先说个简单的把，使用`EaselJS` 可以打印出当前easeljs的版本信息和项目构建时间
 {% highlight Javascript %}
-console.log(createjs.buildDate + " & " + createjs.version);
+console.log(createjs.EaselJS.buildDate + " & " + createjs.EaselJS.version);
 {% endhighlight %}
+
+如果我又加入了createJs旗下的tweenJS 那么这个对象就会变成
+Object {EaselJS: Object , TweenJS: Object}
+
+这样保证了很多命令都是在createJs 旗下的，如果这些类库中有和其他动画框架重名的话，就不会互相污染出错了。
 
 ## 先从一个简单的栗子说起
 
+先画个我信管创业基地的logo
+[demo](/assets/download/createJS-tutorial/easelJSDemo/canvastext.html)
 
+看完这个demo 小伙伴可能很不屑吧，确实，这种效果使用canvas 也可以做得到，但是如果使用canvas原生去写，会麻烦很多，还不能和`tweenJS` 配合做出来动画的效果
 
+所以，我们要想能实现好看，能动，还能互动的 炫酷梦幻高大上效果，就先得从基本的画图命令开始
 
+首先的在body里写个`canvas`标签吧
+{% highlight html %}
+<canvas id="stage" width="840" height="950" ></canvas>
+{% endhighlight %}
+注意宽高只能以属性形式来表示，具体原因就不多赘余了，自己google
 
+再来就来开始写绘图代码了，上午我说过，所有命令都是在`createJs`旗下的，那么我们就先弄个引用
+{% highlight Javascript %}
+var c = createJs;
+{% endhighlight %}
+
+当然你不弄也行，代码能省则省呗
+
+然后我们新建一个舞台，注意，这个舞台接受一个参数，就是需要实现绘图的`canvas` DOM结点
+{% highlight Javascript %}
+var oStage = new c.Stage("stage");
+{% endhighlight %}
+
+注意，Stage构造器自带`document.getElementById`方法，可以直接丢ID值进去
+但是，类和标签不行
+
+当然也可以这样写，都是等价的
+{% highlight Javascript %}
+var oBox = document.getElemengById("stage");
+var oStage = new c.Stage(oBox);
+{% endhighlight %}
+
+搭建好舞台之后，我们就要在舞台上添加元素和图层了
+
+{% highlight Javascript %}
+var Run1 = new c.Shape();
+var Run2 = new c.Shape();
+{% endhighlight %}
+
+每个图层类有一个`graphics(图形图像)`方法，其实也就是继承了`Graphics`类，
+因为每次画完图像之后都要添加到图层里面，所以这个库的作者就也在`Shape`的类中继承了`Graphics`类
+
+其中可以先对画笔初始化 `setStrokeStyle` 设置画笔大小 和 `beginStroke("#fff")`设置颜色
+其中画线就是`moveTo` 或 `mt(简写 效果和moveTo相同)` 和 `lineTo` 或 `lt` 呗
+
+{% highlight Javascript %}
+Run1.graphics.setStrokeStyle(2).beginStroke("#fff")
+	.mt(510,270)
+	.lt(410,213)
+	.lt(95,392)
+	.lt(95,300)
+	.lt(420,116)
+	.lt(684,270)
+	.lt(0,658)
+	.lt(0,715)
+	.lt(420,950)
+	.lt(840,720)
+	.lt(840,400)
+	.lt(318,690);
+oStage.addChild(Run1);
+
+Run2.graphics.setStrokeStyle(2).beginStroke("#fff")
+	.mt(318,690)
+	.lt(420,750)
+	.lt(737,568)
+	.lt(737,660)
+	.lt(420,840)
+	.lt(152,685)
+	.lt(840,297)
+	.lt(840,240)
+	.lt(420,0)
+	.lt(0,240)
+	.lt(0,568)
+	.lt(510,270);
+oStage.addChild(Run2);
+{% endhighlight %}
+
+每次绘制完一个图层之后，都需要使用`addChild`添加到舞台中，
+
+最后，updata 舞台，大功告成
+
+{% highlight Javascript %}
+oStage.update();
+{% endhighlight %}
