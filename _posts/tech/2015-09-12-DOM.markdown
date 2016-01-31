@@ -253,6 +253,29 @@ IE7- 的浏览器还有一些不qi合pa群的特性，如果你要兼容IE7以�
 
 ## 定位、宽高的获取
 
+### 页面的各种宽高获取
+
+window.innerheight	返回窗口的文档显示区的高度。
+window.innerwidth	返回窗口的文档显示区的宽度。
+
+以上除IE8 以下，所有的标准浏览器都支持
+
+document.documentElement.clientWidth 返回根节点宽度 （可见区宽）
+document.documentElement.clientHeight 返回根节点高度 （可见区高）
+
+所有浏览器都支持，但是没有定义W3c标准的话，以上的属性返回的值会多出body的margin值
+
+window.body.clientWidth 可见区域宽度
+window.body.clientHeight 可见区域高度
+
+所有浏览器都支持
+
+window.screen.height  屏幕分辨率的高
+window.screen.width   屏幕分辨率的宽
+
+window.screen.availHeight   屏幕可用工作区高度
+window.screen.availWidth    屏幕可用工作区宽度
+
 ### offsetLeft[Top]
 
 offsetLeft 和 Top 可以获取自己元素到`定位父级`的距离

@@ -246,8 +246,8 @@ var heartPath = [];
 for( var i = 0; i<dPI; i+=0.1 ) {
 	// 将每个弧度都带入公式中，千万注意i每次都是 += 0.1 
 	// 如果你需要更加精密的话，可以吧每次递增的弧度改小 += 0.05
-	x = 16 * M.pow(Sin(i) , 3);
-	y = 13 * Cos(i) - 5 * Cos(2*i) - 2 * Cos(3*i) - Cos(4*i);
+	var x = 16 * M.pow(Sin(i) , 3);
+	var y = 13 * Cos(i) - 5 * Cos(2*i) - 2 * Cos(3*i) - Cos(4*i);
 	
 	// 将每个点存入路径中
 	heartPath.push([x,y]);
