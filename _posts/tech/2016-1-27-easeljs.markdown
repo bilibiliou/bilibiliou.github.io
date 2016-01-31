@@ -1,15 +1,15 @@
 ---
 layout: post
-title: 搞懂easelJS 
+title: easelJS tutorial 
 category: 技术
 keywords: 技术,easeljs,createJs
 ---
 
-## HelloWorld
+## Getting Started
 
-我们开始步入正题
+步入正题之前还是先要感谢作者[Grant Skinner](https://github.com/gskinner)以及其领导的团队弄出createJs一系列强大的框架
 
-首先引入easelJs 我现在使用的是`easelJs-0.8.2-min-js` 只要这一个文件就ok 
+首先我们要先引入easelJs 我现在使用的是`easelJs-0.8.2-min-js` 只要这一个文件就ok 
 下载的话直接到官网 或者 中文API 里都有 [中文API](http://www.createjs.cc/)
 
 {% highlight html %}
@@ -170,3 +170,120 @@ oStage.addChild(Run2);
 {% highlight Javascript %}
 oStage.update();
 {% endhighlight %}
+
+## 基本图形的绘制
+
+我们先来了解一下`Shape`这个类吧，正如上文栗子所见，这个类可以初始化一个新图层，然后我们可以在这个新图层上绘制内容
+我们来试着使用`Shape`画一些基本的图形出来吧
+
+我们先从矩形开始
+
+{% highlight Javascript %}
+var rect = new createjs.Shape();
+rect.graphics.beginFill("#000").drawRect( 10 , 10 , 100 , 100 );
+{% endhighlight %}
+
+上文也提到了Shape下面的graphics 图形类可以用来绘制
+
+`drawRect` 前俩个参数是关于图层的定位坐标，后两个参数是宽高
+
+那么什么是图层呢？ 用过PS的同学应该很清楚，每一个图层之间互不干涉，自己画自己的，一个图层的宽高也就覆盖了整个舞台的宽高
+通过图层将舞台分层开，这样就能保证图层之间绘制的内容不会互相影响
+
+每当将绘制命令在图层中绘制完成后，就需要加入到舞台中
+
+{% highlight Javascript %}
+oStage.addChild(rect);
+{% endhighlight %}
+
+每次绘制完毕后刷新舞台
+
+{% highlight Javascript %}
+oStage.update();
+{% endhighlight %}
+
+这里就多提一点吧，试想一下如果开个`setInterval` 不断的更新绘制命令，来绘制图层,然后update 那是不是就实现动画效果了？ 这里就可以谈到 easeljs 的简单动画效果实现了，以后我们会说
+
+其他的形状（圆、线、五角星）方法都是内置的，我就不多缀余了，自己去看[API](http://www.createjs.com/docs/easeljs/classes/Graphics.html)吧
+
+但是，心形这里需要点一下，心形在easeljs 里是没有内置的绘制方法的，这里需要我们自己来写绘制方法
+
+使用canvas 绘制心形有两种方式
+
+① 使用贝塞尔曲线绘制
+② 使用 heart curve 函数绘制
+
+第一种方法 MDN 上有记录 
+[Drawing shapes with canvas](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Drawing_shapes) 
+
+MDN 上使用的是原生的canvas 实现的，那么用easeljs 也提供了自己的贝塞尔曲线方法，自己去看文档吧
+
+但是需要注意的是，使用贝塞尔曲线绘制的心形不是特标准，有点敷衍的感觉
+
+
+使用 第二种方法就可以精确的绘制心形了
+
+首先我们需要了解一下心形函数,心形函数有很多种，这里我选用比较标准的这种
+
+{% highlight Javascript %}
+x = 16sin³(t)
+y = 13Cos(t) - 5Cos(2t) - 2Cos(3t) - Cos(4t)
+t ∈ [0,2π]
+{% endhighlight %}
+
+而 x 和 y 就是心形的每一点了，那么怎么绘制心形呢？
+
+首先我们需要获取到心形的每一个点
+{% highlight Javascript %}
+var M = Math;
+var Sin = M.sin;
+var Cos = M.cos;
+var dPI = 2*M.PI //2π
+var heartPath = [];
+
+for( var i = 0; i<dPI; i+=0.1 ) {
+	// 将每个弧度都带入公式中，千万注意i每次都是 += 0.1 
+	// 如果你需要更加精密的话，可以吧每次递增的弧度改小 += 0.05
+	x = 16 * M.pow(Sin(i) , 3);
+	y = 13 * Cos(i) - 5 * Cos(2*i) - 2 * Cos(3*i) - Cos(4*i);
+	
+	// 将每个点存入路径中
+	heartPath.push([x,y]);
+}
+{% endhighlight %}
+
+这样我们就获得到了一个心形的全部点集 `heartPath` 剩下的只要绘制就好了
+
+{% highlight Javascript %}
+var HeartShape = new createjs.Shape();
+
+for( var i = 0 ; i<heartPath.length ; i++ ) {
+	if( i == 0 ) {
+		HeartShape.graphics.setStrokeStyle(2).beginStroke("red").mt(p.x,-p.y);
+	} else {
+		HeartShape.graphics.lt(p.x , -p.y);
+	}
+} 
+
+// 千万不要忘记添加到舞台中哦
+oStage.addChild(HeartShape);
+{% endhighlight %}
+
+这样你就可以获得一个心形啦
+
+可能这样获得的心形有点小，那么你可以将每个点坐标进行放大，怎么放大呢？
+读者可以自己先思考一下，答案在栗子的源码里，自己去找吧 
+
+这是我画的，就当作业吧，读者们也可以试着实现一下
+[栗子](/assets/download/createJS-tutorial/easelJSDemo)
+
+（源代码自己F12或者FireBUG -> Sources） 你懂的
+
+如果你想了解更多的关于心形函数的知识:
+[Heart Curve](http://mathworld.wolfram.com/HeartCurve.html)
+
+快情人节了，再附送两个爱心特效给大家（可能要翻墙）
+[sweetass heart canvas](http://bl.ocks.org/paulirish/1823634)
+[Valentine's day Heart curve](http://bl.ocks.org/nbremer/8e25e1434cdd6db25b69)
+
+祝大家情人节快乐啦 O(∩_∩)O~~
