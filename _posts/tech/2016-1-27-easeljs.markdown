@@ -206,7 +206,9 @@ oStage.update();
 
 其他的形状（圆、线、五角星）方法都是内置的，我就不多缀余了，自己去看[API](http://www.createjs.com/docs/easeljs/classes/Graphics.html)吧
 
-但是，心形这里需要点一下，心形在easeljs 里是没有内置的绘制方法的，这里需要我们自己来写绘制方法
+### 绘制心形函数
+
+心形这里需要点一下，心形在easeljs 里是没有内置的绘制方法的，这里需要我们自己来写绘制方法
 
 使用canvas 绘制心形有两种方式
 
@@ -223,7 +225,7 @@ MDN 上使用的是原生的canvas 实现的，那么用easeljs 也提供了自�
 
 使用 第二种方法就可以精确的绘制心形了
 
-首先我们需要了解一下心形函数,心形函数有很多种，这里我选用比较标准的这种
+首先我们需要了解一下心形函数,心形函数有很多种，这里我选用比较标准的[这种](http://www.wolframalpha.com/input/?i=x+%3D+16+sin%5E3+t,+y+%3D+(13+cos+t+-+5+cos+2t+-+2+cos+3t+-+cos+4t))
 
 {% highlight Javascript %}
 x = 16sin³(t)
@@ -259,12 +261,12 @@ var HeartShape = new createjs.Shape();
 
 for( var i = 0 ; i<heartPath.length ; i++ ) {
 	if( i == 0 ) {
-		HeartShape.graphics.setStrokeStyle(2).beginStroke("red").mt(p.x,-p.y);
+		HeartShape.graphics.setStrokeStyle(2).beginStroke("red").mt(heartPath[i].x,-heartPath[i].y);
 	} else {
-		HeartShape.graphics.lt(p.x , -p.y);
+		// 这里注意 ，函数画出来的是一个倒心，如果要正心，需要对y值取反
+		HeartShape.graphics.lt(heartPath[i].x , -heartPath[i].y);
 	}
 } 
-
 // 千万不要忘记添加到舞台中哦
 oStage.addChild(HeartShape);
 {% endhighlight %}
