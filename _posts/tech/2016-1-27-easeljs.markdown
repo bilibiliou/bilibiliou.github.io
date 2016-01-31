@@ -275,7 +275,7 @@ oStage.addChild(HeartShape);
 读者可以自己先思考一下，答案在栗子的源码里，自己去找吧 
 
 这是我画的，就当作业吧，读者们也可以试着实现一下
-[栗子](/assets/download/createJS-tutorial/easelJSDemo)
+[栗子](/assets/download/createJS-tutorial/easelJSDemo/baisc-shape.html)
 
 （源代码自己F12或者FireBUG -> Sources） 你懂的
 
