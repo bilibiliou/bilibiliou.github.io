@@ -289,3 +289,100 @@ oStage.addChild(HeartShape);
 [Valentine's day Heart curve](http://bl.ocks.org/nbremer/8e25e1434cdd6db25b69)
 
 祝大家情人节快乐啦 O(∩_∩)O~~
+
+## 多屏适配
+
+如果我们要绘制一些自定义的图形（比如信管的logo）， 而且还想要兼容到移动端，那么应该怎么做呢？
+
+有做过响应式布局的读者应该清楚媒体查询吧，没错，只要像这样根据屏幕来确定画布大小就好了
+
+{% highlight Javascript %}
+var oStage = new Stage("canvasId");
+oStage.canvas.width = window.innerWidth;
+oStage.canvas.height = window.innerHeight;
+{% endhighlight %}
+
+这样就能保证画布全局平铺
+
+但是却出现了一个问题，绘制的图像肯定就不能是原来的大小了
+
+那么怎么办呢？
+
+我们在绘制自定义图像的时候，可以将图像的点集入栈，然后进行坐标级操作
+
+我们先定义一个坐标对象
+{% highlight Javascript %}
+function Point(x , y) {
+	this.x = x;
+	this.y = y;	
+}
+
+Point.prototype = function() {
+	constructor : Point,
+	clone : function() {
+		return new Point(this.x , this.y);
+	},
+	dScale : function(o) {
+		var newPoint = new this.clone();
+		var a *= o;
+		var b *= o;
+		return newPoint;
+	}
+}
+{% endhighlight %}
+
+Point 对象底下有三个方法，`clone`很简单就是重新复制一份坐标
+
+`dScale` 传入一个参数，即扩大[缩小]比例 o ，这样就会按照这个比例将坐标扩大[缩小]到一定的倍数
+
+有什么用呢？
+我们可以做一个判断条件
+
+{% highlight Javascript %}
+// 某图形的各个点坐标
+var PointGroup = [new Point(x1 , y1),new Point(x2 , y2),new Point(x3 , y3),....];
+
+var CanvasWidth = window.innerWidth;
+switch(true) {
+	case CanvasWidth > 992 : 
+		PointdScale();
+		break;
+	case (CanvasWidth <= 992) && (CanvasWidth > 768) :
+		PointdScale();
+		break;
+	case (CanvasWidth > 768) :
+		PointdScale();
+		break;
+}
+
+function PointdScale(o) {
+	for( var i = 0; i<PointGroup.length ; i++ ) {
+		PointGroup[i] = PointGroup[i].dScale(o);
+	}
+}
+{% endhighlight %}
+
+这样就能达到对绘制的图形扩大[缩小的目的]，其中case的内容可以自行发挥呀，直到做出合适为止
+
+### caveats
+
+而在Easeljs 内部已经定义好了点对象了
+{% highlight Javascript %}
+var point = new createjs.Point( x , y );
+{% endhighlight %}
+
+内置了这么几个方法
+
+clone 函数 : 复制一个坐标相同的点对象
+copy  函数 : 将A点的x,y值 赋值给 B点 
+toString 函数 : 将点的坐标以这样的形式，打印出来`[Point (x="+this.x+" y="+this.y+")]`
+
+还可以直接设置x 和 y 
+{% highlight Javascript %}
+var point = new createjs.Point();
+point.x = 0;
+point.y = 100;
+{% endhighlight %}
+
+但是就没有我上面所提到的点集操作，所以是使用原生的点对象还是自己封装一个对象，就看大家的需求了
+原理上都是一样的
