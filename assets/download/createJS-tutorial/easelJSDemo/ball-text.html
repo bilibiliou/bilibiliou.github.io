@@ -1,0 +1,99 @@
+<!doctype html>
+<html>
+	<head>
+		<title>画图</title>
+		<meta charset="utf-8">
+
+		<style>
+			* { margin: 0; padding: 0;}
+			body {background: #f5f5f5;}
+			canvas {
+				position: absolute;
+			}
+		</style>
+
+		<script src="../../../js/easeljs-0.8.2.min.js" ></script>
+	</head>
+	
+	<body>
+		<canvas id="text"></canvas>
+		<canvas id="stage"></canvas>
+		<script>
+		window.onload = function() {
+			var c = createjs;
+			var M = Math;
+			var CanvasWidth = window.innerWidth;
+			var CanvasHeight = window.innerHeight;
+			var colors = ['#B2949D', '#FFF578', '#FF5F8D', '#37A9CC', '#188EB2']; // 彩球颜色
+
+			var textPixels = [];
+
+			var oStage = new c.Stage("stage");
+			oStage.canvas.width = CanvasWidth;
+			oStage.canvas.height = CanvasHeight;
+
+			var Pix = getPixel();
+			Balls(Pix);
+			function Balls(Pix) {
+				for(var i = 0;i<Pix.length; i++ ) {
+					var ball = new c.Shape();
+					var color = colors[M.floor(M.random()*colors.length)];
+					var r = 3;
+					ball.graphics.beginFill(color).drawCircle(50, 50, r);
+					ball.x = Pix[i].x;
+					ball.y = Pix[i].y;
+					ball.alpha = 0.7;
+					oStage.addChild(ball);
+				}
+
+				oStage.update();
+			}
+
+
+			function getPixel() {
+		    	var t = "新年快乐";
+
+		    	var textPixel = [];
+		    	var fontSize = 860/(t.length);
+		    	if( fontSize ) {
+		    		fontSize = 160;
+		    	}
+
+		    	var textStage = new c.Stage("text");
+
+		    	var text = new c.Text(t , "900 "+ fontSize +"px 微软雅黑", "#eee");
+		    	var textStageWitdh = 800;
+		    	var textStageHeight = 500;
+		    	textStage.canvas.width = textStageWitdh;
+		    	textStage.canvas.height = textStageHeight;
+		    	text.textAlign = "center";
+		    	text.x = 400;
+		        text.y = 0;
+		        textStage.addChild(text);
+		        textStage.update();
+
+		        var ctx = textStage.canvas.getContext("2d");
+		        var pixel = ctx.getImageData(0,0,textStageWitdh,textStageHeight ).data;
+				
+				for( var i = pixel.length ;i>=0; i-=4 ) {
+					if( pixel[i] != 0 ) {
+						var x = (i / 4) % textStageWitdh;
+						var y = M.floor(M.floor(i/4)/textStageWitdh);
+						if((x && x%7 == 0 ) && (y && y%7 == 0)) {
+							textPixels.push({
+								x : x,
+								y : y
+							});
+						}
+					}
+				}
+
+				text.text = "";
+        		textStage.update();
+
+        		return textPixels;
+			}
+		}
+		</script>
+	</body>
+</html>

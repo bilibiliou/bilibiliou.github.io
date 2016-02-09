@@ -1,0 +1,202 @@
+<!doctype html>
+<html>
+	<head>
+		<title>画图</title>
+		<meta charset="utf-8">
+
+		<style>
+			* { margin: 0; padding: 0;}
+			body {background: #FCAEBB;}
+			canvas {
+				position: absolute;
+			}
+
+			@font-face{
+				font-family:'Yuppy';
+				src:url('../../../font/YuppySC-Regular-Roman.eot');
+				src:url('../../../font/YuppySC-Regular-Roman.eot') format('embedded-opentype'),
+				url('../../../font/YuppySC-Regular-Roman.woff') format('woff'),
+				url('../../../font/YuppySC-Regular-Roman.ttf') format('truetype'),
+				url('../../../font/YuppySC-Regular-Roman.svg') format('svg');font-weight:normal;font-style:normal
+			}
+		</style>
+
+		<script src="../../../js/easeljs-0.8.2.min.js" ></script>
+	</head>
+	
+	<body>
+		<canvas id="text"></canvas>
+		<canvas id="stage"></canvas>
+		<script>
+		window.onload = function() {
+			var c = createjs;
+			var M = Math;
+			var Sin = Math.sin;
+			var Cos = Math.cos;
+			var CanvasWidth = window.innerWidth;
+			var CanvasHeight = window.innerHeight;
+			var colors = ['#B2949D', '#FFF578', '#FF5F8D', '#37A9CC', '#188EB2']; // 彩球颜色
+
+			var textPixels = [];
+
+			var oStage = new c.Stage("stage");
+			oStage.canvas.width = CanvasWidth;
+			oStage.canvas.height = CanvasHeight;
+
+			function Point( x , y ) {
+				this.x = x || 0;
+				this.y = y || 0;
+			}
+
+			Point.prototype = {
+				constructor : Point,
+				clone : function() {
+					return new Point(this.x , this.y);
+				},
+				multiply : function(n) {
+					var newPoint = this.clone();
+					newPoint.x *= n;
+					newPoint.y *= n;
+					return newPoint;
+				}
+			}
+
+			function Heart() {
+				var heartPoints = [];
+				var x,y,t;
+				var dPi = 2*M.PI;
+
+				for( var i = 0 ; i<dPi; i += 0.1) {
+					x = 16 * M.pow(Sin(i) , 3);
+					y = 13 * Cos(i) - 5 * Cos(2*i) - 2 * Cos(3*i) - Cos(4*i);
+					heartPoints.push( new Point(x , y) );	
+				}
+				this.heartPoints = heartPoints;
+				this.length      = heartPoints.length;
+			}
+
+			Heart.prototype = {
+				constructor : Heart,
+				draw : function( i , scale ) {
+					return this.heartPoints[i].multiply(scale || 1);
+				}
+			}
+
+			function ILoveU(Pix) {
+				for(var i = 0;i<Pix.length; i++ ) {
+					var H = new c.Shape();
+					var h = new Heart();
+					var color = colors[M.floor(M.random()*colors.length)];
+
+					for( var j = 0 ; j<h.length ; j++ ) {
+						var p = h.draw( j , 0.5 );
+						if( j == 0 ) {
+							H.graphics.setStrokeStyle(1).beginFill(color).mt(p.x,-p.y);
+						} else {
+							H.graphics.lt(p.x , -p.y);
+						}
+					}
+					H.graphics.closePath();
+
+					H.rotation = M.floor(M.random()*90 - 45);
+					H.x = window.innerWidth*0.22 + Pix[i].x;
+					H.y = window.innerHeight*0.7 + Pix[i].y;
+					oStage.addChild(H);
+				}
+
+				
+			}
+
+			function BigHeart(heartPix) {
+				for(var i = 0;i<heartPix.length; i++ ) {
+					var H2 = new c.Shape();
+					var h2 = new Heart();
+					var color = colors[M.floor(M.random()*colors.length)];
+
+					for( var j = 0 ; j<h2.length ; j++ ) {
+						var p = h2.draw( j , 1.4 );
+						if( j == 0 ) {
+							H2.graphics.setStrokeStyle(1).beginFill(color).mt(p.x,-p.y);
+						} else {
+							H2.graphics.lt(p.x , -p.y);
+						}
+					}
+					H2.graphics.closePath();
+
+					H2.rotation = M.floor(M.random()*90 - 45);
+					H2.x = window.innerWidth*0.48 + heartPix[i].x;
+					H2.y = window.innerHeight*0.32 + -heartPix[i].y;
+					oStage.addChild(H2);
+				}
+
+				H2.graphics.closePath();
+
+				oStage.addChild(H2);
+			}
+
+			function getPixel() {
+		    	var t = "I LOVE U";
+
+		    	var textPixel = [];
+		    	var fontSize = 860/(t.length);
+		    	if( fontSize ) {
+		    		fontSize = 160;
+		    	}
+
+		    	var textStage = new c.Stage("text");
+
+		    	var text = new c.Text(t , "900 "+ fontSize +"px Arial", "#eee");
+		    	var textStageWitdh = 1000;
+		    	var textStageHeight = 500;
+		    	textStage.canvas.width = textStageWitdh;
+		    	textStage.canvas.height = textStageHeight;
+		    	text.textAlign = "center";
+		    	text.x = 425;
+		        text.y = 0;
+		        textStage.addChild(text);
+		        textStage.update();
+
+		        var ctx = textStage.canvas.getContext("2d");
+		        var pixel = ctx.getImageData(0,0,textStageWitdh,textStageHeight ).data;
+				
+				for( var i = pixel.length ;i>=0; i-=4 ) {
+					if( pixel[i] != 0 ) {
+						var x = (i / 4) % textStageWitdh;
+						var y = M.floor(M.floor(i/4)/textStageWitdh);
+						if((x && x%17 == 0 ) && (y && y%17 == 0)) {
+							textPixels.push({
+								x : x,
+								y : y
+							});
+						}
+					}
+				}
+
+				text.text = "";
+        		textStage.update();
+
+        		return textPixels;
+			}
+
+			function getHeartPixel() {
+				var BigHeart = new Heart();
+				var HeartP = [];
+				for(var i = BigHeart.length-4; i>=3 ;i--) {
+					if( i % 2 == 0) {
+						if(!(i/2 >= BigHeart.length/2 + 2 && i/2 <= BigHeart.length/2 - 2)) {
+							HeartP.push(BigHeart.heartPoints[i].multiply(17));	
+						}
+					}
+					
+				}
+				return HeartP;
+			}
+
+			ILoveU(getPixel());
+			BigHeart(getHeartPixel());
+			
+			oStage.update();
+		}
+		</script>
+	</body>
+</html>

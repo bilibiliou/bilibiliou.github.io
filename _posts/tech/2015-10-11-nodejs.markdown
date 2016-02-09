@@ -668,7 +668,7 @@ fs.existsFile( filePath , function(err) {
 
 当然，我这里只是简单的对一个文件进行判断
 
-### Caveats
+### Caveats	
 
 ① Watch方法  的Api 是不完整的， 什么意思呢？ 就是说在不同的操作系统下，会在某些原因（例如权限的禁止） 而无法使用
 

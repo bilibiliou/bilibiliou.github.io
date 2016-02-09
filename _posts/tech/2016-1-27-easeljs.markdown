@@ -378,6 +378,7 @@ copy  函数 : 将A点的x,y值 赋值给 B点
 toString 函数 : 将点的坐标以这样的形式，打印出来`[Point (x="+this.x+" y="+this.y+")]`
 
 还可以直接设置x 和 y 
+
 {% highlight Javascript %}
 var point = new createjs.Point();
 point.x = 0;
@@ -386,3 +387,140 @@ point.y = 100;
 
 但是就没有我上面所提到的点集操作，所以是使用原生的点对象还是自己封装一个对象，就看大家的需求了
 原理上都是一样的
+
+## 如何获取像素点集
+
+正如上文说到的一样，如果我们要绘制一些自定义的图形，那么我们就需要获取该图的点集。
+那么怎么获取点集呢？
+
+两种方法：
+
+① 使用Ps 方法一个点一个点的手工描定
+
+② 使用getImageData方法获取像素点，根据像素点个数来确定像素点
+
+第一种方法很麻烦，笔者一开始不懂的使用，就使用这种方法来获取的，但是，如果自定义点比较少，也可以快速的使用
+
+第二种方法，可以用来获得复杂的像素点集合，具体方法我们下面来解释一下：
+
+比如我们需要获取`新年快乐`这几个字
+我们可以新建一个专门用于获取像素点集的canvas 画布
+
+{% highlight html %}
+<canvas id="text"></canvas>
+<canvas id="stage"></canvas>
+{% endhighlight %}
+
+然后我们来获取像素
+
+首先我们初始化文字获取画布，自定义其宽高，
+新建一个文字图层，内容为t,和像素集textPixel
+{% highlight Javascript %}
+var textStage = new c.Stage("text");
+var textStageWitdh = 800;
+var textStageHeight = 500;
+textStage.canvas.width = textStageWitdh;
+textStage.canvas.height = textStageHeight;
+
+var textPixel = [];
+
+var t = "新年快乐";
+
+
+var fontSize = 860/(t.length);
+if( fontSize ) {
+	fontSize = 160;
+}
+
+var text = new c.Text(t , "900 "+ fontSize +"px 微软雅黑", "#eee");
+
+text.textAlign = "center";
+text.x = 400;
+text.y = 0;
+textStage.addChild(text);
+textStage.update();
+{% endhighlight %}
+
+这里画布刷新是必要的，并且一定要给文字设置颜色！不然会无法获取像素
+
+然后，因为easelJs 并没有获取像素点的方法，我们需要自己封装
+
+{% highlight Javascript %}
+var ctx = textStage.canvas.getContext("2d");
+var pixel = ctx.getImageData(0,0,textStageWitdh,textStageHeight ).data;
+{% endhighlight %}
+
+通过原生的getContext对象下的`getImageData`
+获取到整个文字画布的全部点集合
+
+然后就是最核心的代码了
+{% highlight Javascript %}
+for( var i = pixel.length ;i>=0; i-=4 ) {
+	if( pixel[i] != 0 && pixel[i+1] != 0 && pixel[i+2] != 0) {
+		var x = (i / 4) % textStageWitdh;
+		var y = M.floor(M.floor(i/4)/textStageWitdh);
+		if((x && x%7 == 0 ) && (y && y%7 == 0)) {
+			textPixels.push({
+				x : x,
+				y : y
+			});
+		}
+	}
+}
+{% endhighlight %}
+
+首先，我们知道getImageData是获取的图片的rgba值，而我们需要获取的是文本坐标
+我们只需要判断每一个的rgb 是否有值就好了，如果有值，就说明是一个有颜色的像素点
+
+关于如何获取坐标的x 和 y，自己看代码吧，都看的懂的
+然后就是一个代码的筛选问题，如果你需要这个图形的全部像素点击，那么这一部可以省略，但是如果你需要的只是随机的一部分，那么就可以像这样 逢 49点取一，这样获取的点就比较分散，适合于做出一些效果
+
+然后将x y 入栈就算完事了，
+
+最后别忘记了需要把写过的文本清空
+
+{% highlight Javascript %}
+text.text = "";
+textStage.update();
+{% endhighlight %}
+
+然后我们就可以来绘制一些效果了
+{% highlight Javascript %}
+var c = createjs;
+var M = Math;
+var CanvasWidth = window.innerWidth;
+var CanvasHeight = window.innerHeight;
+var colors = ['#B2949D', '#FFF578', '#FF5F8D', '#37A9CC', '#188EB2']; // 彩球颜色
+
+var textPixels = [];
+
+var oStage = new c.Stage("stage");
+oStage.canvas.width = CanvasWidth;
+oStage.canvas.height = CanvasHeight;
+
+for(var i = 0;i < textPixels.length; i++ ) {
+	var ball = new c.Shape();
+	var color = colors[M.floor(M.random()*colors.length)];
+	var r = 3;
+	ball.graphics.beginFill(color).drawCircle(50, 50, r);
+	ball.x = textPixels[i].x;
+	ball.y = textPixels[i].y;
+	ball.alpha = 0.7;
+	oStage.addChild(ball);
+}
+
+oStage.update();
+{% endhighlight %}
+
+
+我们可以看看我做的栗子
+[demo](/assets/download/createJS-tutorial/easelJSDemo/ball-text.html)
+
+或者可以拿来告白？
+[demo](/assets/download/createJS-tutorial/easelJSDemo/heart-text.html)
+
+### caveats
+
+① 获取点的区域一定要有颜色！
+② 循环获取点的时候 i要循环加4
+③ 路径要根据实际情况进行合适的过滤
