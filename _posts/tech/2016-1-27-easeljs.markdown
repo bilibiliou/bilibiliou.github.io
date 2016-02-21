@@ -364,7 +364,7 @@ function PointdScale(o) {
 
 这样就能达到对绘制的图形扩大[缩小的目的]，其中case的内容可以自行发挥呀，直到做出合适为止
 
-### caveats
+### caveat
 
 而在Easeljs 内部已经定义好了点对象了
 {% highlight Javascript %}

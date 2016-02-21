@@ -297,7 +297,30 @@ var a = 1;
 
 {% endhighlight %}
 
+## 如何判断对象类型
 
+直接上代码了
+{% highlight Javascript %}
+function ObjectTest (obj) {
+    var objType = Object.prototype.toString.call(obj);
+    var result = "";
+    switch(objType) {
+        case "[object Array]": console.log("This is Array");
+            break;
+        case "[object Function]": console.log("This is Function");
+            break;
+        case "[object Object]": console.log("This is Object");
+            break;
+        case "[object String]": console.log("This is String");
+            break;
+        case "[object Number]": console.log("This is Number");
+            break;
+        case "[object RegExp]": console.log("This is RegExp");
+            break;
+        default: console.log(objType);
+    }
+}
+{% endhighlight %}
 
 ## 感谢
 

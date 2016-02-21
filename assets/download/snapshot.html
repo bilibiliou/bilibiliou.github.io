@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+<head>
+    <title>html5 capture test</title>
+    <style>
+		img{
+			width: 640px;
+			height: 480px;
+		}
+    </style>
+    <script>
+    window.onload = function() {
+    	var video = document.querySelector("video");
+    	var oImg  = document.querySelector("img");
+    	var canvas = document.querySelector("canvas");
+    	var ctx    = canvas.getContext("2d");
+
+    	var localMediaStream = null;
+    	var snapshot = function() {
+    		if(localMediaStream) {
+    			ctx.drawImage( video , 0 , 0 );
+    			oImg.src = canvas.toDataURL("image/webp");
+    		}
+    	}
+
+    	var btnCapture = document.getElementById("capture");
+    	btnCapture.addEventListener("click" , snapshot , false);
+    	navigator.getUserMedia = navigator.getUserMedia || 
+                 navigator.webkitGetUserMedia ||
+                 navigator.mozGetUserMedia || 
+                 navigator.msGetUserMedia;
+
+        navigator.getUserMedia({ video:true } , function(stream) {
+        	video.src = window.URL.createObjectURL(stream);
+        	localMediaStream = stream;
+
+        	canvas.width = 640;
+			canvas.height = 480;
+
+			oImg.width = video.videoWidth;
+			oImg.height = video.videoHeight;
+           
+        },function(err) {	
+        	console.log(err);
+        	alert("浏览器不支持获取摄像头 get better browser")
+        });
+    }
+    </script>
+</head>
+<body>
+    <video autoplay></video>
+    <img src="">
+    <canvas style="display: none;"></canvas>
+    <button id="capture">snapshot</button>
+</body>
+</html>

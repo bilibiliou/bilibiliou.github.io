@@ -106,7 +106,7 @@ for(var i = 0; i < oUl.childNodes.length ; i++)
 这就需要我们使用`nodeType`属性进行判断了
 
 如果对应缩进的html
-{% highlight html %}
+{% highlight Html %}
 <ul id="ul">
 	<li></li>
 	<li></li>
@@ -255,26 +255,55 @@ IE7- 的浏览器还有一些不qi合pa群的特性，如果你要兼容IE7以�
 
 ### 页面的各种宽高获取
 
-window.innerheight	返回窗口的文档显示区的高度。
-window.innerwidth	返回窗口的文档显示区的宽度。
+① 获取浏览器窗口的宽和高
 
-以上除IE8 以下，所有的标准浏览器都支持
+在标准浏览器下面，我们可以使用
+window.innerWidth[Height]
 
-document.documentElement.clientWidth 返回根节点宽度 （可见区宽）
-document.documentElement.clientHeight 返回根节点高度 （可见区高）
+在非标准浏览器下，我们可以使用
+document.documentElement.clientWidth[Height]
 
-所有浏览器都支持，但是没有定义W3c标准的话，以上的属性返回的值会多出body的margin值
+在jq中，我们可以使用
+$(window).width[height]
 
-window.body.clientWidth 可见区域宽度
-window.body.clientHeight 可见区域高度
+② 获取整个文档的宽和高
 
-所有浏览器都支持
+无论标准非标准，我们都使用
+document.body.clientWidth[Height]
+
+在jq中，我们可以使用
+$(document).width[height]
+
+__没有__ <s>window.body.clientWidth[clientHeight]</s>
+
+③ 获取整个电脑屏幕的宽和高
 
 window.screen.height  屏幕分辨率的高
 window.screen.width   屏幕分辨率的宽
 
+④ 获取可用工作区宽和高 （即电脑屏幕 - 底部任务栏的高）
 window.screen.availHeight   屏幕可用工作区高度
 window.screen.availWidth    屏幕可用工作区宽度
+
+③和④都是一个定值固定死的，例如我的VAIO 电脑 就是 1600*900的，减去任务栏后是1600*860
+
+⑤ 获取去除滚动条宽的可视区宽高（浏览器窗口 - 滚动条的宽）
+
+document.body.scrollWidth
+document.body.scrollHeight
+
+⑥ 被卷起来的页面宽和高
+
+document.body.scrollTop[Left]
+
+或者 
+
+document.documentElement.scrollTop[Left]
+
+这里涉及兼容性的问题我们下面会提到
+
+
+！！！！不得不吐槽没总结之前真的好乱！！！！
 
 ### offsetLeft[Top]
 

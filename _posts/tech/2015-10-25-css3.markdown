@@ -484,7 +484,7 @@ direction: rtl 或者 ltr; (right to left 或者 left to right)
 为不同的字体格式
 
 老外呢就给我们提供了这么一个网站
-[fontsquirrel](http://www.fontsquirrel.com/fontface/generator)
+[onlinefontconverter](https://onlinefontconverter.com/)
 
 当我们获得不同格式的字体文件之后,我们只要在css中添加这样的代码
 {% highlight css %}

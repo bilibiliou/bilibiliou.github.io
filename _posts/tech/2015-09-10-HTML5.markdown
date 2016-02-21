@@ -2083,6 +2083,126 @@ window.onload = function()
 <video controls ></video>
 {% endhighlight %}
 
+## 使用getUserMedia
+
+getUserMedia 是html5 规范新出来的一个API， 用处就是使用你电脑的媒体设备（摄像头，麦克风）
+
+使用起来很简单，但是有一些需要注意的地方
+{% highlight javascript %}
+navigator.getUserMedia({video: true} , function(stream) {
+	/* 对摄像头拍摄的资源进行使用 code */	
+},function(err) {
+	console.log(err);
+	alert("Request video Stream Fail | 加载摄像头资源失败");
+});
+{% endhighlight %}
+
+如果是麦克风 就再添加一个成员 `audio: true`
+
+这里获取的只是流数据，如果需要使用这些数据 还需要结合video标签 和 canvas 
+
+### caveats
+
+① 当前html5 还没定型，使用时需要添加兼容性处理（vendor prefixing 浏览器厂商前缀）
+
+即： 
+{% highlight javascript %}
+// opera browser has't verdor prefixing | 欧鹏浏览器无需添加厂商前缀 
+navigator.getUserMedia = navigator.getUserMedia || 
+                 navigator.webkitGetUserMedia ||
+                 navigator.mozGetUserMedia || 
+                 navigator.msGetUserMedia;
+{% endhighlight %}
+
+② 各个浏览器厂家都对这项技术有安全性的限制，在非用户允许，或者是一些不可靠的网址（包括本地）
+中就不会加载这个功能(如果需要测试可以考虑 Mamp 或者 Lamp)
+
+③ 使用时会跳这么个提示
+
+getUserMedia() is deprecated on insecure origins, and support will be removed in the future. You should consider switching your application to a secure origin, such as HTTPS. See https://goo.gl/rStTGz for more details.
+
+getUserMedia() 不能在不安全的站点中使用
+你现在网址并不被浏览器认可为可靠站点，你需要将你考录把你的应用挂在一个安全的站点。例如 HTTPS,并且未来可能不会允许你的站点支持这项技术，
+
+## 使用getUserMedia 实现简单的视频拍照
+
+先看效果吧
+
+[snapshot](/assets/download/snapshot.html)
+
+Steps:
+① 调用getUserMedia 获取摄像机权限
+② 点击将获取摄像机拍摄到的流数据丢入video标签，进行播放
+③ 点击snapshot 时候调用canvas 中的drawImage 方法，将video中的图形绘制在canvas画布中
+④ 将画布中的图片编码数据路径，丢入img标签的src中
+
+先看下布局：
+{% highlight html %}
+<video autoplay></video>
+<img src="">
+<!-- canvas的作用就是生成图片，所以无需显现 -->
+<canvas style="display: none;"></canvas>
+<button id="capture">snapshot</button>
+{% endhighlight %}
+
+
+获取相机权限很简单，上面已经说的差不多了
+{% highlight javascript %}
+// 兼容vendors
+navigator.getUserMedia = navigator.getUserMedia || 
+                 navigator.webkitGetUserMedia ||
+                 navigator.mozGetUserMedia || 
+                 navigator.msGetUserMedia;
+// 获取权限
+navigator.getUserMedia({ video:true } , function(stream) {
+	video.src = window.URL.createObjectURL(stream);
+	localMediaStream = stream;
+
+	canvas.width = 640;
+	canvas.height = 480;
+
+	oImg.width = video.videoWidth;
+	oImg.height = video.videoHeight;
+},function(err) {	
+	console.log(err);
+	alert("浏览器不支持获取摄像头 get better browser")
+});
+{% endhighlight %}
+
+可能大家对createObjectURL不太熟悉
+
+createObjectURL 可以将传入的数据流创建一个指向该流的URL
+
+传入的参数可以是 blob(二进制类型) 或者 file (文件流类型);
+
+与之对应的还有revokeObjectURL
+
+释放createObjectURL方法创建的URL，传入的参数是这个URL
+
+到这一步为止我们就可以事先简单的摄像功能了
+
+接下来就是拍照功能
+{% highlight javascript %}
+var snapshot = function() {
+// 如果摄像机工作了，产生了数据流，就可以进行拍照了
+	if(localMediaStream) {
+		ctx.drawImage( video , 0 , 0 );
+		oImg.src = canvas.toDataURL("image/webp");
+	}
+}
+var btnCapture = document.getElementById("capture");
+btnCapture.addEventListener("click" , snapshot , false);
+{% endhighlight %}
+
+很简单，就是简单的吧video播放的图像直接印在canvas 中，然后通过toDataURL转成图片格式就行
+
+完整源码，demo右键
+
+## caveats
+
+① 摄像机功能只允许在服务器环境下才可以获取限权
+
+② webp 是一种新的有损压缩图片格式，暂时只支持chrome ，兼容的话，可以这里改成`png或jpg`格式
 
 ## 感谢
 
