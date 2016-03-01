@@ -873,7 +873,7 @@ if( fData && fData.forEach ) {
 }
 {% endhighlight %}
 
-
+## 搭建一个简单WebServer
 
 首先使用前我们都需要这样加载这样一个http模块
 
@@ -980,8 +980,6 @@ var httpServer = http.createServer(function(request , respone)
 	});	
 
 }).listen(8888);
-
-
 {% endhighlight %}
 
 
