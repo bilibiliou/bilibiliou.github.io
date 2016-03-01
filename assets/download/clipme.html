@@ -6,7 +6,8 @@
 		<style>
 			body{ margin: 0; padding: 0;}
 			ul{ list-style: none; padding: 0; margin: 0;}
-			
+			h1 {margin: 0;}
+
 			.clearfix{
 				display: block;
 				zoom: 1;
@@ -450,9 +451,151 @@
 					opacity: 0;
 				}	
 			}
+
+			#div11 {
+				width: 100%;
+				height: 168px;
+				background: #021315;
+				margin: 100px auto 0;
+				
+			}
+			
+			#animate-circle {
+				width: 167px;
+				height: 168px;
+
+				margin: 0 auto;
+			}
+
+			#animate-circle>img {
+				position: absolute;
+			}
+	
+			#animate-circle>img:nth-of-type(2) {
+				animation: 2s animate-cir1 linear infinite;
+			}
+
+			#animate-circle>img:nth-of-type(3) {
+				animation: 4s animate-cir2 linear infinite;
+			}
+
+			#animate-circle>img:nth-of-type(4) {
+				animation: 2s animate-cir1 linear infinite;
+			}						
+			@keyframes animate-cir1{
+				100% {
+					transform: rotate(360deg);
+				}
+			}
+			@keyframes animate-cir2{
+				100% {
+					transform: rotate(-360deg);
+				}
+			}
+			
+			#div12 {
+				position: relative;
+				width: 100%;
+				height: 512px;
+				background: #021315;
+				margin: 100px auto 0;
+			}
+	
+			#animate-circle2 {
+				width: 512px;
+				height: 512px;
+
+				margin: 0 auto 20px;
+			}
+			#animate-circle2>img {
+				position: absolute;
+
+			}
+
+			#pointer ,#pointer-shake {
+				position: absolute;
+				top: 10%;
+				left: 15%;
+				width: 76px;
+				height: 76px;
+				transition: 0.5s;
+				cursor: pointer;
+				background: url(./demopic/circle/hand.png) no-repeat;
+			}
+			.logo {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				
+				margin-left: -130px;
+				margin-top: -20px;
+				width: 260px;
+				height: 40px;
+				color: #f5f5f5;
+				text-align: center;
+				font: 100 68px/40px Arial;
+				transform: scale(0.5);
+				transition: .75s cubic-bezier(0.285, 1.65, 0.745, 1.65);
+				opacity: 0;
+			}
+			#pointer::before {
+				position: absolute;
+				top: -45%;
+				left: -20%;
+				
+				display: inline-block;
+				width: 100px;
+				content: "扫描指纹";
+				color: #fff;
+				font: 500 20px/25px "微软雅黑";
+				text-align: center;
+			}
+
+			#pointer-shake {
+				z-index: 2;
+				animation: 2s pointerShake linear infinite; 
+			}
+
+			@keyframes pointerShake{
+				0% {
+					opacity: 1;
+					transform: scale(1);
+				}
+				60%,100% {
+					opacity: 0;
+					transform: scale(1.5);
+				}
+			}
 		</style>
 		<script>
-		
+		function runCir() {
+			var pointer = document.getElementById("pointer");
+			var pointerS = document.getElementById("pointer-shake");
+
+			var animateCircle2 = document.getElementById("animate-circle2");
+			var img = animateCircle2.getElementsByTagName("img");
+			var logo = document.getElementsByClassName("logo")[0];
+
+			pointer.style.opacity = 0;
+			pointerS.style.opacity = 0;
+			pointerS.style.animation = "none";
+
+			setTimeout( function() {	
+				img[0].style.animation = "1s animate-cir1 linear infinite";
+				img[1].style.animation = "1.5s  1s animate-cir2 linear infinite";
+				img[2].style.animation = "1s 2.5s animate-cir1 linear infinite";
+				img[3].style.animation = "2s 3.5s animate-cir2 linear infinite";
+				pointer.style.display = "none";
+				pointerS.style.display = "none";
+			} ,1000);
+			
+			setTimeout( function() {
+				logo.style.transform = "scale(1)";
+				logo.style.opacity = 1;
+
+			},4500)
+
+		}
 		</script>
 	</head>
 	<body>
@@ -496,6 +639,28 @@
 					<div></div>
 					<div></div>	
 				</div>
+			</div>
+
+			<div id="div11">
+				<div id="animate-circle">
+					<img src="./demopic/circle/c2-box.png" alt="">
+					<img src="./demopic/circle/c2-b1.png" alt="">
+					<img src="./demopic/circle/c2-b2.png" alt="">
+					<img src="./demopic/circle/c2-b3.png" alt="">
+				</div>
+			</div>
+
+			<div id="div12">
+				<div id="animate-circle2">
+					<img src="./demopic/circle/c3-b1.png" alt="">
+					<img src="./demopic/circle/c3-b2.png" alt="">
+					<img src="./demopic/circle/c3-b3.png" alt="">
+					<img src="./demopic/circle/c3-b4.png" alt="">
+					<h1 class="logo">Im Web</h1>
+				</div>
+
+				<div id="pointer"></div>
+				<div id="pointer-shake" onclick="runCir()"></div>
 			</div>
 		</article>
 
