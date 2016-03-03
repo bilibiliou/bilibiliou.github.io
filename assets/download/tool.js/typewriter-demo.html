@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+	<head>
+		<title>demo</title>
+		<meta charset="utf-8">
+		<style>
+			body {
+				background: #000;
+			}
+			#output {
+				width: 800px;
+				height: 600px;
+				margin: 20px auto;
+				font-size: 50px;
+				font-family: arial;
+				color: #00FF00;
+			}
+			button {
+				display: block;
+				width: 200px;
+				height: 45px;
+				font-size: 30px;
+
+				margin: 0 auto;
+			}
+		</style>
+	</head>
+	<script src="util.js"></script>
+	<script>
+		$ = new u();
+		function run() {
+			$.typewriter({
+				delay : 120,
+				input : $.$("#input"),
+				output : $.$("#output"),
+				animate : "3d-rotate",
+			});
+		}
+	</script>
+	<body>
+		
+		<div id="input" style="display:none;">Behind evey successful time that is a lot of unsuccessful years</div>
+		<div id="output">
+			<span class="typing-cursor">|</span>
+		</div>
+		<button onclick="run()">run</button>
+	</body>
+</html>
