@@ -15,7 +15,7 @@ keywords: 技术,nodejs
 Ecmascript5 的用处是操作各种DOM结点来完成页面的各种功能、布局样式的修改和特效，
 所以浏览器便提供了Document Object Model 和 Brower Object Model 来方便Ecmascript5 操纵页面
 
-所以说在浏览器端 
+所以说在浏览器端， 
 
 由Ecmascript5 + DOM + BOM 就组成了我们所谓的Javascript
 
