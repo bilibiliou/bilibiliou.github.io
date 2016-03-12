@@ -1,0 +1,279 @@
+---
+layout: post
+title: requireJs使用心得
+category: 技术
+keywords: 技术,amd,requirejs
+---
+
+## 为什么要用requireJS？
+
+### 模块化
+
+写过java 或者 C的同学都知道这么几条语句
+
+{% highlight Java %}
+import java.util.XXX
+{% endhighlight %}
+
+或者是C的
+
+{% highlight C %}
+#include <stdio.h>
+{% endhighlight %}
+
+当然新出的ecmascript6 也有相应的模块机制
+{% highlight Javascript %}
+import xxx from './xx.js'
+{% endhighlight %}
+
+很简单，将一些模块（轮子、库、框架、组件、balabala）导入当前编写的文件中，方便我们更好的开发
+
+### 问题1：依赖关系混乱
+
+在现在比较通用的es5中，是没有模块化机制的，所以如果要使用js的话
+以前我们应该都是这么干
+{% highlight html %}
+<script src="xxx.js"></script>
+{% endhighlight %}
+
+如果，我有一个c.js想要用到的一个b库的话，就需要在引用c前先引入b
+{% highlight html %}
+<script src="b.js"></script>
+<script src="c.js"></script>
+{% endhighlight %}
+
+如果很多页面都需要b库呢？
+
+传统方式，只能是每个页面都引用一次b.js了，对吧
+
+如果现在b.js，再次改进，b.js也需要另一个类库a.js
+
+那么没办法，只能在每个页面又再次引用一遍a.js了，对吧
+
+![img](/assets/img/require-problem.png)
+
+当然，还没完，如果突然，说产品要改进了，不需要旧的b库了，要新的d库了,
+
+没办法了，又只能把所有的页面删了b，然后换d，估计你现在已经差不多要抓狂了
+
+还没完，突然如果d库又改进了，再次需要引入a库，你又要回到每一个页面去加a库...
+
+### 问题2：命名冲突
+
+如果你和同事被分别派去写 a.js 和 b.js ，同时声明了一个函数
+`find()`,当然同时功能还不相同，那么当写好后合一起的时候，就会发现
+
+命名冲突了，b.js 中的find把a.js中的find 函数覆盖了 。。gg 又要重新回去改函数名，并且把所有引用过的函数全部都改一遍
+
+当然，上面的问题也许，对你来说可能无所谓，无非就是改改删删名字的事儿
+但是，如果是一个团队一起开发复杂的application,那就比较麻烦了，分工合作之间就有可能隐藏大漏洞
+
+所以，我们就需要一种规范，来保证协同分工合作之间，配合默契
+
+### AMD规范
+
+James Burke 这个人，就首先提出了这种规范，就是AMD规范（Asynchronous Module Definition）
+
+大家不要被什么规范啊，英文吓到了，因为AMD规范只有一句话...
+
+{% highlight Javascript %}
+define([module-name?], [array-of-dependencies?], [module-factory-or-object]);
+{% endhighlight %}
+
+什么意思呢？
+
+module-name 就是规定这个文件的模块名,如果没填，默认是文件路径<br>
+
+array-of-dependencies 就是规定这个文件，所依赖的文件，例如b需要a库的支持，我们就说b依赖a(dependencies 英:依赖)<br>
+
+module-factory-or-object 模块工程或对象，很简单，就是这个模块要实现的功能，
+如果不实现功能，而是有返回值的，那么就以对象的形式传出 <br>
+
+根据这个约定的规范，还是James Burke 就开始主导开发了requireJs 来实现这个规范 
+
+## Use
+
+require的目的就是要解决js的引用和依赖关系冲突的问题，所以我们要从引用路径这方面开始下手
+
+### 根目录
+
+什么是根目录呢？就是require所定位一个位置，而其他的Js文件就依照这个根位置填写相对路径
+
+例如如下目录结构
+{% highlight Javascript %}
+test.html             
+js                    
+ |_                   
+ |	main.js           
+ |_                   
+ |	a.js              
+ |_                   
+ |	tool              
+ |	   |_             
+ |	   	  require.js  
+ |_                   
+    common            
+         |_           
+         |  jquery.js 
+         |_           
+         |  jquery.pjax.js 
+		 |_                
+		    until.js       
+{% endhighlight %}
+main.js就是这个项目的主函数，类比C函数的主函数
+
+有3中方式设置根路径
+
+①. 首先如果我们没有设置`data-main`那么默认的根路径就是在test.html所在的目录下
+
+②. 如果设置了`data-main=js/main`那么默认根目录路径就是main.js所在的路径
+也就是js文件夹下
+
+{% highlight Html %}
+<script data-main="js/main" src="js/require.js"></script>
+{% endhighlight %}
+
+③. 如果我们硬性的设定根目录的位置也是可以的
+在main模块__开头__我们这样设置
+{% highlight Javascript %}
+require.config({
+	baseUrl : "xxx/xxx/xx"
+});
+{% endhighlight %}
+
+__caveat :__ require.config 是requireJS给我们设置的一个配置接口通过传入一个对象来对一些参数配置，关于一些其他的参数配置，我们留在下文介绍
+
+### 如何使用加载的模块
+
+熟悉了根目录后，我们就来做点东西吧
+
+还是上文的文件目录
+
+假设我们在a.js下完成了一些计算，并要将计算的值返回到main主函数
+
+怎么做呢？
+
+我们使用 require下给我们提供的define函数
+
+在define中，我们可以定义一个符合AMD规范的模块，并且用return可以吧结果输出来
+
+{% highlight Javascript %}
+define(function () {
+	/* 计算后结果假设等于1 */
+	var calcresult = 1;
+
+	return {
+		r : calcresult
+	}
+});
+{% endhighlight %}
+
+然后我们在main函数中，将a.js导入，首先先根据根节点来获取a
+
+路径的话，全部默认的是.js文件，所以我们不用自己加后缀，也不能加后缀
+{% highlight Javascript %}
+require.config({
+	paths : {
+		"a" : ["a"], // 不能加.js后缀
+	}, 
+});
+
+require( ["a"] , function (a) {
+	console.log(a.r);
+});
+{% endhighlight %}
+
+## 第三方组件模块化
+
+之前我们是模拟了a.js，然后手动的进行了模块化，但是如果一些已经写好的组件，比如(jquery,underscore)这样的第三方组件，我们应该如何以AMD的规范将他们模块化呢？
+
+require 给我们提供了一个shim函数,可以将未进行模块化的组件模块化
+
+例如一个本人自己写的小框架[until.js](https://github.com/NumerHero/tool.js)（厚脸皮求star(*^__^*) ）
+
+在主函数main中我们这样写
+(shim: 垫子 ，加个垫子，能让这个component够得着的意思么？)
+
+{% highlight Javascript %}
+require.config({
+	paths : {
+		"until"  : ["common/util"]
+	}, 
+	shim : {
+		"until" : {
+            exports : "u"
+        }
+	}
+});
+
+require( ["a" , "jquery" , "until"] , function ( u ) {
+	 o = new u();
+	 console.log(o.getToday()); // 2016-03-12
+});
+{% endhighlight %}
+
+这样我们就完成了将until.js的模块化并使用
+
+而jquery在函数内部已经为我们实现了AMD规范了,所以我们可以直接正常使用
+{% highlight Javascript %}
+require.config({
+	paths : {
+		"until"  : ["common/util"],
+		"jquery" : ["common/common/jquery"]
+	}, 
+	shim : {
+		"until" : {
+            exports : "u"
+        }
+	}
+});
+
+require( ["jquery" , "until"] , function ($ , u ) {
+	 o = new u();
+	 console.log(o.getToday()); // 2016-03-12
+
+	 console.log($); // jquery init
+});
+{% endhighlight %}
+
+
+但是基于jQuery的很多第三方插件并没有AMD规范化的，他们又和jquery有依赖关系，怎么办呢？
+
+还是shim来解决
+{% highlight Javascript %}
+require.config({
+	paths : {
+		"until"  : ["common/util"],
+		"jquery" : ["common/jquery"],
+		"jqueryPjax" : ["common/jquery.pjax"]
+	}, 
+	shim : {
+		"until" : {
+            exports : "u"
+        },
+        "pjax" : {
+			deps : ["jquery"]
+    	}
+	}
+});
+
+require( ["jquery" , "until" , "jqueryPjax"] , function ( $ , u ) {
+	 o = new u();
+	 console.log(o.getToday()); // 2016-03-12
+	 console.log($); // jquery init
+	 console.log($.pjax)
+});
+{% endhighlight %}
+
+也可以简写为： 
+{% highlight Javascript %}
+"pjax" : ["jquery"]
+{% endhighlight %}
+
+这样，最基本的requireJs 功能我们就懂了，快去和小伙伴们试试吧
+
+## 感谢
+
+[miaov](http://www.miaov.com)
+
+[JS模块化工具requirejs教程(二)：基本知识](http://www.runoob.com/w3cnote/requirejs-tutorial-2.html)
