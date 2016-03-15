@@ -234,6 +234,9 @@ p {
 	font: 100 16px/18px "微软雅黑";
 	text-align: center;
 }
+.user-info a:hover {
+	color: #fff;
+}
 
 .user-collection {
 	float: left;
@@ -252,7 +255,7 @@ p {
 
 .list-module {
 	width: 100%;
-	padding: 0 0 15px 45px;
+	padding: 10px 0 15px 40px;
 }
 
 .click-active {
@@ -288,6 +291,10 @@ p {
 .folders-list-module {
 	width: 100%;
 	height: auto;
+}
+
+.list-module:hover {
+	background: #3E384A; 
 }
 
 .folders-list-module-wrap {
@@ -379,7 +386,7 @@ p {
 	width: 100%;
 	height: 30px;
 
-	background: #fff;
+	background: #FEFEFE;
 	padding: 8px 0 0 30px;
 }
 
@@ -660,7 +667,7 @@ p {
 
 .task-content>div {
 	float: left;
-	border-radius: 20px;
+	border-radius: 5px;
 	background: #fff;
 	border: 1px solid #ccc;
 	overflow: hidden;
@@ -841,6 +848,11 @@ p {
 .task-table2-content-footer span {
 	font: 500 14px/14px "Consolas","微软雅黑";
 	vertical-align: top;
+	cursor: pointer;
+}
+
+.task-table2-content-footer span:hover {
+	color: #66D9EF;
 }
 
 .task-table2-content .select h1 {
