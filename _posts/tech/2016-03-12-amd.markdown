@@ -170,6 +170,8 @@ define(function () {
 
 然后我们在main函数中，将a.js导入，首先先根据根节点来获取a
 
+__caveat: __ 每个模块中define函数有且只能有一个~！
+
 路径的话，全部默认的是.js文件，所以我们不用自己加后缀，也不能加后缀
 {% highlight Javascript %}
 require.config({
@@ -272,8 +274,272 @@ require( ["jquery" , "until" , "jqueryPjax"] , function ( $ , u ) {
 
 这样，最基本的requireJs 功能我们就懂了，快去和小伙伴们试试吧
 
+## Define
+
+上面我们，已经简单的使用过了define函数，现在我们详细的来介绍下它
+
+define 函数可以将一个js文件内的js代码模块化
+
+当然js代码不一定是标准的，也可以是单纯的json
+{% highlight Javascript %}
+define({
+	"Owen" : {
+		"age"  : "20",
+		"gender" : "boy"
+	},
+	"Zyz" : {
+		"age"  : "21",
+		"gender" : "girl"	
+	}
+})
+{% endhighlight %}
+
+再来我们来看看如何引入依赖
+
+例如，在主函数中已经使用了require.config(只要是使用主函数加载的js都能使用) 配置好了until.js了路径，之后我们就可以直接在其他模块中填写好依赖，并使用了
+
+我们来看个栗子
+
+main.js:
+{% highlight Javascript %}
+require.config({
+	paths : {
+		"until" : ["common/until"],
+		"data" : ["common/data"]
+	}
+})
+
+require(["data"] , function (D) {
+	console.log(D.r); // 2016-03-13
+});
+
+{% endhighlight %}
+
+data.js中调用主函数中已经确定好了依赖，获取今天的日期，并返回
+{% highlight Javascript %}
+define(["until"] , function (u) {
+	var $ = new u();
+	return {
+		r : $.getToday()
+	}
+});
+{% endhighlight %}
+
+
+caveat: 一个js文件里面只能有一个define函数,不然会提示`Mismatched anonymous define() module:`
+
+
+## Plugins
+
+RequireJS 还为我们提供了很多[插件](https://github.com/millermedeiros/requirejs-plugins),便于我们去开发
+
+### domReady
+
+类似Jq 的`$(document).ready()` 当在dom加载完毕后执行里面的函数
+
+[下载该插件](http://requirejs.org/docs/download.html#domReady)
+
+我们可以在body前面插入一个`alert`来测试domReady
+
+{% highlight Html %}
+<script>alert("owen love zyz!")</script>		
+{% endhighlight %}
+
+当alert执行时，dom还未加载，执行后，完成加载，并在console.log中打印出内容
+
+{% highlight Javascript %}
+require.config({
+	paths : {
+		"domReady" : ["tool/domready"]
+	}
+});
+
+require(["domReady"] , function (domReady) {
+	
+	domReady(function () {
+		/* dom加载完后执行的操作 */
+		console.info("I will run after dom is ready!");
+	});
+
+});
+{% endhighlight %}
+
+这里还有一个作者留的小技巧
+
+如果不设置paths参数，并且吧domready.js保存在根目录下，那么就能像这样直接使用
+{% highlight Javascript %}
+require(["domReady!"] , function (Doc) {
+	console.log(Doc);
+	console.log("I will run after dom is ready!");
+
+});
+{% endhighlight %}
+
+注意这是带个感叹号的，返回值是`document`
+
+如果你希望把domreadyjs保存在其他目录下， 例如`tool/domready`
+你也可以使用这个感叹号的方法
+
+{% highlight Javascript %}
+require.config({
+	paths : {
+		"dr" : "根目录/tool/domready"
+	}
+});
+
+require(["dr!"] , function (Doc) {
+	console.log(Doc);
+	console.log("I will run after dom is ready!");
+});
+{% endhighlight %}
+
+### text
+
+[下载该插件](https://github.com/requirejs/text)
+
+text plugin 是一个用来加载文本的插件，底层采用的还是Ajax
+和domready 不太一样， text貌似只能使用！的方式加载
+{% highlight Javascript %}
+require.config({
+	paths : {
+		"t" : ["tool/text"]
+	}
+});
+
+require(["t!review.txt"] , function (review) {
+	console.log(review);
+});
+{% endhighlight %}
+
+流程是先根据paths路径找到text.js 然后在__该路径下__找到review.txt
+
+review 即是返回的文本内容
+
+caveats : <br>
+① text.js 底层是依靠Ajax的所以一定要保证在服务器环境下执行  <br>
+② 加载完text.js后， 会在该目录下找review.text 所以最好就是重写路径，或者把text.js放在同一文件下 <br>
+
+当然JSON也可以
+{% highlight Javascript %}
+require(["text!../text/foo.json"],function (foo) { 
+	console.log(Object.prototype.toString.call(foo));
+	console.log(JSON.parse(foo))
+});
+{% endhighlight %}
+
+但是JSON数据会出现同名缓存的问题，解决这个问题，我们可以使用!bust参数
+
+{% highlight Javascript %}
+require(["text!../text/foo.json" , "text!../text/foo.json!bust"],function (foo , foo1) { 
+	console.log(foo);
+	console.log(foo1)
+	console.log(JSON.parse(foo) == JSON.parse(foo1));
+});
+{% endhighlight %}
+
+### Image
+
+[下载地址](https://github.com/millermedeiros/requirejs-plugins)
+
+图片插件就的使用image.js了
+
+使用方法和text差不多
+{% highlight Javascript %}
+require.config({
+	paths : {
+		image : "tool/image"
+	}
+});
+
+require(["image!img/cat.jpg"] , function (cat) {
+	console.log(cat);
+});
+{% endhighlight %}
+
+
+但是和text.js不同的是，加载imagejs后所返回的路径并不是当前js文件的路径
+而是html文件所在的路径，
+
+作者原话：
+
+`Image paths are relative to the HTML file by default.`
+
+造成这样的原因有两点:
+① 两个plugin是由不同作者开发 <br>
+② 一般img图片文件夹都是在html文件下的 <br>
+
+所以注意一下就好了
+
+对于图片浏览器是会产生缓存的，如果不希望加载的图片缓存，image.js还提供了`bust`随机蔟
+
+只要在引入的图片中加bust参数就好
+
+栗子酱：
+{% highlight Javascript %}
+require.config({
+	paths : {
+		image : "tool/image"
+	}
+});
+
+require(["image!img/cat.jpg!bust" , "image!img/cat.jpg!bust"] , function (cat1 , cat2) {
+	console.log(cat1 === cat2); //false
+});
+{% endhighlight %}
+
+从上文来看 虽然加载的图片路径相同的，但是cat1明显不等于cat2 说明两张图片是不同的
+
+作者原话：
+`Appending !bust to the file name will avoid caching the image.`
+
+
+如果带!rel 参数，图片的加载路径就会以相对于BaseUrl的路径或者模块路径进行加载，也就是说不再默认为html文件下的路径了
+
+作者原话：
+`Appending !rel to the file name will load image realtive to baseUrl or module path.`
+
+
+### markdown
+
+[下载地址](https://github.com/millermedeiros/requirejs-plugins)
+
+这个插件是markdown的加载插件，需要配合markdown的转换插件使用
+
+也就是说，我们可以使用这个插件加载markdown格式的文件，并且这个插件内部依赖markdown的另一个转换插件`markdownConverter`
+
+流程很简单：
+先加载markdown 转换成html 之后以参数的形式回调
+
+所以如果我们需要把本地的markdown文件加载到主页面中的话，需要这么做
+
+栗子：
+{% highlight Javascript %}
+require.config({
+	"text" : [tool/text],
+	"md" : ["tool/mdown"],
+	"markdownConverter" : ["tool/Markdown.Converter"]
+});
+
+require(["md!../text/foo.md"] , function (foo) {
+	document.getElementsByTagName("body")[0].innerHTML = foo;
+})
+{% endhighlight %}
+
+如果单纯只是需要markdown的原文件而不需要转换成html
+只需要加一个参数就行
+
+细心同学可能也会发现，为什么我还要加载一个text.js呢？
+md这个插件实际上就是将text和markdownConverter这两个插件结合在一起
+
+也就是说这个插件必须依赖text 和 markdownConverter，才能运行
+
+另外，这个插件，无法使用`!bust`...真的很奇怪，明明也是基于text.js的，却无法禁止缓存
+
+大致上常用的就这么几种吧，如果还需要更多插件，可以上requirejs官网上去查看
+
 ## 感谢
 
 [miaov](http://www.miaov.com)
 
 [JS模块化工具requirejs教程(二)：基本知识](http://www.runoob.com/w3cnote/requirejs-tutorial-2.html)
+

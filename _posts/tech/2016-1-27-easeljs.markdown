@@ -165,7 +165,7 @@ oStage.addChild(Run2);
 
 每次绘制完一个图层之后，都需要使用`addChild`添加到舞台中，
 
-最后，updata 舞台，大功告成
+最后，update 舞台，大功告成
 
 {% highlight Javascript %}
 oStage.update();
