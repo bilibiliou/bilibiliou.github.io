@@ -97,6 +97,7 @@ p {
 .container {
 	width: 100%;
 	height: auto;
+	min-width: 900px;
 }
 
 .header {
@@ -171,9 +172,8 @@ p {
 	width: 17%;
 	height: 1210px;
 	padding-top: 18px;
-
+	overflow: hidden;
 	background: #302938;
-
 }
 
 .left-side-header {
@@ -251,11 +251,13 @@ p {
 	height: auto;
 	font: 200 12px/16px "Consolas","微软雅黑";
 	padding: 20px 0 0;
+	overflow: hidden;
 }
 
 .list-module {
 	width: 100%;
 	padding: 10px 0 15px 40px;
+	overflow: hidden;
 }
 
 .click-active {
@@ -291,6 +293,7 @@ p {
 .folders-list-module {
 	width: 100%;
 	height: auto;
+	overflow: hidden;
 }
 
 .list-module:hover {
@@ -343,6 +346,7 @@ p {
 
 .file-list-module {
 	width: 100%;
+	overflow: hidden;
 }
 
 .file-list-module-wrap {
@@ -433,6 +437,14 @@ p {
 	margin-left: 10px;
 }
 
+.the-third-li {
+	margin-left: 30px;
+}
+
+.f-block {
+	float: left;
+}
+
 .chose-search span {
 	float: left;
 	margin: 5px 10px 0 0;
@@ -513,6 +525,10 @@ p {
 	width: 35px;
 	height: 100%;
 	background: #fff;
+}
+
+.tc-rr {
+	margin-left: 6px;
 }
 
 .task-calendar-arrow a{
@@ -625,6 +641,30 @@ p {
 	box-shadow: 0px 0px 2px #ccc; 
 }
 
+.tc-title {
+	font-weight: 500;
+}
+
+.tc-o-block {
+	background:#51B3A2;
+}
+
+.tc-tw-block {
+	background:#568ABD;
+}
+
+.tc-ti-block {
+	background:#C84A3E;
+}
+
+.tc-fo-block {
+	background:#D9CD50;
+}
+
+.zero-margin {
+	margin: 0;
+}
+
 .task-count-border {
 	float: left;
 	width: 4px;
@@ -678,11 +718,26 @@ p {
 	height: 355px;
 }
 
+.tb1-margin-t {
+	margin-top:8px;
+}
+
 .task-table2 {
 	width: 350px;
 	height: 355px;
 }
 
+.r-ten-margin {
+	margin-right: 10px;margin: ;
+}
+
+.tb2-margin {
+	margin: 8px 10px 0 0
+}
+
+.tbc-padding {
+	padding:10px 24px 13px;
+}
 
 .task-table-wrap {
 	width: 100%;
@@ -879,6 +934,11 @@ p {
 	margin: 0 auto;
 }
 
+.task-table3-body table td:hover {
+	cursor: pointer;
+	box-shadow: 0 0 1px 1px #F1D99F;
+}
+
 .table-title {
 	padding-bottom: 3px;
 	border-bottom: 1px solid #ccc;
@@ -890,6 +950,7 @@ p {
 }
 
 .task-table3-body .table-title td {
+	
 	height: 22px;
 }
 
@@ -976,4 +1037,47 @@ p {
 .vehicle-table-f-process {
 	display: block;
 	height: 100%;
+}
+.process-color-first {
+	background:#eb7257;
+	width: 80%;
+}
+.process-color-second {
+	background: #ed8456;
+	width: 70%;
+}
+.process-color-third {
+	background:#eea155;
+	width: 60%;
+}
+.process-color-blue {
+	background:#8dcbee;
+}
+
+.process-four {
+	width: 50%;
+}
+
+.process-five {
+	width: 45%;
+}
+
+.process-six {
+	width: 40%;
+}
+
+.process-seven {
+	width: 35%;
+}
+
+.process-eight {
+	width: 30%;
+}
+
+.process-nine {
+	width: 25%;
+}
+
+.process-ten {
+	width: 20%;
 }
