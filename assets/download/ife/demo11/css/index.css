@@ -12,6 +12,7 @@ a {
 
 a, img {
     -webkit-touch-callout: none; /* 禁止长按链接与图片弹出菜单 */
+	touch-callout: none;
 }
 
 h1,h2,h3 {
@@ -84,6 +85,8 @@ header>h1 {
 
 nav {
 	display: flex;
+	display: -webkit-flex;
+		
 
 	height: 4.2rem;
 	
@@ -126,6 +129,8 @@ nav>a {
 
 .label-list ul {
 	display: flex;
+	display: -webkit-flex;
+
 	flex-flow: row no-wrap;
 	border-bottom: 0.05rem solid #e5e5e5;
 	padding-bottom: 1.44rem;
@@ -153,6 +158,8 @@ nav>a {
 
 .column-list {
 	display: flex;
+	display: -webkit-flex;
+
 	flex-flow: row no-wrap;
 	justify-content: center;
 	padding-bottom: 1rem;
@@ -195,6 +202,7 @@ nav>a {
 .con-block {
 	width: 100%;
 	display: flex;
+	display: -webkit-flex;
 
 	justify-content: space-between;
 	padding-top: 1.12rem;
@@ -208,6 +216,8 @@ nav>a {
 .doc-list {
 	width: 22.05rem;
 	display: flex;
+	display: -webkit-flex;
+
 	flex-wrap: wrap;
 	justify-content: space-around;
 	align-content: space-between;
@@ -228,6 +238,8 @@ nav>a {
 	padding: 1.01rem 1.12rem 1.21rem;
 	margin-top: 1rem;
 	display: flex;
+	display: -webkit-flex;
+
 	border-bottom: 0.05rem solid #eee;
 }
 
@@ -264,6 +276,8 @@ nav>a {
 
 .artice-abstract-col ul {
 	display: flex;
+	display: -webkit-flex;
+
 	margin: 0.5rem 0;
 }
 
