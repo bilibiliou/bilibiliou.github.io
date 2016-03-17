@@ -900,10 +900,11 @@ p {
 	width: 15px;
 	height: 15px;
 	margin-top: 5px;
+	vertical-align: text-bottom;
+	
 }
 .task-table2-content-footer span {
 	font: 500 14px/14px "Consolas","微软雅黑";
-	vertical-align: top;
 	cursor: pointer;
 }
 
