@@ -38,6 +38,7 @@ html, body {
     -webkit-tap-highlight-color:rgba(0,0,0,0); /* 防止安卓机子黄色框秒闪 */
     tap-highlight-color:rgba(0,0,0,0);
     
+    overflow-x: hidden;
 }
 
 body {
@@ -124,13 +125,70 @@ nav>a {
 }
 
 .baidu-beer {
+	position: relative;
 	margin-top: 0.3rem;
 	position: relative;
 }
 
-.baidu-beer img {
+.baidu-beer ol {
+	width: 300%;
+	display: flex;
+	-webkit-display: flex;
+	
+	margin-left: 0; 
+	transition: 1s;
+	-webkit-transition: 1s;
+	overflow: hidden;
+}
+
+.baidu-beer ol li {
 	width: 100%;
+	float: left;
+	transition: 1s;
+	-webkit-transition: 1s;
+
+}
+
+.baidu-beer ul {
+	position: absolute;
+	bottom: 1rem;
+	left: 50%;
+
+	margin-left: -6rem;
+	width: 12rem;
+	height: 0.6rem;
+	
+	display: flex;
+	-webkit-display: flex;
+
+	-webkit-justify-content: space-between;
+	justify-content: space-between;
+
+	border-radius: 0.4rem;
+	background: rgba(0,0,0,0.1);
+
+}
+
+.baidu-beer ul li {
+	width: 2rem;
 	height: 100%;
+	border-radius: 0.4rem;
+	transition: 1s;
+	-webkit-transition: 1s;
+	
+	background: #62E3FF;
+}
+
+.baidu-beer .show {
+	width: 7rem;
+	transition: 1s;
+	-webkit-transition: 1s;
+	background: #F36996;
+}
+
+.baidu-beer ol li img {
+	width: 100%;
+	height: auto;
 }
 
 .label-list {
