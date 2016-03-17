@@ -133,7 +133,7 @@ nav>a {
 .baidu-beer ol {
 	width: 300%;
 	display: flex;
-	-webkit-display: flex;
+	display: -webkit-flex;
 	
 	margin-left: 0; 
 	transition: 1s;
@@ -146,7 +146,6 @@ nav>a {
 	float: left;
 	transition: 1s;
 	-webkit-transition: 1s;
-
 }
 
 .baidu-beer ul {
@@ -159,7 +158,7 @@ nav>a {
 	height: 0.6rem;
 	
 	display: flex;
-	-webkit-display: flex;
+	display: -webkit-flex;
 
 	-webkit-justify-content: space-between;
 	justify-content: space-between;
