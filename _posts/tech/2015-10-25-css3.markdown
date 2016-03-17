@@ -792,8 +792,6 @@ padding-box: padding计算入width内
 
 border-box: border和padding计算入width之内，其实就是怪异模式了~
 
-使用的时候需要加上浏览器内核前缀
-
 [demo](/asset/download/box-sizing.html)
 
 ## 分栏式文字布局
@@ -1798,6 +1796,12 @@ clip 是css2.0就支持的一个属性，用于切割显示 有兴趣的可以�
 [张鑫旭的CSS clip:rect矩形剪裁功能及一些应用介绍](http://www.zhangxinxu.com/wordpress/2011/04/css-clip-rect/)
 
 after 和 before伪类就不多提了
+
+## 使用appearance修改浏览器的默认样式
+
+appearance 
+
+http://www.w3cplus.com/css3/changing-appearance-of-element-with-css3.html
 
 ## 感谢
 
