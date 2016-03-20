@@ -1,6 +1,6 @@
 permalink: /:year/:month/:day/:title.html
 
-highlighter: pygments
+highlighter: rouge
 markdown: kramdown  # [ maruku | rdiscount | kramdown | redcarpet ]
 kramdown:
   input:         GFM
