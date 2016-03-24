@@ -8,6 +8,7 @@
           margin: 0;
           padding: 0;
           box-sizing: border-box;
+          -webkit-box-sizing: border-box;
           font-family: "微软雅黑";
           background: #eee;
           outline: none;
@@ -158,8 +159,13 @@
           display: -webkit-flex;
           
           flex-flow: row nowrap;
+          -webkit-flex-flow: row nowrap;
+          
           justify-content:center;
+          -webkit-justify-content:center;
+          
           align-items: flex-end;
+          -webkit-align-items: flex-end;
         }
         .aqi-chart-Date,.aqi-chart-Week,.aqi-chart-Month {
           position: relative;
