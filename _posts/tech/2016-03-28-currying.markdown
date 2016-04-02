@@ -1,0 +1,50 @@
+---
+layout: post
+title: 函数柯里化
+category: 技术
+keywords: 技术,currying
+---
+
+
+var currying = function (fn) {
+	var args = [].slice.call(arguments , 1);
+
+	return function () {
+		var fArgs = args.concat( [].slice.call( arguments ) );
+
+		fn.apply( null , fArgs );
+	}
+}
+
+function  love ( a , b ) {
+	console.info( a.name + " love " + b.name );
+}
+
+var c = currying(function ( Default , nextAdd , next ) {
+	next( Default , nextAdd );
+}, {
+	"name" : "Owen",
+	"age"  : 20,
+	"gender" : "male",
+	"from" : "China"
+});
+
+
+
+c(
+	{
+		"name" : "Zyz",
+		"age"  : 20,
+		"gender" : "female",
+		"from" : "China"
+	},love
+); 
+
+c(
+	{
+		"name" : "Luffy",
+		"age"  : 19,
+		"gender" : "male",
+		"from" : "One Piece"
+	},love
+)

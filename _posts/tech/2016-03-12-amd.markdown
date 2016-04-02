@@ -118,7 +118,7 @@ js
          |_           
          |  jquery.pjax.js 
 		 |_                
-		    until.js       
+		    util.js       
 {% endhighlight %}
 main.js就是这个项目的主函数，类比C函数的主函数
 
@@ -191,7 +191,7 @@ require( ["a"] , function (a) {
 
 require 给我们提供了一个shim函数,可以将未进行模块化的组件模块化
 
-例如一个本人自己写的小框架[until.js](https://github.com/NumerHero/tool.js)（厚脸皮求star(*^__^*) ）
+例如一个本人自己写的小框架[util.js](https://github.com/NumerHero/tool.js)（厚脸皮求star(*^__^*) ）
 
 在主函数main中我们这样写
 (shim: 垫子 ，加个垫子，能让这个component够得着的意思么？)
@@ -199,38 +199,38 @@ require 给我们提供了一个shim函数,可以将未进行模块化的组件�
 {% highlight Javascript %}
 require.config({
 	paths : {
-		"until"  : ["common/util"]
+		"util"  : ["common/util"]
 	}, 
 	shim : {
-		"until" : {
+		"util" : {
             exports : "u"
         }
 	}
 });
 
-require( ["a" , "jquery" , "until"] , function ( u ) {
+require( ["a" , "jquery" , "util"] , function ( u ) {
 	 o = new u();
 	 console.log(o.getToday()); // 2016-03-12
 });
 {% endhighlight %}
 
-这样我们就完成了将until.js的模块化并使用
+这样我们就完成了将util.js的模块化并使用
 
 而jquery在函数内部已经为我们实现了AMD规范了,所以我们可以直接正常使用
 {% highlight Javascript %}
 require.config({
 	paths : {
-		"until"  : ["common/util"],
+		"util"  : ["common/util"],
 		"jquery" : ["common/common/jquery"]
 	}, 
 	shim : {
-		"until" : {
+		"util" : {
             exports : "u"
         }
 	}
 });
 
-require( ["jquery" , "until"] , function ($ , u ) {
+require( ["jquery" , "util"] , function ($ , u ) {
 	 o = new u();
 	 console.log(o.getToday()); // 2016-03-12
 
@@ -245,12 +245,12 @@ require( ["jquery" , "until"] , function ($ , u ) {
 {% highlight Javascript %}
 require.config({
 	paths : {
-		"until"  : ["common/util"],
+		"util"  : ["common/util"],
 		"jquery" : ["common/jquery"],
 		"jqueryPjax" : ["common/jquery.pjax"]
 	}, 
 	shim : {
-		"until" : {
+		"util" : {
             exports : "u"
         },
         "pjax" : {
@@ -259,7 +259,7 @@ require.config({
 	}
 });
 
-require( ["jquery" , "until" , "jqueryPjax"] , function ( $ , u ) {
+require( ["jquery" , "util" , "jqueryPjax"] , function ( $ , u ) {
 	 o = new u();
 	 console.log(o.getToday()); // 2016-03-12
 	 console.log($); // jquery init
@@ -296,7 +296,7 @@ define({
 
 再来我们来看看如何引入依赖
 
-例如，在主函数中已经使用了require.config(只要是使用主函数加载的js都能使用) 配置好了until.js了路径，之后我们就可以直接在其他模块中填写好依赖，并使用了
+例如，在主函数中已经使用了require.config(只要是使用主函数加载的js都能使用) 配置好了util.js了路径，之后我们就可以直接在其他模块中填写好依赖，并使用了
 
 我们来看个栗子
 
@@ -304,7 +304,7 @@ main.js:
 {% highlight Javascript %}
 require.config({
 	paths : {
-		"until" : ["common/until"],
+		"util" : ["common/util"],
 		"data" : ["common/data"]
 	}
 })
@@ -317,7 +317,7 @@ require(["data"] , function (D) {
 
 data.js中调用主函数中已经确定好了依赖，获取今天的日期，并返回
 {% highlight Javascript %}
-define(["until"] , function (u) {
+define(["util"] , function (u) {
 	var $ = new u();
 	return {
 		r : $.getToday()

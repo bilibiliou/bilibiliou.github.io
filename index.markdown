@@ -57,3 +57,5 @@ title: Welcome
 [Rauri Rochford 先生的博客](http://esquemedia.com/)
 
 [低多边形生成器](http://matthew.wagerfield.com/flat-surface-shader/)
+
+[HTML5标签语义化规范](https://segmentfault.com/a/1190000000438191)
