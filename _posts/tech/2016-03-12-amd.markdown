@@ -33,11 +33,13 @@ import xxx from './xx.js'
 
 在现在比较通用的es5中，是没有模块化机制的，所以如果要使用js的话
 以前我们应该都是这么干
+
 ```html
 <script src="xxx.js"></script>
 ```
 
 如果，我有一个c.js想要用到的一个b库的话，就需要在引用c前先引入b
+
 
 ```html
 <script src="b.js"></script>
@@ -132,6 +134,7 @@ main.js就是这个项目的主函数，类比C函数的主函数
 
 ②. 如果设置了`data-main=js/main`那么默认根目录路径就是main.js所在的路径
 也就是js文件夹下
+
 
 ```html
 <script data-main="js/main" src="js/require.js"></script>
@@ -354,6 +357,7 @@ RequireJS 还为我们提供了很多[插件](https://github.com/millermedeiros/
 [下载该插件](http://requirejs.org/docs/download.html#domReady)
 
 我们可以在body前面插入一个`alert`来测试domReady
+
 
 ```html
 <script>alert("owen love zyz!")</script>		

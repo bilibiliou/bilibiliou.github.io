@@ -13,6 +13,7 @@ keywords: 技术,data
 
 先是弄出一个小人
 
+
 ```css
 .sprite {
         background: url(./demopic/char113.png);
@@ -24,6 +25,7 @@ keywords: 技术,data
         left: 50px;
     }
 ```
+
 
 
 ```html
@@ -40,6 +42,7 @@ character.dataset.score = 10;
 ```
 
 然后设置分数显示，通过css获取`data-score`的数据
+
 
 ```css
 .sprite::after {
@@ -59,6 +62,7 @@ character.dataset.score = 10;
 当鼠标滑过的时候，小人头顶上就能显示对应的分数
 
 我们还可以给不同的分值显示不同的颜色
+
 ```css
 .sprite[data-score='10']::after {
         color : yellow;

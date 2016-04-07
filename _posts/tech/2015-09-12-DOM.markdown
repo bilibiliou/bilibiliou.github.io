@@ -82,6 +82,7 @@ DOM下面包含的类型有十二种
 childNodes是一个类数组，所以也可以访问其下的length方法，并且你还可以访问并修改其下的元素
 
 例如如下html结构：
+
 ```html
 <ul id="ul"><li></li><li></li><li></li></ul>
 ```
@@ -107,6 +108,7 @@ for(var i = 0; i < oUl.childNodes.length ; i++)
 这就需要我们使用`nodeType`属性进行判断了
 
 如果对应缩进的html
+
 ```html
 <ul id="ul">
 	<li></li>
@@ -168,6 +170,7 @@ var oNextChild = oUl.nextElementSibling || oUl.nextSibling ;
 通过获取元素，并访问其下的`attributes`属性（只读）
 
 例如一个div
+
 ```html
 <div id="owen" class="zyz"></div>
 ```
@@ -190,6 +193,7 @@ for(var i = 0; i < oDiv.attributes.length ; i++)
 我们可以使用`ParentNode`这个只读属性来访问父节点
 
 例如如下布局:
+
 ```html
 <ul>
 	<li>段落一 <a href="javascript:;">隐藏</a></li>
@@ -217,6 +221,7 @@ for(var i in oA)
 除了`parentNode` 还有 `offsetParent` , 这个属性是获取的子级的定位父级
 
 例如如下布局:
+
 ```html
 <div id="div1">
 	<div id="div2">
@@ -238,6 +243,7 @@ console.log(oDiv3.offsetParent.tagName); // body
 `定位父级`
 
 如果div1 和 div2 都添加了position 那么浏览器会选取距div3最近的父级也就是div2作为div3的定位父级 
+
 ```html
 <div id="div1">
 	<div id="div2" style="positon:relative;">
@@ -468,6 +474,7 @@ function getByClass( parent  , sClass , tag ) {
 ## 表格的DOM方法
 
 如下表格结构
+
 ```html
 <table width="100%" boder="1px">
 	<thead>
@@ -552,6 +559,7 @@ var oTable = document.getElementsByTagName('table')[0];
 
 表单这个东西十分常用，当我们需要操纵表单的时候，DOM也给我们提供了操纵的方法
 例如:
+
 ```html
 <form>
 	<input type="text" name="text1" value="内容">
@@ -573,6 +581,7 @@ console.log(oForm.text1.value);// 内容
 ?提交按钮的name=其value
 
 当我们进行提交的时候，我们可以使用`onsubmit`来控制提交
+
 ```html
 <form action="http://www.baidu.com">
 	<input type="text" name="text1" >
@@ -605,6 +614,7 @@ setTimeout(function() {
 
 ## reset 和 onreset
 当我们需要重置输入内容的时候，我们可以使用reset
+
 ```html
 <form action="http://www.baidu.com" id="oform">
 	<input type="text" name="text1" >
@@ -646,6 +656,7 @@ document.click = function(ev) {
 
 通过访问ev下的ClientX/Y，我们可以得到鼠标在页面可视区中的位置
 例如
+
 ```html
 <style>
 	#div{
@@ -702,6 +713,7 @@ document.onmousemove = function(ev) {
 
 我们先看一个栗子
 [demo](/assets/download/Bubble.html)
+
 
 ```html
 <style>
@@ -1000,6 +1012,7 @@ document.addEventListener = function("keydown" , function(ev) {
 
 我们使用键盘事件可以来实现一个留言本的功能
 
+
 ```html
 <input type="text" id="text1">
 <ul id="list"></ul>
@@ -1111,6 +1124,7 @@ setTimeout(function() {
 
 但是，如果是我们使用代码新打开的一个窗口的话，各个浏览器就不会有限制性问题
 例如如下布局:
+
 ```html
 <input type="button" value = "打开新窗口" id="btn1">
 <input type="button" value = "关闭新窗口" id="btn2">
@@ -1274,6 +1288,7 @@ hash音译哈希，我们可以通过动态的添加哈希值来给每个网页�
 
 我们可以使用 `focus` 来主动为用户标中焦点
 例如 如下布局
+
 ```html
 <input type="text" value = "输入内容" id="text">
 ```
@@ -1337,6 +1352,7 @@ otext.onblur = function() {
 ### select 和 onselect
 
 使用`select`可以主动选取一个结点对象中的文本内容
+
 ```html
 <input type="text" value = "输入内容" id="text">
 <input type="button" value ="选取内容" id="btn">

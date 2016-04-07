@@ -35,6 +35,7 @@ new Clipboard('.btn');
 ### 复制
 
 
+
 ```html
 <!-- Target -->
 <input id="Target" value="我是需要复制的内容">
@@ -54,6 +55,7 @@ new Clipboard('.btn');
 
 同理,我们也可以实现剪切文本框里面的内容
 
+
 ```html
 <!-- Target -->
 <textarea id="Target">我是需要被剪切的内容</textarea>
@@ -66,6 +68,7 @@ new Clipboard('.btn');
 
 
 ### 固定内容复制
+
 
 ```html
 <!-- Trigger -->

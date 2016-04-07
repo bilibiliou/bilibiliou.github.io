@@ -9,6 +9,7 @@ keywords: 技术,事件委托,delegation
 
 如果我们做了如下很普通的ul-li布局
 
+
 ```html
 
 <ul class="btns-list">

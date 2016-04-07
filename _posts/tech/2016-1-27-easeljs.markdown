@@ -12,6 +12,7 @@ keywords: 技术,easeljs,createJs
 首先我们要先引入easelJs 我现在使用的是`easelJs-0.8.2-min-js` 只要这一个文件就ok 
 下载的话直接到官网 或者 中文API 里都有 [中文API](http://www.createjs.cc/)
 
+
 ```html
 <script src="../easeljs-0.8.2.min.js" ></script>
 ```
@@ -94,6 +95,7 @@ Object {EaselJS: Object , TweenJS: Object}
 所以，我们要想能实现好看，能动，还能互动的 炫酷梦幻高大上效果，就先得从基本的画图命令开始
 
 首先的在body里写个`canvas`标签吧
+
 ```html
 <canvas id="stage" width="840" height="950" ></canvas>
 ```
@@ -429,6 +431,7 @@ point.y = 100;
 
 比如我们需要获取`新年快乐`这几个字
 我们可以新建一个专门用于获取像素点集的canvas 画布
+
 
 ```html
 <canvas id="text"></canvas>

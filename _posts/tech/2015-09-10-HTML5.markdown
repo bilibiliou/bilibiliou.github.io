@@ -11,6 +11,7 @@ keywords: 技术,HTML5
 
 ## HTML5初始化代码
 
+
 ```html
 
 <！DOCTYPE html>
@@ -91,6 +92,7 @@ CSS裸奔节
 
 ### figure
 
+
 ```html
 
 用于对元素组合
@@ -103,6 +105,7 @@ figcation的子元素 用来解释
 ### time
 
 用来标记时间
+
 ```html
 <p>
 	庆祝抗日战争胜利70周年,阅兵日<time> 2015-09-03 </time>
@@ -119,6 +122,7 @@ figcation的子元素 用来解释
 选项列表
 当你在表单输入时
 自动弹出可能值列表
+
 ```html
 
 <input type="text" list="valList" />
@@ -136,6 +140,7 @@ figcation的子元素 用来解释
 ### summary 和 details
 
 用于列出文档列表
+
 ```html
 <details>
 <summary>点我,就送屠龙宝刀</summary>
@@ -151,6 +156,7 @@ figcation的子元素 用来解释
 ### dialog
 
 这对标签一般用来语意化一段对话
+
 ```html
 
 <dialog>
@@ -175,6 +181,7 @@ figcation的子元素 用来解释
 ### keygen
 
 可以使用keygen为发送的表单添加一个公共密钥
+
 ```html
 <form action="http://numerhero.github.io" method="get">
 用户: <input type="text" name="usr_name" />
@@ -186,6 +193,7 @@ figcation的子元素 用来解释
 ### progess
 
 可以定义一个简陋的进度条
+
 ```html
 <progress max="100" value="77">
      <!-- 这里用以兼容 不支持该标签的浏览器 -->
@@ -220,6 +228,7 @@ figcation的子元素 用来解释
 
 ### email
 
+
 ```html
 
 <form>
@@ -238,6 +247,7 @@ figcation的子元素 用来解释
 ```
 
 ### tel
+
 
 ```html
 
@@ -262,6 +272,7 @@ dirname :
 
 ### url
 
+
 ```html
 
 <form>
@@ -281,6 +292,7 @@ dirname :
 
 ### search
 
+
 ```html
 
 <form>
@@ -296,6 +308,7 @@ dirname :
 ```
 
 ### range
+
 
 ```html
 
@@ -318,6 +331,7 @@ value: 缺省数值值
 
 ### number
 
+
 ```html
 
 <form>
@@ -337,6 +351,7 @@ value: 缺省数值值
 ```
 
 ### color
+
 
 ```html
 
@@ -367,6 +382,7 @@ window.onload = function()
 
 ### date
 
+
 ```html
 
 <form>
@@ -381,6 +397,7 @@ max : 最大日期
 ```
 
 ### datatime-local
+
 
 ```html
 
@@ -414,6 +431,7 @@ pattern : 简单的表单正则表达式(列如：pattern="\d{1,5}" 限制表单
 
 formaction : 用来添加一个新的提交路径
 formnovalidate : 关闭验证，直接提交
+
 ```html
 
 <form action="http://www.baidu.com">
@@ -778,6 +796,7 @@ data这个属性广泛用于jQuery Mobile上
 我们只需要添加jQuery Mobile
 然后在标签里面配属性就基本可以完成一些手机端的开发
 和一些简单的特效
+
 ```html
 <div data-theme="a" ></div> //把div设置成黑色
 ```
@@ -790,9 +809,11 @@ data这个属性广泛用于jQuery Mobile上
 
 Css也可以访问data属性
 
+
 ```html
 <article data-parent="cars"></article>
 ```
+
 
 ```css
 article::before {
@@ -1696,6 +1717,7 @@ webkit强大的一个功能,允许用户通过语音提交表单
 <a href="https://github.com/Daniel-Hug/speech-input" target="_blank"><i class="fa fa-github fa-2x" ></i> Daniel-Hug's repositorys about speech-input</a>
 
 这样我们只需要在需要这样在项目中调用就行了
+
 ```html
 <div class="si-wrapper">
     <input type="text" class="si-input" placeholder="What's up?">
@@ -2025,6 +2047,7 @@ ev.url : 修改缓存页面的url
 
 音频和视频标签,可以允许我们导入一段音频和视频
 
+
 ```html
 <audio src="音频地址"></audio>
 <video src="视频地址"></video>
@@ -2062,12 +2085,14 @@ videoHeight: 视频的实际高
 再点击开始播放
 
 怎么显示用户控制界面呢？只要添加一个controls属性就行了
+
 ```html
 <audio controls src="音频地址"></audio>
 <video controls src="视频地址"></video>
 ```
 
 如果我们需要一开始就播放只要再加一个autoplay属性就OK了
+
 ```html
 <audio controls autoplay src="音频地址"></audio>
 <video controls autoplay src="视频地址"></video>
@@ -2130,6 +2155,7 @@ window.onload = function()
 
 
 我们可以通过source标签引入不同类型名的视频源
+
 
 ```html
 <audio controls>
@@ -2194,6 +2220,7 @@ Steps:
 ④ 将画布中的图片编码数据路径，丢入img标签的src中
 
 先看下布局：
+
 ```html
 <video autoplay></video>
 <img src="">

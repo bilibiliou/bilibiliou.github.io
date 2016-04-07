@@ -59,11 +59,13 @@ tv :电视机设备
 我们可以使用两种方法进行媒体查询
 
 ① 在html中使用link进行查询并导入相应的样式表
+
 ```html
 <link rel="stylesheet" type="text/css" href="xxx.css" media="screen and (min-width:800px)" >
 ```
 
 ② 在css中使用@import进行查询并导入相应的样式表
+
 ```css
 @media screen and (min-width:800px){
 	@import url("xxx.css");
@@ -130,11 +132,13 @@ decvice-aspect-radio
 viewport是用来控制视窗口宽度的大小的属性,可以用来规范移动端或其他设备的宽度值
 
 使用元标签添加
+
 ```css
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 ```
 
 也可以在css中添加,但可能会存在兼容问题,需要添加恶心的浏览器内核前缀
+
 ```css
 @viewport{
 	width: device-width;

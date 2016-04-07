@@ -896,6 +896,7 @@ IE6 : 同域使用 ActiveXObject() 跨域使用jsonp
 
 我们以前如果需要上传数据需要刷新
 
+
 ```html
 
 <form method = "post" action = "提交到的后端脚本的路径(不是上传文件保存的路径)" enctype="multipart/form-data">

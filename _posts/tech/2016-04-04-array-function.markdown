@@ -717,7 +717,6 @@ Array.from 的第三个参数，和map方法的第二个参数一样，可以改
 首先我们来看 之前通过 Array 对象生成数组时候，有个小问题
 
 
-
 ```javascript
 Array() // []
 Array(2)// [undefined,undefined]

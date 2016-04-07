@@ -41,6 +41,7 @@ keywords: 技术,em,px,pc,rem,mm,cm,in,pc,ex,pt,css
 
 像素单位相对于浏览器的字体默认长度16px的值,这个默认值随终端的改变,也会改变.
 如果需要做响应式布局的话,使用em来兼容不同的终端
+
 ```css
 div{font-size:1.5em; }
 /*  长度就是1.5*16px=24px  */
