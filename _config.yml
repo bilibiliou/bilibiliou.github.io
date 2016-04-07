@@ -1,6 +1,7 @@
 permalink: /:year/:month/:day/:title.html
+relative_permalinks: true
 
-gems: [jekyll-paginate, jekyll-gist] #增加这一行
+gems: [jekyll-paginate, jekyll-gist] 
 highlighter: rouge
 markdown: kramdown 
 kramdown:
