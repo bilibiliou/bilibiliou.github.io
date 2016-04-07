@@ -21,7 +21,8 @@ keywords: 技术,currying
 
 栗子：
 
-```Javascript
+
+```javascript
 
 funciton print( a , b , c ) {
 	console.log( a + "喜欢吃" + b + " 和 " + c );
@@ -36,7 +37,8 @@ print("Owen" , "草莓" , "苹果");
 
 如果我们将print函数进行柯里化之后就能简化一下
 
-```Javascript
+
+```javascript
 
 funciton print( a , b , c ) {
 	console.log( a + "喜欢吃" + b + " 和 " + c );
@@ -54,7 +56,8 @@ Owen( "草莓" , "苹果" ); // 实现的参数的复用
 
 我就开始丢一下书上的代码啦:
 
-```Javascript
+
+```javascript
 var currying = function (fn) {
 	var args = [].slice.call(arguments , 1); // 获取固定参数时的除fn 以外的所有参数（我们可以认为是默认参数，参数的类型可以是函数，对象，数字，字符 Json等等）
 	
@@ -74,7 +77,8 @@ var currying = function (fn) {
 
 除了上面的使用方法外，我又想到了另外种curry化的变式
 
-```Javascript
+
+```javascript
 function love ( a , b ) {
 	console.info( a.name + " love " + b.name );
 }

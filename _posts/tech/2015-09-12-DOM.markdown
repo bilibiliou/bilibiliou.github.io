@@ -87,7 +87,8 @@ childNodes是一个类数组，所以也可以访问其下的length方法，并�
 ```
 
 你可以通过遍历来为ul下面的子节点添加背景色
-```JavaScript
+
+```javascript
 var oUl = document.getElementById("ul");
 
 for(var i = 0; i < oUl.childNodes.length ; i++)
@@ -115,7 +116,8 @@ for(var i = 0; i < oUl.childNodes.length ; i++)
 ```
 
 可以这么写JS
-```JavaScript
+
+```javascript
 var oUl = document.getElementById("ul");
 
 for(var i = 0; i < oUl.childNodes.length ; i++)
@@ -138,7 +140,8 @@ children 和 childnodes用法差不多，但是children只是获取父级下的�
 那么如果我们要获取第一个元素节点呢？可以标准浏览器为我们提供的`firstElementChild`(这个属性在低版本浏览器下并不支持)
 
 兼容的写法就是
-```JavaScript
+
+```javascript
 var oUl = document.getElementById("ul");
 var oFirstChild = oUl.firstElementchild || oUl.firstChild
 ```
@@ -152,7 +155,8 @@ var oFirstChild = oUl.firstElementchild || oUl.firstChild
 那么同理,获取上一个节点和元素节点我们就可以使用`previousSibling`和`previousElementSibling`
 
 兼容方法也类似
-```JavaScript
+
+```javascript
 var oPreviousChild = oUl.previousElementSibling || oUl.previousSibling;
 var oNextChild = oUl.nextElementSibling || oUl.nextSibling ;
 ```
@@ -169,7 +173,8 @@ var oNextChild = oUl.nextElementSibling || oUl.nextSibling ;
 ```
 
 我们通过attributes 就能获取div的两个属性 id 和 class
-```JavaScript
+
+```javascript
 var oDiv = document.getElementById("owen");
 
 for(var i = 0; i < oDiv.attributes.length ; i++)
@@ -197,7 +202,8 @@ for(var i = 0; i < oDiv.attributes.length ; i++)
 如果我们平时需要实现点击隐藏的功能，可以当点击的时候获取点击标签索引，然后再根据索引将li隐藏
 
 现在我们可以直接省略获取索引这一步，直接使用`parentNode`来控制父节点的隐藏
-```JavaScript
+
+```javascript
 var oA = document.getElementsByTagName('a');
 
 for(var i in oA)
@@ -221,7 +227,8 @@ for(var i in oA)
 
 如果div3的所有父级都没有设置position，那么就是没有定位的元素
 如果这时候我获取div3的定位父级，那么获取的是body
-```JavaScript
+
+```javascript
 var oDiv3 = document.getElementById("div3");
 
 console.log(oDiv3.offsetParent.tagName); // body
@@ -239,7 +246,8 @@ console.log(oDiv3.offsetParent.tagName); // body
 </div>
 ```
 
-```JavaScript
+
+```javascript
 var oDiv3 = document.getElementById("div3");
 
 console.log(oDiv3.offsetParent.id); // div2
@@ -309,7 +317,8 @@ document.documentElement.scrollTop[Left]
 
 offsetLeft 和 Top 可以获取自己元素到`定位父级`的距离
 
-```JavaScript
+
+```javascript
 var oDiv3 = document.getElementById("div3");
 
 console.log(oDiv3.offsetLeft);
@@ -317,7 +326,8 @@ console.log(oDiv3.offsetLeft);
 
 如果要获取一个元素到浏览器最顶部的距离（最左部的距离）呢？
 我们可以封装一个函数
-```JavaScript
+
+```javascript
 var obj = document.getElementById("div3");
 var Left = 0;
 var Top  = 0;
@@ -345,7 +355,8 @@ clientWidth & Height 盒子实际宽高 包括: 实际宽高 + padding + border
 ② chrome认为，滚动条类属于`body`
 
 所以当我们需要获取页面已经滚动的高度的时候，就需要做这样的兼容
-```JavaScript
+
+```javascript
 var ScrollTop = document.body.scrollTop || document.documentElement.scrollTop;
 ```
 
@@ -360,7 +371,8 @@ clientWidth & Height
 
 获取的高度是不包括被滚动条隐藏的高度，所以如果需要获取包含隐藏条隐藏的高度的内容，我们必须使用`scrollHeight` 这一属性
 
-```JavaScript
+
+```javascript
 var ScrollHeight = document.body.scrollHeight;
 ```
 
@@ -371,17 +383,20 @@ var ScrollHeight = document.body.scrollHeight;
 ## 动态操纵元素
 
 使用createElement 添加元素
-```JavaScript
+
+```javascript
 document.createElement("需要创建的标签名");
 ```
 
 使用appendChild 创建元素
-```JavaScript
+
+```javascript
 被添加的元素对象.appendChild( 添加的元素对象 );
 ```
 
 我们也可以使用insertBefore 在每个元素的之上插入元素
-```JavaScript
+
+```javascript
 插入元素的父级.insertBefore( 被添加的元素 , 某个定位元素 );
 ```
 
@@ -390,7 +405,8 @@ document.createElement("需要创建的标签名");
 但是在标准浏览器下，使用insertBefore会默认以appendChild进行插入
 
 所以如果我们需要兼容IE和标准浏览器的话，可以这样写
-```JavaScript
+
+```javascript
 if( !父级.children[0] )
 {
 	父级.appendChild( 被添加的元素对象 );
@@ -400,12 +416,14 @@ if( !父级.children[0] )
 ```
 
 除此之外，我们还可以使用removeChild 删除元素
-```JavaScript
+
+```javascript
 父级.removeChild( 被删除的元素 );
 ```
 
 还可以使用replaceChild 来替换元素
-```JavaScript
+
+```javascript
 父级.replaceChild( 替换元素 , 被替换元素 );
 ```
 
@@ -418,7 +436,8 @@ if( !父级.children[0] )
 
 在标准浏览器下是有的， `getElementsByClassName`
 但是在非标准浏览器下却没有这个函数，所以如果需要兼容，就的自己写一个
-```JavaScript
+
+```javascript
 function getByClass( parent  , sClass , tag ) {
 	var tag = tag || '*';
 	var aTag = parent.getElementsByTagName(tag);
@@ -492,7 +511,8 @@ function getByClass( parent  , sClass , tag ) {
 
 如果我们需要对表格进行操作，DOM为我们提供了一些DOM方法进行操作
 例如我们要把每行都变色
-```JavaScript
+
+```javascript
 var oTable = document.getElementsByTagName('table')[0];
 		
 	oTable.tBodies[0].style.background = 'yellow';
@@ -505,20 +525,23 @@ var oTable = document.getElementsByTagName('table')[0];
 
 
 如果我们只需要修改表格头,那么就使用`tHead`
-```JavaScript
+
+```javascript
 var oTable = document.getElementsByTagName('table')[0];
 	oTable.tHead.style.background = 'yellow';
 ```
 
 当然我们也可以操作他们的`tfoot`
-```JavaScript
+
+```javascript
 var oTable = document.getElementsByTagName('table')[0];
 	oTable.tFoot.style.background = 'yellow';
 ```
 
 但是如果我们需要修改某个表格内的元素呢？
 例如第一行列第四列，希望将其值修改成20
-```JavaScript
+
+```javascript
 var oTable = document.getElementsByTagName('table')[0];
 	oTable.tBodies[0].rows[0].cells[3].innerHTML = "20";
 ```
@@ -537,7 +560,8 @@ var oTable = document.getElementsByTagName('table')[0];
 在表单中，最有用的一个属性就是`name`属性了，通过name我们可以标识发送给后端的内容是什么,也就是说name在JS里面基本可以替代ID 和 class来获取和操控表单元素,所以DOM也为name提供了相应的方法
 
 例如我们可以这样来获取一个表单底下的表单元素的内容
-```JavaScript
+
+```javascript
 var oForm = document.getElementsByTagName("form")[0];
 
 console.log(oForm.text1.value);// 内容
@@ -556,7 +580,8 @@ console.log(oForm.text1.value);// 内容
 </form>
 ```
 
-```JavaScript
+
+```javascript
 var oForm = document.getElementById('oform');
 
 	oForm.onsubmit = function() {
@@ -570,7 +595,8 @@ var oForm = document.getElementById('oform');
 当用户没有输入任何东西的时候，我们就可以阻止用户提交数据
 
 除了`onsubmit`还有一个`submit`事件，`submit`事件可以让我们使用js动态的触发提交表单
-```JavaScript
+
+```javascript
 setTimeout(function() {
 	oForm.submit();
 },1000)
@@ -589,7 +615,8 @@ setTimeout(function() {
 点击reset事件就可以重置输入框内的内容
 
 当这个按钮被点击的时候，我们可以使用`onreset`来控制callback
-```JavaScript
+
+```javascript
 var oForm = document.getElementById('oform');
 
 	oForm.onreset = function() {
@@ -608,7 +635,8 @@ var oForm = document.getElementById('oform');
 但是在非标准浏览器下，只有一个全局的内置对象
 
 如果我们需要兼容两者的话可以这样写
-```JavaScript
+
+```javascript
 document.click = function(ev) {
 	var ev = ev || event; // event兼容非标准的IE浏览器
 }
@@ -634,7 +662,8 @@ document.click = function(ev) {
 </body>
 ```
 
-```JavaScript
+
+```javascript
 var oDiv = document.getElementById("div");
 
 document.onmousemove = function(ev) {
@@ -704,7 +733,8 @@ document.onmousemove = function(ev) {
 </body>
 ```
 
-```JavaScript
+
+```javascript
 var oDiv1 = document.getElementById("div1");
 var oDiv2 = document.getElementById("div2");
 var oDiv3 = document.getElementById("div3");
@@ -732,7 +762,8 @@ oDiv3.onclick = fn;
 
 我们可以使用事件对象下的一个方法`cancelbubble`
 
-```JavaScript
+
+```javascript
 ev.cancelbubble = "true";
 ```
 
@@ -753,7 +784,8 @@ obj.attachEvent(on + 事件名称 ， 事件函数)
 obj.addEventListener(事件名称 ， 事件函数 ， 是否捕获)
 
 例如如果我要同时给`document`添加fn1 和 fn2两个函数
-```JavaScript
+
+```javascript
 // 低版本的IE
 document.attachEvent("onclick" , fn1);
 document.attachEvent("onclick" , fn2);
@@ -771,14 +803,16 @@ document.addEventListener("click" , fn2 , false);
 如果使用的是`attachEvent`的时候，我们还会遇到一个bug，那就是使用attachEvent来绑定事件函数的时候，其中的this会指向`window`
 
 我们可以使用call和apply方法来扩展绑定函数的生存域
-```JavaScript
+
+```javascript
 document.attachEvent("onclick" , function() {
 	fn1.call(document , 参数)
 });
 ```
 
 我们可以声明一个函数bind来实现兼容
-```JavaScript
+
+```javascript
 function bind(obj , evname , fn) {
 	if(obj.addEventListener) {
 		obj.addEventListener(evname , fn , false);
@@ -813,7 +847,8 @@ function bind(obj , evname , fn) {
 清空的方式有两种
 
 ① 当我们使用on + 事件 绑定函数的时候
-```JavaScript
+
+```javascript
 document.onclick = null;
 ```
 很简单直接给赋值为`null`就行了
@@ -821,11 +856,13 @@ document.onclick = null;
 ② 当我们使用`attachEvent` 或者 `addEventListener` 的时候
 我们得需要使用特殊的取消事件方法来取消，因为`attachEvent` 和 `addEventListener` 可以绑定多个执行函数，并且 `addEventListener` 还可以声明捕获和冒泡机制，在不同机制下还可以绑定同一个函数。所以取消执行函数需要明确声明是那个函数 并且是那个机制下绑定的函数
 
-```JavaScript
+
+```javascript
 document.detachEvent("onclick" , fn1);
 ```
 
-```JavaScript
+
+```javascript
 document.removeEventListener("click" , fn1 , false);
 ```
 
@@ -848,14 +885,16 @@ document.removeEventListener("click" , fn1 , false);
 但是在非标准的IE下这种方法还是无法解决这个问题
 所以我们可以在鼠标按下的时候添加一句全局捕获
 
-```JavaScript
+
+```javascript
 obj.setCapture && obj.setCapture();
 ```
 
 全局捕获是只在IE下才会有的一句代码，如果有了这句代码，那么在鼠标按下的过程中，会把浏览器默认的事件捕获到拖拽函数中，这样浏览器的默认事件就不会触发了
 
 当鼠标放开的时候在把全局捕获去掉，不至于影响其他事件的执行
-```JavaScript
+
+```javascript
 obj.releaseCapture && obj.releaseCapture();
 ```
 
@@ -866,12 +905,14 @@ obj.releaseCapture && obj.releaseCapture();
 
 我们可以先把ev.clientX - disX 和 ev.clientY - disY
 
-```JavaScript
+
+```javascript
 var L = ev.clientX - disX;
 var T = ev.clientY - disY;
 ```
 
-```JavaScript
+
+```javascript
 ( L <= 0 ) && L = 0;
 ( L >= document.documentElement.clientWidth - obj.offsetWidth ) && L = document.documentElement.clientWidth - obj.offsetWidth;
 
@@ -893,7 +934,8 @@ obj.style.Height = T + "px";
 如果四边位置进入了黑盒子内，那么就是碰撞状态
 
 所以我们要获取这八条边的位置
-```JavaScript
+
+```javascript
 var T1 = obj1.offsetTop;
 var L1 = obj1.offsetLeft;
 var R1 = obj1.offsetLeft + obj1.offsetWidth;
@@ -944,7 +986,8 @@ onkeydown的效果是按下按钮 ， 按钮的值输入之前执行绑定函数
 
 键码是每一个按钮的Ascii码值，功能相同的按键（比如左右shift）的键码相同
 
-```JavaScript
+
+```javascript
 document.addEventListener = function("keydown" , function(ev) {
 	var ev = ev || event;
 	alert(ev.keyCode);
@@ -962,7 +1005,8 @@ document.addEventListener = function("keydown" , function(ev) {
 <ul id="list"></ul>
 ```
 
-```JavaScript
+
+```javascript
 var oText = document.getElementById('text1');
 var oList = document.getElementById('list');
 
@@ -1000,19 +1044,22 @@ Browser object model 浏览器对象模型，我们通过这个模型可以操�
 ## open
 open方法可以接受4个参数，但是后两个参数，存在兼容性问题，所以暂不介绍，可以在`《javascript高级程序设计》` 中查找到相关方法。
 
-```JavaScript
+
+```javascript
 window.open();
 ```
 如果什么参数都不加，则默认新创建一新窗口，并打开一个空白页
 
 第一个参数是需要打开的网页url，例如
-```JavaScript
+
+```javascript
 window.open('www.baidu.com');
 ```
 则创建一个新窗口，并跳转到百度
 
 第二个参数是打开方式，默认为`_blank`
-```JavaScript
+
+```javascript
 window.open('www.baidu.com','_self');
 ```
 当我们给其设置`_self`的时候，则在本页面跳转到百度
@@ -1021,7 +1068,8 @@ window.open方法可以返回一个返回值
 即返回打开新窗口的`window`对象
 
 通过窗口的`window`对象我们可以控制新打开窗口的内容
-```JavaScript
+
+```javascript
 var newWindow = null;
 
 newWindow = window.open();
@@ -1030,7 +1078,8 @@ console.log(newWindow);
 不过如果是非服务器环境，则会被浏览器阻止弹窗...
 
 还有一个问题，就是跨域控制问题，也就是说我们并不能被允许控制打开的有域名的页面的内容
-```JavaScript
+
+```javascript
 var newWindow = null;
 
 newWindow = window.open('http://www.baidu.com');
@@ -1044,7 +1093,8 @@ newWindow.document.body.background = "red";
 ## close
 
 我们可以使用close方法来关闭窗口
-```JavaScript
+
+```javascript
 setTimeout(function() {
 	window.close()
 } , 3000);
@@ -1066,7 +1116,8 @@ setTimeout(function() {
 <input type="button" value = "关闭新窗口" id="btn2">
 ```
 
-```JavaScript
+
+```javascript
 var oBtn1 = document.getElementById("btn1");
 	var oBtn2 = document.getElementById("btn2");
 
@@ -1091,12 +1142,14 @@ var oBtn1 = document.getElementById("btn1");
 
 window底下其中有一个对象是`navigator`(英:领航者)我们可以根据这个对象底下的`userAgent`属性来获知用户的浏览器类型，以及版本型号。
 
-```JavaScript
+
+```javascript
 console.log(window.navigator.userAgent);
 ```
 
 这样我们就可以判断用户的浏览器类型了，并且可以简单的判断用户是否使用的是IE浏览器
-```JavaScript
+
+```javascript
 if( window.navigator.userAgent.indexOf("MSIR") != -1 )
 {
 	console.log("用户用的是标准浏览器");
@@ -1105,7 +1158,8 @@ if( window.navigator.userAgent.indexOf("MSIR") != -1 )
 }
 ```
 
-```JavaScript
+
+```javascript
 console.log(window.navigator);
 ```
 navigator底下还有许多属性和方法，我们可以console一下
@@ -1146,7 +1200,8 @@ webkitTemporaryStorage: DeprecatedStorageQuota__proto__: Navigator
 location则是一个表明当前浏览器地址栏信息的一个对象。
 
 直接`alert`会默认调用location的`href`方法，然后打印出当前地址栏上的全部信息
-```JavaScript
+
+```javascript
 alert(window.location);
 ```
 
@@ -1185,7 +1240,8 @@ __proto__: Location
 主地址?之后的内容(结果会包含?)
 
 如果需要把?去掉的话可以这样写
-```JavaScript
+
+```javascript
 console.log(window.location.search.substring(1));
 ```
 
@@ -1199,7 +1255,8 @@ console.log(window.location.search.substring(1));
 这个方法也是会带有一个#的
 
 去除的方法上同
-```JavaScript
+
+```javascript
 console.log(window.location.hash.substring(1));
 ```
 
@@ -1221,14 +1278,16 @@ hash音译哈希，我们可以通过动态的添加哈希值来给每个网页�
 <input type="text" value = "输入内容" id="text">
 ```
 
-```JavaScript
+
+```javascript
 var otext = document.getElementById('text');
 
 otext.focus();
 ```
 
 当某元素的被标中焦点的时候，我们可以使用`onfocus`来执行标中焦点事件
-```JavaScript
+
+```javascript
 var otext = document.getElementById('text');
 
 otext.focus();
@@ -1242,7 +1301,8 @@ otext.onfocus = function() {
 我们还可以使用 `blur` 来主动取消已被标中的焦点,不过可能不太常用
 
 使用`onblur`激发焦点被取消时候的callback
-```JavaScript
+
+```javascript
 var otext = document.getElementById('text');
 
 otext.focus();
@@ -1253,7 +1313,8 @@ otext.onblur = function() {
 
 结合`blur` 和 `focus` , 我们可以做出一点小效果
 
-```JavaScript
+
+```javascript
 var otext = document.getElementById('text');
 
 otext.onfocus = function() {
@@ -1281,7 +1342,8 @@ otext.onblur = function() {
 <input type="button" value ="选取内容" id="btn">
 ```
 
-```JavaScript
+
+```javascript
 var otext = document.getElementById('text');
 var obtn  = document.getElementById('btn');
 
@@ -1294,7 +1356,8 @@ obtn.onclick = function() {
 
 我们当然，还有一个`onselect`当我们选中文本内容的时候触发
 
-```JavaScript
+
+```javascript
 var otext = document.getElementById('text');
 var obtn  = document.getElementById('btn');
 

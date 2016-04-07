@@ -4,6 +4,7 @@ title: Ajax 和 JSONP 学习笔记
 category: 技术
 keywords: 技术,Ajax,JSONP,wampserver,建站
 ---
+
 ## 准备工作
 因为我们接下来学习的是如何异步的与后台交换数据
 所以我们需要先下载一个服务器软件(帮我们配置好默认的配置信息)
@@ -50,7 +51,8 @@ Ajax (Asynchronous Javascript And XML) 也就是异步的 javascript 和 XML
 
 异步 :进程非堵塞的
 e.g:
-```JavaScript
+
+```javascript
 settimeout(consonle.log(1),2000);
 console.log(2);
 ```
@@ -60,7 +62,8 @@ console.log(2);
 
 同步 :进程堵塞的
 e.g
-```Javascript
+
+```javascript
 <script src="jquery.js"></script>
 <script>
 window.onload = function()
@@ -77,7 +80,8 @@ window.onload = function()
 ## 最基本的AJAX
 
 直接上代码:
-```Javascript
+
+```javascript
 
 //可以想象成虚拟的打开了一个输入Url的地址框
 try
@@ -137,7 +141,8 @@ xhr.send("name=Owen&password=123456");
 对上面的代码做一些解释:
 xhr.readyState : 是AJAX的状态码，用来表示AJAX运行的各种状态
 
-```JavaScript
+
+```javascript
 0 >>（初始化）还没有调用open()方法
 1 >>（载入）已调用send()方法，正在发送请求
 2 >>（载入完成）send()方法完成，已收到全部响应内容
@@ -183,7 +188,8 @@ copy一下权威内容(更深奥的理解详见百度谷歌) :
 假设我们网站上需要在线支付的功能,那么我们肯定要写个函数对吧
 好，坐了几个小时的冷板凳写出来了，然后调用
 			
-```JavaScript
+
+```javascript
 bool withdraw(account_id, amount)
 ```
 			
@@ -200,14 +206,16 @@ bool函数withdraw，返回true或者flase 传递的参数是 用户的账号(ac
 好吧既然，问题清楚了，那就想办法解决
 于是，想来想去，好了，凌晨1点，终于，想出来了
 			
-```JavaScript
+
+```javascript
 int create_ticket() 
 bool idempotent_withdraw(ticket_id, account_id, amount)
 ```
 			
 多加了一个int函数create_ticket 返回一个整型的支付效验码 ，idempotent_withdraw多加了一个形参ticket_id。
 
-```JavaScript			
+
+```javascript			
 好，具体步骤是什么呢？哈哈，其实很简单嘛 (满脸狞狰的说)
 
 第一步：
@@ -253,7 +261,8 @@ bool idempotent_withdraw(ticket_id, account_id, amount)
 
 1.以?分割URL和传输数据，参数之间以&相连，
 
-```JavaScript
+
+```javascript
 
 如：www.baidu.com
 ?name=Owen+Brown&password=xxxxx&verify=%e6%88%91%e7%9a%84%e5%90%8d%e5%ad
@@ -277,7 +286,8 @@ www.baidu.com是网站域名
 
 2.因为url栏目有字符上限,所以有关大量数据的传递，一来因为会把数据内容显示在url栏，会有安全性问题，再来有url有字符上限，如果超过上限数据就无法进行传输，所以建议，get应用在小规模数据传递且数据所需安全性不用太高的表单中
 
-```JavaScript
+
+```javascript
 以下是网友对一些浏览器地址栏最大字符上限的测试:
 
 Microsoft Internet Explorer (Browser)
@@ -324,7 +334,8 @@ Microsoft Internet Information Server(IIS)
 使用GET方式传输的URL地址肯定是相同的，
 这样Web缓存就会出麻烦
 
-```JavaScript
+
+```javascript
 现在我们来举个例子:
 
 
@@ -428,7 +439,8 @@ application/x-www-form-urlencoded
 
 ### post方法的安全性
 
-```JavaScript
+
+```javascript
 安全性能比get要高(对于用户来说)
 但是对于服务器来说比get低
 (1)登录页面有可能被浏览器缓存
@@ -482,7 +494,8 @@ HTTP响应中应包含帖子的创建状态以及帖子的URI。
 这n个li的width固定，但高随着图片的加载auto
 每次加载的时候，遍历这n个li
 选择offsetTop最短的那个li加载图片
-```JavaScript
+
+```javascript
 
 === html ===
 <ul id="ul1">
@@ -665,7 +678,8 @@ q参数传递的是查找关键字
 alt是声明传递得到的数据格式(默认是JSON)
 
 然后就调用AJAX代码
-```JavaScript
+
+```javascript
 
 ajax( 'get' , 'q=HTML5&alt=json' , 'api.douban.com/book/subjects' , function( data )
 {
@@ -716,7 +730,8 @@ Access-Control-Allow-Origin 输入源控制许可
 
 ## JSONP
 
-```JavaScript
+
+```javascript
 
 JSONP的主要原理是 <script> 脚本标签
 因为使用<script> 的src 属性
@@ -892,7 +907,8 @@ IE6 : 同域使用 ActiveXObject() 跨域使用jsonp
 
 但是现在我们可以用Ajax异步的上传
 
-```JavaScript
+
+```javascript
 === html ===
 <input type="file"  id="myiframe" >
 <input type="button" id="btn" value="上传">

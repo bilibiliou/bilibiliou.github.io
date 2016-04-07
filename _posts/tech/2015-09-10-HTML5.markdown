@@ -195,7 +195,8 @@ figcation的子元素 用来解释
 
 ## 如何向下兼容IE8以下版本
 
-```JavaScript
+
+```javascript
 因为浏览器允许我们自定义标签
 比如
 
@@ -427,7 +428,8 @@ formnovalidate : 关闭验证，直接提交
 首先我们需要讨论一下为什么要需要用到JS表单验证
 
 例如这么一个表单
-```JavaScript
+
+```javascript
 
 <form action="www.baidu.com">
 	<input type="text" pattern = "/d{1,5}" required autocomplete="on" autofocus="on">
@@ -463,7 +465,8 @@ formnovalidate : 关闭验证，直接提交
 还有调试的时候，检验你的正则是否写错啊
 表单类型和你输入的值格式是否匹配啊等等
 
-```JavaScript
+
+```javascript
 
 表单一共有11种验证
 首先，表单验证都是围绕一个叫validity(英译:有效的、健全的)对象进行的
@@ -571,7 +574,8 @@ $('#box') $('.box') $('ol li');
 到了HTML5中，DOM 允许我们使用JQ的方法去获取元素
 
 
-```JavaScript
+
+```javascript
 
 通过获取ID 来获取元素
 
@@ -624,7 +628,8 @@ console.log(oLi.length);
 
 ### querySelectorAll
 
-```JavaScript
+
+```javascript
 
 上面，我们说到不能通过querySelector获取多个同类元素
 但是我们可以通过querySelectorAll方法来获取多个同类元素
@@ -676,7 +681,8 @@ console.log( box[0] );
 还有一点需要注意的是，使用querySelectorAll / querySelector来获取HTML5新功能
 自定义属性的时候 需要加上data-
 
-```JavaScript
+
+```javascript
 <div data-Owen="abc" ></div>
 var box = document.querySelectorAll("data-Owen=abc");
 而不是 
@@ -687,14 +693,16 @@ var box = document.querySelectorAll("Owen=abc");
 
 类似getElementsByTagName
 
-```JavaScript
+
+```javascript
 var oboxs = document.getElementsByClassName('box');
 console.log(oboxs);
 ```
 
 ### classList
 
-```JavaScript
+
+```javascript
 我们可以通过classList来获取到一个元素的全部class
 
 <div id = "box" class="a b c"></div>
@@ -729,7 +737,8 @@ toggle() : 切换一个类
 ## 自定义属性
 
 我们可以使用data来自定义属性
-```JavaScript
+
+```javascript
 如果是HTML5之前
 我们这样自定义属性
 <div Owen = "abc"></div>
@@ -798,7 +807,8 @@ article::before {
 这两个新属性是关于加载脚本的
 
 比如我这里需要加载三个js
-```JavaScript
+
+```javascript
 
 <script src="a.js"></script>
 <script src="b.js"></script>
@@ -844,14 +854,16 @@ history是HTML5下提供在服务器端下用于保存不同内容的对象
 (注意，history只能在服务器端下才能产生作用)
 
 pushState( data , title , url[可选] );
-```JavaScript
+
+```javascript
 history.pushState方法, 可以将页面的变化状态保存,并自动建立映射关系
 参数: 第一个是保存的数据(必须填写) 第二个是保存的页面标题(也是必须填写) 第三个是url(选填)用于
 标明页面变化。
 ```
 
 window.onpopstate事件
-```JavaScript
+
+```javascript
 用来读取对应的历史内容
 需要调用事件对象event来调动window.onpopstate底下的state值(也就是保存的页面内容)
 
@@ -863,7 +875,8 @@ window.onpopstate = function(ev)
 }
 
 ```
-```JavaScript
+
+```javascript
 
 来看看再刚才的随机函数的例子:
 (html相同,请调整到服务器端测试)
@@ -995,7 +1008,8 @@ ev.dataTransfer.files
 filesList
 单次拖拽进来后会返回一个filesList(对象)列表 列表下 有这么几个属性
 
-```JavaScript
+
+```javascript
 name : 文件名(包括后缀)
 length : 单次拖拽进来文件的个数 
 type : 拖拽进来文件的类型
@@ -1015,7 +1029,8 @@ oDiv.ondrop = function(ev)
 
 FileReader对象
 
-```JavaScript
+
+```javascript
 当我们接受完文件之后,还需要能读取这些文件
 所以,我们需要用到这么一个对象FileReader
 
@@ -1118,7 +1133,8 @@ window.onload = function()
 
 在一个页面内嵌套另外一个页面,在这个页面内部操作被包含的页面
 
-```JavaScript
+
+```javascript
 
 === html ===
 <input type="button" id = 'btn' value="点我改变被嵌套页面的背景颜色">
@@ -1155,7 +1171,8 @@ window top parent
 ![shootpic](/assets/img/msseage-conmmunicate-in-orgin.png)
 
 
-```JavaScript
+
+```javascript
 
 === html ===
 <input type="button" id = 'btn' value="点我改变被嵌套页面的背景颜色">
@@ -1201,7 +1218,8 @@ window.onload = function()
 从一个页面内通过window.open打开另外一个页面
 会返回一个对象,这个对象就是新打开页面的window对象
 
-```JavaScript
+
+```javascript
 
 === html ===
 <input type="button" id = "btn" value="点我打开新窗口">
@@ -1239,7 +1257,8 @@ window.onload = function()
 
 我们可以使用window.opener这个方法
 
-```JavaScript
+
+```javascript
 
 === html ===
 <input type="button" id = "btn" value="点我打开新窗口">
@@ -1319,7 +1338,8 @@ origin属性就是发送请求的域名
 
 demo:
 
-```JavaScript
+
+```javascript
 
 === 发送请求的页面html ===
 <input id="btn" type="button" value="点我发送跨域发送数据">
@@ -1374,17 +1394,20 @@ window.onload = function()
 搭建一个Html5的离线应用需要经历这些步骤
 
 ① 服务器设置头信息
-```JavaScript
+
+```javascript
 AddType text/cache-manifest manifest
 ```
 ② html标签添加引用离线清单
-```JavaScript
+
+```javascript
 <html manifest="path/to/NAME.manifest">
 ```
 ③ 编写离线加载清单
 
 离线清单格式:
-```JavaScript
+
+```javascript
 
 # Version 0.1
 
@@ -1475,7 +1498,8 @@ Uncaught SecurityError: Failed to construct 'SharedWorker': Script at 'file:///D
 ```
 
 开启专用型多线程很简单
-```JavaScript
+
+```javascript
 var w1 = new Worker('test.js');// 只需要将需要在进程里运行的js文件的文件名写上就行了
 w1.postMessage('owen'); // 我们可以传递一个消息给服务器端的支线程
 ```
@@ -1483,7 +1507,8 @@ w1.postMessage('owen'); // 我们可以传递一个消息给服务器端的支�
 那么在我们这个主线程中就已经开辟了一个支线程了,那么怎么进行主支线程的通信呢？
 在服务器端的支线程里,我们可以使用self来调用全局的 worker对象,
 那么我们在test.js这个脚本里面可以这样写道
-```JavaScript
+
+```javascript
 self.onmessage = function(ev)
 { 
    self.postMessage(ev.data + "you are welcome!"); 
@@ -1511,7 +1536,8 @@ importScript() 引入其他线程的JS脚本
 JSON以及配套的方法
 
 然后客户端口再接受服务端传递回来的消息
-```JavaScript
+
+```javascript
 var w1 = new Worker('test.js');// 只需要将需要在进程里运行的js文件的文件名写上就行了
 w1.postMessage('owen '); // 我们可以传递一个消息给服务器端的支线程
 
@@ -1522,13 +1548,15 @@ w1.onmessage = function(ev)
 ```
 
 数据量多的时候,也可以传递JSON
-```JavaScript
+
+```javascript
 var w1 = new Worker('test.js');
 w1.postMessage({ "name" : owen , "sex" : boy , "age" : 19 }); 
 ```
 
 如果我们需要传递一个二进制数据的时候,还需要在第二个参数中指定
-```JavaScript
+
+```javascript
 var w1 = new Worker('test.js');
 w1.postMessage({ operation: 'list_all_users', //操作
   input: buffer,
@@ -1537,7 +1565,8 @@ w1.postMessage({ operation: 'list_all_users', //操作
 ```
 
 当我们在服务器端的任务运行完成后,还可以使用close()方法自行进行关闭
-```JavaScript
+
+```javascript
 self.onmessage = function(ev)
 { 
    self.postMessage(ev.data + "you are welcome!"); 
@@ -1546,13 +1575,15 @@ close();
 ```
 
 或者在主线程中,使用terminate方法进行关闭
-```JavaScript
+
+```javascript
 w1.terminate();
 ```
 
 我们甚至可以通过importScripts() 在服务器端引入外部的JS文件但是要注意引入的而文件也不能有DOM的语法,而且不能跨域
 
-```JavaScript
+
+```javascript
 importScripts("test2.js" , "test3.js");
 self.onmessage = function(ev)
 { 
@@ -1564,7 +1595,8 @@ close();
 而且我们还能使用importScripts来预加载资源,这样就可以为客户端节省资源,提高用户体验了。
 
 当我们开启的支线程出现了错误的时候我们需要及时的进行回调函数,然后返回给主线程,以便进行相应的处理
-```JavaScript
+
+```javascript
 var w1 = new Worker('test.js');// 只需要将需要在进程里运行的js文件的文件名写上就行了
 
 w1.onerror = function(error){
@@ -1586,14 +1618,16 @@ Shared web worker 和 Dedicated web worker 的主要区别在于, 共享型线�
 如果多个页面都需要加载或者计算同样的数据和资源这时候我们就需要使用Shared web worker
 当然,Shared web worker也需要等全部页面关闭了才会结束
 
-```JavaScript
+
+```javascript
 var w1 = new SharedWorker('shareworker.js','sharedworker1'); //如果指定了第二个参数,将被用做定义该共享型线程的名称
 ```
 
 由于共享型多线程需要对多个页面进行广播,所以就不能使用对单一对象使用的postMessage方法了
 这里HTML5中卫共享型多线程提供了一个port()方法,
 我们就可以通过port方法 + postMessage方法来对多个页面进行广播了
-```JavaScript
+
+```javascript
 var w1 = new SharedWorker('shareworker.js','Owen's Sharedworker');
 w1.port.start();                             // 显示的开启端口
 w1.port.postMessage("hi");                   // 向端口发送请求
@@ -1607,7 +1641,8 @@ w1.port.postMessage = function(ev)
 模拟多个页面只要将上面的代码复制粘贴多份
 
 然后我们来看看引入的线程代码
-```JavaScript
+
+```javascript
 (function(){
   self.onconnect = function(ev){
       var port = ev.ports[0];         // 获得端口
@@ -1632,12 +1667,14 @@ per.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers)
 其中的魔法就是contentEditable
 HTML5允许其他非`<textarea></textarea>` 或 `<input type="text">` 的元素进行内容编辑
 只需在该元素标签内加上
-```JavaScript
+
+```javascript
 contenteditable="true" 
 ```
 
 或者在js中加上
-```JavaScript
+
+```javascript
 document.getElementById('div1').contentEditable = true;
 ```
 
@@ -1649,7 +1686,8 @@ document.getElementById('div1').contentEditable = true;
 
 webkit强大的一个功能,允许用户通过语音提交表单
 原本出chrome允许我们这样使用语言输入功能
-```JavaScript
+
+```javascript
 <input type="text"  x-webkit-speech >
 ```
 
@@ -1681,7 +1719,8 @@ webkit强大的一个功能,允许用户通过语音提交表单
 
 要使用桌面提醒功能必须得到用户同意(火狐直接默认用户同意)
 所以首先我们先查看一下浏览器默认的权限情况
-```JavaScript
+
+```javascript
 console.log(Notification.permission)// 火狐默认为granted  webkit 为default
 ```
 
@@ -1700,7 +1739,8 @@ denied
 查看完权限以后让我们来看下如何创建一个实例对象
 首先我们先通过浏览器向用户发送一个请求,如果用户同意则进行下一步,如果不同意则改为alert发送
 
-```JavaScript
+
+```javascript
 // 向用户询问,并修改权限
 window.addEventListener('load', function () {
   Notification.requestPermission(function (status) {
@@ -1718,7 +1758,8 @@ window.addEventListener('load', function () {
 ```
 
 然后我们可以试着创建一个Notification的实例对象
-```JavaScript
+
+```javascript
 var n = new Notification("Hi!",{icon:"./avatar.png",body:"欢迎来到我的博客",tag:"777",dir:"rtl");
 console.log(n.tag); // 输出777 
 ```
@@ -1739,7 +1780,8 @@ onshow  当提醒消息弹出的时候触发
 onerror 当出现错误的时候触发
 onclose 当用户点击关闭消息的时候触发
 
-```JavaScript
+
+```javascript
 var n = new Notification("Hi!",{icon:"./avatar.png",body:"欢迎来到我的博客"});
 
 n.onshow = function(){
@@ -1769,7 +1811,8 @@ n.close = function(){
 
 ### 单次定位请求
 
-```JavaScript
+
+```javascript
 navigator.geolocation.getCurrentPosition( success , error , options );
 // 调用这么对象然后向用户申请是否允许获取地理位置
 ```
@@ -1779,7 +1822,8 @@ navigator.geolocation.getCurrentPosition( success , error , options );
 success : 用户允许并且位置获取成功后返回的回调函数,该函数返回一个对象参数
 
 例:
-```JavaScript
+
+```javascript
 navigator.geolocation.getCurrentPosition(function(position){
 	oT.value += '经度' + position.coords.longitude + '\n';
 	oT.value += '纬度' + position.coords.latitude + '\n';
@@ -1795,7 +1839,8 @@ navigator.geolocation.getCurrentPosition(function(position){
 [Demo](/assets/download/html5geo.html)
 
 error : 用户允许但位置并没有获取成功返回的回调函数,该函数返回一个对象参数
-```JavaScript
+
+```javascript
 navigator.geolocation.getCurrentPosition(function(position){ ... } , function(error){
 	// 错误的函数一定要写在第二个参数,也就是说一定要写了成功的函数才能写错误的函数
 		
@@ -1812,7 +1857,8 @@ navigator.geolocation.getCurrentPosition(function(position){ ... } , function(er
 
 options : 其他功能选择(更好的数据收集)
 这个选项是以JSON的形式设置的
-```JavaScript
+
+```javascript
 // 因为是第三个参数,所以一定要先写成功的函数和失败的函数
 navigator.geolocation.getCurrentPosition(function(position){ ... } , function(error){
  ... },{ enableHighAcuracy : true , timeout : 5000 , maximumAge : 5000});
@@ -1829,7 +1875,8 @@ maximumAge : 缓存单次位置的最长时间(超过这一时间,自动将此�
 ### 多次定位请求
 
 多次请求和单次请求的语法基本相同
-```JavaScript
+
+```javascript
 var timer = navigator.geolocation.watchPosition( success , error , options );
 ```
 
@@ -1841,7 +1888,8 @@ var timer = navigator.geolocation.watchPosition( success , error , options );
 (如果你设置了timeout  则 error.code 会连续的返回 3)
 
 如果我们需要关闭多次请求
-```JavaScript
+
+```javascript
 var timer = navigator.geolocation.clearWatch( timer );
 ```
 
@@ -1870,7 +1918,8 @@ sessionStorage有这么几个方法使用
 
 window.sessionStorage.setItem( Storage的key , 需要存储的内容[字符串] )
 
-```JavaScript
+
+```javascript
 window.sessionStorage.setItem('name','Owen');
 ```
 
@@ -1880,7 +1929,8 @@ window.sessionStorage.setItem('name','Owen');
 
 window.sessionStorage.getItem( Storage的key )
 
-```JavaScript
+
+```javascript
 window.sessionStorage.getItem( 'name' );
 ```
 
@@ -1890,7 +1940,8 @@ window.sessionStorage.getItem( 'name' );
 ③ 删除sessionStorage
 window.sessionStorage.removeItem(Storage的key)
 
-```JavaScript
+
+```javascript
 window.sessionStorage.removeItem( 'name' );
 ```
 
@@ -1898,7 +1949,8 @@ window.sessionStorage.removeItem( 'name' );
 
 ④ 清空sessionStorage
 
-```JavaScript
+
+```javascript
 window.sessionStorage.clear();
 ```
 
@@ -1908,7 +1960,8 @@ window.sessionStorage.clear();
 
 localSotrage和sessionStorage用法类似,不过localStorage可以永久存储在电脑中(上限是5M)
 
-```JavaScript
+
+```javascript
 window.localStorage.setItem('name', 'owen');
 window.localStorage.getItem( 'name' );
 window.localStorage.removeItem( 'name' );
@@ -1941,7 +1994,8 @@ window.sessionStorage.clear();
 
 
 绑定Storage事件可以有两种方法
-```JavaScript
+
+```javascript
 ① window.addEventListener( 'storage' , function(ev){} , false );
 
 ② window.onstorage = function(ev){};
@@ -2020,7 +2074,8 @@ videoHeight: 视频的实际高
 ```
 
 如果我们需要获取到已经播放的时间,这时候就需要使用JS了
-```JavaScript
+
+```javascript
 
 <audio controls autoplay src="音频地址"></audio>
 
@@ -2088,7 +2143,8 @@ window.onload = function()
 getUserMedia 是html5 规范新出来的一个API， 用处就是使用你电脑的媒体设备（摄像头，麦克风）
 
 使用起来很简单，但是有一些需要注意的地方
-```JavaScript
+
+```javascript
 navigator.getUserMedia({video: true} , function(stream) {
 	/* 对摄像头拍摄的资源进行使用 code */	
 },function(err) {
@@ -2106,7 +2162,8 @@ navigator.getUserMedia({video: true} , function(stream) {
 ① 当前html5 还没定型，使用时需要添加兼容性处理（vendor prefixing 浏览器厂商前缀）
 
 即： 
-```JavaScript
+
+```javascript
 // opera browser has't verdor prefixing | 欧鹏浏览器无需添加厂商前缀 
 navigator.getUserMedia = navigator.getUserMedia || 
                  navigator.webkitGetUserMedia ||
@@ -2147,7 +2204,8 @@ Steps:
 
 
 获取相机权限很简单，上面已经说的差不多了
-```JavaScript
+
+```javascript
 // 兼容vendors
 navigator.getUserMedia = navigator.getUserMedia || 
                  navigator.webkitGetUserMedia ||
@@ -2182,7 +2240,8 @@ createObjectURL 可以将传入的数据流创建一个指向该流的URL
 到这一步为止我们就可以事先简单的摄像功能了
 
 接下来就是拍照功能
-```JavaScript
+
+```javascript
 var snapshot = function() {
 // 如果摄像机工作了，产生了数据流，就可以进行拍照了
 	if(localMediaStream) {

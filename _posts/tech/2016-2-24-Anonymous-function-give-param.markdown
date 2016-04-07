@@ -15,7 +15,8 @@ keywords: 技术,nodejs
 
 后来还是解决了这个小问题
 
-```JavaScript
+
+```javascript
 function c( func , self ){
 	func.call(self);
 }
@@ -51,7 +52,8 @@ new a();
 很方便的东西，使用bind我们就可以随便的在匿名函数中更改this绑定，以及随意的传入参数
 
 栗子：
-```JavaScript
+
+```javascript
 addEventListener( "click" , function(){
 	console.log( arguments ) // param1 .... and default params
 	console.log(this); 		 // you set pointer not window

@@ -25,7 +25,8 @@ keywords: 技术,clipboardJs
 
 然后实例一个clipboard对象
 
-```JavaScript
+
+```javascript
 new Clipboard('.btn');
 ```
 
@@ -78,7 +79,8 @@ new Clipboard('.btn');
 ### 回调事件
 
 当进行操作完后可以弹出提示框，提示成功操作，或者进行一些回调操作
-```JavaScript
+
+```javascript
 
 var clipboard = new Clipboard('.btn');
 
@@ -110,7 +112,8 @@ clipboard.on('error', function(e) {
 
 如果你并不想修改你的html(在里面添加新的data属性)，也可以在js中设置你需要操作的目标
 
-```JavaScript
+
+```javascript
 
 new Clipboard('.btn', {
     target: function(trigger) {
@@ -124,7 +127,8 @@ new Clipboard('.btn', {
 ### Js中设置操作文本对象
 
 当然你也可以只通过修改js来确定需要进行操作的文本，只要返回String类型的字符串就ok了
-```JavaScript
+
+```javascript
 new Clipboard('.btn', {
     text: "这是需要进行操作的内容"
     }
@@ -135,7 +139,8 @@ new Clipboard('.btn', {
 
 如果这个已经不需要使用了剪贴板了，就可以调用`destroy`方法来清除这个对象实例，并将其下绑定的事件和对象全部清除
 
-```JavaScript
+
+```javascript
 var clipboard = new Clipboard('.btn');
 clipboard.destroy();
 });

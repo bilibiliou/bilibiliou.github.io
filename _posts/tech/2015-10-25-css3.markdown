@@ -1257,13 +1257,15 @@ transition: 过渡的时间 延迟执行时间 参与过度的属性 过渡的�
 ### transition事件
 
 我们可以监听过渡动画,结束之后触发TransitionEnd事件
-```JavaScript
+
+```javascript
 obj.addEventListener('transitionend',fn,false);
 ```
 
 而这个事件一定要使用removeEventListener来移除
 
-```JavaScript
+
+```javascript
 obj.removeEventListener('transitionend',fn,false);
 ```
 
@@ -1502,7 +1504,8 @@ Css3 实现动画的第二大属性,实现是通过添加动画帧来实现
 .show1{animation:2s show1 linear;}
 ```
 
-```JavaScript
+
+```javascript
 var oBox = document.querySelector(".box");
 
 oBox.onclick = function()
@@ -1527,7 +1530,8 @@ animation: 动画总时间 延迟时间 调用的动画帧名 运动形式 重�
 这是因为Css3默认动画结束以后返回这个盒子原本的样式
 
 如果我们需要让他保持结束后的状态,只需要添加forwards就可以了
-```JavaScript
+
+```javascript
 .show1{animation:2s show1 forwards linear;}
 ```
 
@@ -1571,7 +1575,8 @@ animation-play-state: running;
 使用js来控制这个盒子的类,Css3允许我们通过js来监控动画是否完成
 这里就得介绍animationEnd事件了
 
-```JavaScript
+
+```javascript
 var oBox = document.querySelector(".box");
 		var boff = true;
 		oBox.onclick = function()
@@ -1673,7 +1678,8 @@ will-change:transform,opacity;
 如果我们要关闭will-change,就可以使用js监听来清除
 
 例如一个点击触发的动画效果
-```JavaScript
+
+```javascript
 var el = document.getElementById('element');
 
 el.addEventListener('mouseenter', hintBrowser);
@@ -1696,7 +1702,8 @@ function removeHint() {
 有些时候我们制作了一些按钮类的特效,在测试的时候会触发选中文本的效果,弄得一大块蓝整个UI都不好不好的了。
 
 要解决这个方法可以使用JS来解决
-```JavaScript
+
+```javascript
 onselectstart = function(){
 	return false;
 }

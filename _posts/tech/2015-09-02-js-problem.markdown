@@ -8,7 +8,8 @@ keywords: 技术,Javascript,缺省值,JSON
 ## 形式参数缺省
 
 假设我们在开发中需要先封装一个函数
-```JavaScript
+
+```javascript
 
 function tool( x , y , z )
 
@@ -30,7 +31,8 @@ tool( 2 , '' , 1)
 
 可能有人会想，直接不传行不行
 也就是这样
-```JavaScript
+
+```javascript
 tool( 2 , 1 )
 ```
 
@@ -44,7 +46,8 @@ tool( 2 , 1 )
 
 ## 使用JSON对象解决形式参数缺省问题
 
-```JavaScript
+
+```javascript
 
 假设我这里只要填x 和 z的值
 

@@ -11,18 +11,19 @@ keywords: 技术,amd,requirejs
 
 写过java 或者 C的同学都知道这么几条语句
 
-```Java
+```java
 import java.util.XXX
 ```
 
 或者是C的
 
-```C
+```c
 #include <stdio.h>
 ```
 
 当然新出的ecmascript6 也有相应的模块机制
-```JavaScript
+
+```javascript
 import xxx from './xx.js'
 ```
 
@@ -37,6 +38,7 @@ import xxx from './xx.js'
 ```
 
 如果，我有一个c.js想要用到的一个b库的话，就需要在引用c前先引入b
+
 ```html
 <script src="b.js"></script>
 <script src="c.js"></script>
@@ -76,7 +78,8 @@ James Burke 这个人，就首先提出了这种规范，就是AMD规范（Async
 
 大家不要被什么规范啊，英文吓到了，因为AMD规范只有一句话...
 
-```JavaScript
+
+```javascript
 define([module-name?], [array-of-dependencies?], [module-factory-or-object]);
 ```
 
@@ -100,7 +103,8 @@ require的目的就是要解决js的引用和依赖关系冲突的问题，所�
 什么是根目录呢？就是require所定位一个位置，而其他的Js文件就依照这个根位置填写相对路径
 
 例如如下目录结构
-```JavaScript
+
+```javascript
 test.html             
 js                    
  |_                   
@@ -135,7 +139,8 @@ main.js就是这个项目的主函数，类比C函数的主函数
 
 ③. 如果我们硬性的设定根目录的位置也是可以的
 在main模块__开头__我们这样设置
-```JavaScript
+
+```javascript
 require.config({
 	baseUrl : "xxx/xxx/xx"
 });
@@ -157,7 +162,8 @@ __caveat :__ require.config 是requireJS给我们设置的一个配置接口通�
 
 在define中，我们可以定义一个符合AMD规范的模块，并且用return可以吧结果输出来
 
-```JavaScript
+
+```javascript
 define(function () {
 	/* 计算后结果假设等于1 */
 	var calcresult = 1;
@@ -173,7 +179,8 @@ define(function () {
 __caveat: __ 每个模块中define函数有且只能有一个~！
 
 路径的话，全部默认的是.js文件，所以我们不用自己加后缀，也不能加后缀
-```JavaScript
+
+```javascript
 require.config({
 	paths : {
 		"a" : ["a"], // 不能加.js后缀
@@ -196,7 +203,8 @@ require 给我们提供了一个shim函数,可以将未进行模块化的组件�
 在主函数main中我们这样写
 (shim: 垫子 ，加个垫子，能让这个component够得着的意思么？)
 
-```JavaScript
+
+```javascript
 require.config({
 	paths : {
 		"util"  : ["common/util"]
@@ -217,7 +225,8 @@ require( ["a" , "jquery" , "util"] , function ( u ) {
 这样我们就完成了将util.js的模块化并使用
 
 而jquery在函数内部已经为我们实现了AMD规范了,所以我们可以直接正常使用
-```JavaScript
+
+```javascript
 require.config({
 	paths : {
 		"util"  : ["common/util"],
@@ -242,7 +251,8 @@ require( ["jquery" , "util"] , function ($ , u ) {
 但是基于jQuery的很多第三方插件并没有AMD规范化的，他们又和jquery有依赖关系，怎么办呢？
 
 还是shim来解决
-```JavaScript
+
+```javascript
 require.config({
 	paths : {
 		"util"  : ["common/util"],
@@ -268,7 +278,8 @@ require( ["jquery" , "util" , "jqueryPjax"] , function ( $ , u ) {
 ```
 
 也可以简写为： 
-```JavaScript
+
+```javascript
 "pjax" : ["jquery"]
 ```
 
@@ -281,7 +292,8 @@ require( ["jquery" , "util" , "jqueryPjax"] , function ( $ , u ) {
 define 函数可以将一个js文件内的js代码模块化
 
 当然js代码不一定是标准的，也可以是单纯的json
-```JavaScript
+
+```javascript
 define({
 	"Owen" : {
 		"age"  : "20",
@@ -301,7 +313,9 @@ define({
 我们来看个栗子
 
 main.js:
-```JavaScript
+
+
+```javascript
 require.config({
 	paths : {
 		"util" : ["common/util"],
@@ -312,11 +326,11 @@ require.config({
 require(["data"] , function (D) {
 	console.log(D.r); // 2016-03-13
 });
-
 ```
 
 data.js中调用主函数中已经确定好了依赖，获取今天的日期，并返回
-```JavaScript
+
+```javascript
 define(["util"] , function (u) {
 	var $ = new u();
 	return {
@@ -347,7 +361,8 @@ RequireJS 还为我们提供了很多[插件](https://github.com/millermedeiros/
 
 当alert执行时，dom还未加载，执行后，完成加载，并在console.log中打印出内容
 
-```JavaScript
+
+```javascript
 require.config({
 	paths : {
 		"domReady" : ["tool/domready"]
@@ -367,7 +382,8 @@ require(["domReady"] , function (domReady) {
 这里还有一个作者留的小技巧
 
 如果不设置paths参数，并且吧domready.js保存在根目录下，那么就能像这样直接使用
-```JavaScript
+
+```javascript
 require(["domReady!"] , function (Doc) {
 	console.log(Doc);
 	console.log("I will run after dom is ready!");
@@ -380,7 +396,8 @@ require(["domReady!"] , function (Doc) {
 如果你希望把domreadyjs保存在其他目录下， 例如`tool/domready`
 你也可以使用这个感叹号的方法
 
-```JavaScript
+
+```javascript
 require.config({
 	paths : {
 		"dr" : "根目录/tool/domready"
@@ -399,7 +416,8 @@ require(["dr!"] , function (Doc) {
 
 text plugin 是一个用来加载文本的插件，底层采用的还是Ajax
 和domready 不太一样， text貌似只能使用！的方式加载
-```JavaScript
+
+```javascript
 require.config({
 	paths : {
 		"t" : ["tool/text"]
@@ -420,7 +438,8 @@ caveats : <br>
 ② 加载完text.js后， 会在该目录下找review.text 所以最好就是重写路径，或者把text.js放在同一文件下 <br>
 
 当然JSON也可以
-```JavaScript
+
+```javascript
 require(["text!../text/foo.json"],function (foo) { 
 	console.log(Object.prototype.toString.call(foo));
 	console.log(JSON.parse(foo))
@@ -429,7 +448,8 @@ require(["text!../text/foo.json"],function (foo) {
 
 但是JSON数据会出现同名缓存的问题，解决这个问题，我们可以使用!bust参数
 
-```JavaScript
+
+```javascript
 require(["text!../text/foo.json" , "text!../text/foo.json!bust"],function (foo , foo1) { 
 	console.log(foo);
 	console.log(foo1)
@@ -444,7 +464,8 @@ require(["text!../text/foo.json" , "text!../text/foo.json!bust"],function (foo ,
 图片插件就的使用image.js了
 
 使用方法和text差不多
-```JavaScript
+
+```javascript
 require.config({
 	paths : {
 		image : "tool/image"
@@ -475,7 +496,8 @@ require(["image!img/cat.jpg"] , function (cat) {
 只要在引入的图片中加bust参数就好
 
 栗子酱：
-```JavaScript
+
+```javascript
 require.config({
 	paths : {
 		image : "tool/image"
@@ -513,7 +535,8 @@ require(["image!img/cat.jpg!bust" , "image!img/cat.jpg!bust"] , function (cat1 ,
 所以如果我们需要把本地的markdown文件加载到主页面中的话，需要这么做
 
 栗子：
-```JavaScript
+
+```javascript
 require.config({
 	"text" : [tool/text],
 	"md" : ["tool/mdown"],

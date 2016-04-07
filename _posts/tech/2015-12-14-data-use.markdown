@@ -33,7 +33,8 @@ keywords: 技术,data
 
 然后通过js获取`.sprite`并且设置它的得分`data-score`
 
-```JavaScript
+
+```javascript
 var character =  document.querySelector(".sprite");
 character.dataset.score = 10;
 ```
@@ -72,7 +73,8 @@ character.dataset.score = 10;
 
 但是css中并不支持值域判断，所以分数判断还是需要写在js里比较好
 
-```JavaScript
+
+```javascript
 var character =  document.querySelector(".sprite");
 var style     =  document.querySelector("#style");
 

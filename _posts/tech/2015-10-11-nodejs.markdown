@@ -40,7 +40,8 @@ nodejs可以说是前端人员了解后端的一个切入点所在(当然php也�
 工具-->编译系统-->新编译系统
 
 然后sublime就会弹出一个 `untitled.sublime-build`,将untitled 改成nodejs 然后再将里面原有的文本替换成
-```JavaScript
+
+```javascript
 {
     "cmd": ["node", "$file"],
     "file_regex": "^[ ]*File \"(...*?)\", line ([0-9]*)",
@@ -68,7 +69,8 @@ nodeJs 基础 和 js 基础一致，都是ecmascript
 
 所以ecmascript底下的所有东西，都可以使用
 
-```JavaScript
+
+```javascript
 var  a = new Date();
 console.log( a.getFullYear() );
 console.log( a.getMonth() + 1 );
@@ -109,26 +111,30 @@ nodejs实现功能是以不同个模块来完成的
 nodejs规定一个js文件就是一个模块，不同模块有自己的作用域
 我们使用`var` 在一个js文件里面声明的变量只是该模块下的局部变量
 如果需要声明全局变量，我们可以使用`global`声明
-```JavaScript
+
+```javascript
 global.a = 200;
 console.log(global.a); // 200
 ```
 
 我们还可以通过`__filename`变量来访问当前被解析模块的路径字符串
 每一个模块中都有一个`__filename` 
-```JavaScript
+
+```javascript
 console.log(__filename); // D:\NodeJs\text\global-problem.js
 ```
 
 还有一个`__dirname`变量 可以来访问当前被解析模块的文件夹路径字符串
-```JavaScript
+
+```javascript
 console.log(__dirname); // D:\NodeJs\text\
 ```
 
 ## 模块加载系统
 
 我们可以使用`require`来引入模块，类似java中的`import`
-```JavaScript
+
+```javascript
 require('模块路径');
 ```
 
@@ -142,7 +148,8 @@ nodeJs的解析顺序是这样的
 ④ 如果还是没找到，就会在文件名后缀加上.node，继续查找
 ⑤ 如果还是没找到，就会报出一个错误
 
-```JavaScript
+
+```javascript
 require('./text1');
 ```
 
@@ -156,12 +163,14 @@ require('./text1');
 
 但是要注意一点，那就是，在node中，如果需要引入的文件在同目录下面
 一定要这样写
-```JavaScript
+
+```javascript
 require('./practice.js');
 ```
 
 但是不能这样写
-```JavaScript
+
+```javascript
 require('practice.js');
 ```
 
@@ -172,7 +181,8 @@ require('practice.js');
 
 `module` 对象是每一个模块都特有的一个对象
 例如这样一个模块 module1 
-```JavaScript
+
+```javascript
 // module1
 var a = "owen";
 
@@ -181,7 +191,8 @@ console.log("这是module1");
 ```
 
 我们可以console一下它的module
-```JavaScript
+
+```javascript
 Module {
   id: '.',
   exports: {},
@@ -218,7 +229,8 @@ paths   :
 ③ 使用module.exports
 
 例如如下两个模块
-```JavaScript
+
+```javascript
 // module1
 var a = "owen";
 
@@ -228,7 +240,8 @@ module.exports.a = a;
 // 也可以这样写 exports.a = a;
 ```
 
-```JavaScript
+
+```javascript
 // module2
 var m1 = require("./module1.js");
 
@@ -249,7 +262,8 @@ process（英：进程、过程） 对象是global 对象下的一个子对象�
 ### process.argv
 
 通过这个我们能访问，当前进程的一些内容
-```JavaScript
+
+```javascript
 console.log( process.argv );
 ```
 
@@ -294,7 +308,8 @@ console.log( process.argv );
 
 感觉后端的基础就是要对Buffer进行合适的操作
 
-```JavaScript
+
+```javascript
 var bf = new Buffer(5); 
 console.log(bf) // <Buffer 04 00 00 00 00>
 ```
@@ -302,13 +317,15 @@ console.log(bf) // <Buffer 04 00 00 00 00>
 打印出来的是5个随机的内存值，并且以16进制显现
 
 但是如果我们将单个内存值打印出来，会以10进制显现
-```JavaScript
+
+```javascript
 var bf = new Buffer(5); 
 console.log(bf[0]) // 200
 ```
 
 我们可以直接以字符串的形式直接存入缓存中,第二个参数声明的是字符串的编码
-```JavaScript
+
+```javascript
 var bf = new Buffer('owen' , 'utf-8'); 
 ```
 
@@ -322,7 +339,8 @@ utf-8   因为为一字节 中文为三字节
 ### Buffer.write
 
 声明完缓存区域后，我们可以将值写入到缓存区
-```JavaScript
+
+```javascript
 var bf = new Buffer(4); 
 var str = 'owen';
 bf.write(str);
@@ -331,7 +349,8 @@ console.log(bf.toString())  // owen
 
 write方法一定要保证足够的缓存，如果没有开辟足够的内存，后面未存储的部分自动被抛弃
 write 方法的第二个参数 是设置偏移量,即从第几个开始存储
-```JavaScript
+
+```javascript
 var bf = new Buffer(4); 
 var str = 'owen';
 bf.write( str2 , 1 );      // 第二个参数可以设置偏移量，设置在第二位置开始存储
@@ -339,7 +358,8 @@ console.log(bf.toString());// 随机的乱码 owe
 ```
 
 第三个参数是设置存储个数，即存储多少个字节
-```JavaScript
+
+```javascript
 var bf  = new Buffer(6);
 var str = 'owen';
 bf.write( str , 1 , 2 );   // 第三个参数设置设置存储个数 ， 默认是全部存储
@@ -353,7 +373,8 @@ console.log(bf);           // <Buffer 00 6f 77 00 00 00>
 通过Buffer.toString方法与我们以前的toString方法有点不同
 
 如果单个打印Buffer 缓存值可以带上进制参数
-```JavaScript
+
+```javascript
 var str = 'owen';
 var bf  = new Buffer(4);
 console.log(bf[0].toString(8)) // 157 
@@ -361,7 +382,8 @@ console.log(bf[0].toString(8)) // 157
 
 
 如果直接整个buf （不带参数） 则会转化为字符号串
-```JavaScript
+
+```javascript
 var str = 'owen';
 var bf  = new Buffer(4);
 console.log(bf.toString()) // owen 
@@ -373,7 +395,8 @@ console.log(bf.toString()) // owen
 
 第二三个参数是 设置偏移量 留始去终原则
 
-```JavaScript
+
+```javascript
 var str = 'owen';
 var bf  = new Buffer(4);
 console.log(bf5.toString('utf-8' , 1 , 3)); // we
@@ -383,7 +406,8 @@ console.log(bf5.toString('utf-8' , 1 , 3)); // we
 
 我们还可以将Buffer 打印成json格式
 
-```JavaScript
+
+```javascript
 var bf = new Buffer("owen");
 console.log(bf.toJSON() ); // 将buffer  转化为json格式
 
@@ -398,7 +422,8 @@ console.log(bf.toJSON() ); // 将buffer  转化为json格式
 
 和数组方法很像，但是有一点差别
 首先使用都是相同的 都是留始去终原则
-```JavaScript
+
+```javascript
 var bf1  = new Buffer("owen");
 var bf2  = bf1.slice( 0 , 2 );
 
@@ -408,7 +433,8 @@ console.log(bf2.toString()); // ow
 但是有一点就是，所切割的缓存部分不会开辟新的内存空间存储，只是开辟一个新的引用而已
 也就是说，如果现在对bf2进行操作，会改变bf1的内容
 
-```JavaScript
+
+```javascript
 var bf1  = new Buffer("owen");
 var bf2 = bf1.slice( 0 , 2 );
 console.log(bf1.toString()); // owen
@@ -421,7 +447,8 @@ console.log(bf1.toString()); // ewen
 正如上文提到的，我们如果需要开辟新的内存进行对缓存的操作，不能使用slice
 那么我们可以使用Buffer.copy来复制一份新的
 
-```JavaScript
+
+```javascript
 var bf1 = new Buffer('owen');
 var bf2 = new Buffer(2);
 bf1.copy( bf2 , 0 , 0 , 3 ); 
@@ -440,7 +467,8 @@ Buffer对象是global 对象下的，所以也会有一些全局的静态方法
 ### Buffer.isEncoding
 
 判断是否是Buffer对象所支持的编码集
-```JavaScript
+
+```javascript
 console.log( Buffer.isEncoding('utf-8') );  // true
 console.log( Buffer.isEncoding('gbk') );    // false
 console.log( Buffer.isEncoding('hex') );    // true
@@ -450,7 +478,8 @@ console.log( Buffer.isEncoding('hex') );    // true
 
 判断是否是Buffer构造出来的实例
 
-```JavaScript
+
+```javascript
 var arr = [1,2,3];
 var bf  = new Buffer(3);
 
@@ -462,7 +491,8 @@ console.log( Buffer.isBuffer(bf) );
 
 输出存储的字节长度
 
-```JavaScript
+
+```javascript
 var str = "信管";
 console.log(str.length);                        // 2
 console.log(Buffer.byteLength(str));            // 默认的 utf-8下 是6
@@ -473,7 +503,8 @@ console.log(Buffer.byteLength(str1, 'ascii'));  // 2 如果使用不同的编码
 
 concat 以前数组里面也用过，就是连接两个数组的方法
 
-```JavaScript
+
+```javascript
 var s1 = "owen love";
 var s2 = " zyz";
 
@@ -488,7 +519,8 @@ console.log(Buffer.isBuffer(bf));  // true
 而concat的第二个参数，是开辟新内存的大小，默认值是拼接的两个Buffer 内存量的总和
 计算两个Buffer内存量 会消耗一部分内存 所以如果在知道值情况下应该尽量写上
 
-```JavaScript
+
+```javascript
 var bf2 = Buffer.concat(list,13);
 console.log(bf2.toString());
 ```
@@ -501,7 +533,8 @@ console.log(bf2.toString());
 
 fileSystem 是node内置的模块，所以我们在使用前只需要直接加载就行，nodejs的模块依赖会自动绑定
 
-```JavaScript
+
+```javascript
 var fs = require("fs");
 ```
 
@@ -512,7 +545,8 @@ var fs = require("fs");
 ## readFile(Sync)
 
 故名思意，就是读取文件，需要提供文件的文件目录
-```JavaScript
+
+```javascript
 var fs = require("fs");
 
 var filePath = "./";
@@ -525,7 +559,8 @@ fs.readFile(filePath , function (err , data) {
 ```
 
 或者使用异步的方式
-```JavaScript
+
+```javascript
 var fs = require("fs");
 
 var filePath = "./";
@@ -538,7 +573,8 @@ console.log(file.toString("utf-8"));
 ## writeFile(Sync)
 
 写文件，也很简单
-```JavaScript
+
+```javascript
 var fs = require("fs");
 
 var filePath = "./";
@@ -557,7 +593,8 @@ fs.writeFile(filePath , "这是写入的内容" , function(err) {
 
 插入文件内容，不覆盖原有数据，如果没有文件会自动创建
 
-```JavaScript
+
+```javascript
 var fs = require("fs");
 
 var filePath = "./";
@@ -576,7 +613,8 @@ fs.appendFile(filePath , "这是写入的内容" , function(err) {
 
 查询文件夹，并返回文件夹下的全部文件
 
-```JavaScript
+
+```javascript
 var fs = require("fs");
 
 var dirPath = "./";
@@ -595,7 +633,8 @@ fs.readdir(dirPath , function(err , files) {
 ## existsFile(Sync)
 
 判断是否存在此文件，返回`boolean`
-```JavaScript
+
+```javascript
 var fs = require("fs");
 
 var filePath = "./";
@@ -623,7 +662,8 @@ callback: 回调
 ## unlink(Sync)
 
 删除文件或文件夹，要小心，以免删错，不然就找不回来了
-```JavaScript
+
+```javascript
 var fs = require("fs");
 
 var filePath = "./xxx";
@@ -644,7 +684,8 @@ fs.existsFile( filePath , function( isexists ) {
 
 可以查看文件(夹)发生了什么修改，会返回修改的状态， 状态分为 `rename` 和 `change`， 也就是判断文件(夹)改名了或内容被修改了 ，并且返回被修改的文件名称
 
-```JavaScript
+
+```javascript
 var fs = require("fs");
 
 var filePath = "./xxx";
@@ -676,7 +717,8 @@ fs.existsFile( filePath , function(err) {
 
 如果需要进行递归查询的话呢，我们可以进行设置，就是在第二个参数中进行设置
 
-```JavaScript
+
+```javascript
 var fs = require("fs");
 
 var filePath = "./xxx";
@@ -731,7 +773,8 @@ fs.existsFile( filePath , options , function( isexists ) {
 
 (需要还原的路径 , [cache] , [callback])
 
-```JavaScript
+
+```javascript
 fs.realpath("./" , cache , function (err , resovlePath) {
 	console.log(resovlePath); // "D:\NodeJs\text"
 });
@@ -743,7 +786,8 @@ fs.realpath("./" , cache , function (err , resovlePath) {
 
 官网example:
 
-```JavaScript
+
+```javascript
 var cache = {'/etc':'/private/etc'};
 fs.realpath('/etc/passwd', cache, function (err, resolvedPath) {
   if (err) throw err;
@@ -757,7 +801,8 @@ fs.realpath('/etc/passwd', cache, function (err, resolvedPath) {
 
 ( 文件(夹)路径, callback )
 
-```JavaScript
+
+```javascript
 fs.stat(filename , function (err , stats) {
 	if( !err )
 	{
@@ -783,7 +828,8 @@ stats.isSocket()
 
 ## 简单的文件遍历算法
 
-```JavaScript
+
+```javascript
 var fs = require("fs");
 
 var arr = [];
@@ -815,7 +861,8 @@ console.log( arr );
 
 ## 简单的构建项目算法
 
-```JavaScript
+
+```javascript
 var fs = require("fs");
 
 // 预设项目信息
@@ -877,13 +924,15 @@ if( fData && fData.forEach ) {
 
 首先使用前我们都需要这样加载这样一个http模块
 
-```JavaScript
+
+```javascript
 var http = require('http');
 ```
 
 这样我们就可以使用这个模块返回的对象来新建一个网络服务
 
-```JavaScript
+
+```javascript
 // 创建一个本地服务环境,并设置端口为localhost:8888
 var serve = http.createServer().listen(8888);
 ```
@@ -891,7 +940,8 @@ var serve = http.createServer().listen(8888);
 这个函数会返回一个回调函数,这个函数会产生两参数 
 分别存储用户`请求的信息和方法` 和 `服务器响应的数据和方法`
 
-```JavaScript
+
+```javascript
 
 // 回调匿名函数,并返回request 和 reponse
 var serve = http.createServer( function( request , reponse ){
@@ -911,7 +961,8 @@ var serve = http.createServer( function( request , reponse ){
 
 我们使用fs加载一个文件模块,通过文件模块我们可以根据客户端的请求来响应为用户提供对应的页面文件
 
-```JavaScript
+
+```javascript
 var fs = require("fs");
 ```
 
@@ -920,7 +971,8 @@ var fs = require("fs");
 
 这个回调函数返回两个参数,一个是 error错误信息参数,如果请求的内容没有找到或者出错,
 就会返回一个包含错误信息的JSON回来
-```JavaScript
+
+```javascript
 { [Error: EISDIR: illegal operation on a directory, read] errno: -4068, code: 'EISDIR', syscall: 'read' }
 ```
 
@@ -933,7 +985,8 @@ var fs = require("fs");
 
 ## 一个简单的demo
 
-```JavaScript
+
+```javascript
 // 加载http模块
 var http = require('http');
 

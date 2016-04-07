@@ -70,7 +70,8 @@ JSON是使用键值对的形式来描述数据
 
 ### 常规转化
 
-```Javascript
+
+```javascript
 
 XML
 <Book>半生缘</Book>
@@ -81,7 +82,8 @@ JSON
 两者可以互译
 ```
 ### 没有属性标签结点的转换
-```Javascript
+
+```javascript
 
 XML
 <line>
@@ -104,7 +106,8 @@ JSON
 ```
 
 ### 含有属性标签结点的转换
-```Javascript
+
+```javascript
 
 XML
 
@@ -124,7 +127,8 @@ JSON
 ```
 
 ### 有顺序性结点的转化
-```Javascript
+
+```javascript
 XML
 <template> 
   <block>天空</block>  
@@ -159,7 +163,8 @@ JSON支持Javascript中除undefined之外的所有数据类型
 JSON 根据数据的不同可以有三种表现形式(语法)
 
 ### JSON解释简单值的形式
-```Javascript
+
+```javascript
 
 数值
 NaN
@@ -175,7 +180,8 @@ JSON
 ```
 ### JSON解释对象
 
-```Javascript
+
+```javascript
 
 使用javascript 字面量解释对象
 	var book = 
@@ -196,7 +202,8 @@ JSON
 ```
 
 ## JSON的遍历
-```Javascript
+
+```javascript
 如果我们需要遍历一个对象
 比如
 var person =
@@ -217,7 +224,8 @@ data[i] 就是对象对应属性的值
 ## stringify方法
 
 用于将JSON转换成字符串
-```Javascript
+
+```javascript
 
 var person = 
 {
@@ -303,7 +311,8 @@ var jsontext = JSON.stringify( person , function( index , attribute ){
 可以将有效的JSON格式的字符串
 转换成JSON对象
 
-```Javascript
+
+```javascript
 
 var datatext = '{	"name" : "owen","school" : ["MeiShan Middle school" , "SSFL" ] }';
 var data = JSON.parse( datatext );
@@ -327,7 +336,8 @@ school
 ## toJSON方法
 toJSON方法是从对象内部筛选属性的方法
 
-```Javascript
+
+```javascript
 
 var book = 
 	{
@@ -363,7 +373,8 @@ console.log(jsontext);//只输出 "HTML5"
 
 ## 关于对象引用会出现的一些问题
 
-```Javascript
+
+```javascript
 
 直接上代码:
 var a = {

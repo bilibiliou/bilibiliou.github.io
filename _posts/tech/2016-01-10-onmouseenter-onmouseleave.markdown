@@ -12,7 +12,8 @@ keywords: 技术
 [demo](/assets/download/onmouseover-onmouseout-bubble-problem.html)
 
 首先我只给父级设置了移出事件
-```JavaScript
+
+```javascript
 oDiv1.onmouseout = function(ev) {
 	console.log("鼠标从父级出去了");		
 
@@ -20,7 +21,8 @@ oDiv1.onmouseout = function(ev) {
 ```
 
 也只给子级设置了移入事件
-```JavaScript
+
+```javascript
 oDiv2.onmouseover = function(ev) {
 	console.log("鼠标进来了子级");
 }

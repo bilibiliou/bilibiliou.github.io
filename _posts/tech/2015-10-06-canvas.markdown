@@ -10,7 +10,8 @@ keywords: 技术,canvas
 canvas是一个梦幻的标签，利用它配合JS控制，可以在页面上绘制出你想要的任何图案，并且还可以绘制3D效果
 首先canvas的引入非常简单
 
-```JavaScript
+
+```javascript
 
 <canvas>
 	<span>您的浏览器十分落后，请及时更换</span>
@@ -23,7 +24,8 @@ canvas是一个梦幻的标签，利用它配合JS控制，可以在页面上绘
 
 ### 基本的操作代码
 
-```JavaScript
+
+```javascript
 首先所有的操作都需要先声明绘制环境
 getContext('2d');
 这个方法会返回一个 CanvasRenderingContext2D 对象，该对象实现了一个画布所使用的大多数方法。
@@ -183,7 +185,8 @@ arc( x轴半径 , y轴半径 , 圆的半径 , 起始弧度 , 终止弧度 , 是�
 5.顺时针弧度为正，逆时针弧度为负。
 
 demo如下
-```JavaScript
+
+```javascript
 
 css html 上同
 
@@ -213,7 +216,8 @@ arcTo() : arcTo( 第一组坐标xy  第二组坐标xy 曲线半径 )
 
 如图我们可以很好的了解arcTo方法的含义
 结合上图，我们可以得到下列代码
-```JavaScript
+
+```javascript
 
 html css 上同
 
@@ -235,7 +239,8 @@ quadraticCurveTo( dx , dy , x1 , y1 ) 一个控制点的贝塞尔曲线
 也就是一个二阶的贝塞尔曲线
 
 (dx , dy)是控制点的坐标， (x1 , y1)是结束点的坐标
-```JavaScript
+
+```javascript
 demo1:
 css html 上同
 
@@ -255,7 +260,8 @@ html5还提供了另外一种绘制贝塞尔曲线的方法
 bezierCurveTo( dx1 , dy1 , dx2 , dx2 , x1 , y1 ) 两个控制点的贝塞尔曲线
 也就是一个三阶的贝塞尔曲线
 
-```JavaScript
+
+```javascript
 demo2:
 css html 上同
 
@@ -336,7 +342,8 @@ createPattern( 图片对象 背景平铺方式 )
 平铺方式和background相同:repeat 、 repeat-x 、 repeat-y 、 no-repeat
 
 demo:
-```JavaScript
+
+```javascript
 === html ===
 <canvas id = "Canvas1" width=400 height=400 ></canvas>
 
@@ -386,7 +393,8 @@ addColorStop( 渐变线端点值 , 添加的渐变线颜色 )
 通过它我可以在这条渐变线上面添加各种颜色的色段点。但是注意色段点不能超过一
 
 下面我们看一个demo
-```JavaScript
+
+```javascript
 
 css和html上同
 var oCanvas = document.querySelector('#Canvas1');
@@ -422,7 +430,8 @@ createRadialGradient( x1 ,y1 , r1 , x2 , y2 , r2 );
 但是放射性渐变会先过两条圆的切线,将位于矩形内的圆和两条切线组成的面积填充
 ![shootpic](/assets/img/RadialGradient.png)
 
-```JavaScript
+
+```javascript
 css和html上同
 
 var oCanvas = document.querySelector('#Canvas1');
@@ -471,7 +480,8 @@ textBaseline [默认是以英文书写方式对齐(alphabetic) 位置是离文�
 measureText(文本内容).width 获取文本内容的宽
 但是没有专门的方法获取高,具体的高实际上就是我们的字体大小
 
-```JavaScript
+
+```javascript
 demo:
 
 var oCanvas = document.querySelector('#Canvas1');
@@ -510,7 +520,8 @@ createImageData( 左上角基准点坐标 )
 
 我们可以先新建一个像素矩阵，然后通过修改data的rgba
 在put上去
-```JavaScript
+
+```javascript
 var oCanvas = document.querySelector('#Canvas1');
 var oGc = oCanvas.getContext("2d");
 
@@ -536,7 +547,8 @@ canvas里面也有通过坐标对像素进行操作的方法,其优点是这样�
 其最核心的一个语句就是
 `data[4*(y*w+x)]`
 
-```JavaScript
+
+```javascript
 
 //获取坐标点rgba函数
 function getXY( obj , x , y )
@@ -589,7 +601,8 @@ xy表示需要与操作的像素点 obj是需要操作的已获取的像素矩�
 
 [图片特效小框架](/assets/download/draweffect.markdown)
 
-```JavaScript
+
+```javascript
 
 调用方法：
 
@@ -633,7 +646,8 @@ lighter显示源图像 + 目标图像
 copy 显示源图像。忽略目标图像
 xor 去掉交集剩下的图形
 
-```JavaScript
+
+```javascript
 
 var oCanvas = document.querySelector('#Canvas1');
 var oGc = oCanvas.getContext("2d");

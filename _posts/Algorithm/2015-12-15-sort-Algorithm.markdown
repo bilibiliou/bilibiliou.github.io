@@ -11,7 +11,8 @@ keywords: 算法
 
 ## 直接插入排序
 
-```Javascript
+
+```javascript
 var arr = [49,38,65,97,76,13,27,78,34,12,64,1];
 
 	console.log("未排序前:"+arr);

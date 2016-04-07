@@ -12,7 +12,8 @@ keywords: 技术,mousewheel,视差滚动,滚轮滚动
 除IE6没有滚轮监听事件以外。
 
 从IE7到各种标准浏览器,都支持onmousewheel事件
-```JavaScript
+
+```javascript
 
 var oBody = document.getElementsByTagName("body")[0];
 
@@ -25,7 +26,8 @@ oBody.onmousewheel = function()
 
 但是火狐底下却不支持onmousewheel事件,他底下有另外一个DOMMouseScroll的事件代替
 而且DOMMouseScroll事件只能使用addEventListener来监听
-```JavaScript
+
+```javascript
 
 var oBody = document.getElementsByTagName("body")[0];
 
@@ -35,7 +37,8 @@ oBody.addEventListener("DOMMouseScroll" , function(){
 ```
 
 那么这样我们就可以试着这么写来兼容所有的浏览器(除了IE6)
-```JavaScript
+
+```javascript
 
 var oBody = document.getElementsByTagName("body")[0];
 
@@ -53,7 +56,8 @@ oBody.addEventListener("DOMMouseScroll" , function(){
 原来,IE7以下是不支持addEventListener事件监听的,所有会报错,影响其他的代码运行
 
 那么我们就需要做一些判断,当浏览器支持addEventListener事件的时候,才运行监听
-```JavaScript
+
+```javascript
 
 var oBody = document.getElementsByTagName("body")[0];
 
@@ -85,7 +89,8 @@ IE7+及其他标准浏览器支持event.wheelDelta 这个属性
 这里兼容的重点不是返回的数值或者是正负,我们主要是想要知道用户滚动的方向
 
 所以我们可以这样来写
-```JavaScript
+
+```javascript
 
 // 用一个变量来表示方向,向上滚动赋值true 向下滚动则是false
 

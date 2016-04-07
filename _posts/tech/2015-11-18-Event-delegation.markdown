@@ -25,7 +25,8 @@ keywords: 技术,事件委托,delegation
 (比如,如果登录的是一个vip用户,他拥有的权利会比一般用户多,对应的li也会增加)
 
 肯定有聪明的同学立马想到这一种方法
-```JavaScript
+
+```javascript
 
 ...
 
@@ -60,7 +61,8 @@ for(var i = 0 ; i<LiNum ; i++)
 
 所以现在就轮到今天的主角登场了,事件委托(event delegation)
 
-```JavaScript
+
+```javascript
 
 ...
 
@@ -132,7 +134,8 @@ if(....)
 
 jQuery 中主要是使用 delegate()和undelegate()来实现的
 
-```JavaScript
+
+```javascript
 
 $(".btns-list").delegate( "li" , "click" , function(ev){
 	
@@ -147,7 +150,8 @@ $(".btns-list").delegate( "li" , "click" , function(ev){
 
 如果我们需要阻止事件委托呢？
 
-```JavaScript
+
+```javascript
 
 $(".btns-list").undelegate();
 
