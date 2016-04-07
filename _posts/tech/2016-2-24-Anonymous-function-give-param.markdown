@@ -38,7 +38,7 @@ a.prototype = {
 	}
 }
 new a();
-{% endhighlight %}
+```
 
 这里我的目的是把构造器中的this传入c函数的匿名函数中，使其指向a
 
@@ -56,5 +56,5 @@ addEventListener( "click" , function(){
 	console.log( arguments ) // param1 .... and default params
 	console.log(this); 		 // you set pointer not window
 }.bind( "which You need pointer" , "param1" , "param2" .... ) , false);
-{% endhighlight %}
+```
 

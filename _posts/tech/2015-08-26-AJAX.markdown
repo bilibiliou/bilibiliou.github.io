@@ -60,7 +60,7 @@ console.log(2);
 
 同步 :进程堵塞的
 e.g
-{% highlight  JavaScript %}
+```Javascript
 <script src="jquery.js"></script>
 <script>
 window.onload = function()
@@ -77,7 +77,7 @@ window.onload = function()
 ## 最基本的AJAX
 
 直接上代码:
-{% highlight  JavaScript %}
+```Javascript
 
 //可以想象成虚拟的打开了一个输入Url的地址框
 try
@@ -881,7 +881,7 @@ IE6 : 同域使用 ActiveXObject() 跨域使用jsonp
 
 我们以前如果需要上传数据需要刷新
 
-{% highlight html %}
+```html
 
 <form method = "post" action = "提交到的后端脚本的路径(不是上传文件保存的路径)" enctype="multipart/form-data">
 <input type="file" name="一定要和后端约定好保持相同">
