@@ -1,4 +1,4 @@
-gems: [jekyll-paginate, jekyll-gist] 
+#gems: [jekyll-paginate, jekyll-gist] 
 highlighter: rouge
 markdown: kramdown 
 kramdown:
