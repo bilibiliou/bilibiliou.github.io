@@ -9,7 +9,7 @@ keywords: 技术,css3
 
 我们可以通过属性选择器,选出带有特定的属性的标签元素
 
-{% highlight html %}
+```html
 
 <style>
 	li{height:30px; border:1px solid #000; list-style:none; margin:5px;}
@@ -22,21 +22,21 @@ keywords: 技术,css3
 	<li lavender="ppt"  >ppt</li>
 </ul>
 
-{% endhighlight %}
+```
 
 想上面demo演示一样,我们可以通过同一种属性找到所对应的标签元素,并将他们全部变成红色
 
-{% highlight css %}
+```css
 	
 	li[lavender=owen]{background:yellow;}
 
-{% endhighlight %}
+```
 
 如果想修改特定的属性的标签样式,可以这么写
 
 每一个属性都是一个词列表,也就是说多个标签里面可以有多个属性名(以空格隔开),如果需要从这个列表中选择特定的属性可以使用~=来选出具有特定属性名的标签元素
 
-{% highlight html %}
+```html
 
 <style>
 	li{height:30px; border:1px solid #000; list-style:none; margin:5px;}
@@ -49,7 +49,7 @@ keywords: 技术,css3
 	<li lavender="ppt"  >ppt</li>
 </ul>
 
-{% endhighlight %}
+```
 
 注意:~= 和 = 的区别, = 是要属性名完全相同才可以选取, 而~=是属性中只要有这个属性就能选取
 
@@ -57,9 +57,9 @@ keywords: 技术,css3
 
 这样
 
-{% highlight css %}
+```css
 	li[lavender^=o]{background:yellow;}
-{% endhighlight %}
+```
 
 这样只要是o开头的属性名就能被获取到,如果有多个o开头的属性,可以再加上后面的字母直到完全和其他属性名不同为止
 
@@ -67,23 +67,23 @@ keywords: 技术,css3
 
 当然能获取第一个属性开头也就有获取第一个属性结尾的方法,这里我们使用$=
 
-{% highlight css %}
+```css
 	li[lavender$=n]{background:yellow;}
-{% endhighlight %}
+```
 
 这样通过$= 我们可以找到属性owen handsome结尾的e,然后将这个标签变成黄色
 
 我们还可以通过*= 找到含有特定字母的标签
 
 比如 zye 和 owne handsome 两个属性中都有e
-{% highlight css %}
+```css
 	li[lavender*=e]{background:yellow;}
-{% endhighlight %}
+```
 
 我们就可以*=e找到对应的两个标签
 
 最后一个也是最特殊的属性选择器,他规定只要是 `某个特定字母-` 和 `单独的某个特定字母` 开头的属性
-{% highlight html %}
+```html
 
 <style>
 	li{height:30px; border:1px solid #000; list-style:none; margin:5px;}
@@ -97,7 +97,7 @@ keywords: 技术,css3
 	<li lavender="b"  >b</li>
 </ul>
 
-{% endhighlight %}
+```
 
 如上面所示, 含有b-owen handsome 和 b的元素都会被获取到,然而有b开头的 bppt 和 g-zye都不会被获取到
 
@@ -105,7 +105,7 @@ keywords: 技术,css3
 
 除了通过属性选择html元素外,Css3还允许我们通过结构伪类来选择对应的元素
 
-{% highlight html %}
+```html
 
 <style>
 	p{height:30px; border:1px solid #000;}
@@ -127,20 +127,20 @@ keywords: 技术,css3
 	p5
 </p>
 
-{% endhighlight %}
+```
 
 例如这里所有的p标签,我们可以通过结构选择器来选择其中任意的p标签来实现不同的样式
-{% highlight css %}
+```css
 
 	p:nth-child(1){background:yellow;}
 	p:nth-child(2){background:red;}
 	p:nth-child(3){background:red;}
-{% endhighlight %}
+```
 
 
 
 p:nth-child(数字)   即所有p标签对应的父级的第几个p标签,这样理解起来很拗口,还是再举个例子吧
-{% highlight html %}
+```html
 <ul>
 	<p></p>
 	<li></li>
@@ -178,24 +178,24 @@ p:nth-child(数字)   即所有p标签对应的父级的第几个p标签,这样�
 </ul>
 
 就可以发现所有ul 下的p 标签效果出现了
-{% endhighlight %}
+```
 
 注意:这里结构性伪类选择器是以1开始计数的,不同于js
 
 同时,nth-child后面不单单填数字,还可以选择奇数(odd)和偶数(even)
 我们还可以让所有的奇数行变色
-{% highlight css %}
+```css
 
 	p:nth-child(odd){background:yellow;}
 
-{% endhighlight %}
+```
 
 偶数行
-{% highlight css %}
+```css
 
 	p:nth-child(even){background:pink;}
 
-{% endhighlight %}
+```
 
 结构性伪类选择器还支持n这么一个参数,n取0到正无穷.然后从n到∞开始遍历,知道遍历完成所有的标签
 我们这样我们就可以通过添加参数n的写法来获取奇偶数行了
@@ -203,24 +203,24 @@ p:nth-child(数字)   即所有p标签对应的父级的第几个p标签,这样�
 注意：元素获取是从1开始的,但是n却是从0开始的
 
 奇数行:
-{% highlight css %}
+```css
 
 	p:nth-child(2n-1){background:pink;}
 
-{% endhighlight %}
+```
 
 偶数行:
-{% highlight css %}
+```css
 
 	p:nth-child(2n){background:pink;}
 
-{% endhighlight %}
+```
 
 和nth-child所对应的还有一个nth-last-child 
 他俩唯一的区别就是nth-child从前往后数 , nth-last-child是从后往前数,其他的功能都相同
 
 还有一个nth-of-type,我们还是以刚刚那个例子为例
-{% highlight html %}
+```html
 <ul>
 	<p></p>
 	<li></li>
@@ -244,12 +244,12 @@ p:nth-child(数字)   即所有p标签对应的父级的第几个p标签,这样�
 但是,如果我们这里写的是nth-of-type的话,却能将每个ul下的第二个p结点找到并加样式
 说明,nth-of-type获取的不是每个ul下的第二个结点 而是根据选取的标签来匹配第几个元素
 
-{% endhighlight %}
+```
 
 
 
 但是,如过我们现在把所匹配的东西换成类呢？
-{% highlight html %}
+```html
 
 <ul>
 	<p class="abc"></p>
@@ -306,7 +306,7 @@ p:nth-child(数字)   即所有p标签对应的父级的第几个p标签,这样�
 那么我们就看出来了,如果是获取类的话,流程是:先根据不同父级的第一个类的标签获取父级,再从该父级中找到对应标签的第几个元素
 
 那么以此类推 nth-child再获取类的时候也是如此,都是根据第一个类来决定获取什么元素
-{% endhighlight %}
+```
 
 当然一样的 也有nth-last-of-type 和 nth-of-type寻取元素顺序相反,但其他功能相同
 
@@ -376,7 +376,7 @@ nth-child  和 nth-of-type 个人认为实在弄得太复杂,但是功能还是�
 
 :not(s)排除多个或者一个的样式
 
-{% highlight html %}
+```html
 <style>
 	h1:not(.not){background: red;}
 </style>
@@ -392,7 +392,7 @@ nth-child  和 nth-of-type 个人认为实在弄得太复杂,但是功能还是�
 </body>
 
 这里我给所有h1设置了红色,但是用:not()排除了所有带.not的h1标签
-{% endhighlight %}
+```
 
 ## 新增颜色模式
 
@@ -400,17 +400,17 @@ Css3里面新增了rgba颜色模式,可以允许我们单独调节调节单层�
 (不影响父级或子级的透明度)
 
 我们还可以使边框变成半透明
-{% highlight css %}
+```css
 	#box{ width:100px; height:100px; border:10px solid rgba(255,255,255,0.5);}
-{% endhighlight %}
+```
 
 ## 新增颜色HSLA模式
 
 HSLA模式即声明使用 色调(Hue) 、 饱和度(Saturation) 、 亮度(Lightness) 和 透明度(Alpha) 来设定颜色,使用和上文提到的rgba颜色模式相同
 
-{% highlight css %}
+```css
 	#box{ width:100px; height:100px; background:hsla(165, 35%, 50%, 0.2);}
-{% endhighlight %}
+```
 
 其中Hue衍生于色盘 0和360是红色，接近120的是绿色，240是蓝色。
 
@@ -427,15 +427,15 @@ Alpha 使用和上文相同
 text-shadow: x轴偏移 , y轴偏移 , 向外扩展度 , 颜色;
 
 通过文字阴影我们可以制作文字描边
-{% highlight css %}
+```css
 	text-shadow: 0 , 0 , 1px red;
-{% endhighlight %}
+```
 可替代 只有 -webkit- 支持的文字描边 -webkit-text-stroke: 宽度 颜色;
 
 我们可以对文字添加多层阴影
-{% highlight css %}
+```css
 	text-shadow: 0 0 5px red,5px 0 5px pink,0 5px 5px yellow;
-{% endhighlight %}
+```
 
 用逗号隔开可以添加多次阴影(多次添加阴影会影响浏览器性能)
 
@@ -468,9 +468,9 @@ direction: rtl 或者 ltr; (right to left 或者 left to right)
 这样我们需要一种既能隐藏超出文字,有不影响用户体验的方法,就可以加省略号来代替隐藏
 
 首先浏览器对超出文字的处理默认是超出自动换行的,我们需要将其设置为非默认隐藏
-{% highlight css %}
+```css
 	white-space:nowrap;
-{% endhighlight %}
+```
 然后overflow:hidden;将溢出的文字隐藏,这时候就会出现上文提到的问题
 
 这时候就使用css3给我们提供的 text-overflow:Ellipsis (显示省略号)
@@ -487,7 +487,7 @@ direction: rtl 或者 ltr; (right to left 或者 left to right)
 [onlinefontconverter](https://onlinefontconverter.com/)
 
 当我们获得不同格式的字体文件之后,我们只要在css中添加这样的代码
-{% highlight css %}
+```css
 @font-face {
     font-family: 'newfontstyle'; /*字体类名可以自定义*/
     src: url('需要引用的字体文件名.eot');
@@ -502,7 +502,7 @@ direction: rtl 或者 ltr; (right to left 或者 left to right)
 /*这样就可以直接用这种字体了*/
 
 h1{font-family:'newfontstyle';}
-{% endhighlight %}
+```
 
 但是中文字体比较麻烦,中文常用的字都有几千个,而英文就那26个字母
 这就产生了问题:
@@ -527,7 +527,7 @@ h1{font-family:'newfontstyle';}
 
 [demo](/assets/download/display-box.html)
 
-{% highlight html %}
+```html
 
 <style>
 	.wrap{
@@ -557,7 +557,7 @@ h1{font-family:'newfontstyle';}
 
 /*注:这里我将浏览器内核前缀省略了,因为我希望技术讨论应该注重精华*/
 
-{% endhighlight %}
+```
 
 
 这里有一个大的盒子,当我们给wrap。当我们给他设置`display:box;`的时候我们就可以对他进行弹性分配了
@@ -569,13 +569,13 @@ h1{font-family:'newfontstyle';}
 然后根据根据1:2:3的比例子级进行分割父级的空间
 
 但是如果我们将其中一个只设为固定宽高呢？
-{% highlight css %}
+```css
 	.sectionSecond{ 
 		background:purple;
 		width:200px;
 		height:100px;
 	}
-{% endhighlight %}
+```
 
 这样父级就会先为这个设置了固定宽高的子级分配宽高,然后在将剩下的空间根据flex期权来分配
 
@@ -622,7 +622,7 @@ horizontal(水平) | vertical(垂直) | inline-axis(内联轴) | block-axis(块�
 
 
 还有一个问题,在制作时钟转盘的时候,如果给父级添加了最小高度或最大高度,并且为父级设置了overflow:hidden;
-{% highlight css %}
+```css
 	body{ 
 		display:box;
 		box-align:center;
@@ -640,7 +640,7 @@ horizontal(水平) | vertical(垂直) | inline-axis(内联轴) | block-axis(块�
 			也会导致盒子被拉伸
 		*/
 	}
-{% endhighlight %}
+```
 在火狐下子级盒子会继承父级盒子的最小(最大)高度,导致整个盒子被拉伸
 但是在其他标准浏览器却没有类似的问题
 
@@ -658,7 +658,7 @@ Normal | Reverse(反向) | inherit
 
 ordinal(英:序数的)-group可以设定不同子级元素的初始位置
 
-{% highlight css %}
+```css
 	.sectionFirst{background:orange; 
 		box-flex:3;
 		box-ordinal-group:2
@@ -673,7 +673,7 @@ ordinal(英:序数的)-group可以设定不同子级元素的初始位置
 	}
 
 	/*同样的我还是省略浏览器内核前缀*/
-{% endhighlight %}
+```
 
 这样我们就可以随意打乱所布局好的子级元素,又不脱离文档流。
 
@@ -717,16 +717,16 @@ center 实现垂直方向水平居中
 box-shadow : 投影方式(选填) X轴偏移量 Y轴偏移量 阴影模糊半径 阴影扩展半径(选填) 颜色
 
 来看一个简单demo
-{% highlight css %}
+```css
 	box-shadow: 0 0 30px 30px pink;	
-{% endhighlight %}
+```
 
 [demo1](/assets/download/box-shadow1.html)
 
 如果我们要内阴影那么只要再加一个参数就ok了
-{% highlight css %}
+```css
 	box-shadow:inset 0 0 30px 30px pink;	
-{% endhighlight %}
+```
 
 如果不填写那么就是默认的外投影
 
@@ -738,11 +738,11 @@ box-shadow : 投影方式(选填) X轴偏移量 Y轴偏移量 阴影模糊半径
 
 box-felect 方向 投影和本影间距 渐变(选填)
 
-{% highlight css %}
+```css
 	box-felect: right;
 
 	/*省略了浏览器内核前缀*/	
-{% endhighlight %}
+```
 
 [demo1](/assets/download/box-reflect1.html)
 
@@ -750,10 +750,10 @@ box-felect 方向 投影和本影间距 渐变(选填)
 
 如果给倒影加上渐变呢？
 
-{% highlight css %}
+```css
 box-reflect:right 50px linear-gradient(left,rgba(0,0,0,1) 0,rgba(0,0,0,0) 100%);	
 /*省略了浏览器内核前缀*/
-{% endhighlight %}
+```
 
 [demo2](/assets/download/box-reflect2.html)
 
@@ -762,9 +762,9 @@ box-reflect:right 50px linear-gradient(left,rgba(0,0,0,1) 0,rgba(0,0,0,0) 100%);
 Css3中允许我们让盒子自由的拖拽(重新改变盒子的大小)
 
 只要给盒子加上resize属性 并且吧overflow：属性设置为auto 你就可以拖动右下角来改变盒子的宽高
-{% highlight css %}
+```css
  #box{width: 100px; height: 100px;  resize:both; overflow:auto;}
-{% endhighlight %}
+```
 
 [demo](/assets/download/resize1.html)
 
@@ -777,9 +777,9 @@ none 不拖拽
 
 textarea标签默认resize:both
 如果不希望用户玩坏你的页面最好清一下
-{% highlight css %}
+```css
  texttarea{ resize:none; }
-{% endhighlight %}
+```
 
 ## box-sizing
 
@@ -804,9 +804,9 @@ Css3中还提供分栏式的文字布局供我们使用
 
 这里我设定了让一大块的文字,分栏布局,每一栏的宽度是10em*16 = 160px
 这里我没有设置column-count,那么浏览器就会自主决定将文本分成合适的列数
-{% highlight css %}
+```css
  column-width: 10em;
-{% endhighlight %}
+```
 
 这里分栏式布局有这么几个属性
 column-width : 设置每一分栏的宽度,浏览器会自动决定文本分成合适的栏数
@@ -823,29 +823,29 @@ columns      : 分栏布局简写
 
 而且,Css3还提供了columns属性可以允许我们简写
 如果我们设定是宽度,只要我们给属性带上单位,那么column-width可以这么写
-{% highlight css %}
+```css
  columns: 10em;
 /* 等同于 column-width: 10em; */
-{% endhighlight %}
+```
 如果我们设定的是列数,只要我们不给属性单位,那么column-count就可以这么写
-{% highlight css %}
+```css
  columns: 2;
 /* 等同于 column-count: 2; */
-{% endhighlight %}
+```
 
 如果我们宽度列数都要设定,那么可以这样写
-{% highlight css %}
+```css
  columns: 2 10em;
 /* 等同于 column-count: 2; + column-width */
 /* 两个参数顺序可以互逆 */
-{% endhighlight %}
+```
 
 但是columns只支持column-count 和 column-width 的简写,其他属性还是要照常写
 
 如果我们要给分栏添加分栏线
-{% highlight css %}
+```css
 column-rule:3px solid #000;
-{% endhighlight %}
+```
 
 
 还要注意:本人在撰写这篇博文的时候,关于分栏式布局的全部样式还必须添加上浏览器内核前缀
@@ -861,71 +861,71 @@ column-rule:3px solid #000;
 
 如图,在Css3中圆角的实现是依靠,对一个角x轴偏移 和 y轴偏移来实现的
 
-{% highlight css %}
+```css
 	border-radius:5px;	
-{% endhighlight %}
+```
 
 这是最简单的实现4个角呈圆角,即令四个角的X、Y轴都偏移5像素
 
 在X、Y偏移量相同的情况下,如果我们想要让四个角的的X、Y偏移量不同,可以尝试这种写法
 
-{% highlight css %}
+```css
 	border-radius:5px 10px 15px 20px;	
-{% endhighlight %}
+```
 
 那么顺序是从左上→右上→右下→左下(顺时针排列)
 
 如果需要对角相同的话,可以尝试2个参数的写法
 
-{% highlight css %}
+```css
 	border-radius:10px 20px;	
-{% endhighlight %}
+```
 
 这样写的顺序是左上角和右上角 → 右上角和右下角
 
-{% highlight css %}
+```css
 	border-radius:10px 15px 20px;	
-{% endhighlight %}
+```
 
 如果是三个参数呢,那么就是从左上角 → 右上角和左下角 → 右下角
 
 以上的情况都是X、Y轴相同,但是角不同的例子
 如果需要细致的控制X Y轴的偏移度的话,可以这么写
 
-{% highlight css %}
+```css
 	border-radius:10px/20px;	
-{% endhighlight %}
+```
 
 这种情况就是,四个角都相同,都是X轴偏移10px , Y轴偏移20px
 
 两个参数、三个参数、四个参数的写法(所对应的角的顺序都是相同的)
 
 两个参数:
-{% highlight css %}
+```css
 	border-radius:10px 15px/20px 25px;	
-{% endhighlight %}
+```
 
 三个参数:
-{% highlight css %}
+```css
 	border-radius:10px 15px 20px/20px 25px 30px;	
-{% endhighlight %}
+```
 
 四个参数:
 
-{% highlight css %}
+```css
 	border-radius:10px 15px 20px 25px/20px 25px 30px 35px;	
-{% endhighlight %}
+```
 
 如果我们要画一个圆那么最简单的方法保证宽高相等
 
-{% highlight css %}
+```css
 	border-radius:50% 50%;	
-{% endhighlight %}
+```
 
 绘制一个椭圆的话
-{% highlight css %}
+```css
 	border-radius:50%/50%;	
-{% endhighlight %}
+```
 
 ## 边框背景
 
@@ -934,26 +934,26 @@ column-rule:3px solid #000;
 Css3中还提供了这么一个属性border-image来允许我们给边框添加自定义的图片
 如果单纯只设border-image的话,那么自定义的图片将会分配在盒子的四个角上
 
-{% highlight css %}
+```css
 	border-image:url(边框背景路径);	
-{% endhighlight %}
+```
 
 [demo](/assets/download/border-image-demo1.html)
 
 ### border-width
 
 这个边框的宽度直接设置就行
-{% highlight css %}
+```css
 	border-width:100px;	
-{% endhighlight %}
+```
 
 或者上下左右
-{% highlight css %}
+```css
 	border-top-width:100px;
 	border-bottom-width:100px;
 	border-left-width:100px;
 	border-right-width:100px;	
-{% endhighlight %}
+```
 
 但是如果我们要真正的将背景变成一个边框背景而不是四个角的背景的话
 我们需要对背景图片进行切割
@@ -971,17 +971,17 @@ Css3中还提供了这么一个属性border-image来允许我们给边框添加�
 ![picshoot](/assets/img/border-image1.gif)
 
 如图我们来写border-image最基本的语句
-{% highlight css %}
+```css
 	border-image:url(边框背景路径) 从左位移n个像素竖直切割 从上位移n个像素水平切割
 	从右位移n个像素竖直切割 从下位移n个像素水平切割 四边延伸方法	
-{% endhighlight %}
+```
 
 切割方向也是采用顺时针的方式
 
 或者两重参数
-{% highlight css %}
+```css
 	border-image:url(边框背景路径) 上下两边切 左右两边切 四边延伸方法	
-{% endhighlight %}
+```
 
 当进行完图片分割后,就能看到成形的边框背景了
 (这里说明一点,当没有设置四边延伸方法的时候,默认的方式是拉伸,所以demo2中四边被拉伸了)
@@ -1007,10 +1007,10 @@ Css3中还提供了这么一个属性border-image来允许我们给边框添加�
 
 [demo](/assets/download/border-colors.html)
 
-{% highlight css %}
+```css
 border-top-colors: red pink yellow green;
 /* 可以叠加n种颜色,可重复,颜色之间用空格隔开 */
-{% endhighlight %}
+```
 
 还有注意是colors 不是 color
 
@@ -1027,30 +1027,30 @@ CSS3 Gradient 分为 linear-gradient（线性渐变）和 radial-gradient（径�
 如果不写第一个参数,那么默认方向是从上到下
 
 先写一个简单的从顶向下的渐变
-{% highlight css %}
+```css
 .box{background-image:linear-gradient:top,red,blue;}
 /* 从上到下由红色渐变成蓝色 */
-{% endhighlight %}
+```
 
 [demo](/assets/download/linear-gradient1.html)
 
 当然如果是左上呢
-{% highlight css %}
+```css
 .box{background-image:linear-gradient:top left,red,blue;}
 /* 第二个方向用空格隔开 */
-{% endhighlight %}
+```
 
 那么我们再看deg(多数时候使用的都是deg,因为比较自由),当0deg的时候方向是从左到右
-{% highlight css %}
+```css
 .box{background-image:linear-gradient:30deg,red,blue;}
 /* 正deg从X轴逆时针旋转,负deg从X轴顺时针旋转 */
-{% endhighlight %}
+```
 
 第一个参数之后就全部是渐变的颜色,这个颜色什么时候开始渐变的参数了
 
-{% highlight css %}
+```css
 .box{background-image:linear-gradient(45deg,red 160px,blue 480px,yellow 960px);}
-{% endhighlight %}
+```
 
 [demo](/assets/download/linear-gradient2.html)
 
@@ -1068,9 +1068,9 @@ CSS3 Gradient 分为 linear-gradient（线性渐变）和 radial-gradient（径�
 线性渐变里面还支持一个repeating-linear-gradient平铺渐变
 
 只要在渐变的前面加上repeating就可以实现重复渐变的效果
-{% highlight css %}
+```css
 .box{background-image:repeating-linear-gradient(45deg,red 160px,blue 480px,yellow 960px);}
-{% endhighlight %}
+```
 
 [demo](/assets/download/linear-gradient3.html)
 
@@ -1081,33 +1081,33 @@ CSS3 Gradient 分为 linear-gradient（线性渐变）和 radial-gradient（径�
 径向渐变内容大致和线性渐变内容差不多,但有不同,还有就是兼容性没有线性渐变好,需要加浏览器内核前缀。
 我们先来看下一个简单的小[demo](/assets/download/radial-gradient1.html)
 
-{% highlight css %}
+```css
 .box{background-image:radial-gradient(red,blue);}
-{% endhighlight %}
+```
 
 如果不给径向渐变设置方向,那么它的默认点就是在盒子的中心向两边渐变
 
 和线性渐变一样,径向渐变的第一个参数也是设置他的渐变方向,但是和线性渐变不同的是,径向渐变没有deg单位了,只支持英文关键字、坐标或者百分比
 
 比如说左上角
-{% highlight css %}
+```css
 .box{background-image:radial-gradient(left top,red,blue);}
-{% endhighlight %}
+```
 
 坐标和盒子模型的坐标是一样的,百分比也是相对于盒子的尺寸来决定的
 
 坐标写法支持1到2个参数,如果只有一个参数那么X轴根据参数来,Y轴则是原来的盒子高度的一半
-{% highlight css %}
+```css
 .box{background-image:radial-gradient(160px,red,blue);}
-{% endhighlight %}
+```
 什么意思呢？一开始如果不设置任何参数,那么默认渐变的起点是盒子的中心点,现在只写一个参数,则只改变了X的坐标,但是Y轴还是原来的位置也就是盒子高度的一半
 
 [demo](/assets/download/radial-gradient2.html)
 
 两个坐标就是分别设置XY的坐标了
-{% highlight css %}
+```css
 .box{background-image:radial-gradient(160px 160px,red,blue);}
-{% endhighlight %}
+```
 
 [demo](/assets/download/radial-gradient3.html)
 
@@ -1120,17 +1120,17 @@ circle  圆
 
 默认是椭圆,我们可以把它设置成圆
 
-{% highlight css %}
+```css
 .box{background-image:radial-gradient(160px 160px,circle,red,blue);}
-{% endhighlight %}
+```
 
 [demo](/assets/download/radial-gradient4.html)
 
 我们还可以直接为他的形状设置大小,其中100px是椭圆的a 20px是椭圆的b,如果要是圆的话只要设置相同就可以了
 
-{% highlight css %}
+```css
 .box{background-image:radial-gradient(160px 160px,100px 20px,red,blue);}
-{% endhighlight %}
+```
 
 [demo](/assets/download/radial-gradient5.html)
 
@@ -1144,9 +1144,9 @@ farthest-side
 farthest-corner
 contain or cover
 
-{% highlight css %}
+```css
 .box{background-image:radial-gradient(closest-side,100px 20px,red,blue);}
-{% endhighlight %}
+```
 
 这个也用的不多,大家有兴趣可以试试
 
@@ -1158,9 +1158,9 @@ contain or cover
 
 background-size:宽度 高度
 
-{% highlight css %}
+```css
 .box{background-size:160px 60px;}
-{% endhighlight %}
+```
 
 还可以调两个值
 
@@ -1169,12 +1169,12 @@ cover 将整个盒子填满(如果宽度和高度不够大则进行等比放大,
 contain 完全填入整个盒子(如果背景比盒子小则不处理,如果比盒子大泽进行等比缩小)
 
 如果一个盒子有多个背景,不同背景的大小用逗号隔开
-{% highlight css %}
+```css
 .box{
 		background:url(1.png),url(2.png);
 		background-size:160px 60px,contain;
 	}
-{% endhighlight %}
+```
 
 ### background-origin
 
@@ -1200,11 +1200,11 @@ content-box： 只content区域背景。 [demo](/assets/download/background-clip
 ## mask
 
 我们可以使用一个背景图片(一定要支持透明的png)来作为一个遮罩层来遮罩背景
-{% highlight css %}
+```css
 .box{
 		url(mask.png) no-repeat 30px 20px;
 	}
-{% endhighlight %}
+```
 用法和Background差不多
 
 ## transition
@@ -1234,11 +1234,11 @@ cubic-bezier 贝塞尔曲线( x1, y1, x2, y2 )
 
 transition: 过渡的时间 延迟执行时间 参与过度的属性 过渡的形式,...
 
-{% highlight css %}
+```css
 .box{
 		transition:1s width ease-out,2s 1s height ease-in-out, 3s background;
 	}
-{% endhighlight %}
+```
 
 [demo](/assets/download/transition2.html)
 
@@ -1257,15 +1257,15 @@ transition: 过渡的时间 延迟执行时间 参与过度的属性 过渡的�
 ### transition事件
 
 我们可以监听过渡动画,结束之后触发TransitionEnd事件
-{% highlight Javascript %}
+```JavaScript
 obj.addEventListener('transitionend',fn,false);
-{% endhighlight %}
+```
 
 而这个事件一定要使用removeEventListener来移除
 
-{% highlight Javascript %}
+```JavaScript
 obj.removeEventListener('transitionend',fn,false);
-{% endhighlight %}
+```
 
 其中fn为回调函数
 
@@ -1275,10 +1275,10 @@ obj.removeEventListener('transitionend',fn,false);
 
 ### 旋转rotate
 
-{% highlight css %}
+```css
 .box{trasition:1s; }
 .box:hover{ transform:rotate:(45deg);}
-{% endhighlight %}
+```
 
 当鼠标移动到盒子上时,盒子就会从中心点顺时针旋转45deg
 
@@ -1297,10 +1297,10 @@ obj.removeEventListener('transitionend',fn,false);
 
 
 如果我们像这样给其设置X Y的值
-{% highlight css %}
+```css
 .box{trasition:1s; }
 .box:hover{ transform:rotate:(45deg); transform-origin:20% 30%;}
-{% endhighlight %}
+```
 
 那么就会根据设置的值计算出相应的旋转点,来进行旋转
 
@@ -1309,9 +1309,9 @@ obj.removeEventListener('transitionend',fn,false);
 
 我们现在可以再保证盒子还是四边形的情况下随意的改变他的形状了
 只要通过`transform`的斜切就能实现
-{% highlight css %}
+```css
 .box{transform:skewX(45deg); }
-{% endhighlight %}
+```
 
 [demo](/assets/download/transform3.html)
 
@@ -1321,17 +1321,17 @@ obj.removeEventListener('transitionend',fn,false);
 
 如果我们使用skew就能在两个方向同时进行斜切了
 
-{% highlight css %}
+```css
 .box{transform:skew(45deg,30deg); }
-{% endhighlight %}
+```
 
 ### scale缩放
 
 我们还可以使用scale来任意的缩放盒子的宽高
 用处和zoom很像
-{% highlight css %}
+```css
 .box{transform:scale(.5); }
-{% endhighlight %}
+```
 
 这样就能使盒子缩小一倍
 
@@ -1350,9 +1350,9 @@ obj.removeEventListener('transitionend',fn,false);
 
 translate和上面几个属性都一样,也支持XY单方面或者双方面
 
-{% highlight css %}
+```css
 .box{transform:translate(-100em,200em); }
-{% endhighlight %}
+```
 
 这样就可以使盒子像左下方移动了,移动的基准点也是盒子的左上角
 
@@ -1363,17 +1363,17 @@ translate和上面几个属性都一样,也支持XY单方面或者双方面
 ### transform的一些问题
 
 如果有多个需要变换的属性,可以这样连写
-{% highlight css %}
+```css
 .box{transform:rotate(45deg) scale(.2) skew(45deg) translate(-100em,200em); }
-{% endhighlight %}
+```
 
 还有一个就是执行顺序问题,先写的样式会先执行,如果是想scale 和 skew 会改变盒子结构和基准点的属性,那么后写的rotate 或者 translate的执行效果会不相同
 
 例如:
-{% highlight css %}
+```css
 body:hover .box:nth-of-type(1){ transform:translateX(100px) scale(0.5);}
 body:hover .box:nth-of-type(2){ transform:scale(0.5) translateX(100px);}
-{% endhighlight %}
+```
 
 [demo](/assets/download/transform6.html)
 
@@ -1401,10 +1401,10 @@ Css3甚至还推出了3D变换场景,
 包括:3D旋转和位移,哦对了还有一个Perspective(景深透视),有点美术功底的同学当然不难了解了
 
 当我们给一个元素设置了`transform-style:preserve-3d`后
-{% highlight css %}
+```css
 perspective:500px;             /*景深透视*/
 transform-style:preserve-3d;  /*3D场景*/
-{% endhighlight %}
+```
 
 就可以对其下的子元素进行3D变换了(注意transform-style:preserve-3d只会影响子元素)
 
@@ -1440,7 +1440,7 @@ Z轴旋转也就是和我们在2D环境下旋转盒子是一样的
 
 布局方面一般怎么布局3D场景呢？
 
-{% highlight html %}
+```html
 <舞台盒子>
 	<3D场景盒子>
 		<进行3D切换的图片1>
@@ -1449,7 +1449,7 @@ Z轴旋转也就是和我们在2D环境下旋转盒子是一样的
 		<进行3D切换的图片4>
 	</3D场景盒子>
 </舞台盒子>
-{% endhighlight %}
+```
 
 景深perspective 一定要给舞台盒子设置,也就是用户从浏览器看3D场景的距离,
 transform-style:preserve-3d 3D场景给3D场景设置,并且要设置好转动轴的坐标
@@ -1466,9 +1466,9 @@ transform-style:preserve-3d 3D场景给3D场景设置,并且要设置好转动�
 正常如果图片不是很大一般都是800px
 
 然后设置整个3D场景盒子的旋转轴坐标使其旋转点居中
-{% highlight css %}
+```css
 transform-origin:center center -1492.8px;
-{% endhighlight %}
+```
 
 让他居中,然后给每个图片设置各种3D变换
 最后在给每张图片添加点击事件,这样就算完事了
@@ -1483,7 +1483,7 @@ transform-origin:center center -1492.8px;
 ## animation
 
 Css3 实现动画的第二大属性,实现是通过添加动画帧来实现
-{% highlight css %}
+```css
 @keyframes show1{
 	0%{
 		background:red;
@@ -1495,21 +1495,21 @@ Css3 实现动画的第二大属性,实现是通过添加动画帧来实现
 		background:pink;
 	}
 }
-{% endhighlight %}
+```
 
 当我们在Css3中添加如上动画帧之后就可以在盒子的样式中调用了
-{% highlight css %}
+```css
 .show1{animation:2s show1 linear;}
-{% endhighlight %}
+```
 
-{% highlight Javascript %}
+```JavaScript
 var oBox = document.querySelector(".box");
 
 oBox.onclick = function()
 {
 	oBox.className = "box show1";
 }
-{% endhighlight %}
+```
 
 这样就能看到如下效果[demo](/assets/download/animation_box.html)
 
@@ -1527,9 +1527,9 @@ animation: 动画总时间 延迟时间 调用的动画帧名 运动形式 重�
 这是因为Css3默认动画结束以后返回这个盒子原本的样式
 
 如果我们需要让他保持结束后的状态,只需要添加forwards就可以了
-{% highlight Javascript %}
+```JavaScript
 .show1{animation:2s show1 forwards linear;}
-{% endhighlight %}
+```
 
 （1）none：默认值，回到动画没开始时的状态。
 （2）backwards：让动画回到第一帧的状态。
@@ -1553,16 +1553,16 @@ alternate-reverse: 反序跳次播放
 我们还可以实时的控制动画的暂停和播放,可以通过修改animation-play-state来实现
 
 当盒子添加了
-{% highlight css %}
+```css
 animation-play-state: paused;
-{% endhighlight %}
+```
 
 那么当前的动画就会暂停
 
 如果给盒子添加了
-{% highlight css %}
+```css
 animation-play-state: running;
-{% endhighlight %}
+```
 
 那么当前暂停的动画就会继续播放
 
@@ -1571,7 +1571,7 @@ animation-play-state: running;
 使用js来控制这个盒子的类,Css3允许我们通过js来监控动画是否完成
 这里就得介绍animationEnd事件了
 
-{% highlight Javascript %}
+```JavaScript
 var oBox = document.querySelector(".box");
 		var boff = true;
 		oBox.onclick = function()
@@ -1594,10 +1594,10 @@ var oBox = document.querySelector(".box");
 			oBox.className = "box show2";
 		}
 },false)
-{% endhighlight %}
+```
 
 然后我们在添加一个show2的动画帧
-{% highlight css %}
+```css
 @keyframes show2{
 	0%{
 		background:pink;
@@ -1610,7 +1610,7 @@ var oBox = document.querySelector(".box");
 	}
 }
 .show2{animation:1s show2 linear;}
-{% endhighlight %}
+```
 
 这样就能使盒子有个良好的过度了[demo](/assets/download/animation_box2.html)
 
@@ -1648,15 +1648,15 @@ var oBox = document.querySelector(".box");
 那么怎么告诉浏览器,哪里需要用到GPU硬件加速,哪里不用
 那么使用Css3 的 will-change属性
 
-{% highlight css %}
+```css
 will-change:transform,opacity;
 /*多个样式以逗号隔开*/
-{% endhighlight %}
+```
 
 这样,当一个盒子里面有这么些变化的时候,就会启用GPU来加速页面渲染的效果
 
 还有一点,就是我们需要给浏览器充足的时间来完成从CPU到GPU的转变
-{% highlight css %}
+```css
 
 也就是说我们要以这种写法
 .box{will-change:transform,transition;}
@@ -1668,12 +1668,12 @@ will-change:transform,opacity;
 	transform:rotateY(45deg);
 	transition:1s;
 }
-{% endhighlight %}
+```
 
 如果我们要关闭will-change,就可以使用js监听来清除
 
 例如一个点击触发的动画效果
-{% highlight Javascript %}
+```JavaScript
 var el = document.getElementById('element');
 
 el.addEventListener('mouseenter', hintBrowser);
@@ -1686,7 +1686,7 @@ function hintBrowser() {
 function removeHint() {
     this.style.willChange = 'auto';
 }
-{% endhighlight %}
+```
 
 你还可以在[CSS will-change 属性](http://www.cnblogs.com/yuzhongwusan/p/4186405.html)
 得到更详细的关于CSS will-change的说明
@@ -1696,16 +1696,16 @@ function removeHint() {
 有些时候我们制作了一些按钮类的特效,在测试的时候会触发选中文本的效果,弄得一大块蓝整个UI都不好不好的了。
 
 要解决这个方法可以使用JS来解决
-{% highlight Javascript %}
+```JavaScript
 onselectstart = function(){
 	return false;
 }
-{% endhighlight %}
+```
 
 但是现在CSS3推出了一个新的方法userSelect,我们可以直接设置为none就可以不让用户选中文本
-{% highlight css %}
+```css
 user-select:none;
-{% endhighlight %}
+```
 
 除了none以外,user-select还支持如下几个值
 text:可以选择文本(缺省)
@@ -1719,9 +1719,9 @@ element:可以选择文本，但选择范围受元素边界的约束
 Css3 还可以使用calc()来计算各种属性的值.
 
 例如
-{% highlight css %}
+```css
 box{ width:calc(100% + 20px);}
-{% endhighlight %}
+```
 
 这里100%就先获取父级的宽度,然后在加20px,calc()支持不同单位的自动换算,也就是说我们以后工作完全可以把计算的任务大部分丢给calc
 
@@ -1774,10 +1774,10 @@ drop-shadow			阴影     (类似box-shadow,为图片添加阴影)
 
 其他所有的效果都是采用 filter:属性名(百分比对应的小数值)来实现的,例如
 
-{% highlight css %}
+```css
 .img{filter:saturate(0.5);}
 /*设置饱和度为一半*/
-{% endhighlight %}
+```
 
 现在滤镜的兼容性依然很差所以还是要添加上浏览器内核前缀
 

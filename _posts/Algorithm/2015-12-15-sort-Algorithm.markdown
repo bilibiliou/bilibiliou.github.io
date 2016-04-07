@@ -11,7 +11,7 @@ keywords: 算法
 
 ## 直接插入排序
 
-{% highlight Javascript %}
+```Javascript
 var arr = [49,38,65,97,76,13,27,78,34,12,64,1];
 
 	console.log("未排序前:"+arr);
@@ -32,7 +32,7 @@ var arr = [49,38,65,97,76,13,27,78,34,12,64,1];
 	}
 
 	console.log("直插排序后" + arr);
-{% endhighlight %}
+```
 
 第一重循环：
 用temp取数列中的第二个数，i对应temp的索引，i不断每次累加，累加次数为每次排序操作次数，即

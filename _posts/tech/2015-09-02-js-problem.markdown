@@ -8,11 +8,11 @@ keywords: 技术,Javascript,缺省值,JSON
 ## 形式参数缺省
 
 假设我们在开发中需要先封装一个函数
-{% highlight JavaScript %}
+```JavaScript
 
 function tool( x , y , z )
 
-{% endhighlight %}
+```
 有三个参数，分别对应三个不同的功能
 
 但是如果在一些情况下
@@ -30,9 +30,9 @@ tool( 2 , '' , 1)
 
 可能有人会想，直接不传行不行
 也就是这样
-{% highlight JavaScript %}
+```JavaScript
 tool( 2 , 1 )
-{% endhighlight %}
+```
 
 这样的结果导致的就是
 不需要的参数y = 1
@@ -44,7 +44,7 @@ tool( 2 , 1 )
 
 ## 使用JSON对象解决形式参数缺省问题
 
-{% highlight JavaScript %}
+```JavaScript
 
 假设我这里只要填x 和 z的值
 
@@ -72,7 +72,7 @@ function tool( obj )
 
 
 }
-{% endhighlight %}
+```
 
 ## 缺省值
 

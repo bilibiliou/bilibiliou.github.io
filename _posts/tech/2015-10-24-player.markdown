@@ -13,14 +13,14 @@ keywords: 技术,滚动条
 需要下载到本地,修改视频源进行播放
 
 使用方法:
-{% highlight html %}
+```html
 <video poster="./demopic/aqy-player/aqy.jpg" >
 	<!-- 添加本地的视频文件路径 -->
 	<source src="在这里添加你本地的视频路径(注意将window的反斜杠修改成正斜杠)">
 </video>
 
 然后回车就能播放
-{% endhighlight %}
+```
 
 <a href="http://numerhero.github.io/assets/download/player-demo.rar" target="_blank">下载到本地</a>
 

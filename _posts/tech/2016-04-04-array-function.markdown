@@ -17,7 +17,7 @@ Js里我们可以使用数组模拟栈和队列，使用数组暂存，
 
 使用for或while的遍历方法无非这几种
 
-{% highlight Javascript %}
+```Javascript
 var array = [1,2,3,4,5]
 
 for(var i = array.length - 1 ; i > 0 ; i--) {
@@ -36,19 +36,19 @@ for(var i = 0 , e; e = array[i++] ; ) {
     // do something
 }
 // while方法省略，任何for都能转化成while写法
-{% endhighlight %}
+```
 
 但是你对数组旗下的多种方法了解吗？
 
 如果你的答案是否定的，让我们一起来了解一下吧
 
 首先我们可以console.log看一下数组下面有多少种方法
-{% highlight Javascript %}
+```Javascript
 console.log(Array.prototype);
-{% endhighlight %}
+```
 
 很多吧，当然有些我们已经了解了很多了
-{% highlight Javascript %}
+```Javascript
 push
 
 pop
@@ -74,12 +74,12 @@ lastIndexOf
 toString 和 toLocaleString
 
 Array.isArray
-{% endhighlight %}
+```
 
 还记得怎么用么？
 
 好了如果你们都记得我们再看看这些(忘了去查Js 高级程序设计吧)
-{% highlight Javascript %}
+```Javascript
 forEach
 
 map
@@ -93,13 +93,13 @@ every
 reduce
 
 reduceRight
-{% endhighlight %}
+```
 
 有点懵了对吧
 
 好我们再看看这些
 
-{% highlight Javascript %}
+```Javascript
 Array.from
 
 Array.of
@@ -119,7 +119,7 @@ keys
 entires
 
 Symbol
-{% endhighlight %}
+```
 
 如果看到这里你都懂，就可以直接跳了
 
@@ -132,16 +132,16 @@ Symbol
 像在什么地方呢? 
 
 ① 首先语法上
-{% highlight Javascript %}
+```Javascript
 arr.function(callback[, thisArg]) // 一个任意的函数 和 环境转项 
-{% endhighlight %}
+```
 
 ② 其次是 参数传递上 都含有value , idx , array 三个参数（当然形参可以随意大家习惯咯）
-{% highlight Javascript %}
+```Javascript
 arr.function(function ( value , idx , array ) {
     
 }[, thisArg])
-{% endhighlight %}
+```
 
 caveat: jQ 的 `$.each` 的传参顺序是 idx , value , array 切记切记
 
@@ -154,7 +154,7 @@ caveat: jQ 的 `$.each` 的传参顺序是 idx , value , array 切记切记
 我们先来看forEach
 forEach 方法会传递三个参数 value , idx ,array
 
-{% highlight Javascript %}
+```Javascript
 [1,2,3].forEach(function( value , idx , array ) {
     console.log( value , idx , array  ) 
 });
@@ -162,10 +162,10 @@ forEach 方法会传递三个参数 value , idx ,array
 // 1 0 [1,2,3]
 // 2 1 [1,2,3]
 // 3 2 [1,2,3]
-{% endhighlight %}
+```
 
 这样我们就可以通过传递过来的值做些事儿了
-{% highlight Javascript %}
+```Javascript
 // demo1
 var c = 0;
 [1,2,3].forEach(function( value , idx , array ) {
@@ -244,14 +244,14 @@ name.forEach(function ( value , idx , array ) {
     }
 },tools); // 第二个参数改变了 forEach内部的this指向
 
-{% endhighlight %}
+```
 
 认真看完上面三个例子，应该能掌握的差不多了吧？
 
 在说说看 forEach的一个特点吧
 forEach不允许返回值
 
-{% highlight Javascript %}
+```Javascript
 var list = [1,2,3];
 
 var list2 = [];
@@ -261,7 +261,7 @@ list2.push( list.forEach(function ( value , idx , array ) {
 }) );
 
 console.log(list2) // undefined
-{% endhighlight %}
+```
 
 原因大家应该能理解， 匿名函数的返回值 并没有被forEach函数返回出来
 
@@ -274,7 +274,7 @@ Map 函数这里理解起来，并不是地图的意思，而是`映射`
 具体的意思就是`将每一个数组中的值遍历，进行计算，如果需要返回计算好的结果，那么map函数就会新生成一个数组，将结果一一映射到这个新生成的数组中，然后返回`
 
 来看看这个栗子
-{% highlight Javascript %}
+```Javascript
 var list = [1 , 2 , 3 , 4];
 
 var arr = list.map(function( value , idx , array ) {
@@ -283,7 +283,7 @@ var arr = list.map(function( value , idx , array ) {
 
 console.log({}.toString.call(list)) // [Object Array]
 console.log(arr) // [1,4,9,16]
-{% endhighlight %}
+```
 
 除此之外，map函数和forEach函数的其他功能是`完全一样`的
 
@@ -302,7 +302,7 @@ filter 大家应该都清楚是过滤，没错，这个函数也确实是起到�
 map函数的返回值是一个数组
 而filter函数的返回值也是一个数组，这个数组会过滤掉所有为非或空的值（caveat: 空对象和空数组并不会被过滤，但是空字符串则会被过滤）
 
-{% highlight Javascript %}
+```Javascript
 var list = [0 , undefined , "" , null , NaN , false , true , {} , [] ,"Owen" , 1 ];
 
 var arr = list.filter(function( value , idx , array ) {
@@ -310,7 +310,7 @@ var arr = list.filter(function( value , idx , array ) {
 });
 
 console.log(arr) // [true, Object, Array[0], "Owen", 1];
-{% endhighlight %}
+```
 
 由此可见filter是在map的基础上再增添了一个过滤的功能
 
@@ -321,7 +321,7 @@ console.log(arr) // [true, Object, Array[0], "Owen", 1];
 
 先来看看怎么用的
 
-{% highlight Javascript %}
+```Javascript
 
 var list = ["" , NaN , null , 1 , [] ,{}];
 console.log( list.every( function ( value ) {
@@ -333,7 +333,7 @@ console.log( list.some( function ( value ) {
     return value;
 }) ); // true
 
-{% endhighlight %}
+```
 
 这两个函数会捕获每一个遍历后return的返回值，然后进行判断
 
@@ -345,7 +345,7 @@ caveat : 如果没有写 `return` 这个关键字，那么默认返回的就是f
 
 可能读到这里很多人已经一脸懵逼了，那么下面我再详细讲讲
 
-{% highlight Javascript %}
+```Javascript
 if(
     name.some(function ( value , idx , array ) {
         return /^Owen$/.test(value);
@@ -353,11 +353,11 @@ if(
 ) {
     alert("这name表里面有个叫Owen的大逗比");    
 }
-{% endhighlight %}
+```
 
 看some函数会将匿名函数所return的所有值转为boolean类型的值，并收集起来，只要其中有一个是true 那么就返回 true ，如果都木有，那么就返回false
 
-{% highlight Javascript %}
+```Javascript
 var list = [1 , 2 , 3 , 4 , 0];
 
 if(
@@ -367,7 +367,7 @@ if(
 ) {
     alert("表里有个0");    
 }
-{% endhighlight %}
+```
 
 聪明的同学应该立马就能猜到 every 则是要求全部都是正确的true 就返回true咯
 
@@ -376,7 +376,7 @@ if(
 基本功能大家应该都懂了，那么我们再看看 every 特有的一个特性 
 
 还是上文遍历的例子 
-{% highlight Javascript %}
+```Javascript
 var familyinfo = [{
     "name" : "甲",
     "age"  : 30,
@@ -423,7 +423,7 @@ function travel (value , idx , array) {
 
 // 甲
 // 甲娃1
-{% endhighlight %}
+```
 
 很明显可以看到，当我把遍历方法换成 every 的时候 就无法全部遍历了
 
@@ -432,7 +432,7 @@ function travel (value , idx , array) {
 至于为什么是false ， 上文已经提到了，因为没有写 return ，默认就是false
 
 如果加上了 `return true`
-{% highlight Javascript %}
+```Javascript
 
 function travel (value , idx , array) {
     console.log( value.name );
@@ -452,7 +452,7 @@ function travel (value , idx , array) {
 // 丙娃1
 // 丙孙1
 
-{% endhighlight %}
+```
 又可以正常遍历了 
 
 ### indexOf & lastIndexOf
@@ -461,7 +461,7 @@ function travel (value , idx , array) {
 
 现在数组中也支持indexOf啦
 
-{% highlight Javascript %}
+```Javascript
 var list = [1,2,3];
 
 console.log( list.indexOf(2) ) // 1
@@ -470,10 +470,10 @@ console.log( list.indexOf(2) ) // 1
 var list = [1,1,1,2];
 
 console.log( list.indexOf(1) ) // 0 匹配多个值，返回0
-{% endhighlight %}
+```
 
 
-{% highlight Javascript %}
+```Javascript
 var list = [NaN , undefined , null , "" , [] , {}];
 console.log( list.indexOf(NaN))        // -1  
 console.log( list.indexOf(undefined) ) // 1
@@ -481,7 +481,7 @@ console.log( list.indexOf(null))       // 2
 console.log( list.indexOf([]))         // -1
 console.log( list.indexOf({}))         // -1
 console.log( list.indexOf(""))         // 3
-{% endhighlight %}
+```
 
 第二个参数 和字符串一样，设置其实查找位置（我就不演示了）
 
@@ -491,7 +491,7 @@ console.log( list.indexOf(""))         // 3
 
 先来个小demo
 
-{% highlight Javascript %}
+```Javascript
 var list = [1,2,3,4];
 var r = list.reduce( function ( prev , next , idx , array ) {
     console.log(idx);
@@ -504,7 +504,7 @@ console.log(r);
 // 3
 
 // 10
-{% endhighlight %}
+```
 
 由上面的实验可知，reduce 也是循环，不过和上面的循环都有些不同，它是循环 数组长度 - 1 次 且循环的开始的起点是数组的第二位开始
 
@@ -523,7 +523,7 @@ console.log(r);
 
 那让我们再看看如果一个数组中只有一个值的时候，会发生怎样的情况
 
-{% highlight Javascript %}
+```Javascript
 var list = [777];
 var r = list.reduce( function ( prev , next , idx , array ) {
     console.log("Owen love Zyz");
@@ -535,7 +535,7 @@ var r = list.reduce( function ( prev , next , idx , array ) {
 console.log(r);
 
 // 777
-{% endhighlight %}
+```
 
 很明显，当数组中只有一个值的时候, `函数的任何代码都不会执行`，直接返回 初值 777 ，无论你做了什么改动
 
@@ -543,7 +543,7 @@ console.log(r);
 
 那让我们再看看，如果数组中取其他类型的值会咋样
 
-{% highlight Javascript %}
+```Javascript
 var name = ["Owen" , "Zyz" , "Luffy"];
 
 console.log(name.reduce(function ( prev , next , idx , array ) {
@@ -566,11 +566,11 @@ var re = arr.reduce( function ( prev , next , idx , array ) {
 
 console.log(re) // NaNowen
 console.log( {}.toString.call(re) ) // [object String]
-{% endhighlight %}
+```
 
 使用reduce 还能让我们轻松实现二维数组扁平化
 
-{% highlight Javascript %}
+```Javascript
 var array = [
     [1,2,3],
     [4,5,6],
@@ -581,11 +581,11 @@ var newArr = array.reduce( function ( prev , next , idx , array) {
     return prev.concat(next);
 })
 console.log(newArr) // [1, 2, 3, 4, 5, 6, 7, 8, 9]
-{% endhighlight %}
+```
 
 而 reduce 的第二个参数，设置的是一个初始值，(一个栗子解决问题)
 
-{% highlight Javascript %}
+```Javascript
 var list = [1,2,3,4];
 var r = list.reduce( function ( prev , next , idx , array ) {
     return prev + next;
@@ -593,7 +593,7 @@ var r = list.reduce( function ( prev , next , idx , array ) {
 console.log(r);
 
 // 110
-{% endhighlight %}
+```
 
 也就是最后合并结果的时候，加入初始值
 
@@ -605,7 +605,7 @@ console.log(r);
 
 我们可以使用这个静态的数组方法，把字符串或对象变为数组
 
-{% highlight Javascript %}
+```Javascript
 console.log(len = Array.from("Owen"))
 // ["O" , "w" , "e" , "n"]
 
@@ -625,7 +625,7 @@ console.log(Array.from({ 1  : "Owen" , 2 : "Zyz" , 3 : "Luffy" , length : 3}))
 console.log(Array.from([1,2,3]));
 // 数组类型不变
 // [1,2,3]
-{% endhighlight %}
+```
 
 除此之外 ，一些类数组也可以变为数组
 
@@ -634,7 +634,7 @@ console.log(Array.from([1,2,3]));
 原来的arguments 类型是类数组形式，虽然长的像数组，但是不具备数组对象的方法
 现在,我们只要通过Array.from 把arguments转型为数组，就可以像数组一样使用旗下的很多方法了
 
-{% highlight Javascript %}
+```Javascript
 function test ( a , b , c ) {
     Array.from(arguments).forEach(function ( value , idx , array ) {
         console.log(value);
@@ -642,15 +642,15 @@ function test ( a , b , c ) {
 }
 
 test("Owen" , "Zyz" , "Luffy");
-{% endhighlight %}
+```
 
 Array.from 的第二个参数 实际上就是内嵌的一个 map函数（用法见上文）
 
-{% highlight Javascript %}
+```Javascript
 console.log(Array.from([1, 2, 3], function (value , idx , array) {
     return value * value;
 }))
-{% endhighlight %}
+```
 
 caveat: 如果声明了 第二参数 那么一定要在 map 函数 显式的添加 renturn 不然会返回Undefined
 
@@ -660,21 +660,21 @@ Array.from 的第三个参数，和map方法的第二个参数一样，可以改
 
 首先我们来看 之前通过 Array 对象生成数组时候，有个小问题
 
-{% highlight Javascript %}
+```Javascript
 Array() // []
 Array(2)// [undefined,undefined]
 Array(2,7,6) // [2,7,6]
-{% endhighlight %}
+```
 
 如果只传递一个参数的话，只是会构建一个长度为2的数组，只有参数达到两个以上，才会构建一个带初值的数组
 
 为了弥补，当传参只有一个的情况，Es6加了一个新的方法Array.of
 
-{% highlight Javascript %}
+```Javascript
 
 console.log(Array.of(7)) // [7]
 
-{% endhighlight %}
+```
 
 感觉有点鸡肋， 因为我们平时应该都是使用字面量的方式创建的吧~
 
@@ -702,10 +702,10 @@ end ( 复制结束的位置 ) 【可选】
 
 设置结束的位置是到leon 但是不包括leon 所以 end应该设置5 【去终】
 
-{% highlight Javascript %}
+```Javascript
 console.log( [ "Owen","Zyz","luffy","micale","Jsaon","leon" ].copyWithin(1,3,5) )
 //  ["Owen", "micale", "Jsaon", "micale", "Jsaon", "leon"]
-{% endhighlight %}
+```
 
 当然，如果end不填，就是start后面全部
 
@@ -719,7 +719,7 @@ find函数，用法是不断递归，返回符合条件的值
 
 findIndex函数，用法是不断递归，返回符合条件的索引
 
-{% highlight Javascript %}
+```Javascript
 
 // 语法
 arr.find(callback[, thisArg])
@@ -742,22 +742,22 @@ console.log(arr.findIndex(function ( value , idx, array ) {
     
 })) // underfined
 
-{% endhighlight %}
+```
 
 如果find所找的值都不符合条件，那么会返回underfined
-{% highlight Javascript %}
+```Javascript
 var arr = [ 0 , 2 , -3, 44 , -5 ]
 console.log(arr.find(function ( value , idx, array ) {
     return value < -5;
 })) // underfined
 
 如果findIndex所找的值都不符合条件，那么会返回-1
-{% highlight Javascript %}
+```Javascript
 var arr = [ 0 , 2 , -3, 44 , -5 ]
 console.log(arr.findIndex(function ( value , idx, array ) {
     return value < -5;
 })) // -1
-{% endhighlight %}
+```
 
 ### fill
 
@@ -766,22 +766,22 @@ console.log(arr.findIndex(function ( value , idx, array ) {
 使用分两种情况
 
 ① 当只有一个参数的时候，将数组中的值全部替换
-{% highlight Javascript %}
+```Javascript
 console.log([1,2,3,4,5,6].fill(7)); // [7, 7, 7, 7, 7, 7]
-{% endhighlight %}
+```
 
 ② 如果两个或三个参数 ，第二个和第三个参数 用来设置替换的位置, 【留始去终原则】
-{% highlight Javascript %}
+```Javascript
 console.log([1,2,3,4,5,6].fill(7,1,2)); //  [1, 7, 3, 4, 5, 6]
-{% endhighlight %}
+```
 
 我们可以使用fill来初始化新数组
-{% highlight Javascript %}
+```Javascript
 var a = new Array(100).fill(7);
 console.log(a);
 
 // 100个7
-{% endhighlight %}
+```
 
 当然其他替换的功能显得有点鸡肋了，因为明明有了splice 函数
 
@@ -789,12 +789,12 @@ console.log(a);
 
 我们可以使用includes来判断一个值是否在某个数组里面
 
-{% highlight Javascript %}
+```Javascript
 
 console.log([1,2,3,4,5,6].includes(3)) // true
 console.log([1,2,3,4,5,6].includes(100)) // false
 
-{% endhighlight %}
+```
 
 ## 感谢
 

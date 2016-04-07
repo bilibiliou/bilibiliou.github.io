@@ -40,7 +40,7 @@ nodejs可以说是前端人员了解后端的一个切入点所在(当然php也�
 工具-->编译系统-->新编译系统
 
 然后sublime就会弹出一个 `untitled.sublime-build`,将untitled 改成nodejs 然后再将里面原有的文本替换成
-{% highlight Javascript %}
+```JavaScript
 {
     "cmd": ["node", "$file"],
     "file_regex": "^[ ]*File \"(...*?)\", line ([0-9]*)",
@@ -52,7 +52,7 @@ nodejs可以说是前端人员了解后端的一个切入点所在(当然php也�
         "cmd": ["node", "$file"]
     }
 }
-{% endhighlight %}
+```
 
 保存到默认的目录下，就可以了，sublime会自动检测已经安装好的nodeJS
 然后再
@@ -68,7 +68,7 @@ nodeJs 基础 和 js 基础一致，都是ecmascript
 
 所以ecmascript底下的所有东西，都可以使用
 
-{% highlight Javascript %}
+```JavaScript
 var  a = new Date();
 console.log( a.getFullYear() );
 console.log( a.getMonth() + 1 );
@@ -96,7 +96,7 @@ run.prototype.runfuc = function() {
 
 var b = new run('owen');
 b.runfuc();
-{% endhighlight %}
+```
 
 以上代码都可以编译运行
 
@@ -109,28 +109,28 @@ nodejs实现功能是以不同个模块来完成的
 nodejs规定一个js文件就是一个模块，不同模块有自己的作用域
 我们使用`var` 在一个js文件里面声明的变量只是该模块下的局部变量
 如果需要声明全局变量，我们可以使用`global`声明
-{% highlight Javascript %}
+```JavaScript
 global.a = 200;
 console.log(global.a); // 200
-{% endhighlight %}
+```
 
 我们还可以通过`__filename`变量来访问当前被解析模块的路径字符串
 每一个模块中都有一个`__filename` 
-{% highlight Javascript %}
+```JavaScript
 console.log(__filename); // D:\NodeJs\text\global-problem.js
-{% endhighlight %}
+```
 
 还有一个`__dirname`变量 可以来访问当前被解析模块的文件夹路径字符串
-{% highlight Javascript %}
+```JavaScript
 console.log(__dirname); // D:\NodeJs\text\
-{% endhighlight %}
+```
 
 ## 模块加载系统
 
 我们可以使用`require`来引入模块，类似java中的`import`
-{% highlight Javascript %}
+```JavaScript
 require('模块路径');
-{% endhighlight %}
+```
 
 所引入的模块会自动被解析执行。
 
@@ -142,9 +142,9 @@ nodeJs的解析顺序是这样的
 ④ 如果还是没找到，就会在文件名后缀加上.node，继续查找
 ⑤ 如果还是没找到，就会报出一个错误
 
-{% highlight Javascript %}
+```JavaScript
 require('./text1');
-{% endhighlight %}
+```
 
 例如如上代码，nodeJS会先在目录下查找text1文件，如果没有找到，就会自动在后面加上.js
 然后按照text1.js来进行查找。
@@ -156,14 +156,14 @@ require('./text1');
 
 但是要注意一点，那就是，在node中，如果需要引入的文件在同目录下面
 一定要这样写
-{% highlight Javascript %}
+```JavaScript
 require('./practice.js');
-{% endhighlight %}
+```
 
 但是不能这样写
-{% highlight Javascript %}
+```JavaScript
 require('practice.js');
-{% endhighlight %}
+```
 
 因为上述这样直接写文件名的方式，在nodeJS中会被认为是从核心模块（node_modules）中加载文件
 而你的核心模块中没有practice.js 那么就会报错
@@ -172,16 +172,16 @@ require('practice.js');
 
 `module` 对象是每一个模块都特有的一个对象
 例如这样一个模块 module1 
-{% highlight Javascript %}
+```JavaScript
 // module1
 var a = "owen";
 
 console.log("这是module1");
 
-{% endhighlight %}
+```
 
 我们可以console一下它的module
-{% highlight Javascript %}
+```JavaScript
 Module {
   id: '.',
   exports: {},
@@ -193,7 +193,7 @@ Module {
    [ 'D:\\NodeJs\\text\\node_modules',
      'D:\\NodeJs\\node_modules',
      'D:\\node_modules' ] }
-{% endhighlight %}
+```
 
 由此可以看到了，一个模块下包含如下属性
 id : 可以标明一个模块的唯一标识
@@ -218,7 +218,7 @@ paths   :
 ③ 使用module.exports
 
 例如如下两个模块
-{% highlight Javascript %}
+```JavaScript
 // module1
 var a = "owen";
 
@@ -226,16 +226,16 @@ console.log("这是module1");
 
 module.exports.a = a;
 // 也可以这样写 exports.a = a;
-{% endhighlight %}
+```
 
-{% highlight Javascript %}
+```JavaScript
 // module2
 var m1 = require("./module1.js");
 
 console.log("这是module2");
 
 console.log( m1.a ); // owen
-{% endhighlight %}
+```
 当module2 中使用require引入了module1的时候会返回module1中模块对象下的exports
 所以，只要在module1 中 将私有变量赋值给export对象的属性，就能够实现跨模块变量的访问
 
@@ -249,9 +249,9 @@ process（英：进程、过程） 对象是global 对象下的一个子对象�
 ### process.argv
 
 通过这个我们能访问，当前进程的一些内容
-{% highlight Javascript %}
+```JavaScript
 console.log( process.argv );
-{% endhighlight %}
+```
 
 会返回一个数组，该数组中第一个值 是编译这个模块的编译器路径
 第二个值 是这个模块的绝对路径（即 __filename）
@@ -294,23 +294,23 @@ console.log( process.argv );
 
 感觉后端的基础就是要对Buffer进行合适的操作
 
-{% highlight Javascript %}
+```JavaScript
 var bf = new Buffer(5); 
 console.log(bf) // <Buffer 04 00 00 00 00>
-{% endhighlight %}
+```
 
 打印出来的是5个随机的内存值，并且以16进制显现
 
 但是如果我们将单个内存值打印出来，会以10进制显现
-{% highlight Javascript %}
+```JavaScript
 var bf = new Buffer(5); 
 console.log(bf[0]) // 200
-{% endhighlight %}
+```
 
 我们可以直接以字符串的形式直接存入缓存中,第二个参数声明的是字符串的编码
-{% highlight Javascript %}
+```JavaScript
 var bf = new Buffer('owen' , 'utf-8'); 
-{% endhighlight %}
+```
 
 不同的编码形式所存储的字节数目是不同的
 GB2312  一个英文为一字节 一中文为两字节
@@ -322,29 +322,29 @@ utf-8   因为为一字节 中文为三字节
 ### Buffer.write
 
 声明完缓存区域后，我们可以将值写入到缓存区
-{% highlight Javascript %}
+```JavaScript
 var bf = new Buffer(4); 
 var str = 'owen';
 bf.write(str);
 console.log(bf.toString())  // owen
-{% endhighlight %}
+```
 
 write方法一定要保证足够的缓存，如果没有开辟足够的内存，后面未存储的部分自动被抛弃
 write 方法的第二个参数 是设置偏移量,即从第几个开始存储
-{% highlight Javascript %}
+```JavaScript
 var bf = new Buffer(4); 
 var str = 'owen';
 bf.write( str2 , 1 );      // 第二个参数可以设置偏移量，设置在第二位置开始存储
 console.log(bf.toString());// 随机的乱码 owe
-{% endhighlight %}
+```
 
 第三个参数是设置存储个数，即存储多少个字节
-{% highlight Javascript %}
+```JavaScript
 var bf  = new Buffer(6);
 var str = 'owen';
 bf.write( str , 1 , 2 );   // 第三个参数设置设置存储个数 ， 默认是全部存储
 console.log(bf);           // <Buffer 00 6f 77 00 00 00>
-{% endhighlight %}
+```
 
 第四个参数设置写入的字符串编码
 
@@ -353,19 +353,19 @@ console.log(bf);           // <Buffer 00 6f 77 00 00 00>
 通过Buffer.toString方法与我们以前的toString方法有点不同
 
 如果单个打印Buffer 缓存值可以带上进制参数
-{% highlight Javascript %}
+```JavaScript
 var str = 'owen';
 var bf  = new Buffer(4);
 console.log(bf[0].toString(8)) // 157 
-{% endhighlight %}
+```
 
 
 如果直接整个buf （不带参数） 则会转化为字符号串
-{% highlight Javascript %}
+```JavaScript
 var str = 'owen';
 var bf  = new Buffer(4);
 console.log(bf.toString()) // owen 
-{% endhighlight %}
+```
 
 如果有参数
 
@@ -373,23 +373,23 @@ console.log(bf.toString()) // owen
 
 第二三个参数是 设置偏移量 留始去终原则
 
-{% highlight Javascript %}
+```JavaScript
 var str = 'owen';
 var bf  = new Buffer(4);
 console.log(bf5.toString('utf-8' , 1 , 3)); // we
-{% endhighlight %}
+```
 
 ### Buffer.toJSON
 
 我们还可以将Buffer 打印成json格式
 
-{% highlight Javascript %}
+```JavaScript
 var bf = new Buffer("owen");
 console.log(bf.toJSON() ); // 将buffer  转化为json格式
 
 // 结果是
 // { type: 'Buffer', data: [ 111, 119, 101, 110 ] }
-{% endhighlight %}
+```
 
 第一个成员是类型 声明为Buffer 类型
 第二个成员是data 数组 以10进制打印出来
@@ -398,36 +398,36 @@ console.log(bf.toJSON() ); // 将buffer  转化为json格式
 
 和数组方法很像，但是有一点差别
 首先使用都是相同的 都是留始去终原则
-{% highlight Javascript %}
+```JavaScript
 var bf1  = new Buffer("owen");
 var bf2  = bf1.slice( 0 , 2 );
 
 console.log(bf2.toString()); // ow
-{% endhighlight %}
+```
 
 但是有一点就是，所切割的缓存部分不会开辟新的内存空间存储，只是开辟一个新的引用而已
 也就是说，如果现在对bf2进行操作，会改变bf1的内容
 
-{% highlight Javascript %}
+```JavaScript
 var bf1  = new Buffer("owen");
 var bf2 = bf1.slice( 0 , 2 );
 console.log(bf1.toString()); // owen
 bf2[0] = 0x65;               // 对剪切的第一个数进行赋值
 console.log(bf1.toString()); // ewen
-{% endhighlight %}
+```
 
 ### Buffer.copy
 
 正如上文提到的，我们如果需要开辟新的内存进行对缓存的操作，不能使用slice
 那么我们可以使用Buffer.copy来复制一份新的
 
-{% highlight Javascript %}
+```JavaScript
 var bf1 = new Buffer('owen');
 var bf2 = new Buffer(2);
 bf1.copy( bf2 , 0 , 0 , 3 ); 
 console.log(bf2);               // <Buffer 6f 77>
 console.log(bf2.toString());    // ow
-{% endhighlight %}
+```
 
 `切记被复制的buffer对象写在前面`
 
@@ -440,40 +440,40 @@ Buffer对象是global 对象下的，所以也会有一些全局的静态方法
 ### Buffer.isEncoding
 
 判断是否是Buffer对象所支持的编码集
-{% highlight Javascript %}
+```JavaScript
 console.log( Buffer.isEncoding('utf-8') );  // true
 console.log( Buffer.isEncoding('gbk') );    // false
 console.log( Buffer.isEncoding('hex') );    // true
-{% endhighlight %}
+```
 
 ### Buffer.isBuffer
 
 判断是否是Buffer构造出来的实例
 
-{% highlight Javascript %}
+```JavaScript
 var arr = [1,2,3];
 var bf  = new Buffer(3);
 
 console.log( Buffer.isBuffer(arr) );
 console.log( Buffer.isBuffer(bf) );
-{% endhighlight %}
+```
 
 ### Buffer.byteLength
 
 输出存储的字节长度
 
-{% highlight Javascript %}
+```JavaScript
 var str = "信管";
 console.log(str.length);                        // 2
 console.log(Buffer.byteLength(str));            // 默认的 utf-8下 是6
 console.log(Buffer.byteLength(str1, 'ascii'));  // 2 如果使用不同的编码，返回的内存值也是不同的   
-{% endhighlight %}
+```
 
 ### Buffer.concat
 
 concat 以前数组里面也用过，就是连接两个数组的方法
 
-{% highlight Javascript %}
+```JavaScript
 var s1 = "owen love";
 var s2 = " zyz";
 
@@ -481,17 +481,17 @@ var list = [new Buffer(s1),new Buffer(s2)];
 var bf = Buffer.concat(list);
 console.log(bf.toString());        // owen love zyz
 console.log(Buffer.isBuffer(bf));  // true
-{% endhighlight %}
+```
 
 但是，Buffer下的concat方法有点不同 , 接收一个数组 ， 并且返回一个Buffer对象
 
 而concat的第二个参数，是开辟新内存的大小，默认值是拼接的两个Buffer 内存量的总和
 计算两个Buffer内存量 会消耗一部分内存 所以如果在知道值情况下应该尽量写上
 
-{% highlight Javascript %}
+```JavaScript
 var bf2 = Buffer.concat(list,13);
 console.log(bf2.toString());
-{% endhighlight %}
+```
 
 ## FileSystem
 
@@ -501,9 +501,9 @@ console.log(bf2.toString());
 
 fileSystem 是node内置的模块，所以我们在使用前只需要直接加载就行，nodejs的模块依赖会自动绑定
 
-{% highlight Javascript %}
+```JavaScript
 var fs = require("fs");
-{% endhighlight %}
+```
 
 其中主要的方法就是 读 、 写 、 查询、 删除等操作文件夹和文件的方法，较为底层的方法我就不太过多缀余了，但是大家要清楚，所有对文件的操作，都是基于这些底层方法来实现的（write 、 read 、 open 、 access etc）
 
@@ -512,7 +512,7 @@ var fs = require("fs");
 ## readFile(Sync)
 
 故名思意，就是读取文件，需要提供文件的文件目录
-{% highlight Javascript %}
+```JavaScript
 var fs = require("fs");
 
 var filePath = "./";
@@ -522,10 +522,10 @@ fs.readFile(filePath , function (err , data) {
 
 	console.log("文件内容是：" + data.toString("utf-8"));
 })
-{% endhighlight %}
+```
 
 或者使用异步的方式
-{% highlight Javascript %}
+```JavaScript
 var fs = require("fs");
 
 var filePath = "./";
@@ -533,12 +533,12 @@ var filePath = "./";
 var file = fs.readFileSync(filePath);
 
 console.log(file.toString("utf-8"));
-{% endhighlight %}
+```
 
 ## writeFile(Sync)
 
 写文件，也很简单
-{% highlight Javascript %}
+```JavaScript
 var fs = require("fs");
 
 var filePath = "./";
@@ -546,7 +546,7 @@ var filePath = "./";
 fs.writeFile(filePath , "这是写入的内容" , function(err) {
 	// 写完之后需要做的事儿
 });
-{% endhighlight %}
+```
 
 同步就少了个回调罢了
 
@@ -557,7 +557,7 @@ fs.writeFile(filePath , "这是写入的内容" , function(err) {
 
 插入文件内容，不覆盖原有数据，如果没有文件会自动创建
 
-{% highlight Javascript %}
+```JavaScript
 var fs = require("fs");
 
 var filePath = "./";
@@ -565,7 +565,7 @@ var filePath = "./";
 fs.appendFile(filePath , "这是写入的内容" , function(err) {
 	// 插入完之后需要做的事儿
 });
-{% endhighlight %}
+```
 
 ### Caveats
 
@@ -576,7 +576,7 @@ fs.appendFile(filePath , "这是写入的内容" , function(err) {
 
 查询文件夹，并返回文件夹下的全部文件
 
-{% highlight Javascript %}
+```JavaScript
 var fs = require("fs");
 
 var dirPath = "./";
@@ -586,7 +586,7 @@ fs.readdir(dirPath , function(err , files) {
 		console.log( fname );
 	}
 });
-{% endhighlight %}
+```
 
 ## mkdir(Sync)
 
@@ -595,7 +595,7 @@ fs.readdir(dirPath , function(err , files) {
 ## existsFile(Sync)
 
 判断是否存在此文件，返回`boolean`
-{% highlight Javascript %}
+```JavaScript
 var fs = require("fs");
 
 var filePath = "./";
@@ -609,7 +609,7 @@ fs.existsFile( filePath , function( isexists ) {
 		});
 	}
 });
-{% endhighlight %}
+```
 
 ## link(Sync)
 
@@ -623,7 +623,7 @@ callback: 回调
 ## unlink(Sync)
 
 删除文件或文件夹，要小心，以免删错，不然就找不回来了
-{% highlight Javascript %}
+```JavaScript
 var fs = require("fs");
 
 var filePath = "./xxx";
@@ -638,13 +638,13 @@ fs.existsFile( filePath , function( isexists ) {
 		});
 	}
 });
-{% endhighlight %}
+```
 
 ## Watch(Sync)
 
 可以查看文件(夹)发生了什么修改，会返回修改的状态， 状态分为 `rename` 和 `change`， 也就是判断文件(夹)改名了或内容被修改了 ，并且返回被修改的文件名称
 
-{% highlight Javascript %}
+```JavaScript
 var fs = require("fs");
 
 var filePath = "./xxx";
@@ -664,7 +664,7 @@ fs.existsFile( filePath , function(err) {
 		});
 	}
 });
-{% endhighlight %}
+```
 
 当然，我这里只是简单的对一个文件进行判断
 
@@ -676,7 +676,7 @@ fs.existsFile( filePath , function(err) {
 
 如果需要进行递归查询的话呢，我们可以进行设置，就是在第二个参数中进行设置
 
-{% highlight Javascript %}
+```JavaScript
 var fs = require("fs");
 
 var filePath = "./xxx";
@@ -701,7 +701,7 @@ fs.existsFile( filePath , options , function( isexists ) {
 		});
 	}
 });
-{% endhighlight %}
+```
 
 这里，直接把 `recursive` 是否进行递归，赋值true 就也会进行子文件夹下的内容判断了
 
@@ -731,11 +731,11 @@ fs.existsFile( filePath , options , function( isexists ) {
 
 (需要还原的路径 , [cache] , [callback])
 
-{% highlight Javascript %}
+```JavaScript
 fs.realpath("./" , cache , function (err , resovlePath) {
 	console.log(resovlePath); // "D:\NodeJs\text"
 });
-{% endhighlight %}
+```
 
 ### Caveats
 
@@ -743,13 +743,13 @@ fs.realpath("./" , cache , function (err , resovlePath) {
 
 官网example:
 
-{% highlight Javascript %}
+```JavaScript
 var cache = {'/etc':'/private/etc'};
 fs.realpath('/etc/passwd', cache, function (err, resolvedPath) {
   if (err) throw err;
   console.log(resolvedPath);
 });
-{% endhighlight %}
+```
 
 ## stat(Sync)
 
@@ -757,14 +757,14 @@ fs.realpath('/etc/passwd', cache, function (err, resolvedPath) {
 
 ( 文件(夹)路径, callback )
 
-{% highlight Javascript %}
+```JavaScript
 fs.stat(filename , function (err , stats) {
 	if( !err )
 	{
 		console.log(stats);
 	}
 });
-{% endhighlight %}
+```
 
 ### Caveats
 
@@ -783,7 +783,7 @@ stats.isSocket()
 
 ## 简单的文件遍历算法
 
-{% highlight Javascript %}
+```JavaScript
 var fs = require("fs");
 
 var arr = [];
@@ -809,13 +809,13 @@ travel("需要遍历查询的文件夹名" , function(pathname){
 });
 
 console.log( arr );
-{% endhighlight %}
+```
 
 该算法可以遍历一个文件夹，及其子文件内的全部文件并且，每遍历一个文件遍执行一次回调函数，通过这个遍历算法我们就可以比较方便的遍历并给被遍历的文件添加执行事件
 
 ## 简单的构建项目算法
 
-{% highlight Javascript %}
+```JavaScript
 var fs = require("fs");
 
 // 预设项目信息
@@ -871,27 +871,27 @@ if( fData && fData.forEach ) {
 
 	}); 
 }
-{% endhighlight %}
+```
 
 ## 搭建一个简单WebServer
 
 首先使用前我们都需要这样加载这样一个http模块
 
-{% highlight Javascript %}
+```JavaScript
 var http = require('http');
-{% endhighlight %}
+```
 
 这样我们就可以使用这个模块返回的对象来新建一个网络服务
 
-{% highlight Javascript %}
+```JavaScript
 // 创建一个本地服务环境,并设置端口为localhost:8888
 var serve = http.createServer().listen(8888);
-{% endhighlight %}
+```
 
 这个函数会返回一个回调函数,这个函数会产生两参数 
 分别存储用户`请求的信息和方法` 和 `服务器响应的数据和方法`
 
-{% highlight Javascript %}
+```JavaScript
 
 // 回调匿名函数,并返回request 和 reponse
 var serve = http.createServer( function( request , reponse ){
@@ -907,22 +907,22 @@ var serve = http.createServer( function( request , reponse ){
 	respone.end("该次响应请求已结束");
 
 } ).listen(8888);
-{% endhighlight %}
+```
 
 我们使用fs加载一个文件模块,通过文件模块我们可以根据客户端的请求来响应为用户提供对应的页面文件
 
-{% highlight Javascript %}
+```JavaScript
 var fs = require("fs");
-{% endhighlight %}
+```
 
 通过fs.readFile() 来为用户提供不同的文件页面
 调用这个函数需要传入两个参数 一个是请求的文件的路径(字符串) 一个是一个回调函数
 
 这个回调函数返回两个参数,一个是 error错误信息参数,如果请求的内容没有找到或者出错,
 就会返回一个包含错误信息的JSON回来
-{% highlight Javascript %}
+```JavaScript
 { [Error: EISDIR: illegal operation on a directory, read] errno: -4068, code: 'EISDIR', syscall: 'read' }
-{% endhighlight %}
+```
 
 如果并没有出错,则返回null
 
@@ -933,7 +933,7 @@ var fs = require("fs");
 
 ## 一个简单的demo
 
-{% highlight Javascript %}
+```JavaScript
 // 加载http模块
 var http = require('http');
 
@@ -980,7 +980,7 @@ var httpServer = http.createServer(function(request , respone)
 	});	
 
 }).listen(8888);
-{% endhighlight %}
+```
 
 
 ## 感谢

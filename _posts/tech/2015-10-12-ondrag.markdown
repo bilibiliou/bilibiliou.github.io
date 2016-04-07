@@ -6,7 +6,7 @@ keywords: 技术,滚动条
 ---
 ## 原码
 
-{% highlight html %}
+```html
 <!doctype html>
 <html>
 <head>
@@ -161,7 +161,7 @@ new scale('btn3','bar3','title3');
 </script>
 </html>
 
-{% endhighlight %}
+```
 
 [效果展示](/assets/download/scroll-bar.html)
 

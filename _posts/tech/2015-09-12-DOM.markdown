@@ -82,19 +82,19 @@ DOM下面包含的类型有十二种
 childNodes是一个类数组，所以也可以访问其下的length方法，并且你还可以访问并修改其下的元素
 
 例如如下html结构：
-{% highlight html %}
+```html
 <ul id="ul"><li></li><li></li><li></li></ul>
-{% endhighlight %}
+```
 
 你可以通过遍历来为ul下面的子节点添加背景色
-{% highlight javascript %}
+```JavaScript
 var oUl = document.getElementById("ul");
 
 for(var i = 0; i < oUl.childNodes.length ; i++)
 {
 	oUl.childNodes[i].style.background = "red";
 }
-{% endhighlight %}
+```
 
 细心的同学可能就会发现，为什么上面的html结构，我没有给li添加缩进
 这是因为，缩进也是字符，算是文本结点，也会被标准的浏览器获取到（但是低版本的IE浏览器不能够获取到文本结点），而文本节点并没有style这个属性，如果直接给循环添加颜色，就会报错。
@@ -106,16 +106,16 @@ for(var i = 0; i < oUl.childNodes.length ; i++)
 这就需要我们使用`nodeType`属性进行判断了
 
 如果对应缩进的html
-{% highlight Html %}
+```html
 <ul id="ul">
 	<li></li>
 	<li></li>
 	<li></li>
 </ul>
-{% endhighlight %}
+```
 
 可以这么写JS
-{% highlight javascript %}
+```JavaScript
 var oUl = document.getElementById("ul");
 
 for(var i = 0; i < oUl.childNodes.length ; i++)
@@ -125,7 +125,7 @@ for(var i = 0; i < oUl.childNodes.length ; i++)
 		oUl.childNodes[i].style.background = "red";
 	}
 }
-{% endhighlight %}
+```
 
 children 和 childnodes用法差不多，但是children只是获取父级下的元素节点，除元素结点之外的子节点都不会获取，所以平时我们可能用的children多一些
 
@@ -138,10 +138,10 @@ children 和 childnodes用法差不多，但是children只是获取父级下的�
 那么如果我们要获取第一个元素节点呢？可以标准浏览器为我们提供的`firstElementChild`(这个属性在低版本浏览器下并不支持)
 
 兼容的写法就是
-{% highlight javascript %}
+```JavaScript
 var oUl = document.getElementById("ul");
 var oFirstChild = oUl.firstElementchild || oUl.firstChild
-{% endhighlight %}
+```
 
 同理也就有`lastChild`和`lastElementChild`
 
@@ -152,10 +152,10 @@ var oFirstChild = oUl.firstElementchild || oUl.firstChild
 那么同理,获取上一个节点和元素节点我们就可以使用`previousSibling`和`previousElementSibling`
 
 兼容方法也类似
-{% highlight javascript %}
+```JavaScript
 var oPreviousChild = oUl.previousElementSibling || oUl.previousSibling;
 var oNextChild = oUl.nextElementSibling || oUl.nextSibling ;
-{% endhighlight %}
+```
 
 ## attributes
 这里还有一个有意思的东西，属性结点.
@@ -164,19 +164,19 @@ var oNextChild = oUl.nextElementSibling || oUl.nextSibling ;
 通过获取元素，并访问其下的`attributes`属性（只读）
 
 例如一个div
-{% highlight html %}
+```html
 <div id="owen" class="zyz"></div>
-{% endhighlight %}
+```
 
 我们通过attributes 就能获取div的两个属性 id 和 class
-{% highlight javascript %}
+```JavaScript
 var oDiv = document.getElementById("owen");
 
 for(var i = 0; i < oDiv.attributes.length ; i++)
 {
 	console.log("第"+ i +"个属性的名称是" + oDiv.attributes[i].name + " 值是" + pDiv.attributes[i].value);
 }
-{% endhighlight %}
+```
 
 ## 父结点
 
@@ -185,19 +185,19 @@ for(var i = 0; i < oDiv.attributes.length ; i++)
 我们可以使用`ParentNode`这个只读属性来访问父节点
 
 例如如下布局:
-{% highlight html %}
+```html
 <ul>
 	<li>段落一 <a href="javascript:;">隐藏</a></li>
 	<li>段落二 <a href="javascript:;">隐藏</a></li>
 	<li>段落三 <a href="javascript:;">隐藏</a></li>
 	<li>段落四 <a href="javascript:;">隐藏</a></li>
 </ul>
-{% endhighlight %}
+```
 
 如果我们平时需要实现点击隐藏的功能，可以当点击的时候获取点击标签索引，然后再根据索引将li隐藏
 
 现在我们可以直接省略获取索引这一步，直接使用`parentNode`来控制父节点的隐藏
-{% highlight javascript %}
+```JavaScript
 var oA = document.getElementsByTagName('a');
 
 for(var i in oA)
@@ -206,44 +206,44 @@ for(var i in oA)
 		this.parentNode.style.display = "none";
 	}
 }
-{% endhighlight %}
+```
 
 除了`parentNode` 还有 `offsetParent` , 这个属性是获取的子级的定位父级
 
 例如如下布局:
-{% highlight html %}
+```html
 <div id="div1">
 	<div id="div2">
 		<div id="div3"></div>
 	</div>
 </div>
-{% endhighlight %}
+```
 
 如果div3的所有父级都没有设置position，那么就是没有定位的元素
 如果这时候我获取div3的定位父级，那么获取的是body
-{% highlight javascript %}
+```JavaScript
 var oDiv3 = document.getElementById("div3");
 
 console.log(oDiv3.offsetParent.tagName); // body
-{% endhighlight %}
+```
 
 但是如果我给div1 或者 div2 添加了position,那么被添加了position的div父级 就成了 div3的 
 `定位父级`
 
 如果div1 和 div2 都添加了position 那么浏览器会选取距div3最近的父级也就是div2作为div3的定位父级 
-{% highlight html %}
+```html
 <div id="div1">
 	<div id="div2" style="positon:relative;">
 		<div id="div3"></div>
 	</div>
 </div>
-{% endhighlight %}
+```
 
-{% highlight javascript %}
+```JavaScript
 var oDiv3 = document.getElementById("div3");
 
 console.log(oDiv3.offsetParent.id); // div2
-{% endhighlight %}
+```
 
 IE7- 的浏览器还有一些不qi合pa群的特性，如果你要兼容IE7以下的浏览器的话，需要考虑
 例如
@@ -309,15 +309,15 @@ document.documentElement.scrollTop[Left]
 
 offsetLeft 和 Top 可以获取自己元素到`定位父级`的距离
 
-{% highlight javascript %}
+```JavaScript
 var oDiv3 = document.getElementById("div3");
 
 console.log(oDiv3.offsetLeft);
-{% endhighlight %}
+```
 
 如果要获取一个元素到浏览器最顶部的距离（最左部的距离）呢？
 我们可以封装一个函数
-{% highlight javascript %}
+```JavaScript
 var obj = document.getElementById("div3");
 var Left = 0;
 var Top  = 0;
@@ -327,7 +327,7 @@ while( obj ) {
 	Left += obj.offsetLeft;
 	obj = obj.offsetParent;
 }
-{% endhighlight %}
+```
 
 思路就是，不断的取到定位父级的距离，一直到`Body`， 而Body的定位父级是Null(不是html) Body的offsetTop(Left)是0 所以当循环到Body的时候，循环停止，返回的就是一个元素到最顶端的距离
 
@@ -345,9 +345,9 @@ clientWidth & Height 盒子实际宽高 包括: 实际宽高 + padding + border
 ② chrome认为，滚动条类属于`body`
 
 所以当我们需要获取页面已经滚动的高度的时候，就需要做这样的兼容
-{% highlight javascript %}
+```JavaScript
 var ScrollTop = document.body.scrollTop || document.documentElement.scrollTop;
-{% endhighlight %}
+```
 
 scrollLeft也可以类比如此
 
@@ -360,9 +360,9 @@ clientWidth & Height
 
 获取的高度是不包括被滚动条隐藏的高度，所以如果需要获取包含隐藏条隐藏的高度的内容，我们必须使用`scrollHeight` 这一属性
 
-{% highlight javascript %}
+```JavaScript
 var ScrollHeight = document.body.scrollHeight;
-{% endhighlight %}
+```
 
 同时Width也是如此
 
@@ -371,43 +371,43 @@ var ScrollHeight = document.body.scrollHeight;
 ## 动态操纵元素
 
 使用createElement 添加元素
-{% highlight javascript %}
+```JavaScript
 document.createElement("需要创建的标签名");
-{% endhighlight %}
+```
 
 使用appendChild 创建元素
-{% highlight javascript %}
+```JavaScript
 被添加的元素对象.appendChild( 添加的元素对象 );
-{% endhighlight %}
+```
 
 我们也可以使用insertBefore 在每个元素的之上插入元素
-{% highlight javascript %}
+```JavaScript
 插入元素的父级.insertBefore( 被添加的元素 , 某个定位元素 );
-{% endhighlight %}
+```
 
 但是如果在父级元素一个子节点都没有的情况下
 在IE下，使用insertBefore会报告错误
 但是在标准浏览器下，使用insertBefore会默认以appendChild进行插入
 
 所以如果我们需要兼容IE和标准浏览器的话，可以这样写
-{% highlight javascript %}
+```JavaScript
 if( !父级.children[0] )
 {
 	父级.appendChild( 被添加的元素对象 );
 }else {
 	父级.insertBefore( 被添加的元素对象 ， 某个定位元素 );
 }
-{% endhighlight %}
+```
 
 除此之外，我们还可以使用removeChild 删除元素
-{% highlight javascript %}
+```JavaScript
 父级.removeChild( 被删除的元素 );
-{% endhighlight %}
+```
 
 还可以使用replaceChild 来替换元素
-{% highlight javascript %}
+```JavaScript
 父级.replaceChild( 替换元素 , 被替换元素 );
-{% endhighlight %}
+```
 
 需要注意的是,以上的全部方法，都需要在父级下进行操作，也就是说如果需要动态的操作元素，一定要获取到这些元素的父级
 
@@ -418,7 +418,7 @@ if( !父级.children[0] )
 
 在标准浏览器下是有的， `getElementsByClassName`
 但是在非标准浏览器下却没有这个函数，所以如果需要兼容，就的自己写一个
-{% highlight javascript %}
+```JavaScript
 function getByClass( parent  , sClass , tag ) {
 	var tag = tag || '*';
 	var aTag = parent.getElementsByTagName(tag);
@@ -440,7 +440,7 @@ function getByClass( parent  , sClass , tag ) {
 
 	return result;
 }
-{% endhighlight %}
+```
 
 调用的时候就将需要 第一个参数获取类元素的父级传参，第二个参数为匹配的class类名，第三个参数选填，为匹配的标签名称(如果没填默认全部选中)
 
@@ -449,7 +449,7 @@ function getByClass( parent  , sClass , tag ) {
 ## 表格的DOM方法
 
 如下表格结构
-{% highlight html %}
+```html
 <table width="100%" boder="1px">
 	<thead>
 		<tr>
@@ -488,40 +488,40 @@ function getByClass( parent  , sClass , tag ) {
 		<td>20</td>
 	</tfoot>
 </table>
-{% endhighlight %}
+```
 
 如果我们需要对表格进行操作，DOM为我们提供了一些DOM方法进行操作
 例如我们要把每行都变色
-{% highlight javascript %}
+```JavaScript
 var oTable = document.getElementsByTagName('table')[0];
 		
 	oTable.tBodies[0].style.background = 'yellow';
 	oTable.tBodies[1].style.background = 'red';
 	oTable.tBodies[2].style.background = 'pink';
 
-{% endhighlight %}
+```
 
 我们可以操作每个`tBodies`属性来进行改变
 
 
 如果我们只需要修改表格头,那么就使用`tHead`
-{% highlight javascript %}
+```JavaScript
 var oTable = document.getElementsByTagName('table')[0];
 	oTable.tHead.style.background = 'yellow';
-{% endhighlight %}
+```
 
 当然我们也可以操作他们的`tfoot`
-{% highlight javascript %}
+```JavaScript
 var oTable = document.getElementsByTagName('table')[0];
 	oTable.tFoot.style.background = 'yellow';
-{% endhighlight %}
+```
 
 但是如果我们需要修改某个表格内的元素呢？
 例如第一行列第四列，希望将其值修改成20
-{% highlight javascript %}
+```JavaScript
 var oTable = document.getElementsByTagName('table')[0];
 	oTable.tBodies[0].rows[0].cells[3].innerHTML = "20";
-{% endhighlight %}
+```
 
 当然我的例子里面是一个body对应一行,当然也可以一个body里有任意多行，照葫芦画瓢
 
@@ -529,19 +529,19 @@ var oTable = document.getElementsByTagName('table')[0];
 
 表单这个东西十分常用，当我们需要操纵表单的时候，DOM也给我们提供了操纵的方法
 例如:
-{% highlight html %}
+```html
 <form>
 	<input type="text" name="text1" value="内容">
 </form>
-{% endhighlight %}
+```
 在表单中，最有用的一个属性就是`name`属性了，通过name我们可以标识发送给后端的内容是什么,也就是说name在JS里面基本可以替代ID 和 class来获取和操控表单元素,所以DOM也为name提供了相应的方法
 
 例如我们可以这样来获取一个表单底下的表单元素的内容
-{% highlight javascript %}
+```JavaScript
 var oForm = document.getElementsByTagName("form")[0];
 
 console.log(oForm.text1.value);// 内容
-{% endhighlight %}
+```
 
 ## submit 和 onsubmit
 表单内有一个特殊的按钮`submit`提交，使用这个可以进行表单的提交，提交的结果会在URI后面添加一个信息项
@@ -549,14 +549,14 @@ console.log(oForm.text1.value);// 内容
 ?提交按钮的name=其value
 
 当我们进行提交的时候，我们可以使用`onsubmit`来控制提交
-{% highlight html %}
+```html
 <form action="http://www.baidu.com">
 	<input type="text" name="text1" >
 	<input type="submit" name="dosubmit" value="提交">
 </form>
-{% endhighlight %}
+```
 
-{% highlight javascript %}
+```JavaScript
 var oForm = document.getElementById('oform');
 
 	oForm.onsubmit = function() {
@@ -565,37 +565,37 @@ var oForm = document.getElementById('oform');
 			return false;
 		}
 	}
-{% endhighlight %}
+```
 
 当用户没有输入任何东西的时候，我们就可以阻止用户提交数据
 
 除了`onsubmit`还有一个`submit`事件，`submit`事件可以让我们使用js动态的触发提交表单
-{% highlight javascript %}
+```JavaScript
 setTimeout(function() {
 	oForm.submit();
 },1000)
-{% endhighlight %}
+```
 例如我们可以让js加载1秒后，自动提交表单。
 
 ## reset 和 onreset
 当我们需要重置输入内容的时候，我们可以使用reset
-{% highlight html %}
+```html
 <form action="http://www.baidu.com" id="oform">
 	<input type="text" name="text1" >
 	<input type="reset" name="doreset" value="reset">
 </form>
-{% endhighlight %}
+```
 
 点击reset事件就可以重置输入框内的内容
 
 当这个按钮被点击的时候，我们可以使用`onreset`来控制callback
-{% highlight javascript %}
+```JavaScript
 var oForm = document.getElementById('oform');
 
 	oForm.onreset = function() {
 		return confirm("你是否要重置文本框的内容");
 	}
-{% endhighlight %}
+```
 
 `reset`事件类比submit事件，功能也是使用js动态控制内容重置
 
@@ -608,17 +608,17 @@ var oForm = document.getElementById('oform');
 但是在非标准浏览器下，只有一个全局的内置对象
 
 如果我们需要兼容两者的话可以这样写
-{% highlight javascript %}
+```JavaScript
 document.click = function(ev) {
 	var ev = ev || event; // event兼容非标准的IE浏览器
 }
-{% endhighlight %}
+```
 
 ## 鼠标位置ClientX/Y
 
 通过访问ev下的ClientX/Y，我们可以得到鼠标在页面可视区中的位置
 例如
-{% highlight html %}
+```html
 <style>
 	#div{
 		width: 100px; height: 100px; border-radius: 50%; background: blue; transition: .6s;
@@ -632,9 +632,9 @@ document.click = function(ev) {
 <body>
 	<div id="div"></div>
 </body>
-{% endhighlight %}
+```
 
-{% highlight javascript %}
+```JavaScript
 var oDiv = document.getElementById("div");
 
 document.onmousemove = function(ev) {
@@ -644,7 +644,7 @@ document.onmousemove = function(ev) {
 	oDiv.style.left = ev.clientX + "px";
 	oDiv.style.top  = ev.clientY + scrollTop + "px";
 }
-{% endhighlight %}
+```
 
 [demo](/assets/download/clientX-onmousemove.html)
 
@@ -674,7 +674,7 @@ document.onmousemove = function(ev) {
 我们先看一个栗子
 [demo](/assets/download/Bubble.html)
 
-{% highlight html %}
+```html
 <style>
 	#div1 {
 		height: 200px;
@@ -702,9 +702,9 @@ document.onmousemove = function(ev) {
 		</div>
 	</div>
 </body>
-{% endhighlight %}
+```
 
-{% highlight javascript %}
+```JavaScript
 var oDiv1 = document.getElementById("div1");
 var oDiv2 = document.getElementById("div2");
 var oDiv3 = document.getElementById("div3");
@@ -716,7 +716,7 @@ function fn() {
 oDiv1.onclick = fn;
 oDiv2.onclick = fn;
 oDiv3.onclick = fn;
-{% endhighlight %}
+```
 
 当我们点击黄色盒子的时候，会发现不单单是黄色盒子的点击事件被触发了，第二层的红色盒子也被触发了，然后是最上层的蓝色盒子的点击事件被触发
 
@@ -732,9 +732,9 @@ oDiv3.onclick = fn;
 
 我们可以使用事件对象下的一个方法`cancelbubble`
 
-{% highlight javascript %}
+```JavaScript
 ev.cancelbubble = "true";
-{% endhighlight %}
+```
 
 这样就能取消当前对象的当前事件的冒泡机制
 
@@ -753,7 +753,7 @@ obj.attachEvent(on + 事件名称 ， 事件函数)
 obj.addEventListener(事件名称 ， 事件函数 ， 是否捕获)
 
 例如如果我要同时给`document`添加fn1 和 fn2两个函数
-{% highlight javascript %}
+```JavaScript
 // 低版本的IE
 document.attachEvent("onclick" , fn1);
 document.attachEvent("onclick" , fn2);
@@ -761,7 +761,7 @@ document.attachEvent("onclick" , fn2);
 // 实现标准的IE和其他标准浏览器
 document.addEventListener("click" , fn1 , false);
 document.addEventListener("click" , fn2 , false);
-{% endhighlight %}
+```
 
 而关于是否事件捕获呢？
 
@@ -771,14 +771,14 @@ document.addEventListener("click" , fn2 , false);
 如果使用的是`attachEvent`的时候，我们还会遇到一个bug，那就是使用attachEvent来绑定事件函数的时候，其中的this会指向`window`
 
 我们可以使用call和apply方法来扩展绑定函数的生存域
-{% highlight javascript %}
+```JavaScript
 document.attachEvent("onclick" , function() {
 	fn1.call(document , 参数)
 });
-{% endhighlight %}
+```
 
 我们可以声明一个函数bind来实现兼容
-{% highlight javascript %}
+```JavaScript
 function bind(obj , evname , fn) {
 	if(obj.addEventListener) {
 		obj.addEventListener(evname , fn , false);
@@ -788,7 +788,7 @@ function bind(obj , evname , fn) {
 		});
 	}
 }
-{% endhighlight %}
+```
 
 ### 事件捕获
 
@@ -813,21 +813,21 @@ function bind(obj , evname , fn) {
 清空的方式有两种
 
 ① 当我们使用on + 事件 绑定函数的时候
-{% highlight javascript %}
+```JavaScript
 document.onclick = null;
-{% endhighlight %}
+```
 很简单直接给赋值为`null`就行了
 
 ② 当我们使用`attachEvent` 或者 `addEventListener` 的时候
 我们得需要使用特殊的取消事件方法来取消，因为`attachEvent` 和 `addEventListener` 可以绑定多个执行函数，并且 `addEventListener` 还可以声明捕获和冒泡机制，在不同机制下还可以绑定同一个函数。所以取消执行函数需要明确声明是那个函数 并且是那个机制下绑定的函数
 
-{% highlight javascript %}
+```JavaScript
 document.detachEvent("onclick" , fn1);
-{% endhighlight %}
+```
 
-{% highlight javascript %}
+```JavaScript
 document.removeEventListener("click" , fn1 , false);
-{% endhighlight %}
+```
 
 ## 拖拽运动
 
@@ -848,16 +848,16 @@ document.removeEventListener("click" , fn1 , false);
 但是在非标准的IE下这种方法还是无法解决这个问题
 所以我们可以在鼠标按下的时候添加一句全局捕获
 
-{% highlight javascript %}
+```JavaScript
 obj.setCapture && obj.setCapture();
-{% endhighlight %}
+```
 
 全局捕获是只在IE下才会有的一句代码，如果有了这句代码，那么在鼠标按下的过程中，会把浏览器默认的事件捕获到拖拽函数中，这样浏览器的默认事件就不会触发了
 
 当鼠标放开的时候在把全局捕获去掉，不至于影响其他事件的执行
-{% highlight javascript %}
+```JavaScript
 obj.releaseCapture && obj.releaseCapture();
-{% endhighlight %}
+```
 
 ### 拖拽限制
 
@@ -866,12 +866,12 @@ obj.releaseCapture && obj.releaseCapture();
 
 我们可以先把ev.clientX - disX 和 ev.clientY - disY
 
-{% highlight javascript %}
+```JavaScript
 var L = ev.clientX - disX;
 var T = ev.clientY - disY;
-{% endhighlight %}
+```
 
-{% highlight javascript %}
+```JavaScript
 ( L <= 0 ) && L = 0;
 ( L >= document.documentElement.clientWidth - obj.offsetWidth ) && L = document.documentElement.clientWidth - obj.offsetWidth;
 
@@ -882,7 +882,7 @@ var T = ev.clientY - disY;
 obj.style.width = L + "px";
 obj.style.Height = T + "px";
 
-{% endhighlight %}
+```
 
 ### 碰撞检测
 
@@ -893,7 +893,7 @@ obj.style.Height = T + "px";
 如果四边位置进入了黑盒子内，那么就是碰撞状态
 
 所以我们要获取这八条边的位置
-{% highlight javascript %}
+```JavaScript
 var T1 = obj1.offsetTop;
 var L1 = obj1.offsetLeft;
 var R1 = obj1.offsetLeft + obj1.offsetWidth;
@@ -909,7 +909,7 @@ if( B1 < T2 || R1 < L2 || T1 > B2 || L1 > R2 ) {
 } else {
 	// 碰撞了执行的代码
 }
-{% endhighlight %}
+```
 
 ### 改变拖拽对象的大小
 
@@ -944,12 +944,12 @@ onkeydown的效果是按下按钮 ， 按钮的值输入之前执行绑定函数
 
 键码是每一个按钮的Ascii码值，功能相同的按键（比如左右shift）的键码相同
 
-{% highlight javascript %}
+```JavaScript
 document.addEventListener = function("keydown" , function(ev) {
 	var ev = ev || event;
 	alert(ev.keyCode);
 },false);
-{% endhighlight %}
+```
 
 浏览器还给我们提供了三个功能键, shift ctrl alt
 
@@ -957,12 +957,12 @@ document.addEventListener = function("keydown" , function(ev) {
 
 我们使用键盘事件可以来实现一个留言本的功能
 
-{% highlight html %}
+```html
 <input type="text" id="text1">
 <ul id="list"></ul>
-{% endhighlight %}
+```
 
-{% highlight javascript %}
+```JavaScript
 var oText = document.getElementById('text1');
 var oList = document.getElementById('list');
 
@@ -985,7 +985,7 @@ oText.addEventListener('keyup' , function(ev) {
 		}
 	}
 } , false);
-{% endhighlight %}
+```
 
 [demo](/assets/download/keyCode-text-book.html)
 
@@ -1000,43 +1000,43 @@ Browser object model 浏览器对象模型，我们通过这个模型可以操�
 ## open
 open方法可以接受4个参数，但是后两个参数，存在兼容性问题，所以暂不介绍，可以在`《javascript高级程序设计》` 中查找到相关方法。
 
-{% highlight javascript %}
+```JavaScript
 window.open();
-{% endhighlight %}
+```
 如果什么参数都不加，则默认新创建一新窗口，并打开一个空白页
 
 第一个参数是需要打开的网页url，例如
-{% highlight javascript %}
+```JavaScript
 window.open('www.baidu.com');
-{% endhighlight %}
+```
 则创建一个新窗口，并跳转到百度
 
 第二个参数是打开方式，默认为`_blank`
-{% highlight javascript %}
+```JavaScript
 window.open('www.baidu.com','_self');
-{% endhighlight %}
+```
 当我们给其设置`_self`的时候，则在本页面跳转到百度
 
 window.open方法可以返回一个返回值
 即返回打开新窗口的`window`对象
 
 通过窗口的`window`对象我们可以控制新打开窗口的内容
-{% highlight javascript %}
+```JavaScript
 var newWindow = null;
 
 newWindow = window.open();
 console.log(newWindow);
-{% endhighlight %}
+```
 不过如果是非服务器环境，则会被浏览器阻止弹窗...
 
 还有一个问题，就是跨域控制问题，也就是说我们并不能被允许控制打开的有域名的页面的内容
-{% highlight javascript %}
+```JavaScript
 var newWindow = null;
 
 newWindow = window.open('http://www.baidu.com');
 
 newWindow.document.body.background = "red";
-{% endhighlight %}
+```
 你当然是没有权利去改百度提供的页面的DOM内容的
 
 当然如果要解决这个问题，可以参考[html5跨域通信](http://numerhero.github.io/2015/09/10/HTML5.html)
@@ -1044,11 +1044,11 @@ newWindow.document.body.background = "red";
 ## close
 
 我们可以使用close方法来关闭窗口
-{% highlight javascript %}
+```JavaScript
 setTimeout(function() {
 	window.close()
 } , 3000);
-{% endhighlight %}
+```
 例如,我们可以打开窗口后3秒使用close方法来关闭窗口
 
 但是close方法存在兼容性问题
@@ -1061,12 +1061,12 @@ setTimeout(function() {
 
 但是，如果是我们使用代码新打开的一个窗口的话，各个浏览器就不会有限制性问题
 例如如下布局:
-{% highlight html %}
+```html
 <input type="button" value = "打开新窗口" id="btn1">
 <input type="button" value = "关闭新窗口" id="btn2">
-{% endhighlight %}
+```
 
-{% highlight javascript %}
+```JavaScript
 var oBtn1 = document.getElementById("btn1");
 	var oBtn2 = document.getElementById("btn2");
 
@@ -1083,7 +1083,7 @@ var oBtn1 = document.getElementById("btn1");
 			newWindow.length--;	
 		}
 	}
-{% endhighlight %}
+```
 
 我们打开新的页面在不同浏览器下都能关闭
 
@@ -1091,23 +1091,23 @@ var oBtn1 = document.getElementById("btn1");
 
 window底下其中有一个对象是`navigator`(英:领航者)我们可以根据这个对象底下的`userAgent`属性来获知用户的浏览器类型，以及版本型号。
 
-{% highlight javascript %}
+```JavaScript
 console.log(window.navigator.userAgent);
-{% endhighlight %}
+```
 
 这样我们就可以判断用户的浏览器类型了，并且可以简单的判断用户是否使用的是IE浏览器
-{% highlight javascript %}
+```JavaScript
 if( window.navigator.userAgent.indexOf("MSIR") != -1 )
 {
 	console.log("用户用的是标准浏览器");
 }else {
 	console.log("用户用的是IE浏览器");
 }
-{% endhighlight %}
+```
 
-{% highlight javascript %}
+```JavaScript
 console.log(window.navigator);
-{% endhighlight %}
+```
 navigator底下还有许多属性和方法，我们可以console一下
 
 appCodeName: "Mozilla"
@@ -1146,9 +1146,9 @@ webkitTemporaryStorage: DeprecatedStorageQuota__proto__: Navigator
 location则是一个表明当前浏览器地址栏信息的一个对象。
 
 直接`alert`会默认调用location的`href`方法，然后打印出当前地址栏上的全部信息
-{% highlight javascript %}
+```JavaScript
 alert(window.location);
-{% endhighlight %}
+```
 
 但是如果使用console.log则会打印出location对象底下的全部方法和属性
 
@@ -1185,9 +1185,9 @@ __proto__: Location
 主地址?之后的内容(结果会包含?)
 
 如果需要把?去掉的话可以这样写
-{% highlight javascript %}
+```JavaScript
 console.log(window.location.search.substring(1));
-{% endhighlight %}
+```
 
 获取这些东西有什么用处呢？
 当我们学到前后端交互的时候，就知道有两种方式进行交互`get`和`post`
@@ -1199,9 +1199,9 @@ console.log(window.location.search.substring(1));
 这个方法也是会带有一个#的
 
 去除的方法上同
-{% highlight javascript %}
+```JavaScript
 console.log(window.location.hash.substring(1));
-{% endhighlight %}
+```
 
 hash音译哈希，我们可以通过动态的添加哈希值来给每个网页标记索引，或者解决缓存问题
 简单来说就是让同一类网页不同的信息进行不同的标记
@@ -1217,43 +1217,43 @@ hash音译哈希，我们可以通过动态的添加哈希值来给每个网页�
 
 我们可以使用 `focus` 来主动为用户标中焦点
 例如 如下布局
-{% highlight html %}
+```html
 <input type="text" value = "输入内容" id="text">
-{% endhighlight %}
+```
 
-{% highlight javascript %}
+```JavaScript
 var otext = document.getElementById('text');
 
 otext.focus();
-{% endhighlight %}
+```
 
 当某元素的被标中焦点的时候，我们可以使用`onfocus`来执行标中焦点事件
-{% highlight javascript %}
+```JavaScript
 var otext = document.getElementById('text');
 
 otext.focus();
 otext.onfocus = function() {
 	console.log(焦点被标中了);
 }
-{% endhighlight %}
+```
 
 ### blur 和 onblur
 
 我们还可以使用 `blur` 来主动取消已被标中的焦点,不过可能不太常用
 
 使用`onblur`激发焦点被取消时候的callback
-{% highlight javascript %}
+```JavaScript
 var otext = document.getElementById('text');
 
 otext.focus();
 otext.onblur = function() {
 	console.log(焦点被取消了);
 }
-{% endhighlight %}
+```
 
 结合`blur` 和 `focus` , 我们可以做出一点小效果
 
-{% highlight javascript %}
+```JavaScript
 var otext = document.getElementById('text');
 
 otext.onfocus = function() {
@@ -1269,32 +1269,32 @@ otext.onblur = function() {
 		this.value = '输入内容';
 	}
 }
-{% endhighlight %}
+```
 
 [demo](/assets/download/onfocus-onblur.html)
 
 ### select 和 onselect
 
 使用`select`可以主动选取一个结点对象中的文本内容
-{% highlight html %}
+```html
 <input type="text" value = "输入内容" id="text">
 <input type="button" value ="选取内容" id="btn">
-{% endhighlight %}
+```
 
-{% highlight javascript %}
+```JavaScript
 var otext = document.getElementById('text');
 var obtn  = document.getElementById('btn');
 
 obtn.onclick = function() {
 	otext.select();	
 }
-{% endhighlight %}
+```
 
 [demo](/assets/download/select.html)
 
 我们当然，还有一个`onselect`当我们选中文本内容的时候触发
 
-{% highlight javascript %}
+```JavaScript
 var otext = document.getElementById('text');
 var obtn  = document.getElementById('btn');
 
@@ -1305,7 +1305,7 @@ obtn.onclick = function() {
 otext.onselect = function() {
 		alert("文本被选中了");
 }
-{% endhighlight %}
+```
 
 [demo](/assets/download/onselect.html)
 

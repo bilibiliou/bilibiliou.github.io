@@ -48,7 +48,7 @@ keywords: 阅读,书单,2015
 
 ![目送](/assets/img/Books/follow-with-eyes.jpg)
 
-- status: 在读
+- status: `已读`
 - author: 龙应台 
 - language: 简体 
 - description: 暂无
@@ -57,7 +57,7 @@ keywords: 阅读,书单,2015
 
 ![目送](/assets/img/Books/forest-in-norway.jpg)
 
-- status: 未读
+- status: `已读`
 - author: 村上春树 
 - language: 简体 
 - description: 暂无

@@ -11,20 +11,20 @@ keywords: 技术,amd,requirejs
 
 写过java 或者 C的同学都知道这么几条语句
 
-{% highlight Java %}
+```Java
 import java.util.XXX
-{% endhighlight %}
+```
 
 或者是C的
 
-{% highlight C %}
+```C
 #include <stdio.h>
-{% endhighlight %}
+```
 
 当然新出的ecmascript6 也有相应的模块机制
-{% highlight Javascript %}
+```JavaScript
 import xxx from './xx.js'
-{% endhighlight %}
+```
 
 很简单，将一些模块（轮子、库、框架、组件、balabala）导入当前编写的文件中，方便我们更好的开发
 
@@ -32,15 +32,15 @@ import xxx from './xx.js'
 
 在现在比较通用的es5中，是没有模块化机制的，所以如果要使用js的话
 以前我们应该都是这么干
-{% highlight html %}
+```html
 <script src="xxx.js"></script>
-{% endhighlight %}
+```
 
 如果，我有一个c.js想要用到的一个b库的话，就需要在引用c前先引入b
-{% highlight html %}
+```html
 <script src="b.js"></script>
 <script src="c.js"></script>
-{% endhighlight %}
+```
 
 如果很多页面都需要b库呢？
 
@@ -76,9 +76,9 @@ James Burke 这个人，就首先提出了这种规范，就是AMD规范（Async
 
 大家不要被什么规范啊，英文吓到了，因为AMD规范只有一句话...
 
-{% highlight Javascript %}
+```JavaScript
 define([module-name?], [array-of-dependencies?], [module-factory-or-object]);
-{% endhighlight %}
+```
 
 什么意思呢？
 
@@ -100,7 +100,7 @@ require的目的就是要解决js的引用和依赖关系冲突的问题，所�
 什么是根目录呢？就是require所定位一个位置，而其他的Js文件就依照这个根位置填写相对路径
 
 例如如下目录结构
-{% highlight Javascript %}
+```JavaScript
 test.html             
 js                    
  |_                   
@@ -119,7 +119,7 @@ js
          |  jquery.pjax.js 
 		 |_                
 		    util.js       
-{% endhighlight %}
+```
 main.js就是这个项目的主函数，类比C函数的主函数
 
 有3中方式设置根路径
@@ -129,17 +129,17 @@ main.js就是这个项目的主函数，类比C函数的主函数
 ②. 如果设置了`data-main=js/main`那么默认根目录路径就是main.js所在的路径
 也就是js文件夹下
 
-{% highlight Html %}
+```html
 <script data-main="js/main" src="js/require.js"></script>
-{% endhighlight %}
+```
 
 ③. 如果我们硬性的设定根目录的位置也是可以的
 在main模块__开头__我们这样设置
-{% highlight Javascript %}
+```JavaScript
 require.config({
 	baseUrl : "xxx/xxx/xx"
 });
-{% endhighlight %}
+```
 
 __caveat :__ require.config 是requireJS给我们设置的一个配置接口通过传入一个对象来对一些参数配置，关于一些其他的参数配置，我们留在下文介绍
 
@@ -157,7 +157,7 @@ __caveat :__ require.config 是requireJS给我们设置的一个配置接口通�
 
 在define中，我们可以定义一个符合AMD规范的模块，并且用return可以吧结果输出来
 
-{% highlight Javascript %}
+```JavaScript
 define(function () {
 	/* 计算后结果假设等于1 */
 	var calcresult = 1;
@@ -166,14 +166,14 @@ define(function () {
 		r : calcresult
 	}
 });
-{% endhighlight %}
+```
 
 然后我们在main函数中，将a.js导入，首先先根据根节点来获取a
 
 __caveat: __ 每个模块中define函数有且只能有一个~！
 
 路径的话，全部默认的是.js文件，所以我们不用自己加后缀，也不能加后缀
-{% highlight Javascript %}
+```JavaScript
 require.config({
 	paths : {
 		"a" : ["a"], // 不能加.js后缀
@@ -183,7 +183,7 @@ require.config({
 require( ["a"] , function (a) {
 	console.log(a.r);
 });
-{% endhighlight %}
+```
 
 ## 第三方组件模块化
 
@@ -196,7 +196,7 @@ require 给我们提供了一个shim函数,可以将未进行模块化的组件�
 在主函数main中我们这样写
 (shim: 垫子 ，加个垫子，能让这个component够得着的意思么？)
 
-{% highlight Javascript %}
+```JavaScript
 require.config({
 	paths : {
 		"util"  : ["common/util"]
@@ -212,12 +212,12 @@ require( ["a" , "jquery" , "util"] , function ( u ) {
 	 o = new u();
 	 console.log(o.getToday()); // 2016-03-12
 });
-{% endhighlight %}
+```
 
 这样我们就完成了将util.js的模块化并使用
 
 而jquery在函数内部已经为我们实现了AMD规范了,所以我们可以直接正常使用
-{% highlight Javascript %}
+```JavaScript
 require.config({
 	paths : {
 		"util"  : ["common/util"],
@@ -236,13 +236,13 @@ require( ["jquery" , "util"] , function ($ , u ) {
 
 	 console.log($); // jquery init
 });
-{% endhighlight %}
+```
 
 
 但是基于jQuery的很多第三方插件并没有AMD规范化的，他们又和jquery有依赖关系，怎么办呢？
 
 还是shim来解决
-{% highlight Javascript %}
+```JavaScript
 require.config({
 	paths : {
 		"util"  : ["common/util"],
@@ -265,12 +265,12 @@ require( ["jquery" , "util" , "jqueryPjax"] , function ( $ , u ) {
 	 console.log($); // jquery init
 	 console.log($.pjax)
 });
-{% endhighlight %}
+```
 
 也可以简写为： 
-{% highlight Javascript %}
+```JavaScript
 "pjax" : ["jquery"]
-{% endhighlight %}
+```
 
 这样，最基本的requireJs 功能我们就懂了，快去和小伙伴们试试吧
 
@@ -281,7 +281,7 @@ require( ["jquery" , "util" , "jqueryPjax"] , function ( $ , u ) {
 define 函数可以将一个js文件内的js代码模块化
 
 当然js代码不一定是标准的，也可以是单纯的json
-{% highlight Javascript %}
+```JavaScript
 define({
 	"Owen" : {
 		"age"  : "20",
@@ -292,7 +292,7 @@ define({
 		"gender" : "girl"	
 	}
 })
-{% endhighlight %}
+```
 
 再来我们来看看如何引入依赖
 
@@ -301,7 +301,7 @@ define({
 我们来看个栗子
 
 main.js:
-{% highlight Javascript %}
+```JavaScript
 require.config({
 	paths : {
 		"util" : ["common/util"],
@@ -313,17 +313,17 @@ require(["data"] , function (D) {
 	console.log(D.r); // 2016-03-13
 });
 
-{% endhighlight %}
+```
 
 data.js中调用主函数中已经确定好了依赖，获取今天的日期，并返回
-{% highlight Javascript %}
+```JavaScript
 define(["util"] , function (u) {
 	var $ = new u();
 	return {
 		r : $.getToday()
 	}
 });
-{% endhighlight %}
+```
 
 
 caveat: 一个js文件里面只能有一个define函数,不然会提示`Mismatched anonymous define() module:`
@@ -341,13 +341,13 @@ RequireJS 还为我们提供了很多[插件](https://github.com/millermedeiros/
 
 我们可以在body前面插入一个`alert`来测试domReady
 
-{% highlight Html %}
+```html
 <script>alert("owen love zyz!")</script>		
-{% endhighlight %}
+```
 
 当alert执行时，dom还未加载，执行后，完成加载，并在console.log中打印出内容
 
-{% highlight Javascript %}
+```JavaScript
 require.config({
 	paths : {
 		"domReady" : ["tool/domready"]
@@ -362,25 +362,25 @@ require(["domReady"] , function (domReady) {
 	});
 
 });
-{% endhighlight %}
+```
 
 这里还有一个作者留的小技巧
 
 如果不设置paths参数，并且吧domready.js保存在根目录下，那么就能像这样直接使用
-{% highlight Javascript %}
+```JavaScript
 require(["domReady!"] , function (Doc) {
 	console.log(Doc);
 	console.log("I will run after dom is ready!");
 
 });
-{% endhighlight %}
+```
 
 注意这是带个感叹号的，返回值是`document`
 
 如果你希望把domreadyjs保存在其他目录下， 例如`tool/domready`
 你也可以使用这个感叹号的方法
 
-{% highlight Javascript %}
+```JavaScript
 require.config({
 	paths : {
 		"dr" : "根目录/tool/domready"
@@ -391,7 +391,7 @@ require(["dr!"] , function (Doc) {
 	console.log(Doc);
 	console.log("I will run after dom is ready!");
 });
-{% endhighlight %}
+```
 
 ### text
 
@@ -399,7 +399,7 @@ require(["dr!"] , function (Doc) {
 
 text plugin 是一个用来加载文本的插件，底层采用的还是Ajax
 和domready 不太一样， text貌似只能使用！的方式加载
-{% highlight Javascript %}
+```JavaScript
 require.config({
 	paths : {
 		"t" : ["tool/text"]
@@ -409,7 +409,7 @@ require.config({
 require(["t!review.txt"] , function (review) {
 	console.log(review);
 });
-{% endhighlight %}
+```
 
 流程是先根据paths路径找到text.js 然后在__该路径下__找到review.txt
 
@@ -420,22 +420,22 @@ caveats : <br>
 ② 加载完text.js后， 会在该目录下找review.text 所以最好就是重写路径，或者把text.js放在同一文件下 <br>
 
 当然JSON也可以
-{% highlight Javascript %}
+```JavaScript
 require(["text!../text/foo.json"],function (foo) { 
 	console.log(Object.prototype.toString.call(foo));
 	console.log(JSON.parse(foo))
 });
-{% endhighlight %}
+```
 
 但是JSON数据会出现同名缓存的问题，解决这个问题，我们可以使用!bust参数
 
-{% highlight Javascript %}
+```JavaScript
 require(["text!../text/foo.json" , "text!../text/foo.json!bust"],function (foo , foo1) { 
 	console.log(foo);
 	console.log(foo1)
 	console.log(JSON.parse(foo) == JSON.parse(foo1));
 });
-{% endhighlight %}
+```
 
 ### Image
 
@@ -444,7 +444,7 @@ require(["text!../text/foo.json" , "text!../text/foo.json!bust"],function (foo ,
 图片插件就的使用image.js了
 
 使用方法和text差不多
-{% highlight Javascript %}
+```JavaScript
 require.config({
 	paths : {
 		image : "tool/image"
@@ -454,7 +454,7 @@ require.config({
 require(["image!img/cat.jpg"] , function (cat) {
 	console.log(cat);
 });
-{% endhighlight %}
+```
 
 
 但是和text.js不同的是，加载imagejs后所返回的路径并不是当前js文件的路径
@@ -475,7 +475,7 @@ require(["image!img/cat.jpg"] , function (cat) {
 只要在引入的图片中加bust参数就好
 
 栗子酱：
-{% highlight Javascript %}
+```JavaScript
 require.config({
 	paths : {
 		image : "tool/image"
@@ -485,7 +485,7 @@ require.config({
 require(["image!img/cat.jpg!bust" , "image!img/cat.jpg!bust"] , function (cat1 , cat2) {
 	console.log(cat1 === cat2); //false
 });
-{% endhighlight %}
+```
 
 从上文来看 虽然加载的图片路径相同的，但是cat1明显不等于cat2 说明两张图片是不同的
 
@@ -513,7 +513,7 @@ require(["image!img/cat.jpg!bust" , "image!img/cat.jpg!bust"] , function (cat1 ,
 所以如果我们需要把本地的markdown文件加载到主页面中的话，需要这么做
 
 栗子：
-{% highlight Javascript %}
+```JavaScript
 require.config({
 	"text" : [tool/text],
 	"md" : ["tool/mdown"],
@@ -523,7 +523,7 @@ require.config({
 require(["md!../text/foo.md"] , function (foo) {
 	document.getElementsByTagName("body")[0].innerHTML = foo;
 })
-{% endhighlight %}
+```
 
 如果单纯只是需要markdown的原文件而不需要转换成html
 只需要加一个参数就行

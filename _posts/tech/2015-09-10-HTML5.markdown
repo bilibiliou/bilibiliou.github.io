@@ -11,7 +11,7 @@ keywords: 技术,HTML5
 
 ## HTML5初始化代码
 
-{% highlight html %}
+```html
 
 <！DOCTYPE html>
 <html>
@@ -38,7 +38,7 @@ keywords: 技术,HTML5
 </body>
 </html>
 
-{% endhighlight %}
+```
 
 比起之前的版本
 简化了很多
@@ -91,19 +91,19 @@ CSS裸奔节
 
 ### figure
 
-{% highlight html %}
+```html
 
 用于对元素组合
 说白了一般就是用来装<img> 和 <video>
 figure 元素的内容应该与主内容相关，但如果被删除，则不应对文档流产生影响。
 figcation的子元素 用来解释
 
-{% endhighlight %}
+```
 
 ### time
 
 用来标记时间
-{% highlight html %}
+```html
 <p>
 	庆祝抗日战争胜利70周年,阅兵日<time> 2015-09-03 </time>
 </p>
@@ -112,14 +112,14 @@ figcation的子元素 用来解释
 	我的<time datetime = "1996-03-05">生日</time>
 </p>
 
-{% endhighlight %}
+```
 
 ### datalist 和 option
 
 选项列表
 当你在表单输入时
 自动弹出可能值列表
-{% highlight html %}
+```html
 
 <input type="text" list="valList" />
 <datalist id="valList">
@@ -128,7 +128,7 @@ figcation的子元素 用来解释
   <option value="css">css</option>
 </datalist>
 
-{% endhighlight %}
+```
 
 这里又引出了一个新的属性"list"
 用来关联可能值列表
@@ -136,12 +136,12 @@ figcation的子元素 用来解释
 ### summary 和 details
 
 用于列出文档列表
-{% highlight html %}
+```html
 <details>
 <summary>点我,就送屠龙宝刀</summary>
 乖乖努力打怪升级,自然就有
 </details>
-{% endhighlight %}
+```
 
 可以加一个属性Open
 使列表默认是展开状态
@@ -151,7 +151,7 @@ figcation的子元素 用来解释
 ### dialog
 
 这对标签一般用来语意化一段对话
-{% highlight html %}
+```html
 
 <dialog>
   <dt>老师</dt>
@@ -161,7 +161,7 @@ figcation的子元素 用来解释
   <dt>老师</dt>
   <dd>答对了！</dd>
 </dialog>
-{% endhighlight %}
+```
 
 ### address
 
@@ -175,27 +175,27 @@ figcation的子元素 用来解释
 ### keygen
 
 可以使用keygen为发送的表单添加一个公共密钥
-{% highlight html %}
+```html
 <form action="http://numerhero.github.io" method="get">
 用户: <input type="text" name="usr_name" />
 公钥: <keygen name="security" />
 <input type="submit" />
 </form>
-{% endhighlight %}
+```
 
 ### progess
 
 可以定义一个简陋的进度条
-{% highlight html %}
+```html
 <progress max="100" value="77">
      <!-- 这里用以兼容 不支持该标签的浏览器 -->
      <span>77</span>%
 </progress>
-{% endhighlight %}
+```
 
 ## 如何向下兼容IE8以下版本
 
-{% highlight Javascript %}
+```JavaScript
 因为浏览器允许我们自定义标签
 比如
 
@@ -209,7 +209,7 @@ figcation的子元素 用来解释
 
 这里Google开发了一个兼容脚本:
 
-{% endhighlight %}
+```
 
 [点击下载html5shiv](/assets/download/html5shiv.js)
 
@@ -219,7 +219,7 @@ figcation的子元素 用来解释
 
 ### email
 
-{% highlight html %}
+```html
 
 <form>
 	<input type="email">
@@ -234,11 +234,11 @@ figcation的子元素 用来解释
 当你要输入有邮箱的时候,点击email表单
 会从其他语言的输入法 转换为英文输入法
 
-{% endhighlight %}
+```
 
 ### tel
 
-{% highlight html %}
+```html
 
 <form>
 	<input type="tel">
@@ -257,11 +257,11 @@ readonly : 默认只读不可修改
 size : 输入数字大小
 placeholder : 默认提示
 dirname : 
-{% endhighlight %}
+```
 
 ### url
 
-{% highlight html %}
+```html
 
 <form>
 	<input type="url">
@@ -276,11 +276,11 @@ dirname :
 当你要输入有网址的时候,点击url表单
 会从其他语言的输入法 转换为英文输入法
 
-{% endhighlight %}
+```
 
 ### search
 
-{% highlight html %}
+```html
 
 <form>
 	<input type="search">
@@ -292,11 +292,11 @@ dirname :
 会出现清空内容的按钮
 可以配合其他属性使用
 
-{% endhighlight %}
+```
 
 ### range
 
-{% highlight html %}
+```html
 
 <form>
 	<input type="range">
@@ -313,11 +313,11 @@ value: 缺省数值值
 
 其中Opera 浏览器 还特意为range 做了数值刻度
 
-{% endhighlight %}
+```
 
 ### number
 
-{% highlight html %}
+```html
 
 <form>
 	<input type="number">
@@ -333,11 +333,11 @@ step : 数值跨度，即每次数值增加量 默认是1
 min  : 最小数值
 max  : 最大数值
 value: 缺省数值值
-{% endhighlight %}
+```
 
 ### color
 
-{% highlight html %}
+```html
 
 可以供我们使用的一个调色板插件
 <form>
@@ -362,11 +362,11 @@ window.onload = function()
 		document.body.style.backgroundColor = this.value;
 	}
 }
-{% endhighlight %}
+```
 
 ### date
 
-{% highlight html %}
+```html
 
 <form>
 	<input type="date" min="1996-03-05" max="2004-09-22">
@@ -377,11 +377,11 @@ window.onload = function()
 一些可选属性
 min : 最小日期
 max : 最大日期
-{% endhighlight %}
+```
 
 ### datatime-local
 
-{% highlight html %}
+```html
 
 用法和date差不多
 用于选取本地时间
@@ -390,7 +390,7 @@ max : 最大日期
 </form>
 
 但是貌似没有min 和 max 属性
-{% endhighlight %}
+```
 
 ### time、week、month
 
@@ -413,27 +413,27 @@ pattern : 简单的表单正则表达式(列如：pattern="\d{1,5}" 限制表单
 
 formaction : 用来添加一个新的提交路径
 formnovalidate : 关闭验证，直接提交
-{% highlight html %}
+```html
 
 <form action="http://www.baidu.com">
 	<input type="text" placeholder="输入的内容"  pattern="\d{1,5}" autofocus required  autocomplete="off">
 	<input type="submit" value="提交百度">
 	<input type="submit" value="提交腾讯" formaction="http://www.qq.com">
 </form>
-{% endhighlight %}
+```
 
 ## Javascript表单验证
 
 首先我们需要讨论一下为什么要需要用到JS表单验证
 
 例如这么一个表单
-{% highlight Javascript %}
+```JavaScript
 
 <form action="www.baidu.com">
 	<input type="text" pattern = "/d{1,5}" required autocomplete="on" autofocus="on">
 	<input type="submit" value="发送">
 </form>
-{% endhighlight %}
+```
 
 ![shootpic](/assets/img/input-remove.png)
 
@@ -463,7 +463,7 @@ formnovalidate : 关闭验证，直接提交
 还有调试的时候，检验你的正则是否写错啊
 表单类型和你输入的值格式是否匹配啊等等
 
-{% highlight Javascript %}
+```JavaScript
 
 表单一共有11种验证
 首先，表单验证都是围绕一个叫validity(英译:有效的、健全的)对象进行的
@@ -555,7 +555,7 @@ window.onload = function()
 比如当用户赶时间的时候，表单没有填写完，需要保存到草稿箱的时候
 我们就需要给保存到草稿箱那个submit 按钮添加一个formnovalidate属性来关闭所有的表单验证
 
-{% endhighlight %}
+```
 
 ## 新的DOM选择器
 
@@ -571,7 +571,7 @@ $('#box') $('.box') $('ol li');
 到了HTML5中，DOM 允许我们使用JQ的方法去获取元素
 
 
-{% highlight Javascript %}
+```JavaScript
 
 通过获取ID 来获取元素
 
@@ -620,11 +620,11 @@ var oUl1 = document.querySelector('#ul1');
 var oLi = oUl1.querySelector('li');
 console.log(oLi.length);
 
-{% endhighlight %}
+```
 
 ### querySelectorAll
 
-{% highlight Javascript %}
+```JavaScript
 
 上面，我们说到不能通过querySelector获取多个同类元素
 但是我们可以通过querySelectorAll方法来获取多个同类元素
@@ -648,7 +648,7 @@ console.log(oLi);
 
 同时也可以获取单个元素(id class)
 
-{% endhighlight %}
+```
 
 | || 是否能识别id || 是否能识别class || 是否能识别多个class || 是否能通过标签选择器识别单个元素 |
 |:--------------||:--------------||:--------------||:--------------||:--------------|
@@ -676,25 +676,25 @@ console.log( box[0] );
 还有一点需要注意的是，使用querySelectorAll / querySelector来获取HTML5新功能
 自定义属性的时候 需要加上data-
 
-{% highlight Javascript %}
+```JavaScript
 <div data-Owen="abc" ></div>
 var box = document.querySelectorAll("data-Owen=abc");
 而不是 
 var box = document.querySelectorAll("Owen=abc");
-{% endhighlight %}
+```
 
 ### getElementsByClassName
 
 类似getElementsByTagName
 
-{% highlight Javascript %}
+```JavaScript
 var oboxs = document.getElementsByClassName('box');
 console.log(oboxs);
-{% endhighlight %}
+```
 
 ### classList
 
-{% highlight Javascript %}
+```JavaScript
 我们可以通过classList来获取到一个元素的全部class
 
 <div id = "box" class="a b c"></div>
@@ -724,12 +724,12 @@ toggle() : 切换一个类
 如果我执行 boxClass.toggle('a'); 原来类表里面存在,就会删除a这个类
 如果我执行 boxClass.toggle('d'); 原来类表里面不存在,就会添加d这个类
 
-{% endhighlight %}
+```
 
 ## 自定义属性
 
 我们可以使用data来自定义属性
-{% highlight JavaScript %}
+```JavaScript
 如果是HTML5之前
 我们这样自定义属性
 <div Owen = "abc"></div>
@@ -763,15 +763,15 @@ console.log(obj.getAttribute('data-Owen'));//abc
 
 通过getAttribute方法我们就可以利用html中传递过来的内容了
 
-{% endhighlight %}
+```
 
 data这个属性广泛用于jQuery Mobile上
 我们只需要添加jQuery Mobile
 然后在标签里面配属性就基本可以完成一些手机端的开发
 和一些简单的特效
-{% highlight html %}
+```html
 <div data-theme="a" ></div> //把div设置成黑色
-{% endhighlight %}
+```
 
 当然除jQuery Mobile 的库
 还可以用Knockout 手机端库
@@ -781,15 +781,15 @@ data这个属性广泛用于jQuery Mobile上
 
 Css也可以访问data属性
 
-{% highlight html %}
+```html
 <article data-parent="cars"></article>
-{% endhighlight %}
+```
 
-{% highlight css %}
+```css
 article::before {
   content: attr(data-parent);
 }
-{% endhighlight %}
+```
 
 但是这个功能对于大多数浏览器来说暂时还是Partial support
 
@@ -798,7 +798,7 @@ article::before {
 这两个新属性是关于加载脚本的
 
 比如我这里需要加载三个js
-{% highlight Javascript %}
+```JavaScript
 
 <script src="a.js"></script>
 <script src="b.js"></script>
@@ -807,7 +807,7 @@ article::before {
 <body>
 	...
 </body>
-{% endhighlight %}
+```
 
 如果,这几个js文件比较大,而碰巧我们可爱的用户网又比较慢
 因为默认的加载方式是同步加载[(关于同异步的请参考本站AJAX的有关内容)](http://numerhero.github.io/2015/08/26/AJAX.html)
@@ -844,14 +844,14 @@ history是HTML5下提供在服务器端下用于保存不同内容的对象
 (注意，history只能在服务器端下才能产生作用)
 
 pushState( data , title , url[可选] );
-{% highlight Javascript %}
+```JavaScript
 history.pushState方法, 可以将页面的变化状态保存,并自动建立映射关系
 参数: 第一个是保存的数据(必须填写) 第二个是保存的页面标题(也是必须填写) 第三个是url(选填)用于
 标明页面变化。
-{% endhighlight %}
+```
 
 window.onpopstate事件
-{% highlight Javascript %}
+```JavaScript
 用来读取对应的历史内容
 需要调用事件对象event来调动window.onpopstate底下的state值(也就是保存的页面内容)
 
@@ -862,8 +862,8 @@ window.onpopstate = function(ev)
 	而后调用oEvent.state
 }
 
-{% endhighlight %}
-{% highlight Javascript %}
+```
+```JavaScript
 
 来看看再刚才的随机函数的例子:
 (html相同,请调整到服务器端测试)
@@ -910,7 +910,7 @@ window.onload = function()
 		return newArr;
 	}
 }
-{% endhighlight %}
+```
 
 ## 拖拽
 
@@ -995,7 +995,7 @@ ev.dataTransfer.files
 filesList
 单次拖拽进来后会返回一个filesList(对象)列表 列表下 有这么几个属性
 
-{% highlight Javascript %}
+```JavaScript
 name : 文件名(包括后缀)
 length : 单次拖拽进来文件的个数 
 type : 拖拽进来文件的类型
@@ -1011,11 +1011,11 @@ oDiv.ondrop = function(ev)
 	console.log(fs[0].type);
 	ev.preventDefault();
 }
-{% endhighlight %}
+```
 
 FileReader对象
 
-{% highlight Javascript %}
+```JavaScript
 当我们接受完文件之后,还需要能读取这些文件
 所以,我们需要用到这么一个对象FileReader
 
@@ -1094,7 +1094,7 @@ window.onload = function()
 		}
 	}
 }
-{% endhighlight %}
+```
 
 ### 一个购物车实例
 
@@ -1118,7 +1118,7 @@ window.onload = function()
 
 在一个页面内嵌套另外一个页面,在这个页面内部操作被包含的页面
 
-{% highlight Javascript %}
+```JavaScript
 
 === html ===
 <input type="button" id = 'btn' value="点我改变被嵌套页面的背景颜色">
@@ -1143,7 +1143,7 @@ window.onload = function()
   }
 }
 
-{% endhighlight %}
+```
 
 反过来,被嵌套的页面也可以来操纵包含他的页面
 
@@ -1155,7 +1155,7 @@ window top parent
 ![shootpic](/assets/img/msseage-conmmunicate-in-orgin.png)
 
 
-{% highlight Javascript %}
+```JavaScript
 
 === html ===
 <input type="button" id = 'btn' value="点我改变被嵌套页面的背景颜色">
@@ -1194,14 +1194,14 @@ window.onload = function()
   }
 }
 
-{% endhighlight %}
+```
 
 ### 同域window.open窗口间通信
 
 从一个页面内通过window.open打开另外一个页面
 会返回一个对象,这个对象就是新打开页面的window对象
 
-{% highlight Javascript %}
+```JavaScript
 
 === html ===
 <input type="button" id = "btn" value="点我打开新窗口">
@@ -1233,13 +1233,13 @@ window.onload = function()
 
 }
 
-{% endhighlight %}
+```
 
 如果过来需要被打开的子页面操作打开它的父级页面
 
 我们可以使用window.opener这个方法
 
-{% highlight Javascript %}
+```JavaScript
 
 === html ===
 <input type="button" id = "btn" value="点我打开新窗口">
@@ -1282,7 +1282,7 @@ window.onload = function()
 
 }
 
-{% endhighlight %}
+```
 
 再次提醒,以上操作都是在同域下进行的
 最后再次注意,窗口间通信一定要在服务器环境
@@ -1319,7 +1319,7 @@ origin属性就是发送请求的域名
 
 demo:
 
-{% highlight Javascript %}
+```JavaScript
 
 === 发送请求的页面html ===
 <input id="btn" type="button" value="点我发送跨域发送数据">
@@ -1358,7 +1358,7 @@ window.onload = function()
   },false);
 } 
 
-{% endhighlight %}
+```
 
 
 ### 跨域window.open窗口间通信
@@ -1374,17 +1374,17 @@ window.onload = function()
 搭建一个Html5的离线应用需要经历这些步骤
 
 ① 服务器设置头信息
-{% highlight Javascript %}
+```JavaScript
 AddType text/cache-manifest manifest
-{% endhighlight %}
+```
 ② html标签添加引用离线清单
-{% highlight Javascript %}
+```JavaScript
 <html manifest="path/to/NAME.manifest">
-{% endhighlight %}
+```
 ③ 编写离线加载清单
 
 离线清单格式:
-{% highlight Javascript %}
+```JavaScript
 
 # Version 0.1
 
@@ -1409,7 +1409,7 @@ login.asp
 FALLBACK:
 /html5/ 404.html
 
-{% endhighlight %}
+```
 
 ### 存在的问题
 1.自动缓存引用了 manifest 文件的页面即使在NETWORK中指定"*"（所有的页面都）使用网络,还是不能
@@ -1475,21 +1475,21 @@ Uncaught SecurityError: Failed to construct 'SharedWorker': Script at 'file:///D
 ```
 
 开启专用型多线程很简单
-{% highlight Javascript %}
+```JavaScript
 var w1 = new Worker('test.js');// 只需要将需要在进程里运行的js文件的文件名写上就行了
 w1.postMessage('owen'); // 我们可以传递一个消息给服务器端的支线程
-{% endhighlight %}
+```
 
 那么在我们这个主线程中就已经开辟了一个支线程了,那么怎么进行主支线程的通信呢？
 在服务器端的支线程里,我们可以使用self来调用全局的 worker对象,
 那么我们在test.js这个脚本里面可以这样写道
-{% highlight Javascript %}
+```JavaScript
 self.onmessage = function(ev)
 { 
    self.postMessage(ev.data + "you are welcome!"); 
    // 我们可以使用postMessage再将新的信息传回客户端去
 }
-{% endhighlight %}
+```
 
 相比较共享型而言,专用型worker通信开启了一个隐式的端口通信,当专用线程被创建的时候，MessagePort 的端口消息队列便被主动启用。因此，这也和工作线程接口中定义的 start 方法作用一致。
 
@@ -1511,7 +1511,7 @@ importScript() 引入其他线程的JS脚本
 JSON以及配套的方法
 
 然后客户端口再接受服务端传递回来的消息
-{% highlight Javascript %}
+```JavaScript
 var w1 = new Worker('test.js');// 只需要将需要在进程里运行的js文件的文件名写上就行了
 w1.postMessage('owen '); // 我们可以传递一个消息给服务器端的支线程
 
@@ -1519,52 +1519,52 @@ w1.onmessage = function(ev)
 {
   console.log(ev.data);
 }
-{% endhighlight %}
+```
 
 数据量多的时候,也可以传递JSON
-{% highlight Javascript %}
+```JavaScript
 var w1 = new Worker('test.js');
 w1.postMessage({ "name" : owen , "sex" : boy , "age" : 19 }); 
-{% endhighlight %}
+```
 
 如果我们需要传递一个二进制数据的时候,还需要在第二个参数中指定
-{% highlight Javascript %}
+```JavaScript
 var w1 = new Worker('test.js');
 w1.postMessage({ operation: 'list_all_users', //操作
   input: buffer,
   threshold: 0.8, //阈值
  }, [buffer]); //需要在后面指定二进制对象
-{% endhighlight %}
+```
 
 当我们在服务器端的任务运行完成后,还可以使用close()方法自行进行关闭
-{% highlight Javascript %}
+```JavaScript
 self.onmessage = function(ev)
 { 
    self.postMessage(ev.data + "you are welcome!"); 
 }
 close();
-{% endhighlight %}
+```
 
 或者在主线程中,使用terminate方法进行关闭
-{% highlight Javascript %}
+```JavaScript
 w1.terminate();
-{% endhighlight %}
+```
 
 我们甚至可以通过importScripts() 在服务器端引入外部的JS文件但是要注意引入的而文件也不能有DOM的语法,而且不能跨域
 
-{% highlight Javascript %}
+```JavaScript
 importScripts("test2.js" , "test3.js");
 self.onmessage = function(ev)
 { 
    self.postMessage(ev.data + "you are welcome!"); 
 }
 close();
-{% endhighlight %}
+```
 
 而且我们还能使用importScripts来预加载资源,这样就可以为客户端节省资源,提高用户体验了。
 
 当我们开启的支线程出现了错误的时候我们需要及时的进行回调函数,然后返回给主线程,以便进行相应的处理
-{% highlight Javascript %}
+```JavaScript
 var w1 = new Worker('test.js');// 只需要将需要在进程里运行的js文件的文件名写上就行了
 
 w1.onerror = function(error){
@@ -1572,7 +1572,7 @@ w1.onerror = function(error){
   console.log( error.filename );
   console.log( error.lineno );
 }
-{% endhighlight %}
+```
 
 `甚至我们还可以在支线程下开辟新的支线程,各种操作是一样的`
 
@@ -1586,14 +1586,14 @@ Shared web worker 和 Dedicated web worker 的主要区别在于, 共享型线�
 如果多个页面都需要加载或者计算同样的数据和资源这时候我们就需要使用Shared web worker
 当然,Shared web worker也需要等全部页面关闭了才会结束
 
-{% highlight Javascript %}
+```JavaScript
 var w1 = new SharedWorker('shareworker.js','sharedworker1'); //如果指定了第二个参数,将被用做定义该共享型线程的名称
-{% endhighlight %}
+```
 
 由于共享型多线程需要对多个页面进行广播,所以就不能使用对单一对象使用的postMessage方法了
 这里HTML5中卫共享型多线程提供了一个port()方法,
 我们就可以通过port方法 + postMessage方法来对多个页面进行广播了
-{% highlight Javascript %}
+```JavaScript
 var w1 = new SharedWorker('shareworker.js','Owen's Sharedworker');
 w1.port.start();                             // 显示的开启端口
 w1.port.postMessage("hi");                   // 向端口发送请求
@@ -1602,19 +1602,19 @@ w1.port.postMessage = function(ev)
 {
   console.log(ev.data);                      //得到线程发送的abc 然后console出来
 }
-{% endhighlight %}
+```
 
 模拟多个页面只要将上面的代码复制粘贴多份
 
 然后我们来看看引入的线程代码
-{% highlight Javascript %}
+```JavaScript
 (function(){
   self.onconnect = function(ev){
       var port = ev.ports[0];         // 获得端口
       port.postMessage('abc');        // 当连接成功后,向页面发送abc
     } 
 })()
-{% endhighlight %}
+```
 
 具体的关于共享型多线程的内容还很多,本人能力不足。实验的时候也出现了许多问题,还是尽可能的将对的东西分享出来。而且html5还不算太完善.
 
@@ -1632,14 +1632,14 @@ per.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers)
 其中的魔法就是contentEditable
 HTML5允许其他非`<textarea></textarea>` 或 `<input type="text">` 的元素进行内容编辑
 只需在该元素标签内加上
-{% highlight Javascript %}
+```JavaScript
 contenteditable="true" 
-{% endhighlight %}
+```
 
 或者在js中加上
-{% highlight Javascript %}
+```JavaScript
 document.getElementById('div1').contentEditable = true;
-{% endhighlight %}
+```
 
 就可以使大多数标签能够进行内容的修改
 
@@ -1649,16 +1649,16 @@ document.getElementById('div1').contentEditable = true;
 
 webkit强大的一个功能,允许用户通过语音提交表单
 原本出chrome允许我们这样使用语言输入功能
-{% highlight Javascript %}
+```JavaScript
 <input type="text"  x-webkit-speech >
-{% endhighlight %}
+```
 
 但是不知道什么原因这个功能已经被遗弃了,但是我们还是可以用其他的方式去实现语言输入
 
 <a href="https://github.com/Daniel-Hug/speech-input" target="_blank"><i class="fa fa-github fa-2x" ></i> Daniel-Hug's repositorys about speech-input</a>
 
 这样我们只需要在需要这样在项目中调用就行了
-{% highlight Html %}
+```html
 <div class="si-wrapper">
     <input type="text" class="si-input" placeholder="What's up?">
     <button class="si-btn">
@@ -1667,7 +1667,7 @@ webkit强大的一个功能,允许用户通过语音提交表单
         <span class="si-holder"></span>
     </button>
 </div>
-{% endhighlight %}
+```
 
 其中的CSS和fontsome根据自己项目需求来改变
 
@@ -1681,9 +1681,9 @@ webkit强大的一个功能,允许用户通过语音提交表单
 
 要使用桌面提醒功能必须得到用户同意(火狐直接默认用户同意)
 所以首先我们先查看一下浏览器默认的权限情况
-{% highlight Javascript %}
+```JavaScript
 console.log(Notification.permission)// 火狐默认为granted  webkit 为default
-{% endhighlight %}
+```
 
 default
 
@@ -1700,7 +1700,7 @@ denied
 查看完权限以后让我们来看下如何创建一个实例对象
 首先我们先通过浏览器向用户发送一个请求,如果用户同意则进行下一步,如果不同意则改为alert发送
 
-{% highlight Javascript %}
+```JavaScript
 // 向用户询问,并修改权限
 window.addEventListener('load', function () {
   Notification.requestPermission(function (status) {
@@ -1715,13 +1715,13 @@ window.addEventListener('load', function () {
     }
   });
 });
-{% endhighlight %}
+```
 
 然后我们可以试着创建一个Notification的实例对象
-{% highlight Javascript %}
+```JavaScript
 var n = new Notification("Hi!",{icon:"./avatar.png",body:"欢迎来到我的博客",tag:"777",dir:"rtl");
 console.log(n.tag); // 输出777 
-{% endhighlight %}
+```
 
 Notification( title , option )
 其中
@@ -1739,7 +1739,7 @@ onshow  当提醒消息弹出的时候触发
 onerror 当出现错误的时候触发
 onclose 当用户点击关闭消息的时候触发
 
-{% highlight Javascript %}
+```JavaScript
 var n = new Notification("Hi!",{icon:"./avatar.png",body:"欢迎来到我的博客"});
 
 n.onshow = function(){
@@ -1751,7 +1751,7 @@ n.onclick = function(){
 n.close = function(){
 	console.log("谢谢你使用消息提醒");
 }
-{% endhighlight %}
+```
 
 
 [Demo](/assets/download/Notification.html)
@@ -1769,17 +1769,17 @@ n.close = function(){
 
 ### 单次定位请求
 
-{% highlight Javascript %}
+```JavaScript
 navigator.geolocation.getCurrentPosition( success , error , options );
 // 调用这么对象然后向用户申请是否允许获取地理位置
-{% endhighlight %}
+```
 
 该API返回三个参数
 
 success : 用户允许并且位置获取成功后返回的回调函数,该函数返回一个对象参数
 
 例:
-{% highlight Javascript %}
+```JavaScript
 navigator.geolocation.getCurrentPosition(function(position){
 	oT.value += '经度' + position.coords.longitude + '\n';
 	oT.value += '纬度' + position.coords.latitude + '\n';
@@ -1791,11 +1791,11 @@ navigator.geolocation.getCurrentPosition(function(position){
 	oT.value += '时间戳' + new Date(position.timestamp) + '\n';
 });
 // 当成功的时候,返回一个function(position){ ... }, 然后进行相应的操作 
-{% endhighlight %}
+```
 [Demo](/assets/download/html5geo.html)
 
 error : 用户允许但位置并没有获取成功返回的回调函数,该函数返回一个对象参数
-{% highlight Javascript %}
+```JavaScript
 navigator.geolocation.getCurrentPosition(function(position){ ... } , function(error){
 	// 错误的函数一定要写在第二个参数,也就是说一定要写了成功的函数才能写错误的函数
 		
@@ -1808,15 +1808,15 @@ navigator.geolocation.getCurrentPosition(function(position){ ... } , function(er
 		case 0: console.log("除以上三种错误外的其他未知错误");break;
 	}
 });
-{% endhighlight %}
+```
 
 options : 其他功能选择(更好的数据收集)
 这个选项是以JSON的形式设置的
-{% highlight Javascript %}
+```JavaScript
 // 因为是第三个参数,所以一定要先写成功的函数和失败的函数
 navigator.geolocation.getCurrentPosition(function(position){ ... } , function(error){
  ... },{ enableHighAcuracy : true , timeout : 5000 , maximumAge : 5000});
-{% endhighlight %}
+```
 
 enableHighAcuracy 是否获取更精确的地理信息(更加消耗网络资源) 缺省值为false
 
@@ -1829,9 +1829,9 @@ maximumAge : 缓存单次位置的最长时间(超过这一时间,自动将此�
 ### 多次定位请求
 
 多次请求和单次请求的语法基本相同
-{% highlight Javascript %}
+```JavaScript
 var timer = navigator.geolocation.watchPosition( success , error , options );
-{% endhighlight %}
+```
 
 和单次请求不同的是,多次请求会返回一个Id,便于我们去关闭
 
@@ -1841,9 +1841,9 @@ var timer = navigator.geolocation.watchPosition( success , error , options );
 (如果你设置了timeout  则 error.code 会连续的返回 3)
 
 如果我们需要关闭多次请求
-{% highlight Javascript %}
+```JavaScript
 var timer = navigator.geolocation.clearWatch( timer );
-{% endhighlight %}
+```
 
 除此之外,多次请求还允许我们在第三个参数中设置更新频率
 timeout : 5000 , frequency : 5000 
@@ -1870,9 +1870,9 @@ sessionStorage有这么几个方法使用
 
 window.sessionStorage.setItem( Storage的key , 需要存储的内容[字符串] )
 
-{% highlight Javascript %}
+```JavaScript
 window.sessionStorage.setItem('name','Owen');
-{% endhighlight %}
+```
 
 这样就能让我们设置一个临时的Storage来存储(注意:Storage不单单可以存储字符串,还能够存储对应的DOM结点)
 
@@ -1880,9 +1880,9 @@ window.sessionStorage.setItem('name','Owen');
 
 window.sessionStorage.getItem( Storage的key )
 
-{% highlight Javascript %}
+```JavaScript
 window.sessionStorage.getItem( 'name' );
-{% endhighlight %}
+```
 
 这样就能根据我们提供的key值来获取之前已经存储了的Storage
 (如果key提供错误,则返回null)
@@ -1890,17 +1890,17 @@ window.sessionStorage.getItem( 'name' );
 ③ 删除sessionStorage
 window.sessionStorage.removeItem(Storage的key)
 
-{% highlight Javascript %}
+```JavaScript
 window.sessionStorage.removeItem( 'name' );
-{% endhighlight %}
+```
 
 这样我们就能根据提供的key值,在关闭页面之前就吧已经存储的Storage删除
 
 ④ 清空sessionStorage
 
-{% highlight Javascript %}
+```JavaScript
 window.sessionStorage.clear();
-{% endhighlight %}
+```
 
 通过这个方法我们就可以,在关闭页面之前就将已经存储的Storage列表全部清空
 
@@ -1908,12 +1908,12 @@ window.sessionStorage.clear();
 
 localSotrage和sessionStorage用法类似,不过localStorage可以永久存储在电脑中(上限是5M)
 
-{% highlight Javascript %}
+```JavaScript
 window.localStorage.setItem('name', 'owen');
 window.localStorage.getItem( 'name' );
 window.localStorage.removeItem( 'name' );
 window.sessionStorage.clear();
-{% endhighlight %}
+```
 
 再次注意: setItem 不单单可以存储字符串,还能存储DOM结点
 
@@ -1941,11 +1941,11 @@ window.sessionStorage.clear();
 
 
 绑定Storage事件可以有两种方法
-{% highlight Javascript %}
+```JavaScript
 ① window.addEventListener( 'storage' , function(ev){} , false );
 
 ② window.onstorage = function(ev){};
-{% endhighlight %}
+```
 
 返回的回调函数接受一个Storage的回调参数,在参数底下有这么几个属性
 ev.key ： 缓存被修改的全部key的集合 如果是被删除的则返回null
@@ -1971,10 +1971,10 @@ ev.url : 修改缓存页面的url
 
 音频和视频标签,可以允许我们导入一段音频和视频
 
-{% highlight Html %}
+```html
 <audio src="音频地址"></audio>
 <video src="视频地址"></video>
-{% endhighlight %}
+```
 
 音频视频标签拥有以下属性,来控制不同的功能
 
@@ -2008,19 +2008,19 @@ videoHeight: 视频的实际高
 再点击开始播放
 
 怎么显示用户控制界面呢？只要添加一个controls属性就行了
-{% highlight Html %}
+```html
 <audio controls src="音频地址"></audio>
 <video controls src="视频地址"></video>
-{% endhighlight %}
+```
 
 如果我们需要一开始就播放只要再加一个autoplay属性就OK了
-{% highlight Html %}
+```html
 <audio controls autoplay src="音频地址"></audio>
 <video controls autoplay src="视频地址"></video>
-{% endhighlight %}
+```
 
 如果我们需要获取到已经播放的时间,这时候就需要使用JS了
-{% highlight Javascript %}
+```JavaScript
 
 <audio controls autoplay src="音频地址"></audio>
 
@@ -2053,7 +2053,7 @@ window.onload = function()
 }
 
 视频也一样这里就不再赘余
-{% endhighlight %}
+```
 
 ### 编解码器的概念
 
@@ -2076,26 +2076,26 @@ window.onload = function()
 
 我们可以通过source标签引入不同类型名的视频源
 
-{% highlight Html %}
+```html
 <audio controls>
 	<source src="视频地址">
 </audio>
 <video controls ></video>
-{% endhighlight %}
+```
 
 ## 使用getUserMedia
 
 getUserMedia 是html5 规范新出来的一个API， 用处就是使用你电脑的媒体设备（摄像头，麦克风）
 
 使用起来很简单，但是有一些需要注意的地方
-{% highlight javascript %}
+```JavaScript
 navigator.getUserMedia({video: true} , function(stream) {
 	/* 对摄像头拍摄的资源进行使用 code */	
 },function(err) {
 	console.log(err);
 	alert("Request video Stream Fail | 加载摄像头资源失败");
 });
-{% endhighlight %}
+```
 
 如果是麦克风 就再添加一个成员 `audio: true`
 
@@ -2106,13 +2106,13 @@ navigator.getUserMedia({video: true} , function(stream) {
 ① 当前html5 还没定型，使用时需要添加兼容性处理（vendor prefixing 浏览器厂商前缀）
 
 即： 
-{% highlight javascript %}
+```JavaScript
 // opera browser has't verdor prefixing | 欧鹏浏览器无需添加厂商前缀 
 navigator.getUserMedia = navigator.getUserMedia || 
                  navigator.webkitGetUserMedia ||
                  navigator.mozGetUserMedia || 
                  navigator.msGetUserMedia;
-{% endhighlight %}
+```
 
 ② 各个浏览器厂家都对这项技术有安全性的限制，在非用户允许，或者是一些不可靠的网址（包括本地）
 中就不会加载这个功能(如果需要测试可以考虑 Mamp 或者 Lamp)
@@ -2137,17 +2137,17 @@ Steps:
 ④ 将画布中的图片编码数据路径，丢入img标签的src中
 
 先看下布局：
-{% highlight html %}
+```html
 <video autoplay></video>
 <img src="">
 <!-- canvas的作用就是生成图片，所以无需显现 -->
 <canvas style="display: none;"></canvas>
 <button id="capture">snapshot</button>
-{% endhighlight %}
+```
 
 
 获取相机权限很简单，上面已经说的差不多了
-{% highlight javascript %}
+```JavaScript
 // 兼容vendors
 navigator.getUserMedia = navigator.getUserMedia || 
                  navigator.webkitGetUserMedia ||
@@ -2167,7 +2167,7 @@ navigator.getUserMedia({ video:true } , function(stream) {
 	console.log(err);
 	alert("浏览器不支持获取摄像头 get better browser")
 });
-{% endhighlight %}
+```
 
 可能大家对createObjectURL不太熟悉
 
@@ -2182,7 +2182,7 @@ createObjectURL 可以将传入的数据流创建一个指向该流的URL
 到这一步为止我们就可以事先简单的摄像功能了
 
 接下来就是拍照功能
-{% highlight javascript %}
+```JavaScript
 var snapshot = function() {
 // 如果摄像机工作了，产生了数据流，就可以进行拍照了
 	if(localMediaStream) {
@@ -2192,7 +2192,7 @@ var snapshot = function() {
 }
 var btnCapture = document.getElementById("capture");
 btnCapture.addEventListener("click" , snapshot , false);
-{% endhighlight %}
+```
 
 很简单，就是简单的吧video播放的图像直接印在canvas 中，然后通过toDataURL转成图片格式就行
 

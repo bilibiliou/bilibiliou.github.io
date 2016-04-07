@@ -50,10 +50,10 @@ Ajax (Asynchronous Javascript And XML) 也就是异步的 javascript 和 XML
 
 异步 :进程非堵塞的
 e.g:
-{% highlight JavaScript %}
+```JavaScript
 settimeout(consonle.log(1),2000);
 console.log(2);
-{% endhighlight %}
+```
 	
 这里settimeout也就是2秒后打印出1
 但是consonle.log(2)不会等settimtout2秒打印出1后才执行，它会立即执行，也就是说settimeout这个代码块不会堵塞总体代码的执行进程，之后的代码不会因为它的延时执行而不立即执行
@@ -68,7 +68,7 @@ window.onload = function()
 	$(function(){});
 }
 </script>
-{% endhighlight %}
+```
 
 如果要让 `$(function(){});`  这句代码执行。 必须等到这个库`<script src="jquery.js"></script>` 加载完，不然这个封装的方法就无法使用，这就是所谓的进程堵塞，也就是同步
 
@@ -131,19 +131,19 @@ xhr.open("POST","ajax.php",true);
 xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 xhr.send("name=Owen&password=123456");
 
-{% endhighlight %}
+```
 
 
 对上面的代码做一些解释:
 xhr.readyState : 是AJAX的状态码，用来表示AJAX运行的各种状态
 
-{% highlight JavaScript %}
+```JavaScript
 0 >>（初始化）还没有调用open()方法
 1 >>（载入）已调用send()方法，正在发送请求
 2 >>（载入完成）send()方法完成，已收到全部响应内容
 3 >>（解析）正在解析响应内容
 4 >>（完成）响应内容解析完成，可以在客户端调用了
-{% endhighlight %}
+```
 
 on readystate change事件 : 当AJAX状态改变执行事件，
 注意，只要open声明的是异步的
@@ -183,9 +183,9 @@ copy一下权威内容(更深奥的理解详见百度谷歌) :
 假设我们网站上需要在线支付的功能,那么我们肯定要写个函数对吧
 好，坐了几个小时的冷板凳写出来了，然后调用
 			
-{% highlight JavaScript %}
+```JavaScript
 bool withdraw(account_id, amount)
-{% endhighlight %}
+```
 			
 bool函数withdraw，返回true或者flase 传递的参数是 用户的账号(account_id) 和 要支付的金额(amount)
 			
@@ -200,14 +200,14 @@ bool函数withdraw，返回true或者flase 传递的参数是 用户的账号(ac
 好吧既然，问题清楚了，那就想办法解决
 于是，想来想去，好了，凌晨1点，终于，想出来了
 			
-{% highlight JavaScript %}
+```JavaScript
 int create_ticket() 
 bool idempotent_withdraw(ticket_id, account_id, amount)
-{% endhighlight %}
+```
 			
 多加了一个int函数create_ticket 返回一个整型的支付效验码 ，idempotent_withdraw多加了一个形参ticket_id。
 
-{% highlight JavaScript %}			
+```JavaScript			
 好，具体步骤是什么呢？哈哈，其实很简单嘛 (满脸狞狰的说)
 
 第一步：
@@ -241,7 +241,7 @@ bool idempotent_withdraw(ticket_id, account_id, amount)
 然后再次返回成功支付的消息，
 直到用户端接收成功这个消息并更改状态为支付成功，
 这样一个优雅的支付功能就写好了。(终于可以回家睡觉觉了=_=)
-{% endhighlight %}
+```
 ![idempotence](/assets/img/idempotence2.png)
 
 			
@@ -253,7 +253,7 @@ bool idempotent_withdraw(ticket_id, account_id, amount)
 
 1.以?分割URL和传输数据，参数之间以&相连，
 
-{% highlight JavaScript %}
+```JavaScript
 
 如：www.baidu.com
 ?name=Owen+Brown&password=xxxxx&verify=%e6%88%91%e7%9a%84%e5%90%8d%e5%ad
@@ -273,11 +273,11 @@ www.baidu.com是网站域名
 如果是空格，转换为+，
 如果是中文/其他字符，则直接把字符串用Url编码加密,
 其中％XX中的XX为该符号以16进制表示的ASCII。
-{% endhighlight %}
+```
 
 2.因为url栏目有字符上限,所以有关大量数据的传递，一来因为会把数据内容显示在url栏，会有安全性问题，再来有url有字符上限，如果超过上限数据就无法进行传输，所以建议，get应用在小规模数据传递且数据所需安全性不用太高的表单中
 
-{% highlight JavaScript %}
+```JavaScript
 以下是网友对一些浏览器地址栏最大字符上限的测试:
 
 Microsoft Internet Explorer (Browser)
@@ -308,7 +308,7 @@ Microsoft Internet Information Server(IIS)
 这个限制是特定的浏览器及服务器对它的限制,之所以对地址栏长度进行限制,
 一来url过长，会对服务器处理产生负担，如果有人恶意地构造了几个几M大小的URL，并不停地访问你的服务器。
 服务器的最大并发数显然会下降，介于安全和稳定的考虑，故而给了url加了限制。
-{% endhighlight %}
+```
 
 3.get存在Web缓存问题，
 
@@ -324,7 +324,7 @@ Microsoft Internet Information Server(IIS)
 使用GET方式传输的URL地址肯定是相同的，
 这样Web缓存就会出麻烦
 
-{% highlight JavaScript %}
+```JavaScript
 现在我们来举个例子:
 
 
@@ -351,7 +351,7 @@ numerhero.github.io/?username=Owen&pw=123
 
 每请求一次 都是毫秒级的变化,这样就不可能出现缓存问题了
 (当然也可以用随机数目,但是随机数有重复的可能,而时间戳基本不可能重复)
-{% endhighlight %}
+```
 
 4.中文 以及其他文字的编码问题
 我们页面使用的一般是unicode编码 和 utf-8编码
@@ -428,13 +428,13 @@ application/x-www-form-urlencoded
 
 ### post方法的安全性
 
-{% highlight JavaScript %}
+```JavaScript
 安全性能比get要高(对于用户来说)
 但是对于服务器来说比get低
 (1)登录页面有可能被浏览器缓存
 (2)其他人查看浏览器的历史纪录，那么别人就可以拿到你的账号和密码了，
 除此之外，使用GET提交数据还可能会造成Cross-site request forgery攻击
-{% endhighlight %}
+```
 
 ### post的幂等性
 
@@ -482,7 +482,7 @@ HTTP响应中应包含帖子的创建状态以及帖子的URI。
 这n个li的width固定，但高随着图片的加载auto
 每次加载的时候，遍历这n个li
 选择offsetTop最短的那个li加载图片
-{% highlight JavaScript %}
+```JavaScript
 
 === html ===
 <ul id="ul1">
@@ -604,7 +604,7 @@ function getShortHeight( aLi , iLen )
 function $(d){return document.getElementById(d);}
 function $TagName(obj , tag){return obj.getElementsByTagName(tag);}
 
-{% endhighlight %}
+```
 
 [配套的PHP文件](/assets/download/getPics.php)
 
@@ -665,14 +665,14 @@ q参数传递的是查找关键字
 alt是声明传递得到的数据格式(默认是JSON)
 
 然后就调用AJAX代码
-{% highlight JavaScript %}
+```JavaScript
 
 ajax( 'get' , 'q=HTML5&alt=json' , 'api.douban.com/book/subjects' , function( data )
 {
 	...
 });
 
-{% endhighlight %}
+```
 
 运行之
 发现浏览器报了错
@@ -716,7 +716,7 @@ Access-Control-Allow-Origin 输入源控制许可
 
 ## JSONP
 
-{% highlight JavaScript %}
+```JavaScript
 
 JSONP的主要原理是 <script> 脚本标签
 因为使用<script> 的src 属性
@@ -790,7 +790,7 @@ function CallBackfunc( data )
 然后再这个函数里面就能够进行各种DOM操作
 来使用这些数据了
 
-{% endhighlight %}
+```
 
 ## AJAX 和 JSONP的对比
 
@@ -888,11 +888,11 @@ IE6 : 同域使用 ActiveXObject() 跨域使用jsonp
 <input type="submit" value="上传">
 </form>
 
-{% endhighlight %}
+```
 
 但是现在我们可以用Ajax异步的上传
 
-{% highlight Javascript %}
+```JavaScript
 === html ===
 <input type="file"  id="myiframe" >
 <input type="button" id="btn" value="上传">
@@ -974,7 +974,7 @@ window.onload = function()
 	}
 }
 
-{% endhighlight %}
+```
 
 
 

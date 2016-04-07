@@ -70,7 +70,7 @@ JSON是使用键值对的形式来描述数据
 
 ### 常规转化
 
-{% highlight JavaScript %}
+```Javascript
 
 XML
 <Book>半生缘</Book>
@@ -79,9 +79,9 @@ JSON
 {"Book":"半生缘"}
 
 两者可以互译
-{% endhighlight %}
+```
 ### 没有属性标签结点的转换
-{% highlight JavaScript %}
+```Javascript
 
 XML
 <line>
@@ -101,10 +101,10 @@ JSON
 }
 
 两者可以互译
-{% endhighlight %}
+```
 
 ### 含有属性标签结点的转换
-{% highlight JavaScript %}
+```Javascript
 
 XML
 
@@ -121,10 +121,10 @@ JSON
 }
 
 两者还是可以互译
-{% endhighlight %}
+```
 
 ### 有顺序性结点的转化
-{% highlight JavaScript %}
+```Javascript
 XML
 <template> 
   <block>天空</block>  
@@ -145,7 +145,7 @@ JSON
 }
 
 这样两者就不能互译了(因为从xml转换到JSON后 数据顺序改变了)
-{% endhighlight %}
+```
 
 所以总的来说，XML结构上比JSON更加清晰
 当然结构上的清晰导致，也导致代码较JSON更加冗余
@@ -159,7 +159,7 @@ JSON支持Javascript中除undefined之外的所有数据类型
 JSON 根据数据的不同可以有三种表现形式(语法)
 
 ### JSON解释简单值的形式
-{% highlight JavaScript %}
+```Javascript
 
 数值
 NaN
@@ -172,10 +172,10 @@ JSON
 "I love you"
 
 很简单，但是实际应用中，简单值只是基础，JSON需要解释更多更复杂的数据类型
-{% endhighlight %}
+```
 ### JSON解释对象
 
-{% highlight JavaScript %}
+```Javascript
 
 使用javascript 字面量解释对象
 	var book = 
@@ -193,10 +193,10 @@ JSON
 不同点有两个
 1)js 需要声明一个变量引用  var book,而JSON不硬性需要
 2)JSON的属性名加 " " ( 重点强调 一定是" "  连' '都不行 不然会出错 )
-{% endhighlight %}
+```
 
 ## JSON的遍历
-{% highlight JavaScript %}
+```Javascript
 如果我们需要遍历一个对象
 比如
 var person =
@@ -212,12 +212,12 @@ var person =
 索引i 就是对象的属性名
 data[i] 就是对象对应属性的值
 
-{% endhighlight %}
+```
 
 ## stringify方法
 
 用于将JSON转换成字符串
-{% highlight JavaScript %}
+```Javascript
 
 var person = 
 {
@@ -297,13 +297,13 @@ var jsontext = JSON.stringify( person , function( index , attribute ){
 那么得到的结果是
 " {"name":"owen","age":18,"work":"FrontEnd","school":"Meishan middle school,SSFL"} "
 
-{% endhighlight %}
+```
 
 ## parse方法
 可以将有效的JSON格式的字符串
 转换成JSON对象
 
-{% highlight JavaScript %}
+```Javascript
 
 var datatext = '{	"name" : "owen","school" : ["MeiShan Middle school" , "SSFL" ] }';
 var data = JSON.parse( datatext );
@@ -322,12 +322,12 @@ school
 	0	"MeiShan Middle school"	
 	1	"SSFL"
 
-{% endhighlight %}
+```
 
 ## toJSON方法
 toJSON方法是从对象内部筛选属性的方法
 
-{% highlight JavaScript %}
+```Javascript
 
 var book = 
 	{
@@ -359,11 +359,11 @@ var book =
 
 console.log(jsontext);//只输出 "HTML5"
 
-{% endhighlight %}
+```
 
 ## 关于对象引用会出现的一些问题
 
-{% highlight JavaScript %}
+```Javascript
 
 直接上代码:
 var a = {
@@ -399,7 +399,7 @@ console.log( a.name );
 先将a解析成字符串 然后再将这个字符串 解析回对象 赋值给b
 这样就能解决对象引用的问题
 
-{% endhighlight %}
+```
 
 ## 感谢
 

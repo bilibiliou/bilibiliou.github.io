@@ -10,20 +10,20 @@ keywords: 技术,canvas
 canvas是一个梦幻的标签，利用它配合JS控制，可以在页面上绘制出你想要的任何图案，并且还可以绘制3D效果
 首先canvas的引入非常简单
 
-{% highlight Javascript %}
+```JavaScript
 
 <canvas>
 	<span>您的浏览器十分落后，请及时更换</span>
 </canvas>
 
 直接在body中引用就行
-{% endhighlight %}
+```
 
 引用后，它有一个缺省的宽高值，即300px × 150px
 
 ### 基本的操作代码
 
-{% highlight Javascript %}
+```JavaScript
 首先所有的操作都需要先声明绘制环境
 getContext('2d');
 这个方法会返回一个 CanvasRenderingContext2D 对象，该对象实现了一个画布所使用的大多数方法。
@@ -168,7 +168,7 @@ canvas的宽高一定需要在行列样式中设置，不能在内置的样式�
 因为内置的样式表中，宽高是根据父元素的宽高等比例设置的
 而行列样式才是根据确定数值来设置的
 
-{% endhighlight %}
+```
 
 ## 使用canvas绘制圆
 
@@ -183,7 +183,7 @@ arc( x轴半径 , y轴半径 , 圆的半径 , 起始弧度 , 终止弧度 , 是�
 5.顺时针弧度为正，逆时针弧度为负。
 
 demo如下
-{% highlight Javascript %}
+```JavaScript
 
 css html 上同
 
@@ -196,7 +196,7 @@ oGc.moveTo(200 , 200);
 oGc.arc(200 , 200 , 100 , 0 , 180*Math.PI/180 , true );
 oGc.stroke();
 
-{% endhighlight %}
+```
 
 制作一个与本地时间同步的时钟
 
@@ -213,7 +213,7 @@ arcTo() : arcTo( 第一组坐标xy  第二组坐标xy 曲线半径 )
 
 如图我们可以很好的了解arcTo方法的含义
 结合上图，我们可以得到下列代码
-{% highlight Javascript %}
+```JavaScript
 
 html css 上同
 
@@ -225,7 +225,7 @@ oGc.moveTo( 100 , 200 );
 oGc.arcTo( 100 , 100 , 200 , 100 , 50 );
 oGc.stroke();
 	
-{% endhighlight %}
+```
 
 ## 用canvas绘制贝塞尔曲线
 
@@ -235,7 +235,7 @@ quadraticCurveTo( dx , dy , x1 , y1 ) 一个控制点的贝塞尔曲线
 也就是一个二阶的贝塞尔曲线
 
 (dx , dy)是控制点的坐标， (x1 , y1)是结束点的坐标
-{% highlight Javascript %}
+```JavaScript
 demo1:
 css html 上同
 
@@ -249,13 +249,13 @@ oGc.moveTo( 100 , 200 );
 oGc.quadraticCurveTo( 100 , 50 , 200 , 100 );
 oGc.stroke();
 
-{% endhighlight %}
+```
 
 html5还提供了另外一种绘制贝塞尔曲线的方法
 bezierCurveTo( dx1 , dy1 , dx2 , dx2 , x1 , y1 ) 两个控制点的贝塞尔曲线
 也就是一个三阶的贝塞尔曲线
 
-{% highlight Javascript %}
+```JavaScript
 demo2:
 css html 上同
 
@@ -269,7 +269,7 @@ oGc.moveTo( 100 , 200 );
 oGc.bezierCurveTo( 100 , 50 , 200 , 100 , 200 , 50 );
 oGc.stroke();
 
-{% endhighlight %}
+```
 
 ## 使用canvas变换
 
@@ -336,7 +336,7 @@ createPattern( 图片对象 背景平铺方式 )
 平铺方式和background相同:repeat 、 repeat-x 、 repeat-y 、 no-repeat
 
 demo:
-{% highlight Javascript %}
+```JavaScript
 === html ===
 <canvas id = "Canvas1" width=400 height=400 ></canvas>
 
@@ -366,7 +366,7 @@ function draw( obj )
 	oGc.fillRect( 0 , 0 , 300 , 300 );
 }
 
-{% endhighlight %}
+```
 
 ## 使用canvas实现渐变
 
@@ -386,7 +386,7 @@ addColorStop( 渐变线端点值 , 添加的渐变线颜色 )
 通过它我可以在这条渐变线上面添加各种颜色的色段点。但是注意色段点不能超过一
 
 下面我们看一个demo
-{% highlight Javascript %}
+```JavaScript
 
 css和html上同
 var oCanvas = document.querySelector('#Canvas1');
@@ -403,7 +403,7 @@ oGc.fillStyle = obj;
 
 oGc.fillRect( 150 , 100 , 100 , 100 );
 
-{% endhighlight %}
+```
 
 由此我们可以总结出:canvas中依靠渐变线来控制渐变的起始、终点和方向,addColorStop()控制渐变的程度和颜色
 
@@ -422,7 +422,7 @@ createRadialGradient( x1 ,y1 , r1 , x2 , y2 , r2 );
 但是放射性渐变会先过两条圆的切线,将位于矩形内的圆和两条切线组成的面积填充
 ![shootpic](/assets/img/RadialGradient.png)
 
-{% highlight Javascript %}
+```JavaScript
 css和html上同
 
 var oCanvas = document.querySelector('#Canvas1');
@@ -438,7 +438,7 @@ oGc.fillStyle = obj;
 
 oGc.fillRect( 150 , 100 , 100 , 100 );
 
-{% endhighlight %}
+```
 
 ### 关于线性渐变和放射性渐变两者总结
 
@@ -471,7 +471,7 @@ textBaseline [默认是以英文书写方式对齐(alphabetic) 位置是离文�
 measureText(文本内容).width 获取文本内容的宽
 但是没有专门的方法获取高,具体的高实际上就是我们的字体大小
 
-{% highlight Javascript %}
+```JavaScript
 demo:
 
 var oCanvas = document.querySelector('#Canvas1');
@@ -483,7 +483,7 @@ oGc.textBaseline = 'top';
 var w = oGc.measureText('Hello world').width;
 //这里我们通过获取文本的宽度 和 高度 , 通过画布的宽高减去文本的宽高处以2 可以得到文本精确的居中位置
 oGc.strokeText('Hello world', (oCanvas.width - w)/2 , (oCanvas.height  - 60)/2 );
-{% endhighlight %}
+```
 
 ## Canvas阴影
 
@@ -510,7 +510,7 @@ createImageData( 左上角基准点坐标 )
 
 我们可以先新建一个像素矩阵，然后通过修改data的rgba
 在put上去
-{% highlight Javascript %}
+```JavaScript
 var oCanvas = document.querySelector('#Canvas1');
 var oGc = oCanvas.getContext("2d");
 
@@ -526,7 +526,7 @@ for(var i = 0; i<oImg.width * oImg.height ; i++)
 
 oGc.putImageData(oImg, 100 , 100);
 
-{% endhighlight %}
+```
 
 ### 通过坐标来获取像素
 
@@ -536,7 +536,7 @@ canvas里面也有通过坐标对像素进行操作的方法,其优点是这样�
 其最核心的一个语句就是
 `data[4*(y*w+x)]`
 
-{% highlight Javascript %}
+```JavaScript
 
 //获取坐标点rgba函数
 function getXY( obj , x , y )
@@ -570,7 +570,7 @@ function setXY( obj , x , y  , color )
 
 xy表示需要与操作的像素点 obj是需要操作的已获取的像素矩阵的对象
 
-{% endhighlight %}
+```
 
 ### 反色、渐变、图片反转、马赛克操作
 
@@ -589,7 +589,7 @@ xy表示需要与操作的像素点 obj是需要操作的已获取的像素矩�
 
 [图片特效小框架](/assets/download/draweffect.markdown)
 
-{% highlight Javascript %}
+```JavaScript
 
 调用方法：
 
@@ -602,7 +602,7 @@ var oGc = oCanvas.getContext("2d");
 
 draweffect( { effect : ['invertedImage'] , ImageSrc : './123.jpg' , x : 0 , y : 0 , MosaicValue : 5 } );
 
-{% endhighlight %}
+```
 
 ## 图形的合成
 
@@ -633,7 +633,7 @@ lighter显示源图像 + 目标图像
 copy 显示源图像。忽略目标图像
 xor 去掉交集剩下的图形
 
-{% highlight Javascript %}
+```JavaScript
 
 var oCanvas = document.querySelector('#Canvas1');
 var oGc = oCanvas.getContext("2d");
@@ -656,7 +656,7 @@ oGc.fillStyle = 'red';
 
 oGc.fillRect( 50 , 50 , 100 ,100 );
 
-{% endhighlight %}
+```
 
 ## 导出图片
 

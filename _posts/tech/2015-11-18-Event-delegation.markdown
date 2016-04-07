@@ -9,7 +9,7 @@ keywords: 技术,事件委托,delegation
 
 如果我们做了如下很普通的ul-li布局
 
-{% highlight html %}
+```html
 
 <ul class="btns-list">
 	<li class="function1"></li>
@@ -18,14 +18,14 @@ keywords: 技术,事件委托,delegation
 	<li class="function4"></li>
 </ul>
 
-{% endhighlight %}
+```
 
 
 现在我们需要给每一个li添加点击事件,而且这些li还会根据实际用户身份增加或减少
 (比如,如果登录的是一个vip用户,他拥有的权利会比一般用户多,对应的li也会增加)
 
 肯定有聪明的同学立马想到这一种方法
-{% highlight Javascript %}
+```JavaScript
 
 ...
 
@@ -45,7 +45,7 @@ for(var i = 0 ; i<LiNum ; i++)
 	oUl.appendChild(aLi);
 }
 
-{% endhighlight %}
+```
 
 这样的写法有三个弊端
 
@@ -60,7 +60,7 @@ for(var i = 0 ; i<LiNum ; i++)
 
 所以现在就轮到今天的主角登场了,事件委托(event delegation)
 
-{% highlight Javascript %}
+```JavaScript
 
 ...
 
@@ -121,7 +121,7 @@ if(....)
 	oUl.appendChild(aLi);
 }
 
-{% endhighlight %}
+```
 
 事件委托的原理还是事件冒泡,当你点击了某个li时候,该li没有事件
 于是会冒泡到父级触发父级的事件
@@ -132,7 +132,7 @@ if(....)
 
 jQuery 中主要是使用 delegate()和undelegate()来实现的
 
-{% highlight Javascript %}
+```JavaScript
 
 $(".btns-list").delegate( "li" , "click" , function(ev){
 	
@@ -143,15 +143,15 @@ $(".btns-list").delegate( "li" , "click" , function(ev){
 
 });
 
-{% endhighlight %}
+```
 
 如果我们需要阻止事件委托呢？
 
-{% highlight Javascript %}
+```JavaScript
 
 $(".btns-list").undelegate();
 
-{% endhighlight %}
+```
 
 ## summery
 

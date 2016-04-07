@@ -13,7 +13,7 @@ keywords: 技术,data
 
 先是弄出一个小人
 
-{% highlight css %}
+```css
 .sprite {
         background: url(./demopic/char113.png);
         width: 32px;
@@ -23,24 +23,24 @@ keywords: 技术,data
         top: 50px;
         left: 50px;
     }
-{% endhighlight %}
+```
 
 
-{% highlight html %}
+```html
 <div class="sprite" data-score=""></div>
-{% endhighlight %}
+```
 
 
 然后通过js获取`.sprite`并且设置它的得分`data-score`
 
-{% highlight javascript %}
+```JavaScript
 var character =  document.querySelector(".sprite");
 character.dataset.score = 10;
-{% endhighlight %}
+```
 
 然后设置分数显示，通过css获取`data-score`的数据
 
-{% highlight css %}
+```css
 .sprite::after {
         content:attr(data-score); // attr() 可以获取html标签的属性值
         position: absolute;
@@ -53,12 +53,12 @@ character.dataset.score = 10;
 .sprite:hover::after {
         opacity: 1;
     }
-{% endhighlight %}
+```
 
 当鼠标滑过的时候，小人头顶上就能显示对应的分数
 
 我们还可以给不同的分值显示不同的颜色
-{% highlight css %}
+```css
 .sprite[data-score='10']::after {
         color : yellow;
         text-shadow: 0 0 2px blue;
@@ -68,11 +68,11 @@ character.dataset.score = 10;
     color : red;
     text-shadow: 0 0 2px blue;
 }
-{% endhighlight %}
+```
 
 但是css中并不支持值域判断，所以分数判断还是需要写在js里比较好
 
-{% highlight javascript %}
+```JavaScript
 var character =  document.querySelector(".sprite");
 var style     =  document.querySelector("#style");
 
@@ -86,6 +86,6 @@ if(character.dataset.score>=60) {
 }
 
 style.innerHTML += pseudo;
-{% endhighlight %}
+```
 
 [demo](/assets/download/h5data.html)

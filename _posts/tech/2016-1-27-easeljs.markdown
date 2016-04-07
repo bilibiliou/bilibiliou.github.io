@@ -12,9 +12,9 @@ keywords: 技术,easeljs,createJs
 首先我们要先引入easelJs 我现在使用的是`easelJs-0.8.2-min-js` 只要这一个文件就ok 
 下载的话直接到官网 或者 中文API 里都有 [中文API](http://www.createjs.cc/)
 
-{% highlight html %}
+```html
 <script src="../easeljs-0.8.2.min.js" ></script>
-{% endhighlight %}
+```
 
 首先，先声明一点，`createJS` 是多个JS框架一个统称，就好像 adobe 公司旗下的 PS 、 AI 、 Flash一样， easeljs 只是createJS旗下的一个框架工具
 
@@ -32,7 +32,7 @@ createJS其中包括:
 
 `easeljs`所有的功能都是被一个全局类所包含的，这个全局对象的名称叫`createjs`(每当调用createjs旗下的一个库的时候，都会保存在这个对象中)，我们可以console一下这个对象，看看easeljs到底有些什么
 
-{% highlight Javascript %}
+```JavaScript
 Object {EaselJS: Object}  这个对象里只有一个easel库
 	AlphaMapFilter: 
 	AlphaMaskFilter: 
@@ -70,12 +70,12 @@ Object {EaselJS: Object}  这个对象里只有一个easel库
 	UID:        		生成一个独一无二的序列号
 	extend:     
 	indexOf: 
-{% endhighlight %}
+```
 
 很多功能和方法，先说个简单的把，使用`EaselJS` 可以打印出当前easeljs的版本信息和项目构建时间
-{% highlight Javascript %}
+```JavaScript
 console.log(createjs.EaselJS.buildDate + " & " + createjs.EaselJS.version);
-{% endhighlight %}
+```
 
 如果我又加入了createJs旗下的tweenJS 那么这个对象就会变成
 Object {EaselJS: Object , TweenJS: Object}
@@ -92,38 +92,38 @@ Object {EaselJS: Object , TweenJS: Object}
 所以，我们要想能实现好看，能动，还能互动的 炫酷梦幻高大上效果，就先得从基本的画图命令开始
 
 首先的在body里写个`canvas`标签吧
-{% highlight html %}
+```html
 <canvas id="stage" width="840" height="950" ></canvas>
-{% endhighlight %}
+```
 注意宽高只能以属性形式来表示，具体原因就不多赘余了，自己google
 
 再来就来开始写绘图代码了，上午我说过，所有命令都是在`createJs`旗下的，那么我们就先弄个引用
-{% highlight Javascript %}
+```JavaScript
 var c = createJs;
-{% endhighlight %}
+```
 
 当然你不弄也行，代码能省则省呗
 
 然后我们新建一个舞台，注意，这个舞台接受一个参数，就是需要实现绘图的`canvas` DOM结点
-{% highlight Javascript %}
+```JavaScript
 var oStage = new c.Stage("stage");
-{% endhighlight %}
+```
 
 注意，Stage构造器自带`document.getElementById`方法，可以直接丢ID值进去
 但是，类和标签不行
 
 当然也可以这样写，都是等价的
-{% highlight Javascript %}
+```JavaScript
 var oBox = document.getElemengById("stage");
 var oStage = new c.Stage(oBox);
-{% endhighlight %}
+```
 
 搭建好舞台之后，我们就要在舞台上添加元素和图层了
 
-{% highlight Javascript %}
+```JavaScript
 var Run1 = new c.Shape();
 var Run2 = new c.Shape();
-{% endhighlight %}
+```
 
 每个图层类有一个`graphics(图形图像)`方法，其实也就是继承了`Graphics`类，
 因为每次画完图像之后都要添加到图层里面，所以这个库的作者就也在`Shape`的类中继承了`Graphics`类
@@ -131,7 +131,7 @@ var Run2 = new c.Shape();
 其中可以先对画笔初始化 `setStrokeStyle` 设置画笔大小 和 `beginStroke("#fff")`设置颜色
 其中画线就是`moveTo` 或 `mt(简写 效果和moveTo相同)` 和 `lineTo` 或 `lt` 呗
 
-{% highlight Javascript %}
+```JavaScript
 Run1.graphics.setStrokeStyle(2).beginStroke("#fff")
 	.mt(510,270)
 	.lt(410,213)
@@ -161,15 +161,15 @@ Run2.graphics.setStrokeStyle(2).beginStroke("#fff")
 	.lt(0,568)
 	.lt(510,270);
 oStage.addChild(Run2);
-{% endhighlight %}
+```
 
 每次绘制完一个图层之后，都需要使用`addChild`添加到舞台中，
 
 最后，update 舞台，大功告成
 
-{% highlight Javascript %}
+```JavaScript
 oStage.update();
-{% endhighlight %}
+```
 
 ### caveat
 
@@ -183,10 +183,10 @@ oStage.update();
 
 我们先从矩形开始
 
-{% highlight Javascript %}
+```JavaScript
 var rect = new createjs.Shape();
 rect.graphics.beginFill("#000").drawRect( 10 , 10 , 100 , 100 );
-{% endhighlight %}
+```
 
 上文也提到了Shape下面的graphics 图形类可以用来绘制
 
@@ -197,15 +197,15 @@ rect.graphics.beginFill("#000").drawRect( 10 , 10 , 100 , 100 );
 
 每当将绘制命令在图层中绘制完成后，就需要加入到舞台中
 
-{% highlight Javascript %}
+```JavaScript
 oStage.addChild(rect);
-{% endhighlight %}
+```
 
 每次绘制完毕后刷新舞台
 
-{% highlight Javascript %}
+```JavaScript
 oStage.update();
-{% endhighlight %}
+```
 
 这里就多提一点吧，试想一下如果开个`setInterval` 不断的更新绘制命令，来绘制图层,然后update 那是不是就实现动画效果了？ 这里就可以谈到 easeljs 的简单动画效果实现了，以后我们会说
 
@@ -232,16 +232,16 @@ MDN 上使用的是原生的canvas 实现的，那么用easeljs 也提供了自�
 
 首先我们需要了解一下心形函数,心形函数有很多种，这里我选用比较标准的[这种](http://www.wolframalpha.com/input/?i=x+%3D+16+sin%5E3+t,+y+%3D+(13+cos+t+-+5+cos+2t+-+2+cos+3t+-+cos+4t))
 
-{% highlight Javascript %}
+```JavaScript
 x = 16sin³(t)
 y = 13Cos(t) - 5Cos(2t) - 2Cos(3t) - Cos(4t)
 t ∈ [0,2π]
-{% endhighlight %}
+```
 
 而 x 和 y 就是心形的每一点了，那么怎么绘制心形呢？
 
 首先我们需要获取到心形的每一个点
-{% highlight Javascript %}
+```JavaScript
 var M = Math;
 var Sin = M.sin;
 var Cos = M.cos;
@@ -257,11 +257,11 @@ for( var i = 0; i<dPI; i+=0.1 ) {
 	// 将每个点存入路径中
 	heartPath.push([x,y]);
 }
-{% endhighlight %}
+```
 
 这样我们就获得到了一个心形的全部点集 `heartPath` 剩下的只要绘制就好了
 
-{% highlight Javascript %}
+```JavaScript
 var HeartShape = new createjs.Shape();
 
 for( var i = 0 ; i<heartPath.length ; i++ ) {
@@ -274,7 +274,7 @@ for( var i = 0 ; i<heartPath.length ; i++ ) {
 } 
 // 千万不要忘记添加到舞台中哦
 oStage.addChild(HeartShape);
-{% endhighlight %}
+```
 
 这样你就可以获得一个心形啦
 
@@ -301,11 +301,11 @@ oStage.addChild(HeartShape);
 
 有做过响应式布局的读者应该清楚媒体查询吧，没错，只要像这样根据屏幕来确定画布大小就好了
 
-{% highlight Javascript %}
+```JavaScript
 var oStage = new Stage("canvasId");
 oStage.canvas.width = window.innerWidth;
 oStage.canvas.height = window.innerHeight;
-{% endhighlight %}
+```
 
 这样就能保证画布全局平铺
 
@@ -316,7 +316,7 @@ oStage.canvas.height = window.innerHeight;
 我们在绘制自定义图像的时候，可以将图像的点集入栈，然后进行坐标级操作
 
 我们先定义一个坐标对象
-{% highlight Javascript %}
+```JavaScript
 function Point(x , y) {
 	this.x = x;
 	this.y = y;	
@@ -334,7 +334,7 @@ Point.prototype = function() {
 		return newPoint;
 	}
 }
-{% endhighlight %}
+```
 
 Point 对象底下有三个方法，`clone`很简单就是重新复制一份坐标
 
@@ -343,7 +343,7 @@ Point 对象底下有三个方法，`clone`很简单就是重新复制一份坐�
 有什么用呢？
 我们可以做一个判断条件
 
-{% highlight Javascript %}
+```JavaScript
 // 某图形的各个点坐标
 var PointGroup = [new Point(x1 , y1),new Point(x2 , y2),new Point(x3 , y3),....];
 
@@ -365,16 +365,16 @@ function PointdScale(o) {
 		PointGroup[i] = PointGroup[i].dScale(o);
 	}
 }
-{% endhighlight %}
+```
 
 这样就能达到对绘制的图形扩大[缩小的目的]，其中case的内容可以自行发挥呀，直到做出合适为止
 
 ### caveat
 
 而在Easeljs 内部已经定义好了点对象了
-{% highlight Javascript %}
+```JavaScript
 var point = new createjs.Point( x , y );
-{% endhighlight %}
+```
 
 内置了这么几个方法
 
@@ -384,11 +384,11 @@ toString 函数 : 将点的坐标以这样的形式，打印出来`[Point (x="+t
 
 还可以直接设置x 和 y 
 
-{% highlight Javascript %}
+```JavaScript
 var point = new createjs.Point();
 point.x = 0;
 point.y = 100;
-{% endhighlight %}
+```
 
 但是就没有我上面所提到的点集操作，所以是使用原生的点对象还是自己封装一个对象，就看大家的需求了
 原理上都是一样的
@@ -411,16 +411,16 @@ point.y = 100;
 比如我们需要获取`新年快乐`这几个字
 我们可以新建一个专门用于获取像素点集的canvas 画布
 
-{% highlight html %}
+```html
 <canvas id="text"></canvas>
 <canvas id="stage"></canvas>
-{% endhighlight %}
+```
 
 然后我们来获取像素
 
 首先我们初始化文字获取画布，自定义其宽高，
 新建一个文字图层，内容为t,和像素集textPixel
-{% highlight Javascript %}
+```JavaScript
 var textStage = new c.Stage("text");
 var textStageWitdh = 800;
 var textStageHeight = 500;
@@ -444,22 +444,22 @@ text.x = 400;
 text.y = 0;
 textStage.addChild(text);
 textStage.update();
-{% endhighlight %}
+```
 
 这里画布刷新是必要的，并且一定要给文字设置颜色！不然会无法获取像素
 
 然后，因为easelJs 并没有获取像素点的方法，我们需要自己封装
 
-{% highlight Javascript %}
+```JavaScript
 var ctx = textStage.canvas.getContext("2d");
 var pixel = ctx.getImageData(0,0,textStageWitdh,textStageHeight ).data;
-{% endhighlight %}
+```
 
 通过原生的getContext对象下的`getImageData`
 获取到整个文字画布的全部点集合
 
 然后就是最核心的代码了
-{% highlight Javascript %}
+```JavaScript
 for( var i = pixel.length ;i>=0; i-=4 ) {
 	if( pixel[i] != 0 && pixel[i+1] != 0 && pixel[i+2] != 0) {
 		var x = (i / 4) % textStageWitdh;
@@ -472,7 +472,7 @@ for( var i = pixel.length ;i>=0; i-=4 ) {
 		}
 	}
 }
-{% endhighlight %}
+```
 
 首先，我们知道getImageData是获取的图片的rgba值，而我们需要获取的是文本坐标
 我们只需要判断每一个的rgb 是否有值就好了，如果有值，就说明是一个有颜色的像素点
@@ -484,13 +484,13 @@ for( var i = pixel.length ;i>=0; i-=4 ) {
 
 最后别忘记了需要把写过的文本清空
 
-{% highlight Javascript %}
+```JavaScript
 text.text = "";
 textStage.update();
-{% endhighlight %}
+```
 
 然后我们就可以来绘制一些效果了
-{% highlight Javascript %}
+```JavaScript
 var c = createjs;
 var M = Math;
 var CanvasWidth = window.innerWidth;
@@ -515,7 +515,7 @@ for(var i = 0;i < textPixels.length; i++ ) {
 }
 
 oStage.update();
-{% endhighlight %}
+```
 
 
 我们可以看看我做的栗子

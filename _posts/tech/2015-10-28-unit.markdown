@@ -41,10 +41,10 @@ keywords: 技术,em,px,pc,rem,mm,cm,in,pc,ex,pt,css
 
 像素单位相对于浏览器的字体默认长度16px的值,这个默认值随终端的改变,也会改变.
 如果需要做响应式布局的话,使用em来兼容不同的终端
-{% highlight css %}
+```css
 div{font-size:1.5em; }
 /*  长度就是1.5*16px=24px  */
-{% endhighlight %}
+```
 
 ### ex(相对于x字符的高度 The height of the letter "x")
 
@@ -54,11 +54,11 @@ div{font-size:1.5em; }
 
 随Css3引进的新单位,相对于根元素html,只要那么html底下设置一个定值,其他元素就会参考这个定值,设定其长度
 
-{% highlight css %}
+```css
 html{font-size:10px;}
 div{font-size:1.5rem;}
 /*  长度就是1.5*10=15px  */
-{% endhighlight %}
+```
 
 ## 为什么要这么多单位
 

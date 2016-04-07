@@ -25,16 +25,16 @@ keywords: 技术,clipboardJs
 
 然后实例一个clipboard对象
 
-{% highlight Javascript %}
+```JavaScript
 new Clipboard('.btn');
-{% endhighlight %}
+```
 
 这个对象会获取到对应的class id 或者 name 的点击复制按钮，这个按钮就可以绑定剪贴板的全部功能了
 
 ### 复制
 
 
-{% highlight html %}
+```html
 <!-- Target -->
 <input id="Target" value="我是需要复制的内容">
 
@@ -43,7 +43,7 @@ new Clipboard('.btn');
     Copy to clipboard
 </button>
 
-{% endhighlight %}
+```
 
 
 比如我们如果要复制一个输入框里面的value ， 那么就需要在被绑定的按钮上 添加一个`data-clipboard-target` 属性
@@ -53,7 +53,7 @@ new Clipboard('.btn');
 
 同理,我们也可以实现剪切文本框里面的内容
 
-{% highlight html %}
+```html
 <!-- Target -->
 <textarea id="Target">我是需要被剪切的内容</textarea>
 
@@ -61,24 +61,24 @@ new Clipboard('.btn');
 <button class="btn" data-clipboard-action="cut" data-clipboard-target="#Target">
     Cut to clipboard
 </button>
-{% endhighlight %}
+```
 
 
 ### 固定内容复制
 
-{% highlight html %}
+```html
 <!-- Trigger -->
 <button class="btn" data-clipboard-text="需要被复制的内容">
     点击我复制内容
 </button>
-{% endhighlight %}
+```
 
 如果我们需要复制的内容固定的话，可以这么写
 
 ### 回调事件
 
 当进行操作完后可以弹出提示框，提示成功操作，或者进行一些回调操作
-{% highlight Javascript %}
+```JavaScript
 
 var clipboard = new Clipboard('.btn');
 
@@ -98,7 +98,7 @@ clipboard.on('error', function(e) {
 
 });
 
-{% endhighlight %}
+```
 
 其中，回调对象可以给我们返回
 
@@ -110,7 +110,7 @@ clipboard.on('error', function(e) {
 
 如果你并不想修改你的html(在里面添加新的data属性)，也可以在js中设置你需要操作的目标
 
-{% highlight Javascript %}
+```JavaScript
 
 new Clipboard('.btn', {
     target: function(trigger) {
@@ -118,29 +118,29 @@ new Clipboard('.btn', {
     }
 });
 
-{% endhighlight %}
+```
 如果这样的话，就需要给target赋值一个node，范例中是获取了操作按钮的下个结点，当然你也可以任意修改，任意的、你需要进行操作的目标结点
 
 ### Js中设置操作文本对象
 
 当然你也可以只通过修改js来确定需要进行操作的文本，只要返回String类型的字符串就ok了
-{% highlight Javascript %}
+```JavaScript
 new Clipboard('.btn', {
     text: "这是需要进行操作的内容"
     }
 });
-{% endhighlight %}
+```
 
 ### 删除对象
 
 如果这个已经不需要使用了剪贴板了，就可以调用`destroy`方法来清除这个对象实例，并将其下绑定的事件和对象全部清除
 
-{% highlight Javascript %}
+```JavaScript
 var clipboard = new Clipboard('.btn');
 clipboard.destroy();
 });
 
-{% endhighlight %}
+```
 
 关于Html5自身的控制剪贴板的方法还在草案拟定当中
 

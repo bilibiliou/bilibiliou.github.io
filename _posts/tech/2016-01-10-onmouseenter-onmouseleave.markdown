@@ -12,19 +12,19 @@ keywords: 技术
 [demo](/assets/download/onmouseover-onmouseout-bubble-problem.html)
 
 首先我只给父级设置了移出事件
-{% highlight javascript %}
+```JavaScript
 oDiv1.onmouseout = function(ev) {
 	console.log("鼠标从父级出去了");		
 
 }
-{% endhighlight %}
+```
 
 也只给子级设置了移入事件
-{% highlight javascript %}
+```JavaScript
 oDiv2.onmouseover = function(ev) {
 	console.log("鼠标进来了子级");
 }
-{% endhighlight %}
+```
 
 当我进入父级的时候没有触发任何事件，但当我进入子级的时候会调用
 父级的移出函数（mouseout）和子级的移入函数（mouseover）
