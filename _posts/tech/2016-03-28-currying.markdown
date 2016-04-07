@@ -5,46 +5,130 @@ category: 技术
 keywords: 技术,currying
 ---
 
+## 函数柯里化
 
+一个来自百度实习一面的题目，虽然以前听过这个名词，但是并没有仔细的去研究它，后来翻了翻 javascript高级程序设计(P604) 才知道大概了解这玩意
+
+什么事柯里化呢？ 引一下度娘百科
+
+`柯里化（Currying）是把接受多个参数的函数变换成接受一个单一参数(最初函数的第一个参数)的函数，并且返回接受余下的参数且返回结果的新函数的技术`
+
+很复杂，我也是一脸懵逼的给你们复制下来的
+
+所以我们还是先来关心一下柯里化函数能够实现怎样的功能，再来细究其中的原理
+
+功能: 参数复用
+
+栗子：
+
+{% highlight Javascript %}
+
+funciton print( a , b , c ) {
+	console.log( a + "喜欢吃" + b + " 和 " + c );
+}
+
+print("Owen" , "鸡排" , "牛排");
+print("Owen" , "草莓" , "苹果");
+
+{% endhighlight %}
+
+上面的代码主要是想一次打印一个人喜欢吃的两种食物
+
+如果我们将print函数进行柯里化之后就能简化一下
+
+{% highlight Javascript %}
+
+funciton print( a , b , c ) {
+	console.log( a + "喜欢吃" + b + " 和 " + c );
+}
+
+var Owen =  curring(print, "Owen") // 先假设有这么个黑箱子
+
+Owen( "鸡排" , "牛排" );
+Owen( "草莓" , "苹果" ); // 实现的参数的复用
+{% endhighlight %}
+
+看到了curring函数的作用了吧？可以将一个或多个的参数固定，而变化的参数在再调用的时候进行赋值
+
+看到这里大家应该有点兴趣了（没兴趣的出门左拐厕所一边蹲去）
+
+我就开始丢一下书上的代码啦:
+
+{% highlight Javascript %}
 var currying = function (fn) {
-	var args = [].slice.call(arguments , 1);
-
+	var args = [].slice.call(arguments , 1); // 获取固定参数时的除fn 以外的所有参数（我们可以认为是默认参数，参数的类型可以是函数，对象，数字，字符 Json等等）
+	
 	return function () {
+		// 返回的函数再进行调用的时候，获取全部参数（变化参数）
+		// 将default默认的参数和变化参数合并
 		var fArgs = args.concat( [].slice.call( arguments ) );
-
+	
+		// 执行被柯里化的函数，并将合并好的参数丢给该函数
 		fn.apply( null , fArgs );
 	}
 }
 
-function  love ( a , b ) {
+{% endhighlight %}
+
+看不懂？（看不懂的也出门左拐厕所哈哈）
+
+除了上面的使用方法外，我又想到了另外种curry化的变式
+
+{% highlight Javascript %}
+function love ( a , b ) {
 	console.info( a.name + " love " + b.name );
 }
 
+function hate ( a , b ) {
+	console.info( a.name + " hate " + b.name );
+} 
+
 var c = currying(function ( Default , nextAdd , next ) {
+
 	next( Default , nextAdd );
+
 }, {
 	"name" : "Owen",
-	"age"  : 20,
-	"gender" : "male",
-	"from" : "China"
 });
-
-
 
 c(
 	{
 		"name" : "Zyz",
-		"age"  : 20,
-		"gender" : "female",
-		"from" : "China"
 	},love
 ); 
 
 c(
 	{
 		"name" : "Luffy",
-		"age"  : 19,
-		"gender" : "male",
-		"from" : "One Piece"
+		
 	},love
 )
+
+c(
+	{
+		"name" : "Tom",
+	},hate
+);
+
+// Owen love Zyz
+// Owen love Luffy
+// Owen hate Tom
+{% endhighlight %}
+
+这样我就可以很好的自由搭配固定的参数 ， 变化的参数 ， 需要执行那个函数了
+
+## 反柯里化 unCurrying
+
+javascript 高级编程上应该是没有反柯里化的内容的，上网一搜，发现了挺多关于反柯里化的博文的
+
+就让我们来看看什么是反柯里化咯
+
+### 鸭子辩型
+
+谈论数组前先来段小故事
+
+`
+很久以前有个皇帝喜欢听鸭子呱呱叫，于是他召集大臣组建一个一千只鸭子的合唱团。大臣把全国的鸭子都抓来了，最后始终还差一只。有天终于来了一只自告奋勇的鸡，这只鸡说它也会呱呱叫，好吧在这个故事的设定里，它确实会呱呱叫。 后来故事的发展很明显，这只鸡混到了鸭子的合唱团中。— 皇帝只是想听呱呱叫，他才不在乎你是鸭子还是鸡呢。
+`
+
+是的，无论是鸭是鸡，能用就行

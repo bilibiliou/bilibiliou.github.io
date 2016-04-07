@@ -56,9 +56,6 @@ $(function kaichang(){
   },30);
 });
 
-
-
-
 // 消息提醒功能
 $(function (){
   window.addEventListener('load',function(){
@@ -99,16 +96,6 @@ $(function (){
         });
     }
 });
-
-
-
-
-
-
-
-
-
-
 
 // 搜索框功能
 $(function sousuo(){
@@ -196,7 +183,6 @@ $(function sousuo(){
       oSearchList.innerHTML = '';
     }
   }
-
 });
 
 // 搜索框回调函数
@@ -246,13 +232,6 @@ function callback( data )
     oSearchList.innerHTML = '';
   }
 }
-
-
-
-
-
-
-
 
     /*!--------------------------------*\
        My blog Theme Peiwen Lu & Owen
