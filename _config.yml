@@ -1,24 +1,13 @@
 permalink: /:year/:month/:day/:title.html
 
+gems: [jekyll-paginate, jekyll-gist] #增加这一行
 highlighter: rouge
-markdown: kramdown  # [ maruku | rdiscount | kramdown | redcarpet ]
+markdown: kramdown 
 kramdown:
   input:         GFM
+  syntax_highlighter: rouge
   auto_ids:      true
-#  auto_id_prefix:'id-'
-  # footnote_nr:   1
-  # entity_output: as_char
-  # toc_levels:    1..6
-  # smart_quotes:  lsquo,rsquo,ldquo,rdquo
-  # use_coderay:   true
 
-  # coderay:
-  #   coderay_wrap:              div
-  #   coderay_line_numbers:      inline
-  #   coderay_line_number_start: 1
-  #   coderay_tab_width:         2
-  #   coderay_bold_every:        10
-  #   coderay_css:               style
 
 # 作者信息
 author: 欧阳湘粤
@@ -33,11 +22,6 @@ title: Owen的博客
 description: 欧阳湘粤的博客
 url: http://numerhero.github.io
 rss_url: /pages/atom.xml
-
-# google analytics 设置
-ga:
-  id: UA-54767140-1
-  url: http://numerhero.github.io
 
 # disqus 设置
 disqus:
