@@ -253,9 +253,9 @@ sublime 和 notepad++ 都能保存你的编码设置
 高亮语法从原来的 `{% highlight xxx %}`
 
 换成了
-\、\、\、xxx
-    // 高亮部分
-\、\、\、
+\`\`\`xxx<br>
+    // 高亮部分   
+\`\`\`
 
 注意 ： xxx 为语言名称，必须为小写  高亮代码块 必须和上下隔出来一行
 
@@ -269,7 +269,7 @@ sublime 和 notepad++ 都能保存你的编码设置
 
 一句话的事
 
-```cmd
+```c
   gem update jekyll
 
 ```
@@ -280,7 +280,7 @@ sublime 和 notepad++ 都能保存你的编码设置
 
 而gem更新的时候会遇到 SSL 检验证书无法通过的问题，这是因为，电脑中缺少cacert.pem 的根证书
 
-```cmd
+```c
   错误提示 : E:/Ruby200/lib/ruby/2.0.0/net/imap.rb:1454:in `connect': SSL_connect returned=1 errno=0 state=SSLv3 read server certificate B: certificate verify failed (OpenSSL::SSL::SSLError)
 ```
 
@@ -290,7 +290,7 @@ sublime 和 notepad++ 都能保存你的编码设置
 
 修改环境变量
 
-```cmd
+```c
   变量名： SSL_CERT_FILE
   变量值： xxx/cacert.pem
 ```
