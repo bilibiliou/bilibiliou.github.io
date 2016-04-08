@@ -372,7 +372,7 @@ function callback( data )
                 startMove(oQrImg , { width:0 , height :　0 ,  opacity:0} );
                 startMove(oQR , { width:0 , height :　0 ,  opacity:0 , top : 20 , left : 15 });   
             }
-        });
+      });
 
       pajx_loadDuodsuo();
       //加载Disqus 
@@ -423,3 +423,5 @@ function pajx_loadDuodsuo(){
 
 
 
+
+$(".header_progress_expand").css("width" , "100%");

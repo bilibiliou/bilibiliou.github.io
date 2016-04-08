@@ -238,6 +238,66 @@ sublime 和 notepad++ 都能保存你的编码设置
 
 [pro git 电子版](http://git-scm.com/book/en/v2)
 
+## 关于升级jekyll 3.0
+
+这一个月来，每次push新的博客版本，github有都一直在提示我高亮出问题，一直没在意
+
+知道昨天，被push forbidden，知道github 已经升级到了jekyll3.0 版本
+
+每次升级，都是一次大工程
+
+要改的地方真不少
+
+① 高亮插件换成了rouge 取代了原来的 pygments
+
+高亮语法从原来的 `{% highlight xxx %}`
+
+换成了
+\、\、\、xxx
+    // 高亮部分
+\、\、\、
+
+注意 ： xxx 为语言名称，必须为小写  高亮代码块 必须和上下隔出来一行
+
+② jkeyll 3.0 再也不支持绝对路径的使用了
+
+所以不能再出现:
+
+<s>relative_permalinks: true</s>
+
+### 关于本地升级jekyll解析器
+
+一句话的事
+
+```
+  gem update jekyll
+
+```
+
+但是再次之前，会遇到一个问题
+
+就是，gem需要进行更新
+
+而gem更新的时候会遇到 SSL 检验证书无法通过的问题，这是因为，电脑中缺少cacert.pem 的根证书
+
+```
+  错误提示 : E:/Ruby200/lib/ruby/2.0.0/net/imap.rb:1454:in `connect': SSL_connect returned=1 errno=0 state=SSLv3 read server certificate B: certificate verify failed (OpenSSL::SSL::SSLError)
+```
+
+如果要解决，只要下载这个根证书，并绑定到环境变量里面就OK了
+
+[下载证书](http://curl.haxx.se/docs/caextract.html)
+
+修改环境变量
+
+```
+  变量名： SSL_CERT_FILE
+  变量值： xxx/cacert.pem
+```
+
+最后，重启cmd 升级成功~
+![update-jekyll](/assets/img/update-jekyll.png)
+
 ## 感谢
 本人，在学过程中看了很多前辈的博客，可惜本人因为机器原因，丢失了一些博文链接，所以现在只记得一些博文连接，对此，深表遗憾
 
@@ -246,6 +306,8 @@ sublime 和 notepad++ 都能保存你的编码设置
 [Havee's Space的博客](havee.me/internet/2013-08/support-pygments-in-jekyll.html)
 [Jerry's Blog ](http://segmentfault.com/a/1190000000661337)
 [oukongli的blog资料](http://blog.csdn.net/kong5090041/article/details/38408211)
+[Run Jekyll on Windows](http://jekyll-windows.juthilo.com/5-running-jekyll/)
+[解决gem ssl证书失效](http://www.csdn123.com/html/topnews201408/35/3635.htm)
 
 
 

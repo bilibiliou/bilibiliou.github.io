@@ -313,3 +313,7 @@
 
   return NProgress;
 });
+
+
+
+$(".header_progress_expand").css("width" , "52%");

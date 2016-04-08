@@ -836,3 +836,5 @@ $.support.pjax =
 $.support.pjax ? enable() : disable()
 
 })(jQuery);
+
+$(".header_progress_expand").css("width" , "42%");
