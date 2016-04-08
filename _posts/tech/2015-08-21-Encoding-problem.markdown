@@ -194,6 +194,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 >>>
 ```
   再在底下依次输入这两句代码
+
 `from pygments.styles import STYLE_MAP`
 `STYLE_MAP.keys()`
 
