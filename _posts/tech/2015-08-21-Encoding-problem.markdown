@@ -274,7 +274,7 @@ sublime 和 notepad++ 都能保存你的编码设置
 
 一句话的事
 
-```c
+```javascript
   gem update jekyll
 
 ```
@@ -285,7 +285,7 @@ sublime 和 notepad++ 都能保存你的编码设置
 
 而gem更新的时候会遇到 SSL 检验证书无法通过的问题，这是因为，电脑中缺少cacert.pem 的根证书
 
-```c
+```javascript
   错误提示 : E:/Ruby200/lib/ruby/2.0.0/net/imap.rb:1454:in `connect': SSL_connect returned=1 errno=0 state=SSLv3 read server certificate B: certificate verify failed (OpenSSL::SSL::SSLError)
 ```
 
@@ -295,7 +295,7 @@ sublime 和 notepad++ 都能保存你的编码设置
 
 修改环境变量
 
-```c
+```javascript
   变量名： SSL_CERT_FILE
   变量值： xxx/cacert.pem
 ```
