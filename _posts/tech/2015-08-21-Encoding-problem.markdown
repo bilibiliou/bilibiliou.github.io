@@ -119,6 +119,7 @@ keywords: 技术,jekyll,github,markdown,建站
 ```javascript
     安装python ==> 安装eazy_install ==> 安装pygments ==> 使用pygments产生使代码高亮的.css文件 ==> 在html的header区域引用外部的css文件 ==> 编辑markdown的时候编辑高亮区域 ==> 实现页面高亮
 ```
+
 这么多步骤，真的很麻烦，但是，一步一步来，最终是可以解决问题的
 
 ### 安装python
