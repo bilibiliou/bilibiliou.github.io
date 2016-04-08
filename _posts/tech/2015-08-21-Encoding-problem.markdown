@@ -9,7 +9,7 @@ keywords: 技术,jekyll,github,markdown,建站
 
 这几天看到网上涌现了许多流行的博客
 
-清一色 github + jekyll + markdown 或者 github + jekyll + hexo
+清一色 github + jekyll + markdown 或者 github + hexo + markdown
 
 于是就跟风也学着建立一个。由于这方面的教程网上有很多，所以在这里我就不再过多赘余
 
@@ -258,7 +258,11 @@ sublime 和 notepad++ 都能保存你的编码设置
 
 ① 高亮插件换成了rouge 取代了原来的 pygments
 
-高亮语法从原来的 `{% highlight xxx %}`
+高亮语法从原来的 
+
+```c
+  \{\% highlight xxx \%\}
+```
 
 换成了
 
