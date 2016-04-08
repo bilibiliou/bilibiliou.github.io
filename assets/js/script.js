@@ -25,8 +25,6 @@ $(function kaichang(){
   var oP = $(".precent");
   var oBox = $(".box");
 
-
-
   var timer = null;
 
   // 响应式改变进度条长度

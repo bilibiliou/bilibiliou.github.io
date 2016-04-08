@@ -210,6 +210,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 细节3: 怎么使用高亮css
 
 你需要高亮的代码块上下添加markdown语法
+
 ![shootpic](/assets/img/python-install5.png)
 
 
@@ -237,6 +238,7 @@ sublime 和 notepad++ 都能保存你的编码设置
 ## git 使用
 
 因为在本地写好内容之后，就需要使用git分布式版本控制系统进行操作，所以需要掌握一些git的基本操作
+
 [git - 简易指南](http://www.bootcss.com/p/git-guide/)
 
 要深入学习git 还可以学习《pro git》
@@ -258,6 +260,7 @@ sublime 和 notepad++ 都能保存你的编码设置
 高亮语法从原来的 `{% highlight xxx %}`
 
 换成了
+
 \`\`\`xxx<br>
     // 高亮部分   
 \`\`\`
@@ -301,9 +304,11 @@ sublime 和 notepad++ 都能保存你的编码设置
 ```
 
 最后，重启cmd 升级成功~
+
 ![update-jekyll](/assets/img/update-jekyll.png)
 
 ## 感谢
+
 本人，在学过程中看了很多前辈的博客，可惜本人因为机器原因，丢失了一些博文链接，所以现在只记得一些博文连接，对此，深表遗憾
 
 但是，还是对所有帮助过本人的前辈表示衷心的感谢，谢谢你们为中国编程事业做出的辛勤贡献，谢谢
