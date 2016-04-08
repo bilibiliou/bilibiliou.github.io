@@ -39,7 +39,7 @@ keywords: 技术,jekyll,github,markdown,建站
   登录网站[ruby-installer](http://rubyinstaller.org/downloads/)
   下载最新的适用自己电脑的(x86位数)ruby版本
 
-  下载完安装 一路next ， 
+  下载完安装 一路next
 
   ![shootphoto](/assets/img/ruby-installer-shootpic.png)
   (注意：这里需要勾选一下 “Add Ruby executables to your PATH”，这样执行程序会被自动添加至 PATH 而避免不必要的头疼)
@@ -122,6 +122,7 @@ keywords: 技术,jekyll,github,markdown,建站
 这么多步骤，真的很麻烦，但是，一步一步来，最终是可以解决问题的
 
 ### 安装python
+
 首先，我们下载[安装包]() 
 因为，python2 和 python3 是两个区别度比较大的版本，所以大家不要下载3.0+ 这里下载的是2.7的
 然后，就出现问题了。
@@ -144,6 +145,7 @@ win + x 打开有管理员权限的cmd
 如果正确弹出了版本号，说明安装成功了
 
 ### 安装easy_install
+
 一个插件管理工具 (可以类比 Devkit) 好处是，使用它安装插件不用配置和设置其他文件， 只要一句代码就搞定
 
 言归正传，首先我们先下载[安装包 ez_setup.py](https://pypi.python.org/pypi/setuptools)
@@ -170,9 +172,11 @@ win + x 打开有管理员权限的cmd
 弹出版本号，说明安装成功
 
 ### 使用pygments
+
 pygments是基于python的一款第三方插件
 
 使用方法可以参考
+
 [http://pygments.org/docs/cmdline/](http://pygments.org/docs/cmdline/)和
 [http://segmentfault.com/a/1190000000661337](http://segmentfault.com/a/1190000000661337)
 
@@ -181,7 +185,7 @@ pygments是基于python的一款第三方插件
 
 细节2:检查Pygments的主题样式,需要先在cmd中进入python编译模式
 
-```
+```javascript
 C:\Windows\system32>python
 Python 2.7.5 (default, May 15 2013, 22:43:36) [MSC v.1500 32 bit (Intel)] on win
 32
