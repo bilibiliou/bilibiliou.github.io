@@ -15,9 +15,7 @@ Js里我们可以使用数组模拟栈和队列，使用数组暂存，
 
 当然，简单的数组存储，使用for遍历，大家肯定都已经掌握了。
 
-使用for或while的遍历方法无非这几种
-
-
+使用for或while的遍历方法无非这几种（ 还有一种Es6 新出的for...of 我们下文再介绍 ）
 
 ```javascript
 var array = [1,2,3,4,5]
@@ -37,7 +35,9 @@ for(var i in array) {
 for(var i = 0 , e; e = array[i++] ; ) {
     // do something
 }
+
 // while方法省略，任何for都能转化成while写法
+
 ```
 
 但是你对数组旗下的多种方法了解吗？
@@ -47,14 +47,11 @@ for(var i = 0 , e; e = array[i++] ; ) {
 首先我们可以console.log看一下数组下面有多少种方法
 
 
-
 ```javascript
 console.log(Array.prototype);
 ```
 
 很多吧，当然有些我们已经了解了很多了
-
-
 
 ```javascript
 push
@@ -761,8 +758,6 @@ end ( 复制结束的位置 ) 【可选】
 
 设置结束的位置是到leon 但是不包括leon 所以 end应该设置5 【去终】
 
-
-
 ```javascript
 console.log( [ "Owen","Zyz","luffy","micale","Jsaon","leon" ].copyWithin(1,3,5) )
 //  ["Owen", "micale", "Jsaon", "micale", "Jsaon", "leon"]
@@ -779,8 +774,6 @@ find 和 findIndex 是Es6 新添加的两个遍历方法
 find函数，用法是不断递归，返回符合条件的值
 
 findIndex函数，用法是不断递归，返回符合条件的索引
-
-
 
 ```javascript
 
@@ -834,7 +827,6 @@ console.log(arr.findIndex(function ( value , idx, array ) {
 
 ① 当只有一个参数的时候，将数组中的值全部替换
 
-
 ```javascript
 console.log([1,2,3,4,5,6].fill(7)); // [7, 7, 7, 7, 7, 7]
 ```
@@ -848,7 +840,6 @@ console.log([1,2,3,4,5,6].fill(7,1,2)); //  [1, 7, 3, 4, 5, 6]
 
 我们可以使用fill来初始化新数组
 
-
 ```javascript
 var a = new Array(100).fill(7);
 console.log(a);
@@ -856,13 +847,11 @@ console.log(a);
 // 100个7
 ```
 
-当然其他替换的功能显得有点鸡肋了，因为明明有了splice 函数
+当然fill方法的替换功能个人觉得有点鸡肋，因为明明已经有splice 函数了
 
 ### includes
 
 我们可以使用includes来判断一个值是否在某个数组里面
-
-
 
 ```javascript
 
@@ -870,6 +859,118 @@ console.log([1,2,3,4,5,6].includes(3)) // true
 console.log([1,2,3,4,5,6].includes(100)) // false
 
 ```
+
+### keys
+
+学过Ecmascript6 的同学应该清楚，es6 中为我们提供了一种新的数据结构，迭代器 Iterator 
+
+```javascript
+
+var c = [1,2,3,4,5];
+
+var v = c[Symbol.iterator]()
+console.log(v.next()) // {value: 1 , done: false}
+
+```
+
+而Iterator ， 只能为我们构建对应值得迭代器，但是不能为我们提供数组各个索引的迭代器，
+所以，es6 又为我们提供了 keys方法
+
+```javascript
+var c = [1,2,3,4,5];
+var v = c.keys();
+
+
+console.log( {}.toString.call(v) );   // [object Array Iterator]
+console.log( v.__proto__ )            // 我们可以在chrome下查看迭代器中包含的所有方法
+
+console.log(v.next()) // {value: 0 , done: false}  value 对应的是 值1 的索引
+
+```
+
+索引迭代器，会包含数组中没有值，或是空、非值的索引
+
+```javascript
+
+var c = [null , undefined , "" ,  , NaN];
+
+var v = c.keys();
+
+for( var i  of v ) {
+    console.log(c[i]);
+}
+
+// null
+// undefined
+// (空字符串)
+// undefined
+// NaN
+
+```
+
+上面的栗子中使用了 for...of ，我们就来看看for...of的用法
+
+### Es6中新的遍历方法 for...of
+
+for...of专门用于遍历Iterator的一种新遍历方法
+
+数组中默认具备Iterator 接口，所以，数组可以被for...of遍历
+
+```javascript
+var a = [1,2,3,4,5];
+
+for( var i of a ) { 
+    console.log(i)  // i 直接就是数组中的值，不是索引！！
+} 
+```
+
+注意不能给i在for 中赋予初值
+
+```javascript
+for( var i = 0 of a ) {    // 会报错
+    console.log(i)  
+}
+
+
+var i = 100;   // 在for i外可以赋值,但无意义
+for( var i of a ) { 
+    console.log(i);
+} 
+```
+
+### entries
+
+上文见到了，我们使用keys 可以构造一个索引的迭代器 ，使用 Symbol.iterator 可以构造一个值的迭代器
+
+那么如果要 构造一个 同时含有 索引和值 的迭代器应该如何做呢？
+
+Es6给我们提供了 entries 方法
+
+```javascript
+
+var a = ["Owen" , "Zyz" , "Luffy"];
+var b = a.entries();
+
+for( var i of b ) {
+    console.log(i);
+}
+
+// [0, "Owen"]
+// [1, "Zyz"]
+// [2, "Luffy"]
+
+```
+
+### values
+
+上文我们使用了 Symbol.iterator 来构建一个迭代器，这样写显得有些麻烦，有没有些简单的方法呢？
+
+Es6为我们 提供了 [values 方法](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/values)
+
+不过，这个方法还对于多数浏览器来说还未支持...我就不演示了
+
+关于迭代器，具体见[ECMAScript 6 入门 Iterator和for...of循环](http://es6.ruanyifeng.com/#docs/iterator)
+
 
 ## 感谢
 

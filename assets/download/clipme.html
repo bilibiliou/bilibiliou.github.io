@@ -566,6 +566,52 @@
 					transform: scale(1.5);
 				}
 			}
+
+			#div13 {
+				height: 120px;
+				line-height: 100px;
+				font-size: 120px;
+				text-align: center;
+      			font-weight: bold;
+				font-family: arial,"微软雅黑";
+				margin: 50px 0 0;
+
+			}
+
+			.wave {
+				background: url(./demopic/circle/wave.png) repeat-x;
+				-webkit-background-clip: text;
+				-moz-background-clip: text;
+				background-clip: text;
+				color: transparent;
+      			opacity: 1;
+				
+				text-shadow: 0px 0px rgba(0,0,0,0.15);
+      			background-size: 200px 120px;
+				animation: 0.5s wave-animation linear infinite , 5s loading-animation linear infinite alternate;
+			}
+			
+			/* 产生波浪感 */
+			 @keyframes wave-animation {
+		      0% {
+		        background-position: 0 bottom;
+		      }
+
+		      100% {
+		        background-position: 200px bottom;
+		      }
+		    }
+		   
+		   /* 使页面上升 */
+		   @keyframes loading-animation {
+		      0%,20% {
+		        background-size: 200px 0px;
+		      }
+
+		      100% {
+		        background-size: 200px 200px;
+		      }
+		    } 	
 		</style>
 		<script>
 		function runCir() {
@@ -661,6 +707,10 @@
 
 				<div id="pointer"></div>
 				<div id="pointer-shake" onclick="runCir()"></div>
+			</div>
+
+			<div id="div13" class="wave">
+				Loading...
 			</div>
 		</article>
 
