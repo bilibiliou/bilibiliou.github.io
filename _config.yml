@@ -1,10 +1,10 @@
 highlighter: rouge
-markdown: kramdown 
+line_numbers: true 
+markdown: kramdown
 kramdown:
   input:         GFM
   syntax_highlighter: rouge
   auto_ids:      true
-
 
 # 作者信息
 author: 欧阳湘粤

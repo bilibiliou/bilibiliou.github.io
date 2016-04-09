@@ -280,7 +280,7 @@ sublime 和 notepad++ 都能保存你的编码设置
 
 ### 关于本地升级jekyll解析器
 
-一句话的事
+升级的jekyll,实际上就是一句话的事
 
 ```javascript
   gem update jekyll
@@ -323,8 +323,4 @@ sublime 和 notepad++ 都能保存你的编码设置
 [oukongli的blog资料](http://blog.csdn.net/kong5090041/article/details/38408211)
 [Run Jekyll on Windows](http://jekyll-windows.juthilo.com/5-running-jekyll/)
 [解决gem ssl证书失效](http://www.csdn123.com/html/topnews201408/35/3635.htm)
-
-
-
-  
-
+[Upgrading Jekyll 2 to 3 on GitHub Pages](http://blog.virtuacreative.com.br/upgrade-jekyll-2-to-3-gh-pages.html)

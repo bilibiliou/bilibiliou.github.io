@@ -28,7 +28,6 @@ keywords: 技术,闰年
 
 根据上面的定义马上就能想出第一种遍历算法：
 
-
 ```javascript
 function leapYearNum (s , e) {
 	var c = 0;
@@ -49,7 +48,37 @@ function leapYearNum (s , e) {
 }
 ```
 
+caveat： 这种方法会将计算的两个年份（若是闰年）包含进去
+
 但是这种算法的性能肯定时不理想的，例如要算出[0,2000] 就要遍历运算2000次
 
 之后又在CSDN上看到了一种比较简单的思路：
 通过`算计每个年份到元年的闰年数目 然后做差`
+
+```javascript
+
+function leapYearNum ( s , e ) {
+	var M = Math;
+	var Int = parseInt;
+
+	return c(e) - c(s);
+
+	// count has much year form Year Zero to this year 
+	function c ( y ) {
+		var a = Int(y / 100);  
+		var n = a * 24;        
+		var k = Int(y / 400);
+		var v = Int((y - a*100) / 4);
+
+		return k + n + v;
+	}
+}
+
+// 得到两年份之间所有的闰年数 ， 不包含边界
+console.log(leapYearNum( 0 , 2016 ));    // 489
+console.log(leapYearNum( 1999 , 2002 )); // 1 
+console.log( leapYearNum( 1996 , 2029 ) ) // 8
+
+```
+
+效率就快很多了
