@@ -31,7 +31,7 @@
 
     // 二级联动 
     var nowSchool = 0;
-    C1.addEventListener("click" , function (ev) {
+    C1.addEventListener("change" , function (ev) {
         if ( this.selectedIndex !== nowSchool) {
             removeClass(C2[nowSchool] , "c-show");
             nowSchool = this.selectedIndex;
