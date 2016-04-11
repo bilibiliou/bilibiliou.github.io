@@ -13,7 +13,7 @@ keywords: 技术,currying
 
 `柯里化（Currying）是把接受多个参数的函数变换成接受一个单一参数(最初函数的第一个参数)的函数，并且返回接受余下的参数且返回结果的新函数的技术`
 
-很复杂，我也是一脸懵逼的给你们复制下来的
+很复杂，我也是一脸懵逼的给你们复制下来的，我所理解的函数柯里化，应该是一种js的实现技巧
 
 所以我们还是先来关心一下柯里化函数能够实现怎样的功能，再来细究其中的原理
 
@@ -59,12 +59,12 @@ Owen( "草莓" , "苹果" ); // 实现的参数的复用
 
 ```javascript
 var currying = function (fn) {
-	var args = [].slice.call(arguments , 1); // 获取固定参数时的除fn 以外的所有参数（我们可以认为是默认参数，参数的类型可以是函数，对象，数字，字符 Json等等）
+	var args = Array.prototype.slice.call(arguments , 1); // 获取固定参数时的除fn 以外的所有参数（我们可以认为是默认参数，参数的类型可以是函数，对象，数字，字符 Json等等）
 	
 	return function () {
 		// 返回的函数再进行调用的时候，获取全部参数（变化参数）
 		// 将default默认的参数和变化参数合并
-		var fArgs = args.concat( [].slice.call( arguments ) );
+		var fArgs = args.concat( Array.prototype.slice.call( arguments ) );
 	
 		// 执行被柯里化的函数，并将合并好的参数丢给该函数
 		fn.apply( null , fArgs );
@@ -129,10 +129,192 @@ javascript 高级编程上应该是没有反柯里化的内容的，上网一搜
 
 ### 鸭子辩型
 
-谈论数组前先来段小故事
+谈论unCurrying前先来段小故事
 
 `
 很久以前有个皇帝喜欢听鸭子呱呱叫，于是他召集大臣组建一个一千只鸭子的合唱团。大臣把全国的鸭子都抓来了，最后始终还差一只。有天终于来了一只自告奋勇的鸡，这只鸡说它也会呱呱叫，好吧在这个故事的设定里，它确实会呱呱叫。 后来故事的发展很明显，这只鸡混到了鸭子的合唱团中。— 皇帝只是想听呱呱叫，他才不在乎你是鸭子还是鸡呢。
 `
 
 是的，无论是鸭是鸡，能用就行
+
+再来看个栗子吧
+比如我们现在需要获取一组dom 结点 
+
+```html
+<div class="aaa"></div>
+<div class="aaa"></div>
+<div class="aaa"></div>
+```
+
+获取到后，在每个里面插入一个span，并且返回每个div下span的集合
+
+
+基础好点的同学们应该立马就想到 使用Array下 的map方法进行映射返回一组数组 （还不知道map方法的同学可以参考一下我的另外一篇[博文](http://numerhero.github.io/%E6%8A%80%E6%9C%AF/2016/04/04/array-function.html)）
+
+但是，遗憾的是使用DOM找到的集合并不是Array类型的，而是HTMLCollection 类型的，而HTMLCollection并没有Map方法，
+
+```javascript
+
+var oDivs = document.getElementsByClassName("aaa");
+console.log(Object.prototype.toString.call( oDivs )) //[object HTMLCollection]
+
+```
+
+怎么办呢？
+
+还记得上面的故事吗？
+无论是鸡还是鸭，能叫就行
+换成这里的法则就是
+`无论是在Array 下的方法 还是在Html Collection 下的方法 ， 只要就行`
+
+什么意思呢？意思就是Js 中的原生方法，并不会验证使用的对象是不是相应的对象
+
+也就是说，例如 Array类 下的方法，并不会检查使用这个方法的对象 到底是不是Array类型的实例
+只要传参正确，可以运行就不会报错
+
+这样我们就可以借Array下的Map方法 给HTMLCollection 类型使用
+
+具体实现很简单
+
+```javascript
+
+var oDivs = document.getElementsByClassName("aaa");
+	
+var oSpans = Array.prototype.map.call(oDivs, function (value , idx , array) {
+	var oSpan = document.createElement("span");
+	value.appendChild( oSpan );
+	return oSpan;
+});
+
+console.log( oSpans );
+
+```
+
+虽然实现、原理都很简单的，但是各位不觉得很麻烦吗？
+每次使用map的时候 都需要写一遍`Array.prototype.map.call`
+有的人也许为了简写 临时实例化一个数组对象 ` [].map.call `,但是依然还是挺麻烦的
+
+有什么方法可以把一些方法简单的固定下来，不需要总是使用call来延伸作用域呢?
+
+这就引出我们今天讨论的 函数反柯里化
+
+### 函数反柯里化的具体实现
+
+```javascript
+Function.prototype.uncurrying = function () {
+	var $self = this;
+	return function () {
+		return Function.prototype.call.apply( $self , arguments );
+	}
+}
+```
+
+看起来很简单，但是挺复杂的（什么鬼call.apply 真的是第一次见着玩意）
+
+
+所以我为此画了一张图片，来帮助大家一起理解这个函数
+
+![uncurrying](/assets/img/uncurrying.png)
+
+使用这个uncurrying 我们就可以对任何对象下的任何函数，进行借用了
+
+例如像刚刚那个例子
+
+```javascript
+
+Function.prototype.uncurrying = function () {
+	var $self = this;
+	return function () {
+		return Function.prototype.call.apply( $self , arguments );
+	}
+}
+
+
+var oDivs = document.getElementsByClassName("aaa");	
+
+var Map = Array.prototype.map.uncurrying();
+var oSpans = Map( oDivs ,  function ( value , idx , array ) {
+	var oSpan = document.createElement("span");
+	value.appendChild( oSpan );
+	return oSpan;
+})
+
+console.log( oSpans );
+
+```
+
+
+还有push方法
+
+```javascript
+Function.prototype.uncurrying = function () {
+	var $self = this;
+	return function () {
+		return Function.prototype.call.apply( $self , arguments );
+	}
+}
+
+var push = Array.prototype.uncurrying();
+
+var a = {};  
+push( a , ["Owen" , "Luffy" , "Zyz"] );
+
+console.log(a); // Object {0: "Owen", 1: "Luffy", 2: "Zyz", length: 3}
+
+```
+
+最后引一段AlloyTeam 的大神曾探写的代码，这段代码根据你自己的需要为自定义构造函数，复制所需要的对象下的所有方法
+
+```javascript
+Function.prototype.uncurrying = function () {
+	var $self = this;
+	return function () {
+		return Function.prototype.call.apply( $self , arguments );
+	}
+}
+
+var add_fn = function ( obj , targetObj , keys ) {
+	for( var i = 0 , arr = keys.split(",") , fn; fn = arr[i++] ; ) {
+		// 获取需求，取出每一个需求的函数名称
+
+		(function ( fn ) {
+			var newFn = targetObj.prototype[ fn ].uncurrying(); // 从目标对象中获取需要的方法，并进行柯里化
+			obj[ fn ] = function () {
+
+				// 当调用这个函数某个函数的时候，将借用的newFn 函数执行,并将this 对象改为调用者，还有将调用者传的所有参数，一股脑儿的全塞进去
+				newFn.apply( this , [ this ].concat( Array.prototype.slice.call( arguments ) ) );
+				return this;
+			}	
+		})( fn );
+	}
+}
+
+
+
+
+// 构造自己的工厂
+function Owen() {
+
+}
+
+add_fn( Owen.prototype , Array , "push,indexOf,forEach" );
+add_fn( Owen.prototype , Object , "toString" );
+
+
+var myBaby = new Owen();
+
+myBaby.push(1).push(3).forEach( function ( value , idx ) {
+	console.log( value , idx );
+});
+
+console.log( myBaby.toString() ) // Owen{ }
+
+```
+
+还有一点就是切记不要滥用反柯里技术，例如一个对象，你给他String下的split方法它肯定是无法使用的。
+
+## 感谢
+
+[函数柯里化](http://www.cnblogs.com/pigtail/p/3447660.html)
+
+[Javascript中有趣的反柯里化技术](http://www.alloyteam.com/2013/08/javascript-zhong-you-qu-di-fan-ke-li-hua-ji-shu/?wpmp_switcher=mobile)

@@ -272,6 +272,12 @@ sublime 和 notepad++ 都能保存你的编码设置
 
 注意 ： xxx 为语言名称，必须为小写  高亮代码块 必须和上下隔出来一行
 
+如何查询rouge 到底能高亮那些语言呢？ 
+
+如果你在本地安装了rouge 可以直接调用命令`rougify list` 进行查看
+
+如果你并没有安装rouge ， 只能上网浏览了[List of supported languages and lexers](https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers)
+
 ② jkeyll 3.0 再也不支持绝对路径的使用了
 
 所以不能再出现:
