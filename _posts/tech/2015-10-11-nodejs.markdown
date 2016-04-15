@@ -380,7 +380,6 @@ var bf  = new Buffer(4);
 console.log(bf[0].toString(8)) // 157 
 ```
 
-
 如果直接整个buf （不带参数） 则会转化为字符号串
 
 ```javascript
@@ -588,6 +587,22 @@ fs.writeFile(filePath , "这是写入的内容" , function(err) {
 
 还有一点，如果所提供的路径没有文件，那么就会自动新建一个文件，并写入内容
 并且，写方法会将原有的内容覆盖 要特别注意哦！
+
+## 小功能（复制文件内容）
+
+```javascript
+function copy ( src , dst ) {
+    fs.writeFileSync( dst  , fs.readFileSync(src) )
+}
+
+function main ( argv ) {
+    copy( argv[0] , argv[1] );
+}
+
+// 路径由终端参数传入， 第一个参数为被复制的文件（源）， 第二个参数为复制的文件
+所以，在复制前需要先在地址目录下创建一个文件
+main( process.argv.slice(2) );
+```
 
 ## appendFile(Sync)
 
@@ -826,6 +841,140 @@ stats.isSocket()
 
 ```
 
+## path模块
+
+在node中，并不建议使用拼接字符串的方式处理路径字符串，建议采用path模块来处理路径字符串
+
+### normalize 
+
+这个方法可以将不合法的路径名格式化成合法的路径字符串
+
+```javascript
+var path = require("path");
+
+console.log(path.normalize('/foo/bar//baz/asdf/quux/..'));
+
+// \foo\bar\baz\asdf
+```
+
+### join
+
+我们可以使用join方法对路径进行合并
+
+```javascript
+var path = require("path");
+
+console.log(path.join('///foo', 'bar', '//baz/asdf', 'quux', '..'));
+
+// \foo\bar\baz\asdf
+```
+
+这个方法，可以将传入的所有字符串拼接成合法的字符串，并格式化
+
+
+### sep
+
+我们可以通过这个属性，获得每个特定平台的特殊分隔符号
+
+例如：在window下的分割符号 是 （\）
+
+通过这个分隔符号，我们可以将特定的路径分隔为一个数组
+
+```javascript
+var path = require("path");
+
+'foo/bar/baz'.split(path.sep)
+
+// returns ['foo', 'bar', 'baz']
+```
+
+### parse
+
+我们可以使用parse进行解析路径
+
+```javascript
+console.log(path.parse('/home/user/dir/file.txt'))
+// returns
+// {
+//    root : "/",
+//    dir : "/home/user/dir",
+//    base : "file.txt",
+//    ext : ".txt",
+//    name : "file"
+// }
+
+```
+
+## url 模块
+
+我们可以使用url 模块来处理url 字符串
+
+### parse
+
+```javascript
+var url =  require("url");
+
+var __URL__ = "http://user:pass@host.com:8080/p/a/t/h?query=string#hash";
+
+console.log( url.parse(__URL__) );
+
+// Url {
+//  protocol: 'http:',
+//  slashes: true,
+//  auth: 'user:pass',
+//  host: 'host.com:8080',
+//  port: '8080',
+//  hostname: 'host.com',
+//  hash: '#hash',
+//  search: '?query=string',
+//  query: 'query=string',
+//  pathname: '/p/a/t/h',
+//  path: '/p/a/t/h?query=string',
+//  href: 'http://user:pass@host.com:8080/p/a/t/h?query=string#hash' }
+
+可以返回一个对象，包含所解析的url的全部信息
+
+```
+
+### format
+
+使用format 方法可将一个url对象 格式化成标准的url地址
+
+```javascript
+var urlObj =  {
+ protocol: 'mailto',        // 如果没写:// 会自动添加
+ slashes: true,
+ auth: 'user:Owen',         // 如果出现就会被加入
+ host: 'qzone.com:3000',    // 优先级最高
+ port: '8080',              // 只有没有host 的时候，才会将使用port 属性
+ hostname: 'host.com',      // 只有没有host 的时候，才会使用hostname属性
+ hash: '11111111112222222', // 如果没有# 会自动添加#
+ search: '?query=string',   // 优先级最高
+ query: 'query=xxxxx',      // 如果没有search的时候，才会将query 属性使用
+ pathname: '\/p\/a\/t\/h',
+}
+
+console.log(url.format(urlObj));
+// mailto://user:Owen@qzone.com:3000/p/a/t/h?query=string#11111111112222222
+```
+
+小记： format 和 parse 就是一对孪生胞胎
+
+## resolve
+
+Url 还有一个resolve方法 
+
+作用貌似是替换base路径
+
+这是官方网站给的栗子
+```javascript
+console.log(url.resolve('/one/two/three', 'four'))         // '/one/two/four'
+console.log(url.resolve('http://example.com/', '/one'))    // 'http://example.com/one'
+console.log(url.resolve('http://example.com/one', '/two')) // 'http://example.com/two'
+
+```
+
+
 ## 简单的文件遍历算法
 
 
@@ -843,7 +992,6 @@ function travel(dirname, callback) {
             // 如果是文件夹，就继续遍历文件夹
             travel(pathname, callback);
         } else {
-        
         	// 如果是文件的话，将文件名称传入回调函数，执行操作
             callback(pathname);
         }

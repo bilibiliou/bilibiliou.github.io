@@ -341,93 +341,46 @@ function ObjectTest (obj) {
 }
 ```
 
-## 仿 document.querySelector
+## 取出数字
 
-直接上代码了
-百度春季班题目
+一道腾讯的笔试题目吧，要求从随机混乱的字符中，取出所有的数字 ， 且`不允许使用正则`
 
+实现：
 
 ```javascript
-function $(selector) {
-    var aS = selector.split(" ");
-    if( aS.length === 1 ) {
-        return mainfn(selector);
-    }else {
-        var k = mainfn(aS[0]);
-        for( var i = 1 ; i < aS.length ; i++ ) {
-            k = mainfn(aS[i] , k);
-        }
-        return k
-    }
-
-    function mainfn (selector , parent) {
-        parent = parent || document;
-        var result = null;
-        switch(selector.substring(0,1)) {
-            case "#":
-                selector = selector.substring(1);
-                return result = findById( selector , parent );
-            case ".":
-                selector = selector.substring(1);
-                return result = findByClass( selector , parent );
-            case "[":
-                selector = selector.substring(1,selector.length-1);
-                if(selector.indexOf("=") === -1) {
-                    return result = findByAttrName( selector , parent );
-                }else {
-                    return result = findByAttrValue( selector , parent );
-                }
-            default :
-                return result = findByTagName( selector , parent );
-        }
-    }
-
-    function findByTagName ( tagName , parent ) {
-        return parent.getElementsByTagName(tagName)[0];
-    }
-
-    function findById ( targetId , parent ) {
-        return parent.getElementById( targetId );
-    }
-
-    function findByClass ( targetClass , parent ) {
-        var o = parent.getElementsByTagName("*");
-        for(var i = 0 ; i<o.length; i++) {
-            var aclass = o[i].className.split(" ");
-            for(var j = 0 ; j < aclass.length ; j++){
-                if( aclass[j] ===  targetClass) {
-                    return o[i];
-                }
+var s = "sdaddf444sfsfdsf8485sdfsdfds￥d#我1526dfdsfdsfds我2%fsdf58";
+    
+    var flag = -1;
+    var boff = true;
+    var r = "";
+    var t = "";
+    var result = [];
+    Array.prototype.forEach.call( s , function ( value , idx , array ) {
+        if ( value > "0" && value < "9" ) {
+            if ( boff ) {
+                boff = false;
+                flag = idx;
             }
-        }
-    }
 
-    function findByAttrName ( targetAttr , parent ) {
-        var o = parent.getElementsByTagName("*");
-        for(var i = 0 ;i<o.length;i++) {
-            if (o[i].attributes.length === 0){continue;}
-            for(var j  = 0 ; j<o[i].attributes.length ; j++) {
-                if( o[i].attributes[j].name ===  targetAttr) {
-                    return o[i];
-                }
-            }
+            r += value;
+        } else {
+            boff = true;
+            flag = -1;
         }
-    }
 
-    function findByAttrValue ( targetAttr , parent ) {
-        var o = parent.getElementsByTagName("*");
-        var AttrName = targetAttr.split("=");
-        for(var i = 0 ;i<o.length;i++) {
-            if (o[i].attributes.length === 0){continue;}
-            for(var j  = 0 ; j<o[i].attributes.length ; j++) {
-                if( o[i].attributes[j].name === AttrName[0] && o[i].attributes[j].value === AttrName[1] ) {
-                    return o[i];
-                }
-            }
+        if ( flag === -1 && r !== "" || idx === array.length - 1 ) {
+            t = r;
+            r = "";
+            result.push(t)
         }
-    }
-}
+    });
+
+    console.log(result)
+
+}   
 ```
+
+
 
 ## 感谢
 

@@ -38,7 +38,7 @@ title: Welcome
 
 [百度FEX](http://fex.baidu.com/)
 
-[尤小右(vue.js作者)的博客(BFW)](http://evanyou.me/)
+[尤小右(vue.js作者)的博客](http://evanyou.me/)
 
 [segmentfault](http://segmentfault.com/)
 
@@ -59,3 +59,7 @@ title: Welcome
 [低多边形生成器](http://matthew.wagerfield.com/flat-surface-shader/)
 
 [HTML5标签语义化规范](https://segmentfault.com/a/1190000000438191)
+
+[阮一峰 javascript](http://javascript.ruanyifeng.com/)
+
+[js流行框架排行](https://www.javascripting.com/)
