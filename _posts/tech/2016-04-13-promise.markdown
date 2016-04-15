@@ -375,14 +375,14 @@ Promise 一开始是处于pending(等待)的状态
 然后，Promise 就会执行接下来的一个个Owen.then函数，
 
 成功的栗子
-[shotpic](/assets/img/promise1.png)
+![shotpic](/assets/img/promise1.png)
 
 当然，有成功就会有失败，如果中间的代码出现了一些问题就会 Promise 的状态就会转化为rejected（拒绝），之后就会执行 下一个then的onRejected事件
 
 只要我们提前在onRejected 中写好出错时，进行的处理，那么代码，就能继续跑起来
 
 失败的栗子
-[shotpic](/assets/img/promise2.png)
+![shotpic](/assets/img/promise2.png)
 
 ### resolve 传递 Promise
 
