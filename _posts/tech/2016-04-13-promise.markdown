@@ -546,7 +546,7 @@ caveats: <br>
 
 和上面的 Promise.resolve 一样，相当于传递时reject
 
-```javascirpt
+```javascript
 
 var p = Promise.reject('出错了'); // Uncaught (in promise) 出错了
 
