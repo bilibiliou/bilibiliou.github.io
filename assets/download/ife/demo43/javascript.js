@@ -190,7 +190,7 @@ function $$ (v , d=document) {
 +function () {
     window.addEventListener("scroll" , (ev) => {
         var ScrollTop = document.body.scrollTop || document.documentElement.scrollTop;
-        if (ScrollTop > document.body.scrollHeight - 600) {
+        if (ScrollTop > document.body.scrollHeight - 800) {
             if (boff) {
                 boff = false;
                 removeClass(oWaitting , "hidden");
