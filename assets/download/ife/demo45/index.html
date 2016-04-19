@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vat layout</title>
+    <style>
+        @font-face {
+          font-family: "Consolas";
+          src: url("./font/Consolas.eot"),
+          url("./font/Consolas.woff") format("woff"), 
+          url("./font/Consolas.ttf") format("truetype"), 
+          url("./font/Consolas.svg") format("svg");
+          font-weight: normal;
+          font-style: normal; 
+        }
+
+        * {
+            cursor: url("./img/cursor.png"),default;
+        }
+        body {
+            position: relative;
+            background: #f5f5f5;
+            overflow: auto;
+            padding: 0;
+        }
+
+        p {
+            margin: 0;
+        }
+        
+        img {
+            border: 0;
+        }
+        
+        .clearfix {
+            zoom: 1;
+        }
+        
+        .clearfix::after {
+            content: ".";
+            visibility: hidden;
+            clear: both;
+            display: block;
+            height: 0;
+        }
+        .hidden {
+            -webkit-transition: 1s;
+            -o-transition: 1s;
+            transition: 1s;
+            
+            opacity: 0;
+        }
+
+        .clear-select {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            -o-user-select: none;
+            user-select: none;
+        }
+
+        .loading {
+            position: absolute;
+            background: #f5f5f5;
+            overflow: hidden;
+            width: 100%;
+            height: 102%;
+            text-align: center;
+            z-index: 1000;
+        }
+
+        .wave {
+            width: 520px;
+            height: 120px;
+            line-height: 110px;
+            font: bold 110px/110px Arial;
+            color: transparent;
+            text-shadow: 0px 0px rgba(0,0,0,0.15);
+            
+            position: absolute;
+            left: 50%;
+            top: 40%;
+
+            margin-left: -260px;
+            margin-top: -60px;
+            
+            background: url(./img/wave.png) repeat-x;
+            background-clip: text;
+            -webkit-background-clip: text;
+
+            animation: 0.25s wave-animation linear infinite , 2s raise-animation linear infinite alternate;
+        }
+
+        .loading-text {
+            width: 100%;
+            position: absolute;
+            bottom: -32%;
+            color: #000;
+            text-indent: -50px;
+            font: 200 40px/30px Arial;
+        }
+
+        @keyframes wave-animation {
+              0% {
+                background-position: 0 bottom;
+              }
+
+              100% {
+                background-position: 200px bottom;
+              }
+            }
+           
+
+       @keyframes raise-animation {
+          0%,20% {
+            background-size: 200px 0px;
+          }
+
+          100% {
+            background-size: 200px 200px;
+          }
+        }   
+
+        .pics-wall {
+        }
+
+        .gallery-row {
+            overflow: hidden;
+            max-width: 100%;
+
+            /* 一定要选不更换行! */
+            white-space: nowrap;
+            margin-bottom: 8px;
+        }
+      
+        .gallery-item-wrapper {
+            position: relative;
+            height: 100%;
+            display: inline-block;
+            box-sizing: border-box;
+        }
+        
+        .gallery-item-wrapper img {
+        }
+
+        .gallery-item-wrapper:hover .info{
+            bottom: 0px;
+        }
+
+        .gallery-item-wrapper .info {
+            position: absolute;
+            bottom: -140px;
+            left: 0;
+            width: 100%;
+            height: 125px;
+            
+            background: rgba(245,245,245,0.8);
+            box-shadow: rgba(0,0,0,0.1) 0 1px 2px;
+            
+            line-height: 25px;
+            font-family: "Consolas","微软雅黑";
+            text-overflow: ellipsis;
+            padding: 8px 13px 0;
+            transition: 0.5s;
+            box-sizing: border-box;
+
+        }
+
+        .info-title {
+            height: 25px;
+            margin-bottom: 5px;
+            text-overflow:ellipsis;
+            white-space:nowrap;
+            overflow:hidden;
+        }
+        
+        .info-description {
+            height: 80px;
+            text-overflow: clip;
+            white-space: pre-wrap;
+            color: #52D9EF;
+        }
+        
+        .stress-title {
+            font-weight: bold;
+            color: #222;
+        }
+
+        .gallery-item {
+            height: 100%;
+            transition: 0.8s;
+        }
+        .gallery-item img{
+            height: 100%;
+        }
+        
+        .gallery-item-wrapper:hover .gallery-item{
+            -webkit-filter: blur(10px);
+            -o-filter: blur(10px);
+            filter: blur(10px);
+        }
+        
+
+        .waitting {
+            position: relative;
+            overflow: hidden;
+            height: 150px;
+        }
+
+        .waitting img {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-left: -92px;
+            margin-top: -19px;
+        }
+    </style>
+</head>
+    
+<body >
+    <article class="loading">
+        <section class="wave clear-select">
+            Loading...            
+            <p class="loading-text">
+                0%
+            </p>
+        </section>
+    </article>
+
+    <article class="pics-wall-wrap clearfix">
+        <section class="pics-wall">
+        </section>
+
+        <section class="waitting hidden">
+            <img src="./img/cat.gif" alt="">
+        </section>
+    </article>
+    <script src="component.js"></script>
+</body>
+</html>
