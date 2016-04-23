@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>仿win8 日历控件</title>
+    <link rel="stylesheet" href="./css/calendar.css">
+</head>
+<body>
+    <div class="calendar-wrap">
+        <span>选择截至日期：</span>
+        <input type="text" class="calendar-input" data-calendar   readonly="readonly">
+    </div>  
+</body>
+<script src="./js/util.js"></script>
+<script src="./js/calendar.js"></script>
+<script>
+    +function () {
+        $ = new u();
+        var oCW = $.$(".calendar-wrap");
+        var oC = $.$(".calendar-wrap input");
+        
+
+        kCalendarMaker( oCW , oC , function () {
+            alert("这是回调函数");
+        });
+    }();
+</script>
+</html>

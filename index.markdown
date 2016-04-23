@@ -63,3 +63,5 @@ title: Welcome
 [阮一峰 javascript](http://javascript.ruanyifeng.com/)
 
 [js流行框架排行](https://www.javascripting.com/)
+
+[Funny JS](http://www.funnyjs.com/wwdc2014_rainbowblock/)
