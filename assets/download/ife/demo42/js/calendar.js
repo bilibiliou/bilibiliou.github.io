@@ -89,7 +89,6 @@ kCalendarMaker = (function () {
             $.delegateEvent( os , "a.l-arrow" ,"click" , function (ev) {
                 switch (~~mdL.dataset.voff) {
                     case 3:
-
                         var k = 0;
                         if(~~oMM.dataset.month > 1) {
                             k = ~~oMM.dataset.month - 1;
@@ -143,7 +142,11 @@ kCalendarMaker = (function () {
                         yRange.dataset.eyear = e;
 
                         yRange.innerHTML = s+"-"+e;
-                        $self.YYYY(s , e);
+                        if(s<=NowYear && NowYear<=e) {
+                            $self.YYYY(s , e , NowYear);
+                        } else {
+                            $self.YYYY(s , e);
+                        }
                 }
             });
             
