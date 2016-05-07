@@ -825,7 +825,7 @@ padding-box: padding计算入width内
 
 border-box: border和padding计算入width之内，其实就是怪异模式了~
 
-[demo](/asset/download/box-sizing.html)
+[demo](/assets/download/box-sizing.html)
 
 ## 分栏式文字布局
 
