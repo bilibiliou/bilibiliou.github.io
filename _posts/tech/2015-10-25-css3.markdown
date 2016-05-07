@@ -821,7 +821,6 @@ textarea标签默认resize:both
 可选参数:
 content-box: border和padding不计算入width之内
 
-padding-box: padding计算入width内
 
 border-box: border和padding计算入width之内，其实就是怪异模式了~
 
