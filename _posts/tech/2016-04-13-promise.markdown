@@ -660,6 +660,39 @@ Promise.race([p1 , p2 , p3]).then(function (val) {
 
 ```
 
+## 模拟Sleep函数
+
+Js中是没有类似C 和 C++ 一样的 sleep函数的
+
+但是我们可以使用promise对象来模拟sleep函数
+
+```javascript
+function Sleep (timeout) {
+    return new Promise(function(resolve) {
+        setTimeout(function () {
+            resolve();
+        },timeout);
+    });
+}
+```
+有了sleep函数我们做Css3的流程动画的时候就比较方便了
+
+```javascript
+new promise(function resolve) {
+    // 动画一 修改类
+    
+    reslove();
+}).then(function () {
+    // 动画二 修改类
+
+    return Sleep(2000); // 等待2秒后
+}).then(function () {
+    // 动画三 修改类
+
+})
+```
+
+
 ## 感谢
 
 [阮一峰 Promise对象](http://es6.ruanyifeng.com/?search=promise&x=0&y=0#docs/promise)
