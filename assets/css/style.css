@@ -130,7 +130,8 @@ body{overflow: hidden;}
 li{ cursor: url("../img/cursor.png"),default !important;}
 i{ cursor: url("../img/cursor.png"),default !important;}
 table{ border: 1px solid rgba(0,0,0,0.5);border-collapse:collapse;;}
-/*table th{ border: 1px solid red ;}*/
+table td { border: 1px solid #ddd;}
+table th{ border: 1px solid #ddd;}
 /*---------------------------------*\
    Fonts
 \*---------------------------------*/

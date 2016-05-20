@@ -512,7 +512,7 @@ console.log(obj)
 列个表格吧
 
 |      | 可增添 | 可修改 | 可删除 |  
-| 方法 |:      :|:      :|:      :|
+| 方法 |        |        |        |
 | preventExtensions | false | true | true |
 | seal | false | true | false |
 | freeze | false | false | false |
