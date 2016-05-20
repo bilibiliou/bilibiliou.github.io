@@ -1,0 +1,197 @@
+---
+layout: post
+title: create方法和new方法的异同
+category: 技术
+keywords: 技术,Object.create,new
+---
+
+## 先从创建对象说起
+
+创建对象的N种方法
+
+```javascript
+① 构造函数构造：
+var obj = new Object();
+
+② 字面量构造：
+var obj = {}
+
+③ 构造器构造：
+function ObjectCreateConstructor(a,b,c) {
+    this.a = a;
+    this.b = b;
+    this.c = c;
+}
+var newObj = new ObjectCreateConstructor(1,2,3)
+
+④ create函数构造：
+
+let superType = function () {
+    
+}
+
+superType.prototype = {
+    d: 4,
+    e: 5
+}
+
+Object.create(superType.prototype,{
+    a: {
+        value: 1,
+        writable: true
+    },
+    b: {
+        value: 2,
+        writable: false
+    },
+    c: {
+        value: 3,
+        writable: true
+    }
+});
+
+⑤ 多对象和合并产生新对象
+var obj1 = {
+    a : 1,
+    b : 2
+}
+
+var obj2 = {
+    c : 3,
+    d : 4
+}
+
+var newObj = Object.assgin({e:5} , obj1 , obj2);
+console.log(newObj);
+// {
+//     a : 1,
+//     b : 2,
+//     c : 3,
+//     d : 4,
+//     e : 5  
+// }
+
+以下省略xxx模式产生对象的方法（具体见javascirpt高级程序设计）
+```
+
+## 对象操控成员的N种方法
+
+```javascript
+① 直接设置
+
+obj.xxx = 222;
+
+② 字面量
+
+obj["xxx"] = 222;
+
+③ defineProperty 设置单个
+
+var obj = {
+    key: 1
+}
+
+Object.defineProperty(obj,"key",{
+    value: 2,
+    writable: false
+});
+
+④ defineProperties 设置多个
+
+Object.defineProperties({},{
+   a : {
+     value: 1,
+     writable: false
+   },
+   b : {
+     value: 2,
+     enumerable: false
+   }
+});
+
+⑤ Proxy 代理设置
+
+var obj = new Proxy({} , {
+    set(target , key , value) {
+        return target[key] = value + 11; // 让输入的值 +11          
+    }
+});
+
+⑥ 字面量简设
+var bat = 1,
+    key = 2
+
+var obj = {
+    bat,
+    key,
+    sub() {
+        console.log(1);
+    },
+    ["abc"]: 123
+}
+```
+上面当是我的一些总结，学了一年的前端，对象的理解应该就这样了
+
+## Object.create() 和 new 的异同
+
+我们写一遍继承就差不多,就能看出他们的区别
+
+```javascript
+let Father = function (a,b) {
+    this.a = a;
+    this.b = b;
+}
+
+Father.prototype = {
+    __age : 35,
+    fatherSay() {
+        console.log("我是爸爸");
+    }
+}
+
+let Son = funciton (c,d) {
+    Father.call(this);
+    this.c = c;
+    this.d = d;
+}
+// 使用传统的new 进行继承，并添加新方法
+
+Son.prototype = new Father(1,2);
+
+// Son.prototype.sonSay = function () {
+//     console.log("我是儿子");
+// }
+
+或者 
+
+Object.defineProperties(Son.prototype , {
+    __age : {
+        value: 18
+    },
+    sonSay() {
+        console.log("我是儿子");
+    }
+});
+
+
+```
+上面我们注意到 当使用new 继承了父级的方法后
+我们还需要继续使用其他操控属性的方法来添加子级专属方法和属性
+
+
+如果我们使用Object.create()
+
+```javascript
+
+Object.create(Father.prototype,{
+    __age : {
+        value: 18
+    },
+    sonSay() {
+        console.log("我是儿子");
+    }
+})
+
+
+```
+上面可以看出，create 扩展了new 的功能，可以直接在后面接上，属于子级的方法和属性

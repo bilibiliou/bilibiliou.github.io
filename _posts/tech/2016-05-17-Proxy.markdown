@@ -1,0 +1,520 @@
+---
+layout: post
+title: Es6 对象Proxy
+category: 技术
+keywords: 技术,Proxy
+---
+
+## proxy [代理]
+
+Es6中，新出现了一种新的引用类型--Proxy对象类型
+
+创建一个Proxy 很简单，如下代码即可
+
+```javascript
+
+var oproxy = new Proxy(target , handle);
+
+```
+Proxy 有什么用呢？
+
+Proxy 英语意思是代理，其作用也是一种代理的效果
+
+Proxy 是对于其他引用类型而言的，Proxy 的效果是给引用类型中间添加一层代理，当我们操控被代理的引用类型对象的时候，会先执行Proxy 代理部分的代码，由Proxy 代理部分的代码来决定具体的操作
+
+栗子：
+
+```javascript
+let obj = {
+    a: 1
+}
+
+let oproxy = new Proxy(obj , {
+    set(target, key) {
+        target[key] = 1+100;
+    }
+});
+
+oproxy.a = 2; 
+
+console.log(obj.a) // 1+100 === 101
+
+obj.a = 3;
+
+console.log(obj.a) // 3
+
+```
+
+由上面的例子我们可以看到，当我们设置obj.a 的值的时候,可以选择通过代理操作，也可以选择直接操控对象
+
+
+如果选择使用代理操控,会先走代理中的 set控制器， 而具体设置的值，便由控制器来决定了，所以最后设置的值是 101 而不是 2
+
+
+而直接操控对象，就相当于直接赋值了，得到的值为3
+
+如果代理中，没有任何的操作，则直接操作被代理的引用对象。
+
+## Proxy 控制器
+
+关于Proxy的一大亮点就是Proxy的控制器，不同的控制器功能，决定了代理功能的不同
+
+### get
+
+当我们通过代理来访问一个引用类型的属性的时候，就会激发get控制器
+
+```javascript
+let arr = [100,777,345];
+
+let oproxy = new Proxy(arr , {
+    get(target , key) {
+        console.log(`您访问了数组 的 第 ${~~key+1} 位成员 它的值是 ${target[key]} `);
+        return target[key];
+
+        // 需要注意的是，get控制器需要 显式的 return 获得的值，不然会默认返回underfined
+    }
+});
+
+console.log(oproxy[1]);
+
+// 您访问了数组 的 第 2 位成员 它的值是 777 
+// 777
+```
+
+当我们通过Proxy 操作了数组的时候，就会激发，proxy  get的操控器的代码。
+
+```javascript
+get(target , key) {
+    
+}
+
+// get 控制器传入两个参数，首参是被代理的引用对象，key是引用对象的成员索引 （数组里面就是下标）
+```
+
+### set 
+
+当我们设置被代理对象的值的时候，就会激发set控制器
+
+```javascript
+
+set(target , key , value) {
+    
+}
+
+前两个参数和get相同，value 即是被设置的新值
+```
+
+我们可用set 进行传入数据的筛选工作
+
+例如，在各大高校已经被讲烂的学生成绩系统...
+
+```javascript
+
+let student = {
+    name: "Owen",
+    id: 10001
+}
+
+let oproxy = new Proxy(student , {
+    set(target , key , value) {
+        if (key === "score") {
+            switch(true) {
+                case value <= 100 && value>=85: 
+                    target["grade"] = "优秀";
+                    break;
+                case value >=60 && value <85:
+                    target["grade"] = "中等";
+                    break;
+                case value <60 && value >=0:
+                    target["grade"] = "不及格";
+                    break;
+            }
+        }
+        target[key] = value;  // 显式的赋值
+    }
+})
+
+oproxy.score = 88;
+console.log(student)
+
+//Object {
+//  name: "Owen", 
+//  id: 10001, 
+//  grade: "优秀", 
+//  score: 88}
+```
+值得注意的是，使用了set控制器的时候，需要显式的为被代理的对象赋值
+
+### has
+has 可以拦截 in 操作符的使用
+
+用起来也是小白级操作
+
+```javascript
+let obj = {
+    name: "Zyz",
+    age : 18,
+    score: 81 
+}
+
+let obj2 = {
+    name: "Owen",
+    age: 19,
+    score: 59
+}
+let handler = {
+   has(target , key) {
+       if(key === "score" && target[key] <= 60) {
+        console.log("偷偷的考砸的分数藏起来");
+        return false;
+       }
+
+       return key in target;  // 需要显式的返回遍历的内容
+   } 
+}
+
+let oproxy1 = new Proxy(obj , handler);
+let oproxy2 = new Proxy(obj2 , handler);
+
+for(let a in oproxy1) {
+    console.log(oproxy1[a]);
+}
+
+for(let b in oproxy2) {
+    console.log(oproxy2[b])
+}
+```
+
+in 操作符的另外一个作用就是检查成员是否在对象中（实例或原型）
+如果，实例中成员存在，就会忽略原型中成员的存在
+
+我们也可以使用has 激发此次操作
+
+```javascript
+var handler = {
+  has (target,key) {
+    if(key in target) {
+        console.log(`${key} 确实存在，值是${target[key]}`);
+    } else {
+        console.log(`${key} 并不存在于被代理的对象中`);
+    }
+  }
+};
+
+var target = { prop: 'foo', _bar: 'baz', _prop: 'foo' };
+var proxy = new Proxy(target, handler);
+
+"_bar" in proxy;
+"+++prop" in proxy;
+```
+
+### apply
+
+对于函数类型的引用对象，我们可以选用apply的控制器
+
+```javascript
+let count = 0;
+
+let func = function () {
+    return "i am Owen";
+}
+
+let oproxy = new Proxy(func , {
+    apply(target) {
+        return "i am zyz";
+    }    
+});
+
+console.log(oproxy());
+```
+
+由上面的栗子，可以看出 apply 可以左右函数的执行
+
+apply 控制器可传入三个参数
+```javascript
+apply(target , ctx , args) {
+    
+}
+```
+target 即目标函数 <br>
+
+ctx 传入的是执行的上下文环境 <br>
+
+args 函数的形参 <br>
+
+
+值得注意的是，ctx 需要显式的传入，所以我们使用 apply , call , bind 这些可以改变函数上下文的函数时，我们就可以接收到ctx
+
+```javascript
+let func = function() {
+    console.log("i am zyz");
+}
+
+let oproxy = new Proxy(func, {
+    apply(target , ctx) {
+        console.log(ctx);
+    }
+});
+
+oproxy.call(this); // window
+```
+
+args 是传入参数的集合，该集合并不是 arguments 这样的类数组对象，而是真真切切的数组（很欣慰）
+
+```javascript
+
+let func = function (name , age) {
+        
+}
+
+let oproxy = new Proxy(func , {
+    apply(target , ctx , args) {
+        console.log(...args);
+    }   
+});
+
+oproxy("Owen" , 18);
+
+```
+
+### construct
+
+construct 控制器，监听的是new 关键字
+
+当咱用new 构造一个对象的时候，construct 控制器就会起作用
+
+```javascript
+function I (name , age , gender , from ) {
+    this.name = name;
+    this.age = age;
+    this.gender = gender;
+    this.from = from;
+}
+
+
+let oproxy = new Proxy(I , {
+    construct(target , args) {
+        console.log(args);
+        return new target(...args) // 一定要显式的返回一个构造对象
+    }
+})
+
+let Owen = new oproxy("Owen" , 18 , "male" , "ShenZhen");
+
+console.log(Owen);
+```
+
+值得注意的是，如果没有显式的返回一个创建的对象，那么就会报错~！
+
+```
+construct(target , args) {
+    
+}
+```
+target 即被代理的目标 <br>
+
+args 即参与被构造的对象参数集合 <br>
+
+### deleteProperty
+
+这个控制器和 delete 关键字有关，
+
+当我们使用 delete 来删除变量的时候，就会激发这个控制器
+
+```javascript
+let obj = {__a:1,b:2}
+
+let oproxy = new Proxy(obj , {
+    deleteProperty(target , key , x) {
+        if (key === "__a") {
+            console.log(`${key} 属性不能被删除！`);
+        } else {
+            delete target[key];
+        }
+    }
+});
+
+
+delete oproxy.a;
+delete oproxy.b;
+
+console.log(obj) // Object {__a: 1}
+```
+
+我们可以使用这个控制器来让带有__ 的属性禁止被删除
+
+和上面一样，需要在代理中来操控原对象
+
+如果代理对象 return false 或 throw Error 了，就不能完成删除操作
+
+### getOwnPropertyDescriptor
+
+getOwnPropertyDescriptor 是当程序执行了Object.getOwnPropertyDescriptor 的时候会被激发的
+
+栗子如下：
+
+```javascript
+let obj = {
+    a:1,
+    b:2,
+    c:3
+}
+
+let oproxy = new Proxy(obj , {
+    getOwnPropertyDescriptor(target,key) {
+        console.log("我被执行了");
+        return Object.getOwnPropertyDescriptor(target,key);
+    }
+});
+
+
+
+let objProperty = Object.getOwnPropertyDescriptor(oproxy,"a");
+
+console.log(objProperty);
+```
+由于博主才学疏浅，其具体用途暂时没能想到，(肯定有其妙用)
+
+
+### getPrototypeOf
+
+直接看栗子
+
+```javascript
+let Person = function (name,age) {
+    this.name = name;
+    this.age = age;
+}
+
+Person.prototype = {
+    sayHello() {
+        console.log("Hello World");
+    }
+}
+
+let Owen = new Person("Owen" , 20);
+
+let oproxy = new Proxy(Owen , {
+    getPrototypeOf(target) {
+        console.log(`Owen 实例的原型被获取了`);
+        return Object.getPrototypeOf(Owen);
+    }
+});
+
+let proto = Object.getPrototypeOf(oproxy);
+console.log(proto);
+```
+### isExtensible
+
+Object.isExtensible 即对象是否可以被扩展，如果这个对象没有被对象三大封印咒(preventExtensions seal freeze)  给封印（中二犯了哈哈）
+
+其中：
+
+Object.preventExtensions 是魔域血咒 拿来封印恶魔,防止其继续增强力量（原有力量不变）
+
+Object.seal 是五行大法 充其量就是拿来压压孙猴子
+
+Object.freeze 是须弥大法 可以封印天地灵气，荡涤生灵
+
+
+那么探测法术isExtensible 就会返回true，不然就是false 说明该对象已经被封印了
+
+
+那么代理控制器isExtensible，就是当探测法术发起的时候被激发咯
+
+来看几个栗子
+
+Object.preventExtensions 封印了恶魔对象，恶魔对象只能运用仅存的力量，而不能获取新的力量
+```javascript
+let obj = {
+    a: 1
+}
+
+Object.preventExtensions(obj);
+
+obj.a = 2;
+obj.b = 4;  // 无法新增力量
+
+Object.defineProperty(obj , "a" ,{
+    writable: false
+});
+
+console.log(obj);
+console.log(Object.getOwnPropertyDescriptor(obj,"a"));
+// Object {value: 2, writable: false, enumerable: true, configurable: true}
+```
+但是恶魔能自己自爆，强行把自己的力量释放
+
+```javascript
+let obj = {
+    a: 1
+}
+
+Object.preventExtensions(obj);
+
+delete obj.a;
+
+console.log(obj);
+```
+
+Object.seal 的力量能把齐天大圣压在五指山下,同样也能封印恶魔的力量
+
+但是，seal 的强大力量，还能防止孙猴子和恶魔自爆
+```javascript
+let obj = {
+    a: 1
+}
+
+Object.seal(obj);
+
+delete obj.a; // 无法被释放
+
+console.log(obj);
+```
+
+而更加可怕的freeze 须弥大法将天地生灵完全冻结，剥夺各种生物对自身力量的控制
+
+```javascript
+let obj = {
+    a: 1
+}
+
+Object.freeze(obj);
+
+obj.a = 2;  // 无法操控力量
+obj.b = 4;  // 无法新增力量
+
+console.log(obj);
+console.log(Object.getOwnPropertyDescriptor(obj,"a"));
+// Object {value: 2, writable: false, enumerable: true, configurable: false}
+
+
+Object.defineProperty(obj , "a" ,{
+    writable: true
+});
+// Cannot redefine property: a
+```
+
+freeze大法强烈的折磨天地生灵，让其求死不能
+
+```javascirpt
+let obj = {
+    a: 1
+}
+
+Object.freeze(obj);
+
+delete obj.a
+console.log(obj)
+```
+
+列个表格吧
+
+|      | 可增添 | 可修改 | 可删除 |  
+| 方法 |:--------:|:--------:|:----:|
+| preventExtensions | false | true | true |
+| seal | false | true | false |
+| freeze | false | false | false |
+
+
+## 感谢
