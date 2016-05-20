@@ -121,16 +121,11 @@
   }
 
 
-
-
-
-
-
 body{overflow: hidden;}
 li{ cursor: url("../img/cursor.png"),default !important;}
 i{ cursor: url("../img/cursor.png"),default !important;}
-table{ border: 1px solid rgba(0,0,0,0.5);border-collapse:collapse;;}
-table td { border: 1px solid #ddd;}
+table{ border: 1px solid rgba(0,0,0,0.5);border-collapse:collapse; font-size: 14px !important; font-weight: 200 !important;}
+table td { border: 1px solid #ddd; }
 table th{ border: 1px solid #ddd;}
 /*---------------------------------*\
    Fonts
@@ -656,12 +651,8 @@ animation-name: swing;
   
   #post ::selection 
   {
-    color: white;
-    background: rgba(0,0,0,0);
-    text-shadow:0 0 3px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #ff00de, 0 0 30px #ff00de, 0 0 40px #ff00de, 0 0 50px #ff00de, 0 0 60px #ff00de;
-    -moz-text-shadow:0 0 3px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #ff00de, 0 0 30px #ff00de, 0 0 40px #ff00de, 0 0 50px #ff00de, 0 0 60px #ff00de; 
-    -o-text-shadow:0 0 3px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #ff00de, 0 0 30px #ff00de, 0 0 40px #ff00de, 0 0 50px #ff00de, 0 0 60px #ff00de; 
-    font-weight: 400;
+    color: #1C86D1;
+    background: transparent;
   }
 
   @media screen and (max-width: 585px) {

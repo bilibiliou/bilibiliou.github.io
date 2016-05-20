@@ -518,5 +518,33 @@ console.log(obj)
 |  seal  | false | true | false |
 |  freeze  | false | false | false |
 
+上面的内容算是复习了OOP 对象的密封方法，防止组件使用者擅自修改你的对象
+
+isExtensible 控制器很简单，即当使用Object.isExtensible 方法的时候会被激发
+
+```javascript
+let obj = {
+    a: 1
+}
+
+Object.preventExtensions(obj);
+
+let proxy = new Proxy(obj , {
+    isExtensible(target) {
+        console.log(`探测了这个对象是否可以被扩展`)
+        return Object.isExtensible(target)
+    }
+});
+
+console.log(Object.isExtensible(proxy));
+```
+
+### ownKey
+
+见栗子
+
+
+
+从上文中我们可以看到
 
 ## 感谢
