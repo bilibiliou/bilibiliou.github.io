@@ -65,3 +65,5 @@ title: Welcome
 [js流行框架排行](https://www.javascripting.com/)
 
 [Funny JS](http://www.funnyjs.com/wwdc2014_rainbowblock/)
+
+[Es2015](http://www.ecma-international.org/ecma-262/6.0/#sec-proxy-object-internal-methods-and-internal-slots-enumerate)
