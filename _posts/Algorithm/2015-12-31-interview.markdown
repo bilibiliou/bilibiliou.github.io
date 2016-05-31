@@ -380,19 +380,219 @@ var s = "sdaddf444sfsfdsf8485sdfsdfds￥d#我1526dfdsfdsfds我2%fsdf58";
 }   
 ```
 
+## 数组去重
 
+如果有一个这么麻烦的数组，你会如何将其去重呢？
+
+```javascript
+var arr = [1,1,2,2,"Owen","Owen",true,false,undefined,NaN,NaN,{a:1},{a:1},{a:3},[1,2,3],[4,5,6],new RegExp("^asd$"),new RegExp("^asd$"),function sss() {},function sss() {}];
+```
+
+### 方法一
+
+```javascript
+Array.prototype.unique = function () {
+    var mapObj = {};
+    var newArr = [];
+    for(var i = 0,temp,type; i<this.length; i++) {
+        temp = this[i];
+        type = Object.prototype.toString.call(temp);
+        if (type === "[object Object]") {
+            // 对象类型需要特殊处理
+            temp = JSON.stringify(temp);
+        }
+
+        if (!mapObj[temp]) {
+            mapObj[temp] = true;
+
+            if(type === "[object Object]") {
+                newArr.push(JSON.parse(temp))
+            } else {
+                newArr.push(temp);
+            }
+        }   
+    }
+    return newArr;
+}
+```
+
+对进行了特殊处理，由此可以去除重复的对象
+
+### 方法二
+
+我们可以利用Es6 Set对象 进行去重
+
+```javascript
+Array.prototype.unique = function () {
+    return [...new Set(this)]
+}
+```
+
+简单到只有一句话...
+
+但是这种方法是无法去除重复的对象
+
+如果不想处理重复的数据，就将重复数据使用Set类型存储，但是还是会有遗漏，因为Set类型，对于两个成员全部相同的对象，会认为是两个不同的对象
+
+## 尾递归
+
+我们先使用普通递归方法来实现 Fibonacci
+
+```javascript
+function Fibonacci (n) {
+    if ( n <= 1 ) {return 1};
+
+    return Fibonacci( n - 1 ) + Fibonacci( n - 2 );
+}
+
+console.log(Fibonacci(10));
+// console.log(Fibonacci(100)) // 浏览器挂了
+
+```
+
+可以发现上面的代码并不理想
+
+为什么呢，因为 
+
+```javascript
+    return Fibonacci( n - 1 ) + Fibonacci( n - 2 );
+```
+
+return 的优先级是比双目运算符（+-*/） 要大的
+
+也就是说，函数会先return  之后才进行两个函数返回值的计算
+
+而要计算就需要在内存中（函数调用栈中）保存上一个函数的变量和值。
+
+这样的结果就会导致在不断的递归中将函数调用栈堆满，导致内存溢出
+
+那么如果我们把 计算的步骤在函数中完成后再 return 
+
+那么函数调用栈就不会无限的被填充
+
+```javascript
+function Fibonacci2 (n , ac1 = 1 , ac2 = 1) {
+    if( n <= 1 ) {return ac1};
+
+    return Fibonacci2 (n-1 , ac2 , ac1 + ac2); 
+    // 会先计算参数里面的双目运算符，再return 形成尾递归
+}
+
+
+console.log(Fibonacci2(100)) // 354224848179262000000
+console.log(Fibonacci2(1000)) // 4.346655768693743e+208
+console.log(Fibonacci2(10000)) // Infinity
+```
+
+复杂度达到了O(1)
+
+完整的算法如下
+
+
+```javascript
+let str = "";
+let t = 0;
+function fibonacci(n, ac = 1 , ac2 = 1) {
+    t += ac2;
+    if(n<=1) {
+        str += `${ac2} = ${t}`
+        return ac2;
+    }
+    str += `${ac2} + `;
+    return  f(n - 1, ac2, ac2 = ac + ac2);
+}
+
+console.log(f(10));
+console.log(str);
+
+```
+
+
+## 如何使对象接入Symbol.iterator
+
+我们知道 能使用 Symbol.iterator 接口 提供的便利的对象类型 只有这么三种
+
+① 数组 <br>
+
+② 类数组 （Domlist 、 字符串...） <br>
+
+③ Map 和 Set 等新的数据结构类型 及其 weak 衍生类型
+
+普通的对象 是默认不自带 Symbol.iterator 的，因为 Es6 标准并无法确定对象成员遍历先后顺序
+
+所以我们需要自己动手给对象建立Symbol.iterator 接口
+
+```javascript
+Object.prototype.setIterator = function() {
+    this.__proto__[Symbol.iterator] = function *() {
+        for(let i in this) {
+            yield this[i]
+        }
+    }
+}
+```
+
+我们可以在对象的__proto__ 中添加一个遍历接口
+
+```javascript
+let obj = {
+    a : 1,
+    b : 2,
+    c : x => x + 10,
+    d : {},
+    f : [],
+    g : /^(\s|\u00A0)+ | (\s|\u00A00)$/
+}
+
+obj.setIterator();
+
+// 扩展运算符
+console.log([...obj]);
+
+// for...of遍历
+for(let i of obj) {
+    console.log(i);
+}
+
+let [x,y,z] = obj; 
+// 没有给obj 添加遍历接口前是无法进行解构赋值的
+```
+
+## es 赋值的几种方法
+
+赋值的几种方法：
+
+
+```javascript
+① let a = 1, b = 2, arr = [];
+```
+
+```javascript
+② let a = 1;
+   let b = 2;
+   let arr = [];
+```
+
+```javascript
+③ let [a,b,arr] = [1,2,[]];
+```
+
+```javascript
+④ let {key1:a,key2:b,key3:arr} = {key1:1,key2:2,key3:[]};
+```
+
+```javascript
+⑤ let
+ [a,b,c,d] = "Owen";
+
+a// O
+b// w
+c// e
+d// n
+```
 
 ## 感谢
 
 [JavaScript中call()与apply()有什么区别？](http://my.oschina.net/warmcafe/blog/74973)
 
 [Javascript中变量提升](http://www.cnblogs.com/damonlan/archive/2012/07/01/2553425.html)
-
-
-
-
-
-
-
-
-
