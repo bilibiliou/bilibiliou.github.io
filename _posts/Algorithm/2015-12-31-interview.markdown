@@ -591,6 +591,155 @@ c// e
 d// n
 ```
 
+## 使用yield 产生一个状态机
+
+```javascript
+function createState (...args) {
+    return (function * () {
+        while(true) {
+            for(let i of args) {
+                yield i();
+            } 
+        }
+    })();
+}   
+
+let amd = createState(function () {
+    ...代码块1
+},function () {
+    ...代码快2
+},function () {
+    ...代码快3
+});
+
+amd.next();
+amd.next();
+amd.next();
+
+// 分别执行代码块123
+
+amd.next();
+// 再次循环执行代码块1
+
+```
+## 事件捕获和冒泡总结
+
+1.addEventListener 能绑定多个事件， onclick不行 <br>
+
+2.addEventListener 支持事件流的两种机制，onclick 只支持冒泡机制，不支持捕获( false 是冒泡 true 捕获) <br>
+
+3. 先执行的捕获，再执行的冒泡 <br>
+
+4. 捕获是从父级传递到子级，冒泡是从子级传递到父级
+
+## 如何优雅的获取标准时间
+
+当前时刻 <br>
+
+```javascript
+let nowTime = new Date()
+    .toTimeString()
+    .match(/(\d{2})\:(\d{2})\:(\d{2})/)[0]
+```
+
+## 正则表达式中 match 和 exec 的区别
+
+首先，从功能上，他们都是相同的,都是通过正则表达式，获得被匹配的部分字符串,而差别就体现在细微之处了
+
+### 差别一
+
+我们以一个例子来说明第一个差别
+
+```javascript
+let str = "abc123abc";
+let reg = /\d{3}/;
+
+console.log(str.match(reg));
+console.log(reg.exec(str));
+```
+
+上面我们不难一下子就能看出来
+> match 是字符串类型下的方法
+> exec 是正则类型下的方法
+
+### 关于返回的数组
+
+而对于上面的例子，返回的结果都是一样的，都是一个数组
+
+```javascript
+["123", index: 3, input: "abc123abc"]
+```
+
+这个数组，有四个部分组成
+> 第一部分，匹配的字符串（结果）
+> 第二部分，匹配的分组 
+> 第三部分，第一个匹配的子项的首字母的位置 （0开始） 
+> 第四部分，被匹配的字符串（源字符串）
+
+因为上面这个例子中我们并没有使用到分组，所以，第二部分的内容是没有出现的
+
+### 差别二
+
+当我们需要匹配的字符串，不止有一处呢？很显然，我们需要添加一个“g” 全局匹配
+
+```javascript
+let str = "abc123abc";
+let reg = /[a-z]{3}/g;
+
+console.log(str.match(reg));
+console.log(reg.exec(str));
+```
+
+这时候我就会发现所返回的结果不同了
+
+```javascript
+["abc", "abc"]
+["abc", index: 0, input: "abc123abc"]
+```
+
+上面看来，在我们我们添加了全局匹配，却没有多个分组的情况下
+
+> match 仅仅会返回被匹配的多个字符串
+> exec 则之后返回第一被匹配的字符串
+
+
+### 差别三
+
+还是一个栗子
+
+```javascript
+let str = "     Owen 喜欢 Zyz   Owen 喜欢 Zyz";
+let reg = /\s(owen).+?(zyz)/ig;
+
+
+console.log(str.match(reg));
+console.log(reg.exec(str));
+```
+
+在这个例子中，我们添加了两个分组
+
+然后我们来看看返回结果
+
+```javascript
+[" Owen 喜欢 Zyz", " Owen 喜欢 Zyz"]
+[" Owen 喜欢 Zyz", "Owen", "Zyz", index: 4, input: "     Owen 喜欢 Zyz   Owen 喜欢 Zyz"]
+```
+
+> exec 会匹配多个子项，但是结果依然是一个
+> 而match 表现和上面一样，一样是仅返回多个结果的数组
+
+
+### 总结
+
+> exec 值能匹配一个，并且有（）子项的时候，会继续匹配子项
+> 
+> match 分两种情况
+> ① 当需要匹配多个字符串的时候（存在g全局匹配） 仅仅返回结果，不返回其他三个部分
+> ② 当仅匹配单个字符串的时候，行为和exec完全一样
+
+个人认为生产过程中，使用match比较方便
+
+
 ## 感谢
 
 [JavaScript中call()与apply()有什么区别？](http://my.oschina.net/warmcafe/blog/74973)

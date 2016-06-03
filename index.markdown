@@ -67,3 +67,5 @@ title: Welcome
 [Funny JS](http://www.funnyjs.com/wwdc2014_rainbowblock/)
 
 [Es2015](http://www.ecma-international.org/ecma-262/6.0/#sec-proxy-object-internal-methods-and-internal-slots-enumerate)
+
+[正则表达式学习](http://deerchao.net/tutorials/regex/regex-1.htm)
