@@ -1,0 +1,178 @@
+---
+layout: post
+title: 如何使用css 绘制三角形？
+category: 技术
+keywords: 技术,css3,css2
+---
+
+## 传统的解决方案
+
+不得不承认，随着需求的增大，在html中绘制三角已经确实比较重要了
+
+传统的解决方案，是通过border设置的,一般都是使用伪元素控制
+
+我们来看相对应的sass
+
+```sass
+@mixin arrow ($color,$size,$dir) {
+	content: "";
+    display: block;
+    position: absolute;
+
+    width: 0;
+    height: 0;
+
+    border: $size solid transparent;
+    
+    @if $dir == "l" {
+        border-right: $size solid $color;
+    }
+    
+    @if $dir == "r" {
+        border-left: $size solid $color;
+    } 
+    
+    @if $dir == "t" {
+        border-bottom: $size solid $color;
+    }
+    
+    @if $dir == "b" {
+        border-top: $size solid $color;
+    }
+}
+```
+
+原理很简单，当宽和高都为0的时候，边框就会被渲染成一个三角形，只要把其他三边变为透明的即可
+
+![proto](/assets/img/arrow-css1.png)
+
+### 如何为三角形绘制边
+
+上面说到，三角形是通过边框渲染出来的，那么我们就不能再使用border 属性来为其添加边框
+
+box-shadow 也并不合适,因为box-shadow 只能给4个边添加阴影，并没有类似 border-shadow的属性
+
+而通常的需求是给三角的 上面添加边框，那么传统的方法就比较难以解决
+
+Tencent 的 ImWeb 团队想到了一种方法，即使用两个三角重叠的方法
+
+```sass
+
+.xxx {
+
+	&::after {
+		@include arrow(#000,18px,"t");
+	}
+	
+	&::before {
+		@include arrow(red,16px,"t")
+	}
+}
+
+```
+
+
+上面 设置了两个三角形，方案是，将小三角压在大的三角上面，大的三角的颜色即需要设置边框的颜色，再调整z-index
+
+如图：
+
+![proto](/assets/img/arrow-css2.png)
+
+
+## 使用Css3 绘制三角形
+
+虽然成功解决了问题，但是比较麻烦，有没有更加简单的方法呢？
+
+有，那就是通过css3 的linear-gradient 渐变方法
+
+我们可以测试一下这条语句
+
+```css
+background: linear-gradient(45deg , red 50% , transparent 50%);
+```
+
+不出意外的话应该是一个向左下角的红三角
+
+这是通过45deg 渐变实现的 即从红渐变到透明
+
+这样就能渲染出一个三角形
+
+当然，我们就可以通过 border-left 和 bottom 这两个属性，给三角添加边框
+
+我们还可以控制三角的宽高...方向（rotate）
+
+其他的不说了，show you the code
+
+```sass
+@mixin arrow ( $w,$h,$border-size,$color,$border-color,$dir ) {
+    content: "";
+    display: block;
+    box-sizing: content-box;
+    width: $w;
+    height: $h;
+    
+    background: linear-gradient(45deg ,$color 50%,transparent 50%);
+    border-bottom: $border-size solid $border-color;
+    border-left: $border-size solid $border-color;
+
+
+    @if $dir == "lt" {
+        transform: rotate(90deg); 
+    }
+    
+    @if $dir == "lb" {
+    }
+    
+    @if $dir == "rt" {
+        transform: rotate(-180deg); 
+    }
+    @if $dir == "rb" {
+        transform: rotate(-90deg); 
+    }
+    
+    @if $dir == "l" {
+        transform: rotate(45deg);
+    }
+
+    @if $dir == "t" {
+        transform: rotate(135deg);
+        
+    }
+    
+    @if $dir == "r" {
+        transform: rotate(-135deg);
+    } 
+
+    @if $dir == "b" {
+        transform: rotate(-45deg);
+        
+    }
+}
+```
+
+## 比较新的方案
+
+最近，已经有部分浏览器开始兼容 clip-path 这个css3属性，截止到现在，仅仅只有-webkit-支持这项功能（见caniuse）
+
+我们可以很简单的就通过裁切路径，将背景裁切成三角形
+
+
+```sass
+-webkit-clip-path: polygon(0 0, 0 100%,100% 50%);
+```
+
+很方便就画出了一个左三角
+
+polygon 即多边形的意思，有了它我们可以将背景裁切成各种各样的图形
+
+抛开兼容性问题，这一方案无疑是最佳的解决方案
+
+
+并且polygon 支持transform 变形，但是需要注意的一点是:
+
+> 自张鑫旭的博客； polygon的动画变形的一个重要条件：坐标的数目变形前后必须一致。
+
+也就是说，当我们一开始固定好坐标后，所有的就定死了。你只能修改坐标的位置，而不能增加或减少坐标
+
+
+
