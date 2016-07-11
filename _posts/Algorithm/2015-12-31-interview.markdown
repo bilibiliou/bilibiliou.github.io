@@ -642,6 +642,22 @@ let nowTime = new Date()
     .match(/(\d{2})\:(\d{2})\:(\d{2})/)[0]
 ```
 
+## 实现add(1)(2)(3)
+
+```javascript
+function add (v1,v2) {
+    v2 = v2 || 0;
+
+    arguments.callee.toString = function () {
+        return "Anwser == "+ (v1 + v2);
+    }
+
+    return arguments.callee.bind(this,v1+v2);
+}
+
+console.log(add(1)(2)(3))
+```
+
 ## 正则表达式中 match 和 exec 的区别
 
 首先，从功能上，他们都是相同的,都是通过正则表达式，获得被匹配的部分字符串,而差别就体现在细微之处了
