@@ -755,6 +755,84 @@ console.log(reg.exec(str));
 
 个人认为生产过程中，使用match比较方便
 
+## 如何将数字转变为银行金额
+
+```javascript
+let a = 12200002.12334
+
+function transfer(value) {
+    var pointOut = value.toString().split(".")
+
+    return pointOut[0]
+            .split("")
+            .reverse()
+            .join("")
+            .replace(/(\d{3})/g, "$1,")
+            .replace(/\,$/,"")
+            .split("")
+            .reverse()
+            .join("")
+
+            + "." 
+            + pointOut[1]
+}
+
+console.log(transfer(a))
+```
+
+## 如何将数组 或字符串逆序
+
+
+### 法一
+
+我们使用递归的方法可以实现，但是效率不高
+
+```javascript
+function reverse (seq) {
+ if(Object.prototype.toString.call(seq) === "[object Number]") {
+     seq += "";
+ }
+
+ return (seq.length > 1) ? 
+         reverse(seq.slice(1)).concat(seq.slice(0,1))
+       : seq;
+}
+```
+
+### 法二
+
+我们可以使用尾递归的方式实现，这种方式可以保证效率
+
+```javascript
+function reverse (seq) {
+    var  len    = seq.length,  // 4
+         temp   = Math.floor(len / 2),
+         flag   = 0
+
+    return (function rev (seq) {
+        seq[len-flag-1] = seq.splice(flag,1,seq[len-flag-1])[0]
+        ++flag
+
+        return  (flag !== temp) ? rev(seq) : seq
+    })(seq)
+}
+```
+
+但是这种方法依赖于数组下特有的splice方法，所以对于 数字类型或者字符串类型，
+使用该方法还需要先转为数组类型
+
+### 法三
+
+```javascript
+function Reverse(list) {
+    return (function rev([x, ...xs], arr) {
+        return typeof x === "undefined" ? arr : rev(xs, [x].concat(arr));
+    })(list, []);
+}
+```
+
+该方法的思想是，递归分割数组的第一位，然后和上一次递归获得的结果拼接
+
 
 ## 感谢
 

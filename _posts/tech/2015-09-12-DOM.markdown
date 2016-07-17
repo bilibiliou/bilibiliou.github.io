@@ -1152,7 +1152,7 @@ var oBtn1 = document.getElementById("btn1");
 
 我们打开新的页面在不同浏览器下都能关闭
 
-## navigator
+## 浏览器检测
 
 window底下其中有一个对象是`navigator`(英:领航者)我们可以根据这个对象底下的`userAgent`属性来获知用户的浏览器类型，以及版本型号。
 
@@ -1161,53 +1161,24 @@ window底下其中有一个对象是`navigator`(英:领航者)我们可以根据
 console.log(window.navigator.userAgent);
 ```
 
-这样我们就可以判断用户的浏览器类型了，并且可以简单的判断用户是否使用的是IE浏览器
+这样我们就可以判断用户的浏览器类型了
 
 ```javascript
-if( window.navigator.userAgent.indexOf("MSIR") != -1 )
-{
-	console.log("用户用的是标准浏览器");
-}else {
-	console.log("用户用的是IE浏览器");
+function Testing () {
+    var uA = navigator.userAgent;
+    if(/Trident\/\d+\.\d+/.test(uA)) {
+        return uA.match(/Trident\/\d+\.\d+/);
+    }else if(/OPR\/(\d+\.){3}\d+/.test(uA)) {
+        return uA.match(/OPR\/(\d+\.){3}\d+/)[0];
+    } else if(/Chrome\/(\d+\.){3}\d+/.test(uA)) {
+        return uA.match(/Chrome\/(\d+\.){3}\d+/)[0];
+    } else if(/Firefox\/\d+\.\d+/.test(uA)) {
+        return uA.match(/Firefox\/\d+\.\d+/)[0];
+    } else if(/Mac\sOS\sX/.test(uA)) {
+        return uA.match(/Safari\/(\d+\.){2}\d+/)[0]
+    }
 }
 ```
-
-
-```javascript
-console.log(window.navigator);
-```
-navigator底下还有许多属性和方法，我们可以console一下
-
-appCodeName: "Mozilla"
-appName: "Netscape"
-
-appVersion: "5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"
-
-cookieEnabled: true
-
-doNotTrack: null
-
-geolocation: GeolocationhardwareConcurrency: 4
-language: "zh-CN"
-languages: Array[2]
-maxTouchPoints: 0
-mimeTypes: MimeTypeArray
-onLine: false
-permissions: Permissions
-platform: "Win32"
-plugins: PluginArray
-product: "Gecko"
-productSub: "20030107"
-serviceWorker: ServiceWorkerContainer
-
-userAgent: "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"
-
-vendor: "Google Inc."
-vendorSub: ""
-webkitPersistentStorage: DeprecatedStorageQuota
-webkitTemporaryStorage: DeprecatedStorageQuota__proto__: Navigator
-
-基本上很多都是表明当前浏览器的信息的属性内容，大家可以自己深入研究
 
 ## location
 
