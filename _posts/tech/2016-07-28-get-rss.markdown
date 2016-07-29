@@ -1,0 +1,466 @@
+## 什么是Rss
+
+> 简易信息聚合（也叫聚合内容）是一种RSS基于XML标准，在互联网上被广泛采用的内容包装和投递协议。RSS(Really Simple Syndication)是一种描述和同步网站内容的格式，是使用最广泛的XML应用。
+
+通俗的说就是简易的数据，里面包含各种信息
+
+
+## 为什么要获取并分析Rss
+
+① 通过获取Rss可以将多数据集合（例如自动转载文章）
+
+② 分析网站内容，获取有用信息
+
+③ 用于练习抓包，为以后进行数据分析做铺垫
+
+## 使用SuperAgent 和 FeedParser 获取并分析 基地博文
+
+SuperAgent 是nodeJs 的一个轻量级请求模块，可以用来方便发送HTTP请求，我们用它来获取Rss
+
+FeedParser 是nodeJs 的一个关于Rss 的分析模块，我们可以使用它来分析获取到的数据
+
+## 具体操作
+
+当然首先安装这两个模块
+
+```js
+npm install superagent feedparser --save-dev
+```
+
+
+### 使用superAgent
+
+我们先尝试superAgent 模块使用
+
+在根目录下，新建一个data.xml文件和sa.js
+
+然后在sa.js中写获取的代码
+
+```js
+var superagent = require("superagent"),
+    fs         = require("fs"),
+    feedparser = require("feedparser")
+
+var Url = "http://xgcyjd.com/feed.xml",
+    wStream = fs.createWriteStream("./data.xml")  // 开辟写IO流
+
+var req_stream = superagent.get(Url)
+    .buffer()
+    .type("xml")
+    .on("end", function (err, pres) {
+        if(err) {
+            console.log(err);
+        }
+    })
+req_stream.pipe(wStream) // 数据写入
+```
+
+然后执行
+
+```js
+node sa
+```
+
+
+你会发现数据都被写入到了xml中了
+
+![shootpic](/assets/img/get-rss-1.png)
+
+### 使用feedParser
+
+根据刚刚获取的数据，我们就可以使用feedParser进行分析了，让我们尝试打印出博文聚合的文章列表吧
+
+再新建一个 fp.js
+
+并写入如下代码
+
+```js
+var fs = require("fs"),
+    feedparser = require("feedparser"),
+    feed = __dirname + "/data.xml"
+
+fs.createReadStream(feed)
+    .on("error", function (err) {
+        console.error(err);
+    })
+    .pipe(new feedparser())
+    .on("meta", function (meta) {
+        console.log("====== %s ======", meta.title);
+    })
+    .on("readable", function () {
+        var stream = this,
+            item
+
+        while(item = stream.read()) {
+            console.log("获取到了文章：%s", item.title || item.description);
+        }
+    })
+```
+
+然后
+
+```js
+node fp
+```
+
+![shootpic](/assets/img/get-rss-2.png)
+
+很优雅的打印出来了
+
+当然，我们可以把superAgent 部分的代码 和 feedparser 的代码合起来
+
+```js
+var superagent = require("superagent"),
+    fs         = require("fs"),
+    feedparser = require("feedparser")
+
+var Url = "http://xgcyjd.com/feed.xml",
+    fp  = new feedparser()
+
+var req_stream = superagent.get(Url)
+    .buffer()
+    .type("xml")
+    .end(function (err, pres) {
+        if(err) {
+            console.log(err);
+        }
+    })
+
+req_stream.pipe(fp)
+    .on("error", function (err) {
+        console.error(err)
+    })
+    .on("meta", function (meta) {
+        console.log("===== %s =====", meta.title)
+    })
+    .on("readable", function () {
+        var $stream = this,
+            item
+
+            while(item = $stream.read()) {
+                console.log("获取到了文章: %s", item.title || item.description)
+            }
+    })
+```
+
+效果是一样
+
+## 实战演示
+
+上面我们只是很简单的尝试了这两个模块，现在让我们用这两个模块来干些事儿
+
+例如百度的 [Rss新闻集合](https://www.baidu.com/search/rss.html?wcbem)
+
+他们的Rss规则是
+
+```
+类目名/rss_类目名.xml
+```
+### 目标
+
+我们尝试获取每天的 国内、国际、社会 三个方面的新闻Rss 转为JSON格式 并且汇总到电脑中
+
+思路是先从 这三个方面分别异步的获取Rss资源，等全部获取完成后 再数据转化为JSON 并存入电脑
+
+这种方式，业内一般专业的称呼为 “异步并发” 先分别异步获取，在一并执行下一步
+
+### 怎样实现nodeJs异步并发
+
+由于抓取的数据所消耗的时间不一，我们常常需要写一个计数器 进行维护
+
+例如下列伪代码：
+
+```js
+
+var i = 0,
+	len = 3,
+	dataStack = []
+
+$.get("国内Rss",function (data) {
+	i++;
+	dataStack.push(data);
+	timer();
+})
+
+$.get("国外Rss",function (data) {
+	i++;
+	dataStack.push(data);
+	timer();
+})
+
+$.get("社会Rss",function (data) {
+	i++;
+	dataStack.push(data);
+	timer();
+})
+
+function timer (data) {
+	if（i === len） {
+		handleData (dataStack); // 三个Rss都加载完成后，处理数据栈
+	}
+}
+
+```
+
+这种方法不是不行，但是并不优雅，或许我们可以尝试另外一种方法
+
+[朴灵](https://github.com/JacksonTian) 给我们带来了他解决方案 [eventproxy](https://github.com/JacksonTian/eventproxy)
+
+eventproxy 也是一个nodeJs 模块，用于处理异步并发
+
+将上面的代码转换成eventproxy方式
+
+```js
+var eventproxy = require("eventproxy"),
+	ep         = new eventproxy();
+
+$.get("国内Rss",function (data) {
+	ep.emit("get_event",data)
+})
+
+$.get("国外Rss",function (data) {
+	ep.emit("get_event",data)
+})
+
+$.get("社会Rss",function (data) {
+	ep.emit("get_event",data)
+})
+
+
+// after 获取Rss后 进行处理
+ep.after("get_event", 3 ,function (data) {
+	handleData(data)
+})
+```
+
+希望大家详细的了解一下这个模块
+
+### superagent 的一个大坑 
+
+当我们大致了解完 后我们就可以开始写代码了，我们在根目录下创建一个空的data.json文件，用于存储我们最终生成的数据
+
+```js
+var superagent      = require("superagent"),
+    feedparser      = require("feedparser"),
+    eventproxy      = require("eventproxy"),
+    fs              = require("fs"),
+    Readable        = require("stream").Readable,
+    ep              = new eventproxy(),
+    fp              = new feedparser(),
+    generator       = "./data.json",                  // 空文件路径
+    wStream         = fs.createWriteStream(generator) // 开辟写数据流
+
+var DataPort = [
+    {  
+       name: "国内焦点",
+       category: "civilnews",
+       url: "http://news.baidu.com/n?cmd=1&class=civilnews&tn=rss"
+   },{
+       name: "国际焦点",
+       category: "internews",
+       url: "http://news.baidu.com/n?cmd=1&class=internews&tn=rss"
+   },{
+       name: "社会焦点",
+       category: "socianews",
+       url: "http://news.baidu.com/n?cmd=1&class=socianews&tn=rss"
+   }
+]
+
+DataPort.forEach(function (value) {
+    console.log("Catching < "+ value.name + " > from:" + value.url);
+    superagent.get(value.url)
+        .type("xml")
+        .end(function (err, pres) {
+            if(err) {
+                console.log(err);
+            }
+
+            ep.emit( "get_data", pres.text);
+        })
+        .on("error", function (err) {
+           console.log("===== 获取数据失败 =====") 
+        })    
+})
+
+ep.after("get_data", DataPort.length , function (data) {
+    var rs = new Readable;
+
+        rs.push(data[0]);
+        rs.push(null);
+        rs.pipe(fp)
+        .on("error", function (err) {
+            console.log("===== 解析数据失败 =====")
+            console.error(err)
+        })
+        .on("readable", function () {
+            var $stream = this,
+                item
+        
+            while(item = $stream.read()) {
+                var data_str = ""
+                + '{ \n'
+                +   '"title": "'   + item.title   + '", \n'
+                +   '"link": "'    + item.link    + '", \n'
+                +   '"pubDate": "' + item.pubDate + '", \n'
+                +   '"source": '  + JSON.stringify(item.source)  + ', \n'
+                +   '"author": "'  + item.author  + '", \n'
+                + '} \n';
+        
+                wStream.write(data_str); // 将数据写入空文件中
+            }
+        
+        })
+        .on("end", function () {
+            console.log("===== 已存储全部获取数据 =====")
+        })
+})
+```
+
+运行完数据后，不出意外你应该会看到一堆的乱码...
+
+怎么回事呢？ 原来superAgent 有且只支持utf-8格式（会将抓取到的文本以utf-8暂存于内存中） 而百度新闻是以GB2312格式存储的，所以就会出现乱码
+
+### superAgent-charset 和 iconv
+
+为了解决乱码问题，我们再介绍两个相应功能的模块
+
+首先，是[superAgent-charset](https://github.com/magicdawn/superagent-charset)
+
+这个模块能够扩展superAgent 所支持的编码集，这样我们就能将获取下来的文本以gb2312的格式进行暂存
+
+根据官网的教程，我们把我们的代码进行修改
+
+```js
+var request         = require("superagent"),
+    charsetCompoent = require('superagent-charset'),
+    superagent      = charsetCompoent(request)
+
+...
+
+superagent.get(value.url)
+        .charset('gb2312') // 设置编码
+        .type("xml")
+...
+
+```
+
+
+接下来就是转码问题了，nodejs暂时是不支持GB2312 以及 GBK 等中文编码格式的，我们需要将文本转为utf-8
+
+注意，流程是 先将superAgent 保存的文本保存为gb2312 然后再转码为utf-8
+不是直接就能 把保存的文本 转化为utf-8的
+
+不然就出出现一堆堆的 “锟斤拷”
+
+如何将GB2312 转为 utf-8呢 这里我们需要用到 [iconv-lite](https://www.npmjs.com/package/iconv-lite) 
+
+具体的api 请诸君自学
+
+实现起来很简单
+
+```js
+var iconv  = require("iconv-lite");
+
+
+// 解决编码
+var buf = iconv.encode(pres.text, "utf-8"),
+    str = iconv.decode(buf,"utf-8");
+
+ep.emit( "get_data", str );
+
+```
+
+这样就能够成功获取每日最新的新闻Rss了
+
+![shootpic](/assets/img/get-rss-3.png)
+
+## 全部原码
+
+```js
+var request         = require("superagent"),
+    charsetCompoent = require('superagent-charset'),
+    superagent      = charsetCompoent(request),
+    feedparser      = require("feedparser"),
+    eventproxy      = require("eventproxy"),
+    iconv           = require("iconv-lite"),
+    fs              = require("fs"),
+    Readable        = require("stream").Readable
+
+var DataPort = [
+    {  
+       name: "国内焦点",
+       category: "civilnews",
+       url: "http://news.baidu.com/n?cmd=1&class=civilnews&tn=rss"
+   },{
+       name: "国际焦点",
+       category: "internews",
+       url: "http://news.baidu.com/n?cmd=1&class=internews&tn=rss"
+   },{
+       name: "社会焦点",
+       category: "socianews",
+       url: "http://news.baidu.com/n?cmd=1&class=socianews&tn=rss"
+   }
+],
+    fp  = new feedparser(),
+    ep  = new eventproxy(),
+    generator = "./data.json",
+    wStream = fs.createWriteStream(generator) // 开辟可写数据流
+
+
+
+DataPort.forEach(function (value) {
+    console.log("Catching < "+ value.name + " > from:" + value.url);
+    
+    superagent.get(value.url)
+        .charset('gb2312')
+        .type("xml")
+        .end(function (err, pres) {
+            if(err) {
+                console.log(err);
+            }
+
+            // 解决编码
+            var buf = iconv.encode(pres.text, "utf-8"),
+                str = iconv.decode(buf,"utf-8");
+
+            ep.emit( "get_data", str );
+        })
+        .on("error", function (err) {
+           console.log("===== 获取数据失败 =====") 
+        })    
+})
+
+ep.after("get_data", DataPort.length , function (data) {
+        var rs = new Readable;
+
+        rs.push(data[0]);
+        rs.push(null);
+
+        rs.pipe(fp)
+        .on("error", function (err) {
+            console.log("===== 解析数据失败 =====")
+            console.error(err)
+        })
+        .on("readable", function () {
+            var $stream = this,
+                item
+
+            while(item = $stream.read()) {
+                var data_str = ""
+                + '{\n'
+                +   '"title": "'   + item.title   + '",\n'
+                +   '"link": "'    + item.link    + '",\n'
+                +   '"pubDate": "' + item.pubDate + '",\n'
+                +   '"source": '  + JSON.stringify(item.source)  + ',\n'
+                +   '"author": "'  + item.author  + '",\n'
+                + '}\n';
+
+                wStream.write(data_str);
+            }
+
+        })
+        .on("end", function () {
+            console.log("===== 已存储全部获取数据 =====")
+        })
+})
+```
