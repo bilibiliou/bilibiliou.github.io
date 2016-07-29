@@ -1,3 +1,10 @@
+---
+layout: post
+title: 使用NodeJs 实现新闻Rss爬虫
+category: 技术
+keywords: 技术,nodeJs,superAgent,feedparser,eventproxy,iconv-lite,
+---
+
 ## 什么是Rss
 
 > 简易信息聚合（也叫聚合内容）是一种RSS基于XML标准，在互联网上被广泛采用的内容包装和投递协议。RSS(Really Simple Syndication)是一种描述和同步网站内容的格式，是使用最广泛的XML应用。
@@ -158,7 +165,7 @@ req_stream.pipe(fp)
 ```
 ### 目标
 
-我们尝试获取每天的 国内、国际、社会 三个方面的新闻Rss 转为JSON格式 并且汇总到电脑中
+我们尝试获取百度 国内、国际、社会 三个方面的新闻Rss 转为JSON格式 并且汇总到电脑中
 
 思路是先从 这三个方面分别异步的获取Rss资源，等全部获取完成后 再数据转化为JSON 并存入电脑
 
