@@ -158,12 +158,6 @@ req_stream.pipe(fp)
 
 例如百度的 [Rss新闻集合](https://www.baidu.com/search/rss.html?wcbem)
 
-他们的Rss规则是
-
-```
-类目名/rss_类目名.xml
-```
-
 ### 目标
 
 我们尝试获取百度 国内、国际、社会 三个方面的新闻Rss 转为JSON格式 并且汇总到电脑中
