@@ -2,7 +2,7 @@
 layout: post
 title: 使用NodeJs 实现新闻Rss爬虫
 category: 技术
-keywords: 技术,nodeJs,superAgent,feedparser,eventproxy,iconv-lite,
+keywords: 技术,nodeJs,superAgent,feedparser,eventproxy,iconv-lite,ECMAscript2015
 ---
 
 ## 什么是Rss
@@ -160,11 +160,13 @@ req_stream.pipe(fp)
 
 ### 目标
 
-我们尝试获取百度 国内、国际、社会 三个方面的新闻Rss 转为JSON格式 并且汇总到电脑中
+"尝试获取百度 国内、国际、社会 三个方面的新闻Rss 转为JSON格式 并且汇总到mongoDB数据库中"
 
 思路是先从 这三个方面分别异步的获取Rss资源，等全部获取完成后 再数据转化为JSON 并存入电脑
 
 这种方式，业内一般专业的称呼为 “异步并发” 先分别异步获取，在一并执行下一步
+
+首先，确保你已经装上了mongoDB 数据库
 
 ### 怎样实现nodeJs异步并发
 
@@ -237,23 +239,87 @@ ep.after("get_event", 3 ,function (data) {
 
 希望大家详细的了解一下这个模块
 
-### superagent 的一个大坑 
+### 准备工作
 
-当我们大致了解完 后我们就可以开始写代码了，我们在根目录下创建一个空的data.json文件，用于存储我们最终生成的数据
+我们首先建立一个简单的文件路径
 
 ```js
-var superagent      = require("superagent"),
-    feedparser      = require("feedparser"),
-    eventproxy      = require("eventproxy"),
-    fs              = require("fs"),
-    Readable        = require("stream").Readable,
-    ep              = new eventproxy(),
-    fp              = new feedparser(),
-    generator       = "./data.json",                  // 空文件路径
-    wStream         = fs.createWriteStream(generator) // 开辟写数据流
+
+./
+ |
+  `--database
+        |
+         `--dao.js
+ |
+  `--app.js
+ |
+  `--service.js
+ |
+  `--package.Json
+
+```
+
+package.Json 如下
+
+```js
+{
+  "name": "get_info",
+  "version": "1.0.0",
+  "description": "get_info by superagent, cheerio, eventproxy and mongoDB",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel index.js -d dist -s | node dist/index.js"
+  },
+  "author": "你的名儿",
+  "dependencies" : {
+    "eventproxy": "",
+    "superagent": "",
+    "superagent-charset": "",
+    "feedparser": "",
+    "iconv-lite": "",
+    "mongoose": ""
+  },
+  "license": "MIT"
+}
+
+```
+service.js 用于实际的获取数据
+
+app.js 是入口文件可以用来消费数据（这里暂时不涉及消费数据，所以app逻辑比较简单）
+
+dao.js 用于配置数据库
+
+### 实际演练
+
+现在让我们投入实战，并且讲解一下一些坑
+
+首先在 service 中我们可以新建一个class (开始涉及一点Es6语法),然后
+
+```js
+class service {
+   constructor() {
+        this.result = []; // 数据暂存
+   } 
+
+   getData (valueList, callback) {
+        
+   }
+
+   saveData () {
+
+   }
+}
+```
+
+主要逻辑是getData 和 saveData，我们先来比较简单的app.js
+
+```js
+var fs              = require("fs"),
+    service         = require("./service.js")
 
 var DataPort = [
-    {  
+   {  
        name: "国内焦点",
        category: "civilnews",
        url: "http://news.baidu.com/n?cmd=1&class=civilnews&tn=rss"
@@ -261,208 +327,171 @@ var DataPort = [
        name: "国际焦点",
        category: "internews",
        url: "http://news.baidu.com/n?cmd=1&class=internews&tn=rss"
-   },{
-       name: "社会焦点",
+   },{   name: "社会焦点",
        category: "socianews",
        url: "http://news.baidu.com/n?cmd=1&class=socianews&tn=rss"
    }
-]
+];
 
-DataPort.forEach(function (value) {
-    console.log("Catching < "+ value.name + " > from:" + value.url);
-    superagent.get(value.url)
-        .type("xml")
-        .end(function (err, pres) {
-            if(err) {
-                console.log(err);
-            }
 
-            ep.emit( "get_data", pres.text);
-        })
-        .on("error", function (err) {
-           console.log("===== 获取数据失败 =====") 
-        })    
+service
+.getData(DataPort,function ($self) {
+  
+  $self.saveData();
 })
 
-ep.after("get_data", DataPort.length , function (data) {
-    var rs = new Readable;
+``    
 
-        rs.push(data[0]);
-        rs.push(null);
-        rs.pipe(fp)
-        .on("error", function (err) {
-            console.log("===== 解析数据失败 =====")
-            console.error(err)
-        })
-        .on("readable", function () {
-            var $stream = this,
-                item
-        
-            while(item = $stream.read()) {
-                var data_str = ""
-                + '{ \n'
-                +   '"title": "'   + item.title   + '", \n'
-                +   '"link": "'    + item.link    + '", \n'
-                +   '"pubDate": "' + item.pubDate + '", \n'
-                +   '"source": '  + JSON.stringify(item.source)  + ', \n'
-                +   '"author": "'  + item.author  + '", \n'
-                + '} \n';
-        
-                wStream.write(data_str); // 将数据写入空文件中
-            }
-        
-        })
-        .on("end", function () {
-            console.log("===== 已存储全部获取数据 =====")
-        })
-})
+很简单就是简单的引入模块，执行函数
+
+### superAgent 的两个大坑
+
+再来看看获取数据
+
+获取数据很简单，我们使用上文的方式处理就行了，我这次换成流的方式来写
+
+```js
+var fp = new feedParser();
+
+superAgent.get(url)
+    .type("xml")
+    .on("error", function (err) {
+       console.log("===== 获取数据失败 =====") 
+       console.log(err);
+    })    
+    .pipe(fp)
+    .on("error", function (err) {
+        console.log("===== 解析数据失败 =====");
+        console.error(err);
+    })
+    .on("readable", function () {
+        var $stream = this,
+            item
+
+        while(item = $stream.read()) {                         
+            // 处理你分析好的数据
+        }
+    })
+    .on("end", function () {
+         if(err) {
+            console.log(">>>>>> 出现错误!!!");
+            console.log(err);
+        } else {
+            
+            console.log("===== 已解析完数据 =====");
+        }
+    })
 ```
 
-运行完数据后，不出意外你应该会看到一堆的乱码...
+上面的code 展示了获取单个数据的情况
 
-怎么回事呢？ 原来superAgent 有且只支持utf-8格式（会将抓取到的文本以utf-8暂存于内存中） 而百度新闻是以GB2312格式存储的，所以就会出现乱码
+注意，这里会有两个大坑，那就是转码问题
 
-### superAgent-charset 和 iconv
+其一，百度存储默认的是以GB2312存储，但是nodeJs 暂时并不支持GB2312编码
 
-为了解决乱码问题，我们再介绍两个相应功能的模块
+所以我们需要进行转码
 
-首先，是[superAgent-charset](https://github.com/magicdawn/superagent-charset)
+其二，superAgent 暂时不支持除utf-8以外的其他格式， 对于任何非utf-8 的文档，会强行以utf-8进行编码
 
-这个模块能够扩展superAgent 所支持的编码集，这样我们就能将获取下来的文本以gb2312的格式进行暂存
+这两个问题加起来很坑（主要是一开始并没有意识到）找错误费了不少功夫
 
-根据官网的教程，我们把我们的代码进行修改
+首先转码，我们选用 [iconv-lite 模块](https://www.npmjs.com/package/iconv-lite) 
+
+只需要在流入fp前 进行转码即可：
+
+```js
+var iconv = require("iconv-lite")
+
+...
+
+.pipe(iconv.decodeStream("gb2312"))
+.pipe(iconv.encodeStream("utf-8"))
+.pipe(iconv.decodeStream("utf-8"))
+
+```
+
+再来就是 将superAgent 的文件修改编码
+
+我们选用 一个国人写模块 [superagent-charset](https://www.npmjs.com/package/superagent-charset)
+
+将superAgent 重新配置一下
 
 ```js
 var request         = require("superagent"),
     charsetCompoent = require('superagent-charset'),
-    superagent      = charsetCompoent(request)
+    superagent      = charsetCompoent(request);
+```
 
-...
+然后在发送请求之前
 
+```js
 superagent.get(value.url)
-        .charset('gb2312') // 设置编码
-        .type("xml")
-...
-
+    .charset('gb2312')
+    .type("xml")
 ```
 
+将编码设置为GB2312
 
-接下来就是转码问题了，nodejs暂时是不支持GB2312 以及 GBK 等中文编码格式的，我们需要将文本转为utf-8
+### feedparser 的一个大坑
 
-注意，流程是 先将superAgent 保存的文本保存为gb2312 然后再转码为utf-8
-不是直接就能 把保存的文本 转化为utf-8的
+feedparser 没什么，但是依然遇到了个BUG,跑去问公司大牛，弄了一个半小时解决~
 
-不然就出出现一堆堆的 “锟斤拷”
+主要就是获取多类新闻数据组的时候，解析出现了数据丢失，
 
-如何将GB2312 转为 utf-8呢 这里我们需要用到 [iconv-lite](https://www.npmjs.com/package/iconv-lite) 
+经过分析，最终确认是，fp的问题
 
-具体的api 请诸君自学
-
-实现起来很简单
+一开始写的是
 
 ```js
-var iconv  = require("iconv-lite");
+var fp = new feedparser();
 
+DataPort = forEach(function(value, idx) {
+    superAgent
+        .xxx
+        .xxx
 
-// 解决编码
-var buf = iconv.encode(pres.text, "utf-8"),
-    str = iconv.decode(buf,"utf-8");
-
-ep.emit( "get_data", str );
+        .pipe(fp)
 
 ```
 
-这样就能够成功获取每日最新的新闻Rss了
-
-![shootpic](/assets/img/get-rss-3.png)
-
-## 全部原码
+解决完后是
 
 ```js
-var request         = require("superagent"),
-    charsetCompoent = require('superagent-charset'),
-    superagent      = charsetCompoent(request),
-    feedparser      = require("feedparser"),
-    eventproxy      = require("eventproxy"),
-    iconv           = require("iconv-lite"),
-    fs              = require("fs"),
-    Readable        = require("stream").Readable
+DataPort = forEach(function(value, idx) {
+    var fp = new feedparser();
+    superAgent
+        .xxx
+        .xxx
 
-var DataPort = [
-    {  
-       name: "国内焦点",
-       category: "civilnews",
-       url: "http://news.baidu.com/n?cmd=1&class=civilnews&tn=rss"
-   },{
-       name: "国际焦点",
-       category: "internews",
-       url: "http://news.baidu.com/n?cmd=1&class=internews&tn=rss"
-   },{
-       name: "社会焦点",
-       category: "socianews",
-       url: "http://news.baidu.com/n?cmd=1&class=socianews&tn=rss"
-   }
-],
-    fp  = new feedparser(),
-    ep  = new eventproxy(),
-    generator = "./data.json",
-    wStream = fs.createWriteStream(generator) // 开辟可写数据流
+        .pipe(fp)
+```
 
+因为 superAgent 获取数据是异步的，而单个fp解析能力是有限的
 
+第一组内容完成后，fp开始解析，在解析过程中，第二组内容也获取完毕
+依照一开始写的方式，fp就会丢掉正在解析的第一组数据，转而去解析第二组，从而产生数据丢失
 
-DataPort.forEach(function (value) {
-    console.log("Catching < "+ value.name + " > from:" + value.url);
-    
-    superagent.get(value.url)
-        .charset('gb2312')
-        .type("xml")
-        .end(function (err, pres) {
-            if(err) {
-                console.log(err);
-            }
+而第二种方式，每次解析完成后都会新生成一个fp实例进行解析，2组对应2个fp 这样就不会发生数据丢失的行为！
 
-            // 解决编码
-            var buf = iconv.encode(pres.text, "utf-8"),
-                str = iconv.decode(buf,"utf-8");
+### 数据存储
 
-            ep.emit( "get_data", str );
-        })
-        .on("error", function (err) {
-           console.log("===== 获取数据失败 =====") 
-        })    
-})
+我们再来看saveData
 
-ep.after("get_data", DataPort.length , function (data) {
-        var rs = new Readable;
+```js
+for(var i = 0; i<$self.result.length; i++) {
+    // 存储数据
+    ep.emit("save_Data");
 
-        rs.push(data[0]);
-        rs.push(null);
+}
 
-        rs.pipe(fp)
-        .on("error", function (err) {
-            console.log("===== 解析数据失败 =====")
-            console.error(err)
-        })
-        .on("readable", function () {
-            var $stream = this,
-                item
-
-            while(item = $stream.read()) {
-                var data_str = ""
-                + '{\n'
-                +   '"title": "'   + item.title   + '",\n'
-                +   '"link": "'    + item.link    + '",\n'
-                +   '"pubDate": "' + item.pubDate + '",\n'
-                +   '"source": '  + JSON.stringify(item.source)  + ',\n'
-                +   '"author": "'  + item.author  + '",\n'
-                + '}\n';
-
-                wStream.write(data_str);
-            }
-
-        })
-        .on("end", function () {
-            console.log("===== 已存储全部获取数据 =====")
-        })
+// 每组数据存储完毕后
+ep.after("save_Data", $self.result.length , function () {
+    db.close(); // 关闭数据库
 })
 ```
+
+很简单的逻辑
+
+### 具体源码
+
+上文只是解析了部分代码，具体源码请见：[Get_BaiDuNewsRss_By_NodeJS](https://github.com/NumerHero/Get_BaiDuNewsRss_By_NodeJS#get_baidunewsrss_by_nodejs)
