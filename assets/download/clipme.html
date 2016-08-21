@@ -4,6 +4,9 @@
 		<title>css3特效</title>
 		<meta charset="utf-8">
 		<style>
+			* {
+				box-sizing: border-box;
+			}
 			body{ margin: 0; padding: 0;}
 			ul{ list-style: none; padding: 0; margin: 0;}
 			h1 {margin: 0;}
@@ -612,6 +615,143 @@
 		        background-size: 200px 200px;
 		      }
 		    } 	
+
+		    .div14 {
+			    width: 300px;
+			    height: 300px;
+			    margin: 80px auto 0;
+			    padding: 0;
+			    list-style-type: none;
+			    display: flex;
+			    flex-flow: row wrap;
+			    justify-content: space-around;
+			    align-items: space-around;
+			}
+
+			.div14 li {
+			    width: 95px;
+			    height: 95px;
+			    background: #f90;
+			    border-radius: 15px;
+			}
+
+			.div14 li[data-order="1"] {
+			    animation: div14-scale 5s 0s infinite;
+			}
+
+			.div14 li[data-order="2"] {
+			    animation: div14-scale 5s 0.3s infinite;
+			}
+
+			.div14 li[data-order="3"] {
+			    animation: div14-scale 5s 0.6s infinite;
+			}
+			.div14 li[data-order="4"] {
+			    animation: div14-scale 5s 0.9s infinite;
+			}
+
+			.div14 li[data-order="5"] {
+			    animation: div14-scale 5s 1.2s infinite;
+			}
+
+			@keyframes div14-scale {
+			  0%, 100% {
+			    transform: scale(1, 1); }
+			  50% {
+			    transform: scale(0, 0); } 
+			}
+
+			.div15 {
+			  position: relative;
+			  display: flex;
+			  width: 300px;
+			  height: 300px;
+			  margin: 150px auto 100px; }
+			.div15 > div {
+			  width: 150px;
+			  height: 100%;
+			  overflow: hidden; }
+
+			.div15-circle {
+			  position: absolute;
+			  width: 200%;
+			  height: 100%;
+			  border-radius: 50%;
+			  animation-fill-mode: forwards; }
+
+			.div15-c-left {
+			  position: relative; }
+			.div15-c-left .div15-circle {
+			  border-top: 30px solid #ddd;
+			  border-left: 30px solid #ddd;
+			  border-right: 30px solid transparent;
+			  border-bottom: 30px solid transparent;
+			  transform: rotate(135deg);
+			  animation: div15-c-left-animate 2.5s ease-in infinite; }
+
+			@keyframes div15-c-left-animate {
+			  50% {
+			    transform: rotate(315deg); }
+			  100% {
+			    transform: rotate(505deg); } 
+			}
+			.div15-c-right {
+			  position: relative; }
+			.div15-c-right .div15-circle {
+			  left: -100%;
+			  border-top: 30px solid transparent;
+			  border-left: 30px solid transparent;
+			  border-right: 30px solid #ddd;
+			  border-bottom: 30px solid #ddd;
+			  transform: rotate(-225deg);
+			  animation: div-15-c-right-animate 2.5s ease-in infinite; }
+
+			@keyframes div-15-c-right-animate {
+			  50% {
+			    transform: rotate(-45deg); }
+			  100% {
+			    transform: rotate(135deg); } }
+			.div15-2 {
+			  position: absolute;
+			  top: 0;
+			  left: 0;
+			  right: 0;
+			  bottom: 0;
+			  margin: auto auto;
+			  display: flex;
+			  width: 50%;
+			  height: 50%; }
+			.div15-2 > div {
+			  overflow: hidden; }
+
+			.div15-c-left-2 {
+			  position: relative;
+			  width: 50%; }
+			.div15-c-left-2 .div15-circle {
+			  background-image: linear-gradient(to left, transparent 50%, #ddd 0);
+			  transform: rotate(180deg);
+			  animation: div15-c-left-2-animate 3s 1.5s linear infinite; }
+
+			.div15-c-right-2 {
+			  position: relative;
+			  width: 50%; }
+			.div15-c-right-2 .div15-circle {
+			  left: -100%;
+			  background-image: linear-gradient(to right, transparent 50%, #ddd 0);
+			  transform: rotate(-180deg);
+			  animation: div15-c-right-2-animate 3s linear infinite; }
+
+			@keyframes div15-c-left-2-animate {
+			  25%, 50% , 75% {
+			    transform: rotate(0deg); }
+			  100% {
+			    transform: rotate(-180deg); } }
+			@keyframes div15-c-right-2-animate {
+			  25%, 50%,75% {
+			    transform: rotate(-360deg); }
+			  100% {
+			    transform: rotate(-540deg); } }
+
 		</style>
 		<script>
 		function runCir() {
@@ -712,9 +852,38 @@
 			<div id="div13" class="wave">
 				Loading...
 			</div>
+
+
+			<ul class="div14">
+	            <li data-order="3"></li>
+	            <li data-order="4"></li>
+	            <li data-order="5"></li>
+	            <li data-order="2"></li>
+	            <li data-order="3"></li>
+	            <li data-order="4"></li>
+	            <li data-order="1"></li>
+	            <li data-order="2"></li>
+	            <li data-order="3"></li>
+	        </ul>
+
+	        <section class="div15">
+	            <div class="div15-c-left">
+	                <div class="div15-circle"></div>
+	            </div>
+	            <div class="div15-c-right">
+	                <div class="div15-circle"></div>
+	            </div>
+
+	            <section class="div15-2">         
+	                <div class="div15-c-left-2">
+	                    <div class="div15-circle"></div>
+	                </div>
+	                <div class="div15-c-right-2">
+	                    <div class="div15-circle"></div>
+	                </div>
+	            </section>
+	        </section>
 		</article>
-
-
 	</body>
 
 </html>
