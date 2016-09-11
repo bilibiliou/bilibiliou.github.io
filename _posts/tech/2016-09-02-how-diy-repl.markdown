@@ -7,7 +7,7 @@ keywords: 技术,nodeJs,repl
 
 ## 版本
 
-一下实验均在 
+以下实验均在 
 
 * node version 6.2.0 
 * npm version 3.8.6
@@ -218,7 +218,7 @@ m
 Math.random()
 ```
 
-我们再用load 浪试试？
+我们再用load lang试试？
 
 ```shell
 D:\NodeJs\test\repl>node diy_repl.js
