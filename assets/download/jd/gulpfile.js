@@ -9,16 +9,16 @@ var gulp      = require("gulp"),
 
 
 gulp.task("style", function () {
-    return gulp.src("./css/*.css")
+    return gulp.src("./css/blog-post.css")
            .pipe(plumber())
-           .pipe(concat("main.css"))
+           // .pipe(concat("main.css"))
            .pipe(rename({suffix: ".min"}))
            .pipe(autoprefixer({
                 browsers: ['last 3 version']
             }))
            .pipe(minifyCss())
            .pipe(gulp.dest("./dist/css"))
-           .pipe(notify("css 压缩已经完成"))
+           // .pipe(notify("css 压缩已经完成"))
 })
 
 gulp.task("js", function () {
