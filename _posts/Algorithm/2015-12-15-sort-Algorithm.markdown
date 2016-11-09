@@ -134,6 +134,7 @@ function BubbleSort (data, order=1) {
 
 console.log(BubbleSort(data,1) + "");
 ```
+
 ### 快速排序
 
 ```js
