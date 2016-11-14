@@ -188,4 +188,4 @@ ctx.clip();
 
 需要源代码的同学可以[在这里](https://github.com/NumerHero/animations) 下载到源码
 
-喜欢改效果的朋友可以不要吝惜 您的star 哦~
+喜欢改效果的朋友可以不要吝惜您的star哦~
