@@ -220,17 +220,15 @@ function HeapSort(data, order=0) {
 			result = [];
 
 	// 建立初始堆
-	for (let i = parseInt(len/2) - 1; i>=0; i--) {
+	for (let i = parseInt(len/2); i>=0; i--) {
 		sift(i,len-1);
 	}
 
-	for (let i = len,temp = 0; i>=1 ;i--) {
+	for (let i = len; i>=1 ;i--) {
 		result.push(data[0]);
-		data[0] = data[len-1]
-		data.length--;
-		len = data.length;
+		data[0] = data[i-1]
 
-		sift(0,len-1);
+		sift(0,i-1);
 	}
 
 	return result
