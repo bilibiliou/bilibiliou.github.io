@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 如何制作霓虹灯动画？
-author: Owen
 category: 技术
 keywords: 技术,canvas,动画,霓虹灯
 ---
