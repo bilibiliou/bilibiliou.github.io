@@ -1,13 +1,13 @@
 function ajax( method , data , url , success , faild )   
 {
-  // ÉèÖÃĞÎ²ÎÈ±Ê¡Öµ
+  // è®¾ç½®å½¢å‚ç¼ºçœå€¼
   method = method || 'get';
   data = data || undefined;
   url = url || undefined
   success = success || undefined;
   faild = faild || undefined;
   
-  //data ÒÔJSONĞÎÊ½´«µİ¹ıÀ´
+  //data ä»¥JSONå½¢å¼ä¼ é€’è¿‡æ¥
   try
   {
     var xhr =  new XMLHttpRequest();
@@ -21,7 +21,7 @@ function ajax( method , data , url , success , faild )
   {
     xhr.open( 'post' , url , true );
     xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-    //µ±post·½·¨ĞèÒªÓÃsend·½·¨´«µİ²ÎÊıÊ±ºò
+    //å½“postæ–¹æ³•éœ€è¦ç”¨sendæ–¹æ³•ä¼ é€’å‚æ•°æ—¶å€™
     xhr.send(data);
   }
   else if(method.toLowerCase() == "get")
@@ -32,7 +32,7 @@ function ajax( method , data , url , success , faild )
   }
   else
   {
-    alert("Äã²ÎÊıÑ¡ÔñµÄ·½·¨ÊäÈë´íÎó,ÇëĞŞ¸Ä½Å±¾");
+    alert("ä½ å‚æ•°é€‰æ‹©çš„æ–¹æ³•è¾“å…¥é”™è¯¯,è¯·ä¿®æ”¹è„šæœ¬");
     return;
   }
   
@@ -57,16 +57,16 @@ function ajax( method , data , url , success , faild )
     {
       if( typeof(data) != 'object')
       {
-        //µ±dataÊÇÆäËûÊı¾İÀàĞÍµÄÊ±ºò
-        //(ÆäËûÀàĞÍÒÔ×Ö·û´®ĞÎ´«²Î£¬²¢ÇÒ±£Ö¤·ûºÏurl¸ñÊ½²»È»»á³ö´íÎó)
-        url = url + '?' +¡¡data + new Date().getTime();
+        //å½“dataæ˜¯å…¶ä»–æ•°æ®ç±»å‹çš„æ—¶å€™
+        //(å…¶ä»–ç±»å‹ä»¥å­—ç¬¦ä¸²å½¢ä¼ å‚ï¼Œå¹¶ä¸”ä¿è¯ç¬¦åˆurlæ ¼å¼ä¸ç„¶ä¼šå‡ºé”™è¯¯)
+        url = url + '?' +ã€€data + new Date().getTime();
       }
       else
       {
-        //µ±dataÊÇJSONµÄÊ±ºò
+        //å½“dataæ˜¯JSONçš„æ—¶å€™
         for(i in data)
         {
-          // ÕâÀïµÄ i ¾ÍÊÇ±éÀú¶ÔÏóµÄÊôĞÔÃû data[i] ÊÇÊôĞÔµÄÖµ
+          // è¿™é‡Œçš„ i å°±æ˜¯éå†å¯¹è±¡çš„å±æ€§å data[i] æ˜¯å±æ€§çš„å€¼
           url = addURLParam(url , i , data[i]);
         }
 
@@ -77,14 +77,14 @@ function ajax( method , data , url , success , faild )
 
   function addURLParam(url , name , value)
   {
-    //±éÀúurl×Ö·û´® ÅĞ¶ÏÊÇ·ñÓĞ?×Ö·û Èç¹ûÃ»ÓĞ ¾ÍÌí¼ÓÒ»¸ö?×Ö·û ºóÃæ¸ú×Å¼ÓÊı¾İ
-    //Èç¹ûÒÑ¾­ÓĞÁË ËµÃ÷ĞèÒªÌí¼ÓµÄ²»ÊÇµÚÒ»¸öÊı¾İÁË
-    //ÕâÊ±ºò¾Í¼ÓÒ»¸ö&ºóÃæÔÙ¸úÆäËûÊı¾İ
+    //éå†urlå­—ç¬¦ä¸² åˆ¤æ–­æ˜¯å¦æœ‰?å­—ç¬¦ å¦‚æœæ²¡æœ‰ å°±æ·»åŠ ä¸€ä¸ª?å­—ç¬¦ åé¢è·Ÿç€åŠ æ•°æ®
+    //å¦‚æœå·²ç»æœ‰äº† è¯´æ˜éœ€è¦æ·»åŠ çš„ä¸æ˜¯ç¬¬ä¸€ä¸ªæ•°æ®äº†
+    //è¿™æ—¶å€™å°±åŠ ä¸€ä¸ª&åé¢å†è·Ÿå…¶ä»–æ•°æ®
 
     url += (url.indexOf("?") == -1 ? "?" : "&");
     
-    //encodeURIComponent()º¯ÊıÓÃÓÚ½« ³ıurl±ê×¼×Ö·ûÍâµÄ 
-    //ÆäËû×Ö·û×ªÎªHTTP±àÂë
+    //encodeURIComponent()å‡½æ•°ç”¨äºå°† é™¤urlæ ‡å‡†å­—ç¬¦å¤–çš„ 
+    //å…¶ä»–å­—ç¬¦è½¬ä¸ºHTTPç¼–ç 
     
     url += encodeURIComponent(name) + "=" + encodeURIComponent(value);
     return url;
