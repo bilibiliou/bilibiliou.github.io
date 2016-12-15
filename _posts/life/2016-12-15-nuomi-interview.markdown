@@ -37,7 +37,7 @@ category: 生活
 
 时间: 2016年11月30日 5:20 (一面完约三个小时后)
 
-1. Es6 generatior
+1. Es6 generator
 2. Es7 Await
 3. 英语四级过了没有？
 4. 你的推荐人是谁？
