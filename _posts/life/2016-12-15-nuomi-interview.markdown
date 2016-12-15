@@ -1,10 +1,9 @@
 ---
 layout: post
-title: 第一次面试经历
+title: 百度糯米面试经历
 category: 生活
+keywords: 面试
 ---
-
-糯米面试，记点流水账
 
 ## 一面
 
