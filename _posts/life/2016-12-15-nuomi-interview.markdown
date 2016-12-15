@@ -20,7 +20,7 @@ category: 生活
 10. Ajax和fetch
 11. 跨域的N种方法（JSON、window.name 、window.domain 、 postMessage 、 Cors）
 12. 创建对象的N种方法
-13.  Js排序方法（chrome 内使用的是什么排序方法，fireFox 呢？）
+13. Js排序方法（chrome 内使用的是什么排序方法，fireFox 呢？）
 14. 事件委托以及原理
 15. 重构和重绘，哪些元素会导致重构和重绘
 16. 继承的N种方法
