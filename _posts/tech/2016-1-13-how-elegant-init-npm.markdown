@@ -23,7 +23,7 @@ npm config edit
 
 ![pic](/assets/img/how-to-use-npm-init.png)
 
-如图，我手动配置了一些基本的参数信息
+如图，我手动配置了一些基本的参数信息。
 
 ![pic](/assets/img/how-to-use-npm-init2.png)
 
