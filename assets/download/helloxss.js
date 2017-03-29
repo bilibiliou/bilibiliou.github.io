@@ -1,1 +1,1 @@
-eval('alert('hello xss');')
+ javascript:alert('hello xss');
