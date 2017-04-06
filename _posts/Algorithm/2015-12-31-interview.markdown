@@ -644,6 +644,7 @@ let nowTime = new Date()
 
 ## 实现add(1)(2)(3)
 
+法一：
 ```javascript
 function add (v1,v2) {
     v2 = v2 || 0;
@@ -656,6 +657,27 @@ function add (v1,v2) {
 }
 
 console.log(add(1)(2)(3))
+```
+法二：
+```js
+function currying (fn, ...param) {
+  return function (...newparam) {
+    return fn.apply(this, newparam.concat(param))
+  }
+}
+
+function add (...param) {
+  var sum = param.length > 1 ? param.reduce((b ,n) => b+n): param;
+
+  var fn = currying(add,sum);
+  fn.toString = function () {
+    return "Anwser === "+ (sum);
+  }
+
+  return fn;
+}
+
+console.log(add(1,2,3)(2)(3,5));
 ```
 
 ## 正则表达式中 match 和 exec 的区别
