@@ -859,6 +859,79 @@ function Reverse(list) {
 
 [JSON_PARSE_PROFILL](https://github.com/NumerHero/JSON_PARSE_PROFILL)
 
+## 如图
+
+[water](/assets/water.png);
+
+解法：
+
+```js
+let arr = ;
+// [2,5,1,4,6,2,7,1,-1,2] 13
+// [2,5,1,4,6] 5
+// [10,1,2,1,3,2,4,3,1,2,3,5,4,2,4] 30
+// [2,5,1,2,3,4,2,5,1,2,3,4] 19
+// [7,5,1,2] 1
+// [9,9,9,9,9,9,9] 0
+// [2,1,5,7] 1
+// [9,5,7,-1,8,10,9,100] 18
+function main (arr) {
+    if (arr.length < 3) {return 0;}
+    let s;
+    let e;
+    let stack = []
+    let result=0;
+    function calc () {
+        s=arr[0];
+        for (let i = 1;i<arr.length;i++) {
+            let temp = arr[i];
+
+            if (temp < s) {
+                e = temp;
+                if(i+1 !== arr.length) {
+                    stack.push(temp);
+                }
+            } else {
+                let size = stack.length;
+                let area = 0;
+                while(stack.length) {
+                    area += stack.pop();
+                }
+                result += s * size - area;
+                s = temp;
+            }
+            if (i+1 === arr.length && stack.length) {
+                let size = 0;
+                let area = 0;
+
+                for(let j = stack.length - 1; j>=0; j--) {
+                    let k = stack[j];
+                    if (k<=e) {
+                        area += k;
+                        size++;
+                        stack.pop();
+                    } else {
+                        break;
+                    }
+                }
+                result += e * size - area;
+            }
+        }
+        if (stack.length) {
+            stack.unshift(s);
+            console.log(result, stack)
+            arr = stack;
+            stack = [];
+            calc();
+        }    
+    }
+    calc();
+    return result;
+}
+
+console.log(main(arr));
+```
+
 ## 感谢
 
 [JavaScript中call()与apply()有什么区别？](http://my.oschina.net/warmcafe/blog/74973)
