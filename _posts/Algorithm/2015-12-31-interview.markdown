@@ -861,7 +861,7 @@ function Reverse(list) {
 
 ## 如图
 
-[water](/assets/water.png);
+![water](/assets/water.png);
 
 解法：
 
