@@ -199,7 +199,7 @@ css解析器对比两者的值，两者谁大取谁 作为item的基本尺寸，
 
 结果如下：
 
-1. 如果设置了 visibility: hidden; | visibility: collapse; | transform: scale; 的flex-item content 依然被算进主轴尺寸，css 解析器依然会以他们 flex-grow | flex-shrink 将可用空间 或者 负可用空间 分配给他们
+1. 如果设置了 visibility: hidden; 、 visibility: collapse; 、 transform: scale; 的flex-item content 依然被算进主轴尺寸，css 解析器依然会以他们 flex-grow 、 flex-shrink 将可用空间 或者 负可用空间 分配给他们
 
 2. 如果设置了display: none; css解析器不会对该item的空间进行计算，也不会对其grow空间
 
@@ -258,16 +258,16 @@ flexbox 我设置了 justify-content: center; 和 align-items: center; 每一个
 
     * 如果设置了 align-items: flex-end; 所有元素不分开，定位在 侧轴终点
     
-    * 如果设置了 align-items: stretch | baseline; 也是没有任何效果, items 不会跟随侧轴拉伸 或是 根据baseline 对齐
+    * 如果设置了 align-items: stretch 、 baseline; 也是没有任何效果, items 不会跟随侧轴拉伸 或是 根据baseline 对齐
 
-5. 如果对单个item 设置 align-self，除了 flex-start | flex-end | center 有效之外，其他都失效
+5. 如果对单个item 设置 align-self，除了 flex-start 、 flex-end 、 center 有效之外，其他都失效
 
 通过上面一系列的测试我们可以清楚的认识到 justify-content、align-items 和 top、left、right、bottom 都是位置属性，而且 top、left、right、bottom 会覆盖justify-content和align-items的值
 （以上前提是一定要设置position: absolute 不然 top、left、right、bottom 无效）
 
 而 margin 的优先级是和 top、left、right、bottom 一样的，也就是说 margin 和 top、left、right、bottom 所设置的值会同时生效
 
-优先级排序为： margin = justify-content | align-items > top、left、right、bottom
+优先级排序为： margin = justify-content 、 align-items > top、left、right、bottom
 
 ### flex-basis、flex-grow、flex-shrink 以及相应的计算
 
