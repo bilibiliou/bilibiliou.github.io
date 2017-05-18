@@ -1047,6 +1047,24 @@ function main (arr) {
 
 console.log(main(arr));
 ```
+## 暴力查找最大回文字串
+
+```js
++function main(str='boawaebnc') {
+  var max = '',
+      len = str.length
+
+  for (var block = 1; block <= len - 1; block++) {
+      for (var s = 0, e = s+block; e < len; s++,e++) {
+        var kkk = str.slice(s, e+1);
+        if (kkk === kkk.split("").reverse().join("")) {
+          max = kkk;
+        }
+      }
+  }
+  console.log('<<<',max);
+}()
+```
 
 ## 感谢
 
