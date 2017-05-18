@@ -17,7 +17,7 @@ keywords: 技术,js
 
 而洋葱模型，就是这样一种模式
 
-[onion_modal](/assets/img/onion_modal.png)
+![onion_modal](/assets/img/onion_modal.png)
 
 **redux middleware 的洋葱模型演示**
 
