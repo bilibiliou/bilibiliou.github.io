@@ -372,7 +372,7 @@ function callback( data )
             }
       });
 
-      pajx_loadDuodsuo();
+      // pajx_loadDuodsuo();
     }
     afterPjax();   
 
