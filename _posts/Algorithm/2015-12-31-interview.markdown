@@ -1066,6 +1066,30 @@ console.log(main(arr));
 }()
 ```
 
+## 字符串全排列
+
+```js
+let str = '1234';
+function merge(sofar, rest) {
+    let len = rest.length;
+    if (rest.length === xlen) {
+      console.log(sofar); // system.out.print(sofar);
+    } else {
+      for (let i = 0; i < len; i++) {
+        let s = sofar + rest[i];
+        let e = rest.substring(0, i) + rest.substring(i+1);
+        merge(s, e);
+      }
+    }
+}
+
+xlen = 0;
+while (xlen<4) {
+    merge('', str);
+    xlen++;
+}
+```
+
 ## 感谢
 
 [JavaScript中call()与apply()有什么区别？](http://my.oschina.net/warmcafe/blog/74973)
