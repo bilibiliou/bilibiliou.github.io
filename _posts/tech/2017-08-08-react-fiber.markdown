@@ -26,10 +26,11 @@ react-fiber 是为了增强动画、布局、移动端手势领域的适用性�
 在如今越来越复杂的前端环境下，往往可能需要加载且渲染大量的DOM节点，那么在渲染的过程中，即使我们使用了React virtualDom 进行维护，但是，也是会阻塞其他功能的进行。例如，当其他节点渲染的过程中，用户执行了某些交互操作，例如点击，输入，手势等， 由于在渲染的过程中会阻塞线程，导致 这些交互行为延迟，也就是在用户眼中的卡顿。
 
 Ok， 在这样的使用背景下，Facebook 团队在两年前就开始为我们研究，并且提供了 react-fiber 的新功能，react-fiber 可以为我们提供如下几个功能：
-	
-	1. 设置渲染任务的优先
-	2. 采用新的Diff算法
-	3. 采用虚拟栈设计允许当优先级更高的渲染任务和较低优先的任务之间来回切换
+  
+  1. 设置渲染任务的优先
+  2. 采用新的Diff算法
+  3. 采用虚拟栈设计允许当优先级更高的渲染任务和较低优先的任务之间来回切换
+
 
 facebook 团队计划于 react v16 发布 react-fiber
 
@@ -62,22 +63,22 @@ ReactDOMFiber.render()
 // 从deferredUpdates我们可以看出，这是渲染低优先级的函数
 
 ReactDOMFiber.unstable_deferredUpdates(() =>
-	this.setState(state => {
-		// 我们可以通过回参取得旧state
-		// 更新组件之前的逻辑处理
-		// return新的state
+  this.setState(state => {
+    // 我们可以通过回参取得旧state
+    // 更新组件之前的逻辑处理
+    // return新的state
 
-		return {
-			// new state	
-		}
-	})
+    return {
+      // new state  
+    }
+  })
 );
 ```
 
 在刚刚的例子中
 
 高优先级的渲染任务为父节点的transform动画
-低优先级的渲染认为为每一个节点的数据同时改变
+低优先级的渲染任务为每一个节点的数据渲染
 
 ## V16的其他功能
 
@@ -140,7 +141,7 @@ React.render(<MyGoodView/>, document.body);
 在之前，如上代码是无法执行到降级处理的，而在 V16中会允许降级处理，并且为我们提供完整可读的组件堆栈异常信息，这样我们就可以对渲染异常的错误进行捕获监控
 
 #### 重写服务器渲染API方法，提供多个以流的渲染方法
-	
+  
 ```js
 ReactDOMServer.renderToStream()
 ReactDOMServer.renderToStaticStream()
