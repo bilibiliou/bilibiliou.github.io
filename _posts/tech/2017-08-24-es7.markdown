@@ -1,0 +1,543 @@
+---
+layout: post
+title: Es2017 将会给我们带来什么？
+category: 技术
+keywords: 技术,js
+---
+
+## pipeline-operator
+
+此前，如果我们需要实现函数1的返回值域给函数2调用
+
+最简单的方式是
+
+```js
+ A(B(C()))
+```
+
+面向对象的话可以
+
+```js
+let obj = {
+    value: void 0,
+    A() {
+        this.value = 1;
+        return this;
+    },
+    B() {
+      this.value += 2;
+        return this;
+    },
+    C() {
+      this.value *=3;
+        return this;
+    }
+}
+
+obj
+  .A()
+  .B()
+  .C()
+```
+
+如果在node端我们还可以使用.pipe
+
+```js
+  .pipe(A())
+  .pipe(B())
+  .pipe(C())
+```
+
+### 基本使用
+
+而在Es2017中，TC39也为我们提供了管道运算符，它的基本用法是，将上一个函数执行，且将返回值作为入参，传递给下个函数的形参。并执行下一个函数，直到全部函数执行完成，返回最后一个函数返回的结果。
+
+例如如下三个函数
+
+```js
+function doubleSay (str) {
+  return str + ", " + str;
+}
+function capitalize (str) {
+  return str[0].toUpperCase() + str.substring(1);
+}
+function exclaim (str) {
+  return str + '!';
+}
+```
+
+```js
+// 原来的方式
+let result = exclaim(capitalize(doubleSay("hello")));
+
+>>> Hello, hello!
+```
+
+```js
+// 使用管道函数重构
+let result = "hello"
+  |> doubleSay
+  |> capitalize
+  |> exclaim;
+
+>>> Hello, hello!
+```
+
+同时，我们可以借助箭头函数在流的中间截获中间值
+
+例如另外一个函数
+
+```js
+function bilibliousStringFunction(s, b = ', BiLi') {
+  return s.toUpperCase() + b;
+}
+```
+
+然后我们改写一下我们的函数
+
+```js
+let result = 'hello'
+  |> doubleSay
+  |> data => bilibliousStringFunction(data)
+  |> exclaim;
+
+>>> HELLO, HELLO, BiLi!
+```
+
+### 柯里化
+
+我们还可以通过pipeline-operator实现函数柯里化
+
+首先我们来复习一下柯里化
+
+```js
+function curry(fn) {
+  var arg = [].slice.call(arguments, 1);
+  return function () {
+    var newarg = [].concat.apply(arg, arguments);
+    return fn.apply(this, newarg);
+    }
+}
+
+
+var addCurry = curry(function (x,y,z) {
+  return x+y+z;
+},1);
+
+addCurry(2,3);
+```
+
+ok, 接下来我们可以使用pipeline-operator重写上述逻辑
+
+```js
+function add(...params1) {
+  return function (...params2) {
+    let payload = params1.concat(params2);
+    return payload.length > 1 ? payload.reduce((b, n) => b + n) : payload[0] || 0;
+  }
+}
+
+let result = 1
+  |> add(2, 3);
+
+result >>> 6
+```
+
+也是比较优雅的
+
+### 继承
+
+我们也可以在对象继承方面做一些文章
+
+```js
+// 基础对象
+function Person (name, age) {
+  return { name, age };
+}
+
+// 功能函数
+function Walk (Person) {
+  Person.walk = function () {
+    console.log('I can walk now!');
+  }
+  return Person;
+}
+
+function Talk (Person) {
+  Person.talk = function () {
+    console.log('I can talk now!');
+  }
+  return Person;
+}
+
+function Eat (Person) {
+  Person.eat = function () {
+    console.log('I can eat now!');
+  }
+  return Person;
+}
+
+function Ride (Person) {
+ Person.ride = function () {
+    console.log('I can ride now!');
+  }
+  return Person; 
+}
+
+// 具体对象
+function Father (name, age) {
+  return Person(name, age) |> Walk |> Talk |> Eat |> Ride;
+}
+
+function Son (name, age) {
+  return Person(name, age) |> Walk |> Talk |> Eat;
+}
+
+```
+
+这样我们就能很轻松的搭配我们所需的功能函数，拼装为具体能实现的实例
+
+### 数据检测
+
+同时，关于数据检验，我们现在可以这样玩
+
+```js
+function bounded (prop, min, max) {
+  return function (obj) {
+    if ( obj[prop] < min || obj[prop] > max ) throw Error('out of bounds');
+    return obj;
+  };
+}
+
+function format (prop, regex) {
+  return function (obj) {
+    if ( ! regex.test(obj[prop]) ) throw Error('invalid format');
+    return obj;
+  };
+}
+
+function Xss(obj) {
+  return testXssInObj(obj); // 伪代码
+}
+
+function createPerson (attrs) {
+  attrs
+    |> bounded('age', 1, 100)
+    |> format('name', /^[a-z]$/i)
+    |> Xss
+    |> Person.insertIntoDatabase;
+}
+
+try {
+  createPerson({age: 20, name: "__alert('Xss')__"})
+} catch(err) {
+  alert('Your Name or Age was illegal!')
+}
+```
+
+## bind-operator
+
+在此之前，如果要绑定函数的作用域，我们一般用的是 bind, call, apply
+
+如今，es2017 为我们提供了一个语法糖（Syntactic sugar） 
+
+栗子如下：
+
+```js
+const Owen = {
+  year: 18,
+    getValue() {
+      return this.year
+    }
+}
+
+const bilibiliou = {
+  year: 21
+}
+
+bilibiliou::Owen.getValue();  // >>> 21
+// 等效于 Owen.getValue.call(bilibiliou)
+```
+
+如果不指定左值，则绑定默认的上下文
+
+```js
+::console.log
+// console.log.bind(console);
+```
+
+我们可以发现，对于函数，如果 有执行符 `()` 则被编译为call，如果没有则会编译为bind
+
+如果我们传递了多个参数，则会被编译为apply
+
+```js
+foo::bar(...[1,2,3]);
+// bar.apply(foo, 1,2,3);
+```
+
+bind-operator 为我们带来了很多便利，首先就是React 中需要绑定this域的场景
+
+```js
+this.somethingHandle = this.somethingHandle.bind(this);
+```
+
+我们完全可以使用bind-operator 进行改写
+
+```js
+this.somethingHandle = ::this.somethingHandle
+```
+
+同时对于一些类数组，我们的操作也可以变得更加优雅
+
+```js
+let oBtns = document.querySelectorAll('.button');
+
+oBtns::map(v => {
+  // to do something
+});
+
+// 等价于
+
+[].map.call(oBthns, v => {
+  // to do something
+});
+```
+
+当我们对数据需要进行一系列处理的时候，我们还可以这么玩
+
+```js
+function (data) {
+  function extentionFunction1 (param) {
+    return data.blabla(param)
+  }
+
+  function extentionFunction2 (param) {
+    return data.foofoo(param);
+  }
+
+
+  return data
+      .dataHandle1()
+      ::extentionFunction1(123)
+      .dataHandle2()
+      ::extentionFunction2(456)
+}
+```
+
+等价于
+
+```js
+  data = data
+      .dataHandle1()
+        .dataHandle2()
+     
+     data = extentionFunction1(123);
+     data = extentionFunction2(456);
+     
+     return data;
+```
+
+## Object.entries 和 Object.values
+
+在此之前我们就能通过 Object.keys 将对象的key转为数组，如今，TC39为我们扩展了这类的方法
+
+```js
+const obj = {
+  retcode: 0,
+    msg: 'Success',
+    data: 'blabla'
+}
+const result = Object.values(obj);
+console.log(result); // [0, 'Success', 'blabla']
+```
+
+如上，我们可以使用values输入一个对象内的所有values
+
+我们还可以使用 entries 输出每一个键值对
+
+```js
+const obj = {
+  retcode: 0,
+    msg: 'Success',
+    data: 'blabla'
+}
+const result = Object.entries(obj);
+console.log(result); // [['retcode', 0], ['msg', 'Success'], ['data', 'blabla']]
+```
+
+## String Padding
+
+string 扩展了两个方法
+
+```js
+// padStart
+'abc'.padStart(10);         // "       abc"
+'abc'.padStart(10, "foo");  // "foofoofabc"
+'abc'.padStart(6,"123465"); // "123abc"
+'abc'.padStart(8, "0");     // "00000abc"
+'abc'.padStart(1);          // "abc"
+// padEnd
+'abc'.padEnd(10);          // "abc       "
+'abc'.padEnd(10, "foo");   // "abcfoofoof"
+'abc'.padEnd(6, "123456"); // "abc123"
+'abc'.padEnd(1);           // "abc"
+```
+
+未来我们可以更好的处理字符串了
+
+```js
+function sayHi (userFirstName) {
+  let Hello = ' 大爷，您可来了，小的这就给您斟茶倒水，招呼菊仙姑娘';
+  return userFirstName.padEnd(userFirstName.length + Hello.length, Hello);
+}
+
+sayHi('bilibiliou')
+```
+
+## 逗号不会抛错
+
+有些时候（复制多个对象）可能后面不小心会留下一个小逗号
+
+```js
+var obj = {
+  1,
+  2,
+};
+```
+
+又或者 写函数入参的时候
+
+```js
+function hi(a,b,) {
+  console.log(`${a} ${b}`)
+}
+
+hi('Hello', 'World',);
+```
+
+还有可能是数组
+
+```js
+[1,2,3,4,]
+```
+
+当代码复杂且代码被混淆|压缩|编译|转义的时候，可能一个逗号的Error也要查半天，断点调
+在Es8的规范中，能够忽视这种错误，让程序正常的跑起来
+
+当然，虽然规范给了我们这样的便利，还是最好不要犯这种低级的错误比较好。
+
+## 共享内存
+
+现在共享经济日渐火爆，有共享单车、共享充电宝、共享女友 blabla
+
+当然也少不了共享内存了？！ （Shared Memory and Atomics）
+
+
+我们可以通过new Worker('calc.js') 来开辟一个子进程
+
+```js
+let w = new Worker("calc.js");
+```
+
+如果主线程和子线程需要通讯的话，主要使用 postMessage 和 onmessage
+
+主线程
+
+```js
+w.postMessage("hi");
+w.onmessage = function (ev) {
+  console.log(ev.data);
+}
+```
+
+子线程
+
+```js
+onmessage = function (ev) {
+  console.log(ev.data);
+  postMessage("ho");
+}
+```
+
+而现在我们可以开辟一定大小的存储空间，进行线程间数据共享
+
+```js
+let sab = new SharedArrayBuffer(1024);  // 1KB 的共享内存
+```
+
+
+```js
+w.postMessage(sab)   // 通过postMessage 将指针发送给子线程
+```
+
+子线程直接从全局获取到指针，并写入数据，完成内存共享
+
+```js
+var sab;
+onmessage = function (ev) {
+   sab = ev.data;
+}
+```
+
+下面是一个素数生成器的例子
+
+```js
+var sab = new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT * 100000); // 100000 个素数
+var ia = new Int32Array(sab);  // ia.length == 100000
+var primes = new PrimeGenerator(); // 伪代码，素数生成器网上有对应实现
+for ( let i=0 ; i < ia.length ; i++ )
+   ia[i] = primes.next();
+w.postMessage(ia);
+```
+
+```js
+var ia;
+onmessage = function (ev) {
+  ia = ev.data;        // ia.length == 100000
+  console.log(ia[37]); // 第38位素数 163
+}
+```
+
+
+值得注意的是，在共享内存内两个线程都能够修改数据
+
+```js
+console.log(ia[37]);  // 163
+ia[37] = 123456; // 最后为 123456
+```
+
+所以，应该有合理的机制来保证共享内存的合理使用
+
+### Atomic
+
+未来还会提供一个类似 Math 方法一样的全局对象 Atomic 
+
+Atomic 下存在多个静态方法用来操作 SharedArrayBuffer 共享内存对象
+
+具体可以看 https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Atomics
+
+关于 Atomic 的介绍
+
+## 求幂运算符（**）
+
+以前在写动画的时候，经常这么操作
+
+```js
+const M = Math;
+const { pow: Pow } = M;
+```
+
+现在 新规范为我们推出了 (**) 求幂运算。
+
+我们可以直接这样
+
+```js
+5 ** 2 // >>> 25
+
+// 等同于 Math.pow(5, 2)
+
+let num = 5;
+num **= 2;
+console.log(num);
+// >>> num 25
+```
