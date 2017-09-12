@@ -1090,6 +1090,28 @@ while (xlen<4) {
 }
 ```
 
+## 数组排列组合
+
+```js
+function groupSplit (arr, size) {
+  var r = []; //result
+
+  function _(t, a, n) { //tempArr, arr, num
+    if (n === 0) {
+      r[r.length] = t;
+      return;
+    }
+    for (var i = 0, l = a.length - n; i <= l; i++) {
+      var b = t.slice();
+      b.push(a[i]);
+      _(b, a.slice(i + 1), n - 1);
+    }
+  }
+  _([], arr, size);
+  return r;
+}
+```
+
 ## 感谢
 
 [JavaScript中call()与apply()有什么区别？](http://my.oschina.net/warmcafe/blog/74973)
