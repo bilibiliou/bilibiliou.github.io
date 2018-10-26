@@ -1112,6 +1112,37 @@ function groupSplit (arr, size) {
 }
 ```
 
+## 26进制和10进制转换
+
+### 问题描述
+
+在Excel中，列的名称是这样一个递增序列：A、B、C、…、Z、AA、AB、AC、…、AZ、BA、BB、BC、…、BZ、CA、…、ZZ、AAA、AAB…。
+我们需要将上述列名序列和以下自然数序列相互转换：1、2、3、…。
+
+### 解决方案
+
+```js
+function main (number) {
+  var arr = ['A','B','C', 'D', 'E', 'F', 'G', 'H', 'I', 'G', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+  var result = []
+  var unit = 1
+  var pop = 0
+
+  while (number > 0) {
+    pop = number % 26
+    if (pop === 0) {
+      pop = 26
+    }
+    result.unshift( arr[pop - 1] )
+    number = (number - pop) / 26
+  }
+
+  return result;
+}
+
+main(52) // AZ
+```
+
 ## 感谢
 
 [JavaScript中call()与apply()有什么区别？](http://my.oschina.net/warmcafe/blog/74973)
