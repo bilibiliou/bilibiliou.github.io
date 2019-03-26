@@ -7,7 +7,7 @@ keywords: 技术,js,ThreeJs
 
 ## 效果
 
-![gif](https://numerhero.github.io/assets/download/animations/heart-animation.gif)
+![gif](https://bilibiliou.github.io/assets/download/animations/heart-animation.gif)
 
 ## 思路
 
@@ -94,4 +94,4 @@ Three 会自动将 Vector3 连起来， 这个我们可以通过 设置 wirefram
 
 ## 源码
 
-[https://github.com/NumerHero/animations](https://github.com/NumerHero/animations)
+[https://github.com/bilibiliou/animations](https://github.com/bilibiliou/animations)

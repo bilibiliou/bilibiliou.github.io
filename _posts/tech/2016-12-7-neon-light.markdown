@@ -11,7 +11,7 @@ keywords: 技术,canvas,动画,霓虹灯
 
 ## 样式
 
-<iframe height='486' scrolling='no' title='rWBKJp' src='//codepen.io/numerhero/embed/KNZRGz/?height=650&theme-id=0&default-tab=result&embed-version=2' frameborder='no' allowtransparency='true' allowfullscreen='true' style='width: 100%;'>See the Pen <a href='http://codepen.io/numerhero/pen/rWBKJp/'>rWBKJp</a> by Owen (<a href='http://codepen.io/numerhero'>@numerhero</a>) on <a href='http://codepen.io'>CodePen</a>.
+<iframe height='486' scrolling='no' title='rWBKJp' src='//codepen.io/bilibiliou/embed/KNZRGz/?height=650&theme-id=0&default-tab=result&embed-version=2' frameborder='no' allowtransparency='true' allowfullscreen='true' style='width: 100%;'>See the Pen <a href='http://codepen.io/bilibiliou/pen/rWBKJp/'>rWBKJp</a> by Owen (<a href='http://codepen.io/bilibiliou'>@bilibiliou</a>) on <a href='http://codepen.io'>CodePen</a>.
 </iframe>
 
 ## 思路
@@ -258,6 +258,6 @@ sh = bh - 20;            // 小屏高
 
 ## 源代码
 
-想深入研究其他细节的同学，请参照[源码](https://github.com/NumerHero/animations)
+想深入研究其他细节的同学，请参照[源码](https://github.com/bilibiliou/animations)
 
 喜欢该效果的朋友可以不要吝惜您的star哦~

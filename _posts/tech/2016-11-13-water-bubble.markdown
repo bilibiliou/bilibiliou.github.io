@@ -11,7 +11,7 @@ keywords: 技术,canvas,动画
 
 ## 样式
 
-<iframe height='486' scrolling='no' title='rWBKJp' src='//codepen.io/numerhero/embed/rWBKJp/?height=486&theme-id=0&default-tab=result&embed-version=2' frameborder='no' allowtransparency='true' allowfullscreen='true' style='width: 100%;'>See the Pen <a href='http://codepen.io/numerhero/pen/rWBKJp/'>rWBKJp</a> by Owen (<a href='http://codepen.io/numerhero'>@numerhero</a>) on <a href='http://codepen.io'>CodePen</a>.
+<iframe height='486' scrolling='no' title='rWBKJp' src='//codepen.io/bilibiliou/embed/rWBKJp/?height=486&theme-id=0&default-tab=result&embed-version=2' frameborder='no' allowtransparency='true' allowfullscreen='true' style='width: 100%;'>See the Pen <a href='http://codepen.io/bilibiliou/pen/rWBKJp/'>rWBKJp</a> by Owen (<a href='http://codepen.io/bilibiliou'>@bilibiliou</a>) on <a href='http://codepen.io'>CodePen</a>.
 </iframe>
 
 ## 思路
@@ -186,6 +186,6 @@ ctx.clip();
 
 ## 源代码
 
-需要源代码的同学可以[在这里](https://github.com/NumerHero/animations) 下载到源码
+需要源代码的同学可以[在这里](https://github.com/bilibiliou/animations) 下载到源码
 
 喜欢该效果的朋友可以不要吝惜您的star哦~

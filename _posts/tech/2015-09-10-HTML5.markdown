@@ -183,7 +183,7 @@ figcation的子元素 用来解释
 可以使用keygen为发送的表单添加一个公共密钥
 
 ```html
-<form action="http://numerhero.github.io" method="get">
+<form action="http://bilibiliou.github.io" method="get">
 用户: <input type="text" name="usr_name" />
 公钥: <keygen name="security" />
 <input type="submit" />
@@ -841,7 +841,7 @@ article::before {
 ```
 
 如果,这几个js文件比较大,而碰巧我们可爱的用户网又比较慢
-因为默认的加载方式是同步加载[(关于同异步的请参考本站AJAX的有关内容)](http://numerhero.github.io/2015/08/26/AJAX.html)
+因为默认的加载方式是同步加载[(关于同异步的请参考本站AJAX的有关内容)](http://bilibiliou.github.io/2015/08/26/AJAX.html)
 这时候就会出现一段没有内容的空白期,这样就可能让一些没有耐心的用户停止等待了
 
 defer="defer"属性可以让加载的脚本延迟加载

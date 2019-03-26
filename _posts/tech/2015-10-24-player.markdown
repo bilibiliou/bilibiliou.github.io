@@ -22,9 +22,9 @@ keywords: 技术,滚动条
 然后回车就能播放
 ```
 
-<a href="http://numerhero.github.io/assets/download/player-demo.rar" target="_blank">下载到本地</a>
+<a href="http://bilibiliou.github.io/assets/download/player-demo.rar" target="_blank">下载到本地</a>
 
 注:毕竟是本人纯原生手写,已经尽量避免许多bug了, 很多功能是摆设, 但是播放器的功能都基本实现了
 
-若需转载还请标注小站`numerhero.github.io`
+若需转载还请标注小站`bilibiliou.github.io`
 谢谢各位支持

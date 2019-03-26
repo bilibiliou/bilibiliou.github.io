@@ -201,7 +201,7 @@ require( ["a"] , function (a) {
 
 require 给我们提供了一个shim函数,可以将未进行模块化的组件模块化
 
-例如一个本人自己写的小框架[util.js](https://github.com/NumerHero/tool.js)（厚脸皮求star(*^__^*) ）
+例如一个本人自己写的小框架[util.js](https://github.com/bilibiliou/tool.js)（厚脸皮求star(*^__^*) ）
 
 在主函数main中我们这样写
 (shim: 垫子 ，加个垫子，能让这个component够得着的意思么？)

@@ -341,13 +341,13 @@ Microsoft Internet Information Server(IIS)
 
 比如我们现在要登录账户
 用GET发送请求
-numerhero.github.io/?username=Owen&pw=123
+bilibiliou.github.io/?username=Owen&pw=123
 当我们访问一次之后和后端交互了一次之后，成功了，得到了我们想要的数据
 然后缓存文件夹就会记录下numerhero.github.io/?username=Owen&pw=123交互成功之后的内容
 以便以后再次访问
 
 但是，如果下次我们使用GET方法登录账户
-numerhero.github.io/?username=Owen&pw=123
+bilibiliou.github.io/?username=Owen&pw=123
 浏览器就会从本地的缓存文件夹中调取老数据
 这样，就无法得到我们想要的新数据
 
@@ -357,7 +357,7 @@ numerhero.github.io/?username=Owen&pw=123
 这样浏览器看到每次请求的地址和老地址不相同，
 就不会访问本地缓存文件而是访问远端服务器了
 
-"numerhero.github.io/?username=Owen&pw=123&" + new Date().getTime() 
+"bilibiliou.github.io/?username=Owen&pw=123&" + new Date().getTime() 
 (注意:请求内容和时间戳或随机数之间需要有一个&来连接) 
 
 每请求一次 都是毫秒级的变化,这样就不可能出现缓存问题了
@@ -370,10 +370,10 @@ numerhero.github.io/?username=Owen&pw=123
 也就是url编码
 
 所以，如果我们要用GET方式传递像
-numerhero.github.io/?username=欧阳湘粤&pw=123
+bilibiliou.github.io/?username=欧阳湘粤&pw=123
 的数据，就需要对齐进行编码 而非直接用 utf-8 中文编码
 encodeURL()方法把中文编码转化成URL编码
-"numerhero.github.io/?username=" + encodeURL(欧阳湘粤) + "&pw=123"
+"bilibiliou.github.io/?username=" + encodeURL(欧阳湘粤) + "&pw=123"
 
 这样就能解决乱码问题
 
@@ -405,7 +405,7 @@ GET方法用于获取资源，不应有副作用，所以是幂等的。
 但HTTP规范也没有对其进行限制，起限制作用的是服务器的处理能力。
 
 3.post无法从地址栏直接传递数据
-"numerhero.github.io/?username=Owen&pw=123&" + new Date().getTime() 
+"bilibiliou.github.io/?username=Owen&pw=123&" + new Date().getTime() 
 像GET方式的传递方式，在POST方式上不适用，后端收不到这些数据
 
 如果需要从前端向后端提交数据，可以在send()里面写
@@ -477,7 +477,7 @@ HTTP响应中应包含帖子的创建状态以及帖子的URI。
 浏览器(IE7以上和标准浏览器支持JSON对象 和 他们底下的一些方法)
 如果要兼容IE6 可以从外部导入 [JSON.js](https://github.com/douglascrockford/JSON-js)
 
-关于JSON具体的研究分析，请看本站[JSON对象学习笔记](http://numerhero.github.io/2015/08/29/JSON.html)
+关于JSON具体的研究分析，请看本站[JSON对象学习笔记](http://bilibiliou.github.io/2015/08/29/JSON.html)
 
 	
 ## 封装AJAX函数

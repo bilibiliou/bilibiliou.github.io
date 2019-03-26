@@ -10,14 +10,14 @@ kramdown:
 author: 欧阳湘粤
 name: Owen
 email: 469564715@qq.com
-link: http://numerhero.github.io
+link: http://bilibiliou.github.io
 #weibo: 
-github: http://github.com/NumerHero
+github: http://github.com/bilibiliou
 
 # 站点信息
 title: Owen的博客 
 description: 欧阳湘粤的博客
-url: http://numerhero.github.io
+url: http://bilibiliou.github.io
 rss_url: /pages/atom.xml
 
 # disqus 设置

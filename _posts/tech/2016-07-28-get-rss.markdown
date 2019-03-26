@@ -494,4 +494,4 @@ ep.after("save_Data", $self.result.length , function () {
 
 ### 具体源码
 
-上文只是解析了部分代码，具体源码请见：[Get_BaiDuNewsRss_By_NodeJS](https://github.com/NumerHero/Get_BaiDuNewsRss_By_NodeJS#get_baidunewsrss_by_nodejs)
+上文只是解析了部分代码，具体源码请见：[Get_BaiDuNewsRss_By_NodeJS](https://github.com/bilibiliou/Get_BaiDuNewsRss_By_NodeJS#get_baidunewsrss_by_nodejs)

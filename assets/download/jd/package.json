@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Owen <469564715@qq.com> (http://numerhero.github.io/)",
+  "author": "Owen <469564715@qq.com> (http://bilibiliou.github.io/)",
   "license": "MIT",
   "devDependencies": {
     "autoprefixer": "^6.3.7",

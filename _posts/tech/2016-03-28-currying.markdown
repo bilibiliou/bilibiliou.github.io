@@ -149,7 +149,7 @@ javascript 高级编程上应该是没有反柯里化的内容的，上网一搜
 获取到后，在每个里面插入一个span，并且返回每个div下span的集合
 
 
-基础好点的同学们应该立马就想到 使用Array下 的map方法进行映射返回一组数组 （还不知道map方法的同学可以参考一下我的另外一篇[博文](http://numerhero.github.io/%E6%8A%80%E6%9C%AF/2016/04/04/array-function.html)）
+基础好点的同学们应该立马就想到 使用Array下 的map方法进行映射返回一组数组 （还不知道map方法的同学可以参考一下我的另外一篇[博文](http://bilibiliou.github.io/%E6%8A%80%E6%9C%AF/2016/04/04/array-function.html)）
 
 但是，遗憾的是使用DOM找到的集合并不是Array类型的，而是HTMLCollection 类型的，而HTMLCollection并没有Map方法，
 

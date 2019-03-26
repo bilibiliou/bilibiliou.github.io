@@ -233,7 +233,7 @@ oGc.stroke();
 
 ## 用canvas绘制贝塞尔曲线
 
-具体了解贝塞尔曲线，可在本站[关于贝塞尔曲线知识个人理解](http://numerhero.github.io/2015/09/24/about-Bezier-curve.html)了解。
+具体了解贝塞尔曲线，可在本站[关于贝塞尔曲线知识个人理解](http://bilibiliou.github.io/2015/09/24/about-Bezier-curve.html)了解。
 
 quadraticCurveTo( dx , dy , x1 , y1 ) 一个控制点的贝塞尔曲线
 也就是一个二阶的贝塞尔曲线

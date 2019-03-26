@@ -2,7 +2,7 @@
 									/*--------------------------------------------*\
 											  	  仿京东金融页js
 									   		   	   Finish By Owen
-									      Github:http://github.com/numerhero
+									      Github:http://github.com/bilibiliou
 									\*--------------------------------------------*/
 /* header */ 
 $(function() {

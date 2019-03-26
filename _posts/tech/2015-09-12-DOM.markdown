@@ -850,7 +850,7 @@ function bind(obj , evname , fn) {
 
 我们一般使用的是冒泡机制，因为冒泡机制相对于捕获机制的兼容性要好，所以一般 使用addEventListener的第三个参数都是设置为false
 
-事件冒泡机制还有一个好处，就是可以执行事件委托 ， 具体内容可以看本站的[关于事件委托](http://numerhero.github.io/2015/11/18/Event-delegation.html)
+事件冒泡机制还有一个好处，就是可以执行事件委托 ， 具体内容可以看本站的[关于事件委托](http://bilibiliou.github.io/2015/11/18/Event-delegation.html)
 
 ### 删除事件
 
@@ -1101,7 +1101,7 @@ newWindow.document.body.background = "red";
 ```
 你当然是没有权利去改百度提供的页面的DOM内容的
 
-当然如果要解决这个问题，可以参考[html5跨域通信](http://numerhero.github.io/2015/09/10/HTML5.html)
+当然如果要解决这个问题，可以参考[html5跨域通信](http://bilibiliou.github.io/2015/09/10/HTML5.html)
 
 ## close
 
