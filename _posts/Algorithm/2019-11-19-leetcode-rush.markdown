@@ -60,3 +60,85 @@ for (var key in map) {
 
 result // ["Alaska", "Dad"]
 ```
+
+2. N叉树的最大深度
+
+给定一个 N 叉树，找到其最大深度。
+
+最大深度是指从根节点到最远叶子节点的最长路径上的节点总数。
+
+例如，给定一个 3叉树 :
+
+![image](https://user-images.githubusercontent.com/25907273/63665222-02415480-c7fd-11e9-9a1b-f6939340fe55.png)
+
+我们应返回其最大深度，3。
+
+说明:
+
+树的深度不会超过 1000。
+树的节点总不会超过 5000。
+
+来源：力扣（LeetCode）
+链接：https://leetcode-cn.com/problems/maximum-depth-of-n-ary-tree
+著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+
+```js
+/**
+  function Node (v, childs) {
+    this.v = v
+    this.childs = childs
+  }
+*/
+
+
+function maxDepth (root) {
+  if (!root) {
+    return 0
+  }
+  
+  const stack = [{node: root, deep: 1}]
+  let result = 1
+  while (stack.length > 0) {
+    let currentNode = stack.pop()
+    let { node, deep } = currentNode
+    let children = node.childs
+    result = Math.max(result, deep)
+    if (children && children.length) {
+      for (let i = 0; i < children.length; i++) {
+        let child = children[i]
+        stack.push({node: child, deep: deep + 1})
+      }
+    }
+  }
+  return result
+}
+
+maxDepth ({
+  v: 'A',
+  childs: [{
+    v: 'B',
+    childs: [{
+      v: 'E',
+      childs: [{
+        v: 'G'
+      }]
+    }]
+  }, {
+    v: 'C',
+    childs: [{
+      v: 'F',
+      childs: [{
+        v: 'H',
+        childs: [{
+          v: 'J',
+          childs: [{
+            v: 'K'
+          }]
+        }]
+      }]
+    }]
+  }, {
+    v: 'D'
+  }]
+})
+```
