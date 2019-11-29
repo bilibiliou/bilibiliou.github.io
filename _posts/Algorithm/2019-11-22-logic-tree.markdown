@@ -39,8 +39,11 @@ keywords: 算法
 ## 解析算法
 
 测试用例1：(&10,20,30,(|4,5,6),(&7,8,9))
+
 测试用例2：(&(|3),20,(&5,6,7))
+
 测试用例3：(&(|A),B,(&C,D,E))
+
 测试用例4：(|A, (&B, C, (|E, F, G)), (|D, (&H, I)))
 
 ### 逻辑式解析为对象的方法：
@@ -176,7 +179,14 @@ object2LogicExpression(logicExpression2Object('(|A, (&B, C, (|E, F, G)), (|D, (&
 ```
 ## Caveat
 
-从存储上看，这种数据结构较JSON结构快不少
+从存储上看，这种数据结构较JSON结构轻量不少
+
 以(&A, B) 为例
+
 JSON需要{ "logic": "&", values: ["A", "B"] } 这么多字符
+
 但是，从可读性和易用性的角度来看，Json 结构更符合多人协作的场景
+
+## Creator
+
+[github@bilibiliou](https://github.com/bilibiliou)
