@@ -204,3 +204,83 @@ function shortestToChar (S, C) {
 
 shortestToChar('loveleetcode', 'e')
 ```
+
+### 两数相加
+
+给出两个 非空 的链表用来表示两个非负的整数。其中，它们各自的位数是按照 逆序 的方式存储的，并且它们的每个节点只能存储 一位 数字。
+
+如果，我们将这两个数相加起来，则会返回一个新的链表来表示它们的和。
+
+您可以假设除了数字 0 之外，这两个数都不会以 0 开头。
+
+示例：
+
+输入：(2 -> 4 -> 3) + (5 -> 6 -> 4)
+输出：7 -> 0 -> 8
+原因：342 + 465 = 807
+
+来源：力扣（LeetCode）
+链接：https://leetcode-cn.com/problems/add-two-numbers
+著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+
+```js
+var addTwoNumbers = function(l1, l2) {
+  var n = 0
+  var m = 0
+
+  function eat (L) {
+    var stack = []
+    var pointer = L
+    while (pointer.next) {
+        stack.push(pointer.val)
+        pointer = pointer.next
+    }
+    stack.push(pointer.val)
+    return stack
+  }
+
+  function format (n) {
+    var t = {}
+    var p = t
+    for (var i = 0; i < n.length; i++) {
+      var char = n[i]
+      t.val = parseInt(char, 10)
+      
+      if (i !== n.length - 1) {
+        t.next = {}
+      } else {
+        t.next = null
+      }
+      t = t.next
+    }
+    return p
+  }
+  n = eat(l1)
+  m = eat(l2)
+  var r = []
+  var sumLen = Math.max(n.length, m.length)
+  var tt = 0
+  for (var i = 0; i < sumLen; i++) {
+  var a = n[i] ? n[i] : 0
+  var b = m[i] ? m[i] : 0
+  var k = a + b + tt
+  tt = 0
+
+  if (k < 10) {
+      r[i] = k
+    } else {
+      r[i] = k - 10
+      tt = 1
+    }
+  }
+
+  if (tt) {
+    r[r.length] = 1
+  }
+
+  return format(r)
+};
+```
+
+执行用时 : 144 ms, 在所有 JavaScript 提交中击败了 29.63% 的用户
+内存消耗 : 38.9 MB, 在所有 JavaScript 提交中击败了 45.50% 的用户
