@@ -1,27 +1,43 @@
-highlighter: rouge
-line_numbers: true 
-markdown: kramdown
-kramdown:
-  input:         GFM
-  syntax_highlighter: rouge
-  auto_ids:      true
+title: Texture Theme
+author: GitHub User
+email: your-email@domain.com
+description: > # this means to ignore newlines until "show_exerpts:"
+  Write an awesome description for your new site here. You can edit this
+  line in _config.yml. It will appear in your document head meta (for
+  Google search results) and in your feed.xml site description.
+show_excerpts: true # set to true to show excerpts on the homepage
+baseurl: /texture
 
-# 作者信息
-author: 欧阳湘粤
-name: Owen
-email: 469564715@qq.com
-link: http://bilibiliou.github.io
-#weibo: 
-github: http://github.com/bilibiliou
+# Minima date format
+# refer to http://shopify.github.io/liquid/filters/date/ if you want to customize this
+sass:
+  sass_dir: _sass
 
-# 站点信息
-title: Owen的博客 
-description: 欧阳湘粤的博客
-url: http://bilibiliou.github.io
-rss_url: /pages/atom.xml
+permalink: /posts/:title/
+texture:
+  title: Adam Denisov
+  tagline: Developer. Designer
+  date_format: "%b %-d, %Y"
+  style: black
+  showNav: false
+  showPicker: true
 
-# disqus 设置
-disqus:
-  shortname: owen
+  # generate social links in footer
+  social_links:
+    twitter: thelehhman
+    github:  thelehhman
+    linkedIn: in/thelehhman
+    rss: rss
+ 
 
-# duoshuo 设置
+# If you want to link only specific pages in your header, uncomment
+# this and add the path to the pages in order as they should show up
+#header_pages:
+# - about.md
+
+# Build settings
+# theme: texture
+
+plugins:
+  - jekyll-seo-tag
+#  - jekyll-feed
