@@ -60,6 +60,8 @@ for (var key in map) {
 
 result // ["Alaska", "Dad"]
 ```
+执行用时 :88 ms
+内存消耗 :33.8 MB
 
 ### 2. N叉树的最大深度
 
@@ -204,6 +206,8 @@ function shortestToChar (S, C) {
 
 shortestToChar('loveleetcode', 'e')
 ```
+执行用时：172 ms
+内存消耗：41.8 MB
 
 ### 两数相加
 
@@ -419,3 +423,73 @@ var romanToInt = function(s) {
 
 执行用时 :164 ms, 在所有 JavaScript 提交中击败了69.32%的用户
 内存消耗 :40.4 MB, 在所有 JavaScript 提交中击败了41.77%的用户
+
+### 路径总和 II
+
+给定一个二叉树和一个目标和，找到所有从根节点到叶子节点路径总和等于给定目标和的路径。
+
+说明: 叶子节点是指没有子节点的节点。
+
+示例:
+给定如下二叉树，以及目标和 sum = 22，
+
+              5
+             / \
+            4   8
+           /   / \
+          11  13  4
+         /  \    / \
+        7    2  5   1
+返回:
+
+[
+   [5,4,11,2],
+   [5,8,4,5]
+]
+
+https://leetcode-cn.com/problems/path-sum-ii/
+
+```js
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @param {number} sum
+ * @return {number[][]}
+ */
+var pathSum = function(root, sum) {
+    if (!root) {
+        return [];
+    }
+  var result = []
+  
+  function generate (node, genList, thisSum) {
+    if (!node.right && !node.left) {
+      if (thisSum + node.val === sum) {
+        result.push([...genList, node.val])
+      }
+      return
+    }
+
+
+    if (node && node.left) {
+      generate(node.left, [...genList, node.val], thisSum + node.val)
+    }
+
+    if (node && node.right) {
+      generate(node.right, [...genList, node.val], thisSum + node.val)
+    }
+
+  }
+  generate(root, [], 0)
+
+  return result
+};
+```
+执行用时：92 ms
+内存消耗：46.3 MB
