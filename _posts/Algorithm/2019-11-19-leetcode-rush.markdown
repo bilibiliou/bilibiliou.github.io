@@ -284,3 +284,138 @@ var addTwoNumbers = function(l1, l2) {
 
 执行用时 : 144 ms, 在所有 JavaScript 提交中击败了 29.63% 的用户
 内存消耗 : 38.9 MB, 在所有 JavaScript 提交中击败了 45.50% 的用户
+
+### 罗马数字
+
+罗马数字包含以下七种字符: I， V， X， L，C，D 和 M。
+
+字符          数值
+I             1
+V             5
+X             10
+L             50
+C             100
+D             500
+M             1000
+例如， 罗马数字 2 写做 II ，即为两个并列的 1。12 写做 XII ，即为 X + II 。 27 写做  XXVII, 即为 XX + V + II 。
+
+通常情况下，罗马数字中小的数字在大的数字的右边。但也存在特例，例如 4 不写做 IIII，而是 IV。数字 1 在数字 5 的左边，所表示的数等于大数 5 减小数 1 得到的数值 4 。同样地，数字 9 表示为 IX。这个特殊的规则只适用于以下六种情况：
+
+I 可以放在 V (5) 和 X (10) 的左边，来表示 4 和 9。
+X 可以放在 L (50) 和 C (100) 的左边，来表示 40 和 90。 
+C 可以放在 D (500) 和 M (1000) 的左边，来表示 400 和 900。
+给定一个罗马数字，将其转换成整数。输入确保在 1 到 3999 的范围内。
+
+示例 1:
+
+输入: "III"
+输出: 3
+示例 2:
+
+输入: "IV"
+输出: 4
+示例 3:
+
+输入: "IX"
+输出: 9
+示例 4:
+
+输入: "LVIII"
+输出: 58
+解释: L = 50, V= 5, III = 3.
+示例 5:
+
+输入: "MCMXCIV"
+输出: 1994
+解释: M = 1000, CM = 900, XC = 90, IV = 4.
+
+https://leetcode-cn.com/problems/roman-to-integer/
+
+
+```js
+var romanToInt = function(s) {
+  function value (n) {
+    switch (n) {
+      case 'IV':
+        return 4
+      case 'IX':
+        return 9
+      case 'XL':
+        return 40
+      case 'XC':
+        return 90
+      case 'CD':
+        return 400
+      case 'CM':
+        return 900
+      case 'I':
+        return 1
+      case 'V':
+        return 5
+      case 'X':
+        return 10
+      case 'L':
+        return 50
+      case 'C':
+        return 100
+      case 'D':
+        return 500
+      case 'M':
+        return 1000
+    } 
+  }
+
+  function isSpecial (n, v) {
+    if (
+      ('V' === n || 'X' === n)
+      && v === 'I'
+    ) {
+      return v + n
+    }
+
+    if (
+      ('L' === n || 'C' === n)
+      && v === 'X'
+    ) {
+      return v + n
+    }
+
+    if (
+      ('D' === n || 'M' === n)
+      && v === 'C'
+    ) {
+      return v + n
+    }
+
+    return ''
+  }
+
+  function analysis (s) {
+    var str = s.toUpperCase().split('').reverse()
+    var temp = ''
+    var result = 0
+    for (var i = 0; i < str.length; i++) {
+      var char = str[i]
+      var charNext = str[i + 1]
+
+      if (charNext) {
+        var ss = isSpecial(char, charNext)
+        if (ss) {
+          result += value(ss)
+          i++
+        } else {
+          result += value(char)
+        }
+      } else {
+        result += value(char)
+      }
+    }
+
+    return result
+  }
+  return analysis(s)
+};
+```
+
+执行用时 :164 ms, 在所有 JavaScript 提交中击败了69.32%的用户
+内存消耗 :40.4 MB, 在所有 JavaScript 提交中击败了41.77%的用户
