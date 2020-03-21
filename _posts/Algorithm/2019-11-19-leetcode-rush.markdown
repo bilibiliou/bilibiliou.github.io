@@ -60,6 +60,8 @@ for (var key in map) {
 
 result // ["Alaska", "Dad"]
 ```
+执行用时 :88 ms
+内存消耗 :33.8 MB
 
 ### 2. N叉树的最大深度
 
@@ -206,112 +208,360 @@ function shortestToChar (S, C) {
 
 shortestToChar('loveleetcode', 'e')
 ```
+执行用时：172 ms
+内存消耗：41.8 MB
 
-### 4.字符串转换整数 (atoi)
+### 两数相加
 
-请你来实现一个 atoi 函数，使其能将字符串转换成整数。
+给出两个 非空 的链表用来表示两个非负的整数。其中，它们各自的位数是按照 逆序 的方式存储的，并且它们的每个节点只能存储 一位 数字。
 
-首先，该函数会根据需要丢弃无用的开头空格字符，直到寻找到第一个非空格的字符为止。
+如果，我们将这两个数相加起来，则会返回一个新的链表来表示它们的和。
 
-当我们寻找到的第一个非空字符为正或者负号时，则将该符号与之后面尽可能多的连续数字组合起来，作为该整数的正负号；假如第一个非空字符是数字，则直接将其与之后连续的数字字符组合起来，形成整数。
+您可以假设除了数字 0 之外，这两个数都不会以 0 开头。
 
-该字符串除了有效的整数部分之后也可能会存在多余的字符，这些字符可以被忽略，它们对于函数不应该造成影响。
+示例：
 
-注意：假如该字符串中的第一个非空格字符不是一个有效整数字符、字符串为空或字符串仅包含空白字符时，则你的函数不需要进行转换。
+输入：(2 -> 4 -> 3) + (5 -> 6 -> 4)
+输出：7 -> 0 -> 8
+原因：342 + 465 = 807
 
-在任何情况下，若函数不能进行有效的转换时，请返回 0。
+来源：力扣（LeetCode）
+链接：https://leetcode-cn.com/problems/add-two-numbers
+著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
 
-说明：
+```js
+var addTwoNumbers = function(l1, l2) {
+  var n = 0
+  var m = 0
 
-假设我们的环境只能存储 32 位大小的有符号整数，那么其数值范围为 [−231,  231 − 1]。如果数值超过这个范围，请返回  INT_MAX (231 − 1) 或 INT_MIN (−231) 。
+  function eat (L) {
+    var stack = []
+    var pointer = L
+    while (pointer.next) {
+        stack.push(pointer.val)
+        pointer = pointer.next
+    }
+    stack.push(pointer.val)
+    return stack
+  }
 
-示例 1:
+  function format (n) {
+    var t = {}
+    var p = t
+    for (var i = 0; i < n.length; i++) {
+      var char = n[i]
+      t.val = parseInt(char, 10)
+      
+      if (i !== n.length - 1) {
+        t.next = {}
+      } else {
+        t.next = null
+      }
+      t = t.next
+    }
+    return p
+  }
+  n = eat(l1)
+  m = eat(l2)
+  var r = []
+  var sumLen = Math.max(n.length, m.length)
+  var tt = 0
+  for (var i = 0; i < sumLen; i++) {
+  var a = n[i] ? n[i] : 0
+  var b = m[i] ? m[i] : 0
+  var k = a + b + tt
+  tt = 0
 
-输入: "42"
-输出: 42
-示例 2:
+  if (k < 10) {
+      r[i] = k
+    } else {
+      r[i] = k - 10
+      tt = 1
+    }
+  }
 
-输入: "   -42"
-输出: -42
-解释: 第一个非空白字符为 '-', 它是一个负号。
-     我们尽可能将负号与后面所有连续出现的数字组合起来，最后得到 -42 。
-示例 3:
+  if (tt) {
+    r[r.length] = 1
+  }
 
-输入: "4193 with words"
-输出: 4193
-解释: 转换截止于数字 '3' ，因为它的下一个字符不为数字。
-示例 4:
+  return format(r)
+};
+```
 
-输入: "words and 987"
-输出: 0
-解释: 第一个非空字符是 'w', 但它不是数字或正、负号。
-     因此无法执行有效的转换。
-示例 5:
+执行用时 : 144 ms, 在所有 JavaScript 提交中击败了 29.63% 的用户
+内存消耗 : 38.9 MB, 在所有 JavaScript 提交中击败了 45.50% 的用户
 
-输入: "-91283472332"
-输出: -2147483648
-解释: 数字 "-91283472332" 超过 32 位有符号整数范围。 
-     因此返回 INT_MIN (−231) 。
+### 罗马数字
+
+罗马数字包含以下七种字符: I， V， X， L，C，D 和 M。
+
+字符          数值
+I             1
+V             5
+X             10
+L             50
+C             100
+D             500
+M             1000
+例如， 罗马数字 2 写做 II ，即为两个并列的 1。12 写做 XII ，即为 X + II 。 27 写做  XXVII, 即为 XX + V + II 。
+
+通常情况下，罗马数字中小的数字在大的数字的右边。但也存在特例，例如 4 不写做 IIII，而是 IV。数字 1 在数字 5 的左边，所表示的数等于大数 5 减小数 1 得到的数值 4 。同样地，数字 9 表示为 IX。这个特殊的规则只适用于以下六种情况：
+
+I 可以放在 V (5) 和 X (10) 的左边，来表示 4 和 9。
+X 可以放在 L (50) 和 C (100) 的左边，来表示 40 和 90。 
+C 可以放在 D (500) 和 M (1000) 的左边，来表示 400 和 900。
+给定一个罗马数字，将其转换成整数。输入确保在 1 到 3999 的范围内。
+
+示例 1:
+
+输入: "III"
+输出: 3
+示例 2:
+
+输入: "IV"
+输出: 4
+示例 3:
+
+输入: "IX"
+输出: 9
+示例 4:
+
+输入: "LVIII"
+输出: 58
+解释: L = 50, V= 5, III = 3.
+示例 5:
+
+输入: "MCMXCIV"
+输出: 1994
+解释: M = 1000, CM = 900, XC = 90, IV = 4.
+
+https://leetcode-cn.com/problems/roman-to-integer/
 
 
 ```js
-/**
- * @param {string} str
- * @return {number}
- */
-var myAtoi = function(str) {
-  var raw = str.trim()
-  var len = raw.length
-  var at = 0
-  var result = ''
-  var isFirst = false
-  var hasSymbol = false
-  function eat () {
-    var char = raw.charAt(at)
-    at++
-    return char
+var romanToInt = function(s) {
+  function value (n) {
+    switch (n) {
+      case 'IV':
+        return 4
+      case 'IX':
+        return 9
+      case 'XL':
+        return 40
+      case 'XC':
+        return 90
+      case 'CD':
+        return 400
+      case 'CM':
+        return 900
+      case 'I':
+        return 1
+      case 'V':
+        return 5
+      case 'X':
+        return 10
+      case 'L':
+        return 50
+      case 'C':
+        return 100
+      case 'D':
+        return 500
+      case 'M':
+        return 1000
+    } 
   }
 
-  function value () {
-    if (at >= len) {return}
-    var char = eat()
-    switch (true) {
-      case char === '+':
-      case char === '-':
-        if (!hasSymbol) {
-            isFirst = true
-            hasSymbol = true
-            result += char
-            return value()
-        } else {
-            return
-        }
-      case /^\d$/.test(char):
-        isFirst = true
-        result += char
-        return value()
-      default:
-        if (isFirst) {
-          return result
-        }
+  function isSpecial (n, v) {
+    if (
+      ('V' === n || 'X' === n)
+      && v === 'I'
+    ) {
+      return v + n
     }
-  }
-  value()
-  /** 如果没有有效结果那么返回 0 **/
-  if (!result || result === '+' || result === '-') {
-    return 0
+
+    if (
+      ('L' === n || 'C' === n)
+      && v === 'X'
+    ) {
+      return v + n
+    }
+
+    if (
+      ('D' === n || 'M' === n)
+      && v === 'C'
+    ) {
+      return v + n
+    }
+
+    return ''
   }
 
-  var output = parseInt(result, 10)
+  function analysis (s) {
+    var str = s.toUpperCase().split('').reverse()
+    var temp = ''
+    var result = 0
+    for (var i = 0; i < str.length; i++) {
+      var char = str[i]
+      var charNext = str[i + 1]
 
-  if (output > Math.pow(2, 31) - 1) {
-    return Math.pow(2, 31) - 1
+      if (charNext) {
+        var ss = isSpecial(char, charNext)
+        if (ss) {
+          result += value(ss)
+          i++
+        } else {
+          result += value(char)
+        }
+      } else {
+        result += value(char)
+      }
+    }
+
+    return result
   }
-
-  if (output <= Math.pow(-2, 31)) {
-    return Math.pow(-2, 31)
-  }
-
-  return output
+  return analysis(s)
 };
 ```
+
+执行用时 :164 ms, 在所有 JavaScript 提交中击败了69.32%的用户
+内存消耗 :40.4 MB, 在所有 JavaScript 提交中击败了41.77%的用户
+
+### 路径总和 II
+
+给定一个二叉树和一个目标和，找到所有从根节点到叶子节点路径总和等于给定目标和的路径。
+
+说明: 叶子节点是指没有子节点的节点。
+
+示例:
+给定如下二叉树，以及目标和 sum = 22，
+
+              5
+             / \
+            4   8
+           /   / \
+          11  13  4
+         /  \    / \
+        7    2  5   1
+返回:
+
+[
+   [5,4,11,2],
+   [5,8,4,5]
+]
+
+https://leetcode-cn.com/problems/path-sum-ii/
+
+```js
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @param {number} sum
+ * @return {number[][]}
+ */
+var pathSum = function(root, sum) {
+    if (!root) {
+        return [];
+    }
+  var result = []
+  
+  function generate (node, genList, thisSum) {
+    if (!node.right && !node.left) {
+      if (thisSum + node.val === sum) {
+        result.push([...genList, node.val])
+      }
+      return
+    }
+
+
+    if (node && node.left) {
+      generate(node.left, [...genList, node.val], thisSum + node.val)
+    }
+
+    if (node && node.right) {
+      generate(node.right, [...genList, node.val], thisSum + node.val)
+    }
+
+  }
+  generate(root, [], 0)
+
+  return result
+};
+```
+执行用时：92 ms
+内存消耗：46.3 MB
+
+### 移除重复节点
+
+编写代码，移除未排序链表中的重复节点。保留最开始出现的节点。
+
+示例1:
+
+ 输入：[1, 2, 3, 3, 2, 1]
+ 输出：[1, 2, 3]
+示例2:
+
+ 输入：[1, 1, 1, 1, 2]
+ 输出：[1, 2]
+提示：
+
+链表长度在[0, 20000]范围内。
+链表元素在[0, 20000]范围内。
+进阶：
+
+如果不得使用临时缓冲区，该怎么解决？
+
+来源：力扣（LeetCode）
+链接：https://leetcode-cn.com/problems/remove-duplicate-node-lcci
+
+```js
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val) {
+ *     this.val = val;
+ *     this.next = null;
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @return {ListNode}
+ */
+
+var removeDuplicateNodes = function(head) {
+  if (!head) {
+    return null
+  }
+  var result = new ListNode(head.val)
+  var resultPointer = result
+  var temp = null
+  var hashmap = {[head.val]: 1}
+  head = head.next
+  while (head) {
+    if (!hashmap[head.val]) {
+      hashmap[head.val] = 1
+      temp = head.next
+      head.next = null
+      resultPointer.next = head
+      resultPointer = resultPointer.next
+      head = temp
+      continue
+    }
+
+    head = head.next
+  }
+
+  return result
+};
+
+
+removeDuplicateNodes(test([1, 2, 3, 3, 2, 1]))
+```
+
+执行用时 :
+执行用时 : 84 ms, 在所有 JavaScript 提交中击败了 92.78% 的用户
+内存消耗 : 39 MB, 在所有 JavaScript 提交中击败了 100.00% 的用户

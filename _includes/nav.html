@@ -1,39 +1,8 @@
-<aside id="sidebar">
-  <!--侧边栏-->
-  <nav id="tags">
-    <a href="/index.html" id="avatar" ><img src="/assets/img/avatar.png"></a>
-
-    <ul id="tags__ul">
-      <li id="pl__all" class="tags__li tags-btn active">博文聚合</li>
-      
-      <!--遍历所有的 categories 属性标签 只要有就添加一个栏目-->
-      {% for category in site.categories %} 
-        <li id="{{ category[0] }}" class="tags__li tags-btn">{{ category[0] }}</li>
-      {% endfor %}
-    </ul>
-
-      <!--侧边栏 底部 邮件发送 和 feed 按钮-->
-    <div id="tags__bottom">
-      <a href="mailto:469564715@qq.com" id="icon-email" class="tags-btn fontello"></a>
-      <a href="https://www.linkedin.com/in/%E6%B9%98%E7%B2%A4-%E6%AC%A7%E9%98%B3-109388110" target="_blank" id="icon-linkedin" class="tags-btn fontello fa fa-linkedin"></a>
-    </div>
-  </nav> <!-- end #tags -->
-
-  <!--目录-->
-  <div id="posts-list">
-    <form  id="search-form">
-      <!-- <a href="/index.html" id="mobile-avatar"></a> -->
-      <!-- 百度搜索框 -->
-      <input id="search-input" type="text" autocomplete="off" maxlength="100" >
-      <input id="search-button" type="button" value="百度一下">
-      <ul id="search-list"></ul>
-
-    </form>
-
-    <nav id="pl__container">
-    {% for post in site.posts %}
-      <a class="{{ post.categories }} pl__all" href="{{ post.url }}"><span class="pl__circle"></span><span class="pl__title">{{ post.title }}</span><span class="pl__date">{{ post.date | date: "%b %Y" }}</span></a>
-    {% endfor %}
-    </nav>
-  </div> <!-- end #posts-list -->
-</aside> <!-- end #sidebar -->
+{%- if site.texture.showNav -%}
+<div class="navbar">
+	<ul>
+		<a href="https://bilibiliou.github.io/"><li>Home</li></a>
+		<a href="https://bilibiliou.github.io/assets/download/resume/"><li>About</li></a>
+	</ul>
+</div>
+{%- endif -%}

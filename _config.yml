@@ -1,27 +1,40 @@
-highlighter: rouge
-line_numbers: true 
-markdown: kramdown
-kramdown:
-  input:         GFM
-  syntax_highlighter: rouge
-  auto_ids:      true
-
-# 作者信息
-author: 欧阳湘粤
-name: Owen
+title: 仰望星空的天台
+author: BiliBiliou
 email: 469564715@qq.com
-link: http://bilibiliou.github.io
-#weibo: 
-github: http://github.com/bilibiliou
+description: > # this means to ignore newlines until "show_exerpts:"
+  Write an awesome description for your new site here. You can edit this
+  line in _config.yml. It will appear in your document head meta (for
+  Google search results) and in your feed.xml site description.
+show_excerpts: true # set to true to show excerpts on the homepage
+baseurl: /
 
-# 站点信息
-title: Owen的博客 
-description: 欧阳湘粤的博客
-url: http://bilibiliou.github.io
-rss_url: /pages/atom.xml
+# Minima date format
+# refer to http://shopify.github.io/liquid/filters/date/ if you want to customize this
+sass:
+  sass_dir: _sass
 
-# disqus 设置
-disqus:
-  shortname: owen
+permalink: /posts/:title/
+texture:
+  title: Bilibiliou 的个人博客
+  tagline: 小码农年方二十又三，正青春被加班削去了头发
+  date_format: "%b %-d, %Y"
+  style: black
+  showNav: true
+  showPicker: false
 
-# duoshuo 设置
+  # generate social links in footer
+  social_links:
+    github:  https://bilibiliou.github.io
+ 
+
+# If you want to link only specific pages in your header, uncomment
+# this and add the path to the pages in order as they should show up
+#header_pages:
+# - about.md
+
+# Build settings
+# theme: texture
+
+plugins:
+  - jekyll-seo-tag
+#  - jekyll-feed

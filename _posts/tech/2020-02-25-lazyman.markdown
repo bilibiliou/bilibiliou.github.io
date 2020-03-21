@@ -1,0 +1,139 @@
+---
+layout: post
+title: 如何实现一个LazyMan
+category: 技术
+keywords: 技术,js
+---
+
+微信面试题目：
+
+实现一个LazyMan，可以按照以下方式调用:
+LazyMan("Hank")输出:
+Hi! This is Hank!
+ 
+LazyMan("Hank").sleep(10).eat("dinner")输出
+Hi! This is Hank!
+//等待10秒..
+Wake up after 10
+Eat dinner~
+ 
+LazyMan("Hank").eat("dinner").eat("supper")输出
+Hi This is Hank!
+Eat dinner~
+Eat supper~
+ 
+LazyMan("Hank").sleepFirst(5).eat("supper")输出
+//等待5秒
+Wake up after 5
+Hi This is Hank!
+Eat supper
+ 
+以此类推。
+
+我自己的实现如下：
+
+```js
+class LazyManFunc {
+  constructor (manName) {
+    let self = this
+    this.manName = manName
+    this.eventList = []
+
+    this.surprisedAppear()
+    setTimeout(() => {
+      this._publish()
+    }, 0)
+    return this
+  }
+
+  static LazyMan (manName) {
+    return new LazyManFunc(manName)
+  }
+
+  async _publish () {
+    for (let i = 0; i < this.eventList.length; i++) {
+      let event = this.eventList[i]
+      await event.exec()
+    }
+    return this
+  }
+
+  _sleep (timeout) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve()
+      }, timeout)
+    })
+  }
+
+  surprisedAppear () {
+    this.eventList.push({
+      exec: () => {
+        return new Promise((resolve) => {
+          console.log('Hi! This is !', this.manName)
+          resolve()
+        })
+      },
+      eventName: 'appear'
+    })
+    return this
+  }
+
+  sleep (timeout) {
+    this.eventList.push({
+      exec: () => {
+        return this._sleep(timeout * 1000)
+          .then(() => {
+            console.log('Wake up after ', timeout)
+          })
+      },
+      eventName: 'sleep'
+    })
+    return this
+  }
+
+  sleepFirst (timeout) {
+    this.eventList.unshift({
+      exec: () => {
+        return this._sleep(timeout * 1000)
+          .then(() => {
+            console.log('Wake up after ', timeout)
+          })
+      },
+      eventName: 'sleepFirst'
+    })
+    return this
+  }
+
+  eat (meal) {
+    this.eventList.push({
+      exec: () => {
+        return new Promise((resolve) => {
+          console.log('Eat ', meal)
+          resolve()
+        })
+      },
+      eventName: 'eat'
+    })
+    return this
+  }
+}
+
+const LazyMan = LazyManFunc.LazyMan
+
+LazyMan('Owen')
+  .eat('lunch')
+  .sleepFirst(2)
+  .sleep(1)
+  .eat('dinner')
+```
+
+个人觉得思路实际上就是构建一个 LazyMan 对象并封装方法
+每执行一次动作实际上就是队列push一个事件（event）如果是xxFirst 函数则是 unshift 一个事件（event）
+
+关键点：setTimeout 0 ， macrotask 会在 当前的 eventLoop 全部执行完成后在执行
+所以 当链式调用全部结束后，执行 _publish
+
+当执行 _publish 时 我们拿到的是一个 Promise 队列，我们使用 async + await 实现一个Promise 队列自执行
+
+个人感觉这种面试题很有挑战性，充分考察了面试者关于 eventLoop 异步调用 对象封装的相关知识
