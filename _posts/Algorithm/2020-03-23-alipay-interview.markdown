@@ -131,8 +131,38 @@ var dominoes = function (chains) {
 
   if (!canContinue) { return [] }
 
-  function match (c1, c2) {
-    if () {}
+  function matchGroup (c1, c2) {
+    var [A, B] = c1
+    var [C, D] = c2
+    var result = []
+    if (A === C) {
+      // 可能的头尾
+      result.push({
+        possible: [ [[B, A], [C, D]], [[D, A], [C, B]] ]
+      })
+    }
+
+    if (A === D) {
+      // 可能的头尾
+      result.push({
+        possible: [ [[B, A], [D, C]], [[C, A], [D, B]] ]
+      })
+    }
+
+    if (B === C) {
+      // 可能的头尾
+      result.push({
+        possible: [ [[A, B], [C, D]], [[D, B], [C, A]] ]
+      })
+    }
+
+    if (C === D) {
+      result.push({
+        possible: [ [[A, C], [D, B]], [[B, C], [D, A]] ]
+      })
+    }
+
+    return result
   }
 
   console.log(temp)
