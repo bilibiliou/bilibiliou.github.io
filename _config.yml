@@ -24,7 +24,7 @@ texture:
 
   # generate social links in footer
   social_links:
-    github:  https://bilibiliou.github.io
+    github: bilibiliou
  
 
 # If you want to link only specific pages in your header, uncomment
