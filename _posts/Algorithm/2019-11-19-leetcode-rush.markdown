@@ -493,3 +493,64 @@ var pathSum = function(root, sum) {
 ```
 执行用时：92 ms
 内存消耗：46.3 MB
+
+### 原地反转字符
+
+将 "www.bytedance.com" 反转为 "moc.ecnadetyb.www"
+
+```js
+var str = 'www.bytedance.com'.split('')
+var len = str.length
+var tempChar
+for (var i = 0; i < parseInt(len / 2); i++) {
+  tempChar = str[i]
+  str[i] = str[len - 1 - i]
+  str[strLen - 1 - i] = tempChar
+}
+
+str.join('')
+```
+
+### 从路径中查找出最短路径
+
+输入：['aa/bb/sd/bb', 'aa/bb/wwewer', 'aa/bb/sd/ddfff']
+输出：aa/bb/
+
+https://leetcode-cn.com/problems/longest-common-prefix/
+
+```js
+/**
+ * @param {string[]} strs
+ * @return {string}
+ */
+var longestCommonPrefix = function(strs) {
+    if (!strs.length) {
+        return ''
+    }
+    var str = ''
+    var p = 0
+    var temp = ''
+    var getPrefix = function (arr) {
+        while (true) {
+            if (!arr[0]) { return '' }
+            if (arr.length < 2) { return arr[0] }
+            temp = arr[0][p]
+            for (var i = 1; i < arr.length; i++) {
+                var arrStr = arr[i]
+                var pstr = arrStr[p]
+                if (!temp || !pstr || pstr !== temp) {
+                    return str
+                }
+            }
+            str += temp
+            temp = ''
+            p++
+        }
+        return str
+    }
+    return getPrefix(strs)
+};
+```
+
+执行用时：72 ms
+内存消耗：35.2 MB
