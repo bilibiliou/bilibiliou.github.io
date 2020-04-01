@@ -432,6 +432,7 @@ var romanToInt = function(s) {
 
 说明: 叶子节点是指没有子节点的节点。
 
+```
 示例:
 给定如下二叉树，以及目标和 sum = 22，
 
@@ -448,6 +449,7 @@ var romanToInt = function(s) {
    [5,4,11,2],
    [5,8,4,5]
 ]
+```
 
 https://leetcode-cn.com/problems/path-sum-ii/
 
@@ -493,7 +495,9 @@ var pathSum = function(root, sum) {
   return result
 };
 ```
+
 执行用时：92 ms
+
 内存消耗：46.3 MB
 
 ### 原地反转字符
@@ -516,6 +520,7 @@ str.join('')
 ### 从路径中查找出最短路径
 
 输入：['aa/bb/sd/bb', 'aa/bb/wwewer', 'aa/bb/sd/ddfff']
+
 输出：aa/bb/
 
 https://leetcode-cn.com/problems/longest-common-prefix/
@@ -555,7 +560,9 @@ var longestCommonPrefix = function(strs) {
 ```
 
 执行用时：72 ms
+
 内存消耗：35.2 MB
+
 ### 移除重复节点
 
 编写代码，移除未排序链表中的重复节点。保留最开始出现的节点。
@@ -563,20 +570,27 @@ var longestCommonPrefix = function(strs) {
 示例1:
 
  输入：[1, 2, 3, 3, 2, 1]
+
  输出：[1, 2, 3]
+
 示例2:
 
  输入：[1, 1, 1, 1, 2]
+
  输出：[1, 2]
+
 提示：
 
 链表长度在[0, 20000]范围内。
+
 链表元素在[0, 20000]范围内。
+
 进阶：
 
 如果不得使用临时缓冲区，该怎么解决？
 
 来源：力扣（LeetCode）
+
 链接：https://leetcode-cn.com/problems/remove-duplicate-node-lcci
 
 ```js
@@ -623,7 +637,9 @@ removeDuplicateNodes(test([1, 2, 3, 3, 2, 1]))
 ```
 
 执行用时 :
+
 执行用时 : 84 ms, 在所有 JavaScript 提交中击败了 92.78% 的用户
+
 内存消耗 : 39 MB, 在所有 JavaScript 提交中击败了 100.00% 的用户
 
 ### 等价多米诺骨牌对的数量
@@ -639,16 +655,20 @@ removeDuplicateNodes(test([1, 2, 3, 3, 2, 1]))
 示例：
 
 输入：dominoes = [[1,2],[2,1],[3,4],[5,6]]
+
 输出：1
  
 
 提示：
 
 1 <= dominoes.length <= 40000
+
 1 <= dominoes[i][j] <= 9
 
 来源：力扣（LeetCode）
+
 链接：https://leetcode-cn.com/problems/number-of-equivalent-domino-pairs
+
 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
 
 ```js
@@ -710,5 +730,7 @@ var numEquivDominoPairs = function(dominoes) {
 ```
 
 效率如下：
+
 执行用时 :80 ms, 在所有 JavaScript 提交中击败了91.07%的用户
+
 内存消耗 :43.9 MB, 在所有 JavaScript 提交中击败了30.77%的用户
