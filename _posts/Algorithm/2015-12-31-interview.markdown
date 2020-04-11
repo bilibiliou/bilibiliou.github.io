@@ -1143,8 +1143,143 @@ function main (number) {
 main(52) // AZ
 ```
 
+### Object.create 到底干了啥
+
+说白了就很简单，但是很绕
+
+对象A
+
+新建一个对象，把A浅拷贝一份，丢到新建的那个对象的prototype中
+
+返回这个对象
+
+```js
+// proprttiesObject 可选参数, 和 Object.defineProperties 的入参一致
+var _create = function (A, proprttiesObject) {
+  var _F = new Function() // 构造一个对象
+  _F.prototype = A
+  if (proprttiesObject) {
+    Object.defineProperties(_F, proprttiesObject)
+  }
+  return _F
+}
+```
+
+### 关于 es6 的继承
+
+extend 内部到底实现了那些东西呢？ 主要是下面三个函数
+
+```js
+function _classCallCheck(instance, Constructor) {
+ if (!(instance instanceof Constructor)) { 
+    throw new TypeError("Cannot call a class as a function"); 
+  } 
+}
+
+// 保证 子类的this 指向父级
+function _possibleConstructorReturn(self, call) { 
+    if (!self) { 
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); //保证子类构造函数中 显式调用 super()
+    } 
+    return call && (typeof call === "object" || typeof call === "function") ? call : self; 
+}
+
+function _inherits(subType, superType) {
+  // 创建对象，创建父类原型的一个副本
+  // 增强对象，弥补因重写原型而失去的默认的constructor 属性
+  // 指定对象，将新创建的对象赋值给子类的原型
+  // a && b  如果 a 为false那么返回a, 如果 a 为true 返回b
+  subType.prototype = Object.create(superType && superType.prototype, {
+    constructor: {
+      value: subType,
+      enumerable: false,
+      writable: true,
+      configurable: true
+    }
+  });
+
+  if (superType) {
+    Object.setPrototypeOf 
+      ? Object.setPrototypeOf(subType, superType) 
+      : subType.__proto__ = superType;
+  }
+}
+
+// 假如我有 一个构造函数Men 和 一个父级 Parent
+// 那么继承的方式是：
+
+var Men = function (_Person) {
+  _inherits(Men, _Person);
+  // 这里首先实现继承
+  // 简单来说就是将_Person的prototype, 指向Men的protoType
+  function Men(name, age) {
+    // 这里是一个校验机制，判断上面 _inherits 是否成功的将 Men 从属于Person（instanceof）
+    _classCallCheck(this, Men);
+
+    // 重点，由于上文已经继承了Person，那么就会 通过getPrototypeOf拿到Person， 然后调用Person.call的方法，从而实现了将Person 构造函数下变量和方法赋值给了Men
+    // Men 从此已经完成了Person的prototype的继承和构造方法下变量和方法的继承
+    var _this = _possibleConstructorReturn(this, (Men.__proto__ || Object.getPrototypeOf(Men)).call(this));
+
+    _this.gender = 'male';
+    return _this;
+  }
+
+  return Men
+}(Person)
+
+new Men('Owen', 'male')
+```
+
+实际上和原来的寄生组合式继承一样：
+
+```js
+function inheritPrototype(child, parent) {
+  const prototype = Object.create(parent.prototype); // 创建对象，创建父类原型的副本 这里和组合式继承相比就凸显了寄生的本质
+  // 组合继承是直接 new Parent, 但是寄生组合继承是 parent.prototype 只拿Parent的原型
+  prototype.constructor = child; // 增强对象，弥补因重写原型而失去的默认的 constructor 属性
+  child.prototype = prototype; // // 指定对象，将新创建的对象赋值给子类的原型
+}
+
+function Parent(name) {
+  this.name = name;
+  this.colors = ['red'];
+}
+
+Parent.prototype.getParentName = () => {
+  return this.name;
+}
+
+// 借用构造函数传递增强子类实例属性（支持传参和避免篡改）
+function Child(name, age) {
+  Parent.call(this, name);
+  this.age = age;
+}
+
+// 创建一个父类副本，并将父类原型指向子类
+inheritPrototype(Child, Parent);
+
+// 增强子类的原型数据
+Child.prototype.getAge = () => {
+  return this.age;
+}
+
+var instance1 = new Child('owen', 23);
+```
+
+## 在js中的逻辑运算符
+
+js中 return a && b和return a || b
+
+|| 和 &&都遵循“短路”原理
+
+return a && b 如果a是true的话，返回b， 如果a是false的话，返回a
+
+return a || b 如果a是true的话，返回a，如果a是false的话，返回b 。
+
 ## 感谢
 
 [JavaScript中call()与apply()有什么区别？](http://my.oschina.net/warmcafe/blog/74973)
 
 [Javascript中变量提升](http://www.cnblogs.com/damonlan/archive/2012/07/01/2553425.html)
+
+[JavaScript 五十问——从源码分析 ES6 Class 的实现机制](https://segmentfault.com/a/1190000017842257)
