@@ -734,3 +734,82 @@ var numEquivDominoPairs = function(dominoes) {
 执行用时 :80 ms, 在所有 JavaScript 提交中击败了91.07%的用户
 
 内存消耗 :43.9 MB, 在所有 JavaScript 提交中击败了30.77%的用户
+
+### 回文链表
+
+字符链表存，是否是回文？
+
+判断是不是回文链表
+
+```js
+function generatorStrLinkList(str) {
+  if (!str) {
+    return null
+  }
+  const LinkList = {};
+
+  let currentNode = LinkList;
+  for (let i = 0; i < str.length; i++) {
+    currentNode.val = str[i];
+    if (str[i + 1]) {
+      currentNode.next = {};
+    }
+    currentNode = currentNode.next;
+  }
+  return LinkList;
+}
+
+var isPalindrome = function(head) {
+  if (!head) {
+    return true
+  }
+
+  if (!head.next) {
+    // 一个字符也算回文
+    return true
+  }
+
+  // 快慢指针
+  var slow = head
+  var fast = head
+  var prev = null
+  
+  while (fast && fast.next) {
+    // 先用一个变量将当前慢指针记录下来，
+    var current = slow
+    
+    fast = fast.next.next
+    slow = slow.next
+    current.next = prev
+    prev = current
+  }
+  
+  if (fast) {
+    slow = slow.next
+  }
+
+  // 遍历两条链表，判断是否是回文
+  while (prev || slow) {
+    if (prev.val !== slow.val) {
+      return false
+    }
+
+    if (!prev || !slow) {
+      return false
+    }
+
+    prev = prev.next
+    slow = slow.next
+  }
+  return true
+};
+```
+
+执行用时：76 ms
+内存消耗：39.2 MB
+
+来源：力扣（LeetCode）
+
+链接：https://leetcode-cn.com/problems/palindrome-linked-list-lcci/submissions/
+
+著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
