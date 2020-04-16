@@ -813,3 +813,141 @@ var isPalindrome = function(head) {
 链接：https://leetcode-cn.com/problems/palindrome-linked-list-lcci/submissions/
 
 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+
+## 两数相加
+
+给出两个 非空 的链表用来表示两个非负的整数。其中，它们各自的位数是按照 逆序 的方式存储的，并且它们的每个节点只能存储 一位 数字。
+
+如果，我们将这两个数相加起来，则会返回一个新的链表来表示它们的和。
+
+您可以假设除了数字 0 之外，这两个数都不会以 0 开头。
+
+示例：
+
+输入：(2 -> 4 -> 3) + (5 -> 6 -> 4)
+输出：7 -> 0 -> 8
+原因：342 + 465 = 807
+
+来源：力扣（LeetCode）
+链接：https://leetcode-cn.com/problems/add-two-numbers
+著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+
+```js
+function ListNode(val) {
+  this.val = val;
+  this.next = null;
+}
+
+function gen (arr) {
+
+  var current = null
+  for (var i = arr.length - 1; i >= 0; i--) {
+    var item = arr[i]
+    var node = new ListNode(item)
+    node.next = current
+    current = node
+  }
+  return current
+}
+
+var reverseList = function(head) {
+  if (!head) { return null }
+  var current = head
+  var prev = null
+  var next = head.next
+  while (next) {
+    current.next = prev
+    prev = current
+    current = next
+    next = next.next
+    current.next = prev
+  }
+
+  return current
+};
+
+var addTwoNumbers = function (l1, l2) {
+  if (!l1 && l2) {
+    return l2
+  }
+
+  if (!l2 && l1) {
+    return l1
+  }
+
+  if (!l2 && !l1) {
+    return null
+  }
+  var rl1 = reverseList(l1)
+  var rl2 = reverseList(l2)
+  var result = new ListNode(-1)
+  var next = result
+  var hasCarry = 0
+
+  while (rl1 && rl2) {
+    var v1 = rl1.val
+    var v2 = rl2.val
+    var sum = v1 + v2 + hasCarry
+    var node
+    if (sum <= 9) {
+      hasCarry = 0
+      node = new ListNode(sum)
+    } else {
+      hasCarry = 1
+      node = new ListNode(sum % 10)
+    }
+    next.next = node
+    next = next.next
+
+    rl1 = rl1.next
+    rl2 = rl2.next
+  }
+
+  if (rl1) {
+    while (rl1) {
+      var v = rl1.val
+      var sum = v + hasCarry
+      var node
+      if (sum <= 9) {
+        hasCarry = 0
+        node = new ListNode(sum)
+      } else {
+        hasCarry = 1
+        node = new ListNode(sum % 10)
+      }
+      next.next = node
+      next = next.next
+      rl1 = rl1.next
+    }
+  }
+
+  if (rl2) {
+    while (rl2) {
+      var v = rl2.val
+      var sum = v + hasCarry
+      var node
+      if (sum <= 9) {
+        hasCarry = 0
+        node = new ListNode(sum)
+      } else {
+        hasCarry = 1
+        node = new ListNode(sum % 10)
+      }
+      next.next = node
+      next = next.next
+      rl2 = rl2.next
+    }
+  }
+
+  if (hasCarry) {
+    node = new ListNode(1)
+    next.next = node
+    next = next.next
+  }
+  return reverseList(result.next)
+}
+addTwoNumbers(gen([3,9,9,8,9]), gen([3,4, 9,1]))
+```
+
+执行用时：144 ms
+内存消耗：38.1 MB
