@@ -1276,6 +1276,10 @@ return a && b 如果a是true的话，返回b， 如果a是false的话，返回a
 
 return a || b 如果a是true的话，返回a，如果a是false的话，返回b 。
 
+## 浏览器页面资源加载过程和优化
+
+https://juejin.im/post/5a4ed917f265da3e317df515
+
 ## 感谢
 
 [JavaScript中call()与apply()有什么区别？](http://my.oschina.net/warmcafe/blog/74973)
