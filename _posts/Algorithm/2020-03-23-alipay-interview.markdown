@@ -251,76 +251,76 @@ Input example: (1, 2), (5, 3), (3, 1), (1, 2), (2, 4), (1, 6), (2, 3), (3, 4), (
 ```
 
 ```js
-var test = [[1, 2], [5, 3], [3, 1], [1, 2], [2, 4], [1, 6], [2, 3], [3, 4], [5, 6]]
+// var test = [[1, 2], [5, 3], [3, 1], [1, 2], [2, 4], [1, 6], [2, 3], [3, 4], [5, 6]]
 
-var dominoes = function (chains) {
-  var temp = {}
-  for (var i = 0; i < chains.length; i++) {
-    var chain = chains[i]
-    var [first, last] = chain
+// var dominoes = function (chains) {
+//   var temp = {}
+//   for (var i = 0; i < chains.length; i++) {
+//     var chain = chains[i]
+//     var [first, last] = chain
 
-    if (temp[first]) {
-      temp[first].push(i)
-    } else {
-      temp[first] = [i]
-    }
+//     if (temp[first]) {
+//       temp[first].push(i)
+//     } else {
+//       temp[first] = [i]
+//     }
 
-    if (temp[last]) {
-      temp[last].push(i)
-    } else {
-      temp[last] = [i]
-    }
-  }
-  // 如果骨牌的个数存在单数，那么肯定不能匹配
-  var tempList = Object.keys(temp)
-  var canContinue = true
-  for (var i = 0; i < tempList.length; i++) {
-    var chainlist = tempList[i]
-    if (chainlist.length % 2) {
-      canContinue = false
-      break
-    }
-  }
+//     if (temp[last]) {
+//       temp[last].push(i)
+//     } else {
+//       temp[last] = [i]
+//     }
+//   }
+//   // 如果骨牌的个数存在单数，那么肯定不能匹配
+//   var tempList = Object.keys(temp)
+//   var canContinue = true
+//   for (var i = 0; i < tempList.length; i++) {
+//     var chainlist = tempList[i]
+//     if (chainlist.length % 2) {
+//       canContinue = false
+//       break
+//     }
+//   }
 
-  if (!canContinue) { return [] }
+//   if (!canContinue) { return [] }
 
-  function matchGroup (c1, c2) {
-    var [A, B] = c1
-    var [C, D] = c2
-    var result = []
-    if (A === C) {
-      // 可能的头尾
-      result.push({
-        possible: [ [[B, A], [C, D]], [[D, A], [C, B]] ]
-      })
-      return result
-    }
+//   function matchGroup (c1, c2) {
+//     var [A, B] = c1
+//     var [C, D] = c2
+//     var result = []
+//     if (A === C) {
+//       // 可能的头尾
+//       result.push({
+//         possible: [ [[B, A], [C, D]], [[D, A], [C, B]] ]
+//       })
+//       return result
+//     }
 
-    if (A === D) {
-      // 可能的头尾
-      result.push({
-        possible: [ [[B, A], [D, C]], [[C, A], [D, B]] ]
-      })
-      return result
-    }
+//     if (A === D) {
+//       // 可能的头尾
+//       result.push({
+//         possible: [ [[B, A], [D, C]], [[C, A], [D, B]] ]
+//       })
+//       return result
+//     }
 
-    if (B === C) {
-      // 可能的头尾
-      result.push({
-        possible: [ [[A, B], [C, D]], [[D, B], [C, A]] ]
-      })
-      return result
-    }
+//     if (B === C) {
+//       // 可能的头尾
+//       result.push({
+//         possible: [ [[A, B], [C, D]], [[D, B], [C, A]] ]
+//       })
+//       return result
+//     }
 
-    if (C === D) {
-      result.push({
-        possible: [ [[A, C], [D, B]], [[B, C], [D, A]] ]
-      })
-      return result
-    }
-  }
+//     if (C === D) {
+//       result.push({
+//         possible: [ [[A, C], [D, B]], [[B, C], [D, A]] ]
+//       })
+//       return result
+//     }
+//   }
 
-  console.log(temp)
-}
-dominoes(test)
+//   console.log(temp)
+// }
+// dominoes(test)
 ```
