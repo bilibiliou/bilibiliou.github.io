@@ -607,9 +607,9 @@ function createState (...args) {
 let amd = createState(function () {
     ...代码块1
 },function () {
-    ...代码快2
+    ...代码块2
 },function () {
-    ...代码快3
+    ...代码块3
 });
 
 amd.next();
@@ -1279,6 +1279,53 @@ return a || b 如果a是true的话，返回a，如果a是false的话，返回b �
 ## 浏览器页面资源加载过程和优化
 
 https://juejin.im/post/5a4ed917f265da3e317df515
+
+## 
+
+```js
+/**
+ * @params list {Array} - 要迭代的数组
+ * @params limit {Number} - 并发数量控制数
+ * @params asyncHandle {Function} - 对`list`的每一个项的处理函数，参数为当前处理项，必须 return 一个Promise来确定是否继续进行迭代
+ * @return {Promise} - 返回一个 Promise 值来确认所有数据是否迭代完成
+ */
+let mapLimit = (list, limit, asyncHandle) => {
+  let recursion = (arr) => {
+      return asyncHandle(arr.shift())
+          .then(()=>{
+              if (arr.length!==0) return recursion(arr)   // 数组还未迭代完，递归继续进行迭代
+              else return 'finish';
+          })
+  };
+  
+  let listCopy = [].concat(list);
+  let asyncList = []; // 正在进行的所有并发异步操作
+  // 这里是关键，这里通过 一层while 声明了 limit 条管道
+  // 管道内的异步任务执行完成后，会继续调用then 方法，继续从队列中拿 url 去请求
+  // 当全部请求执行完成后，执行Promise.all 的回调，结束
+  // 这样保证了请求的异步控制
+  while(limit--) {
+      asyncList.push( recursion(listCopy) ); 
+  }
+  return Promise.all(asyncList);  // 所有并发异步操作都完成后，本次并发控制迭代完成
+}
+
+// test--->
+var dataLists = [1,2,3,4,5,6,7,8,9,11,100,123];
+var count = 0;
+mapLimit(dataLists, 3, (curItem)=>{
+    return new Promise(resolve => {
+        count++
+        setTimeout(()=>{
+            console.log(curItem, '当前并发量:', count--)
+            resolve();
+        }, Math.random() * 5000)  
+    });
+}).then(response => {
+    console.log('finish', response)
+})
+```
+[15 行代码实现并发控制](https://segmentfault.com/a/1190000013128649)
 
 ## 感谢
 
