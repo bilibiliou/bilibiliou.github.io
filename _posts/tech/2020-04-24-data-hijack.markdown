@@ -1,4 +1,11 @@
 
+---
+layout: post
+title: 手撕数据劫持代码
+category: 技术
+keywords: 技术
+---
+
 ## 手写简单的数据劫持
 
 ![shotpic](/assets/img/data-hijack.png)
