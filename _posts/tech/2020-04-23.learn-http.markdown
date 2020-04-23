@@ -1,0 +1,75 @@
+
+---
+layout: post
+title: HTTP 笔记
+category: 技术
+keywords: 技术
+---
+
+## content-length
+
+Content-Length, HTTP消息长度, 用十进制数字表示的八位字节的数目. 一般情况下, 很多工作都被框架完成, 我们很少去关注这部分内容, 但少数情况下发生了Content-Length与实际消息长度不一致, 程序可能会发生比较奇怪的异常：
+
+1. 无响应直到请求超时
+2. 请求被截断，并且下一个请求解析出现错乱
+
+Content-Length是HTTP消息长度, 用十进制数字表示的八位字节的数目, 是Headers中常见的一个字段. Content-Length应该是精确的, 否则就会导致异常
+
+如果这个长度不正确, 会发生如下情况:
+
+### Content-Length > 实际长度
+
+如果Content-Length比实际的长度大, 服务端/客户端读取到消息结尾后, 会等待下一个字节, 自然会无响应直到超时.
+
+### Content-Length < 实际长度
+
+如果这个长度小于实际长度, 首次请求的消息会被截取, 比如参数为param=helloworld, Content-Length为10, 那么这次请求的消息会被截取为: param=hell
+
+如果连着两次进行请求，且开启了Connection: keep-alive 那么第一次消息被截断, 第二次请求信息会紊乱
+
+如果连着两次进行请求，且开启了Connection: close 那么现象就是，每一次请求都被截断，但是不会产生解析紊乱
+
+### content-length 不确定的情况
+
+Content-Length首部指示出报文中实体主体的字节大小. 但如在请求处理完成前无法获取消息长度, 我们就无法明确指定Content-Length, 此时应该使用Transfer-Encoding: chunked
+
+什么是Transfer-Encoding: chunked
+数据以一系列分块的形式进行发送. Content-Length 首部在这种情况下不被发送. 在每一个分块的开头需要添加当前分块的长度, 以十六进制的形式表示，后面紧跟着 \r\n , 之后是分块本身, 后面也是\r\n. 终止块是一个常规的分块, 不同之处在于其长度为0.
+
+### Summery
+
+Content-Length如果存在且生效, 必须是正确的, 否则会发生异常.(大于实际值会超时, 小于实际值会截断并可能导致后续的数据解析混乱)
+如果报文中包含Transfer-Encoding: chunked首部, 那么Content-Length将被忽略.
+
+## Cache-Control
+
+Cache-Control 这个字段是，请求头和响应头都会携带的，http 请求字段
+
+### 作为请求端
+
+在请求端中，Cache-Control 的值可以有：
+
+| 字段名称 | 说明 |
+|---------- |-------- |
+| no-cache | 告知服务器不能直接使用缓存，需要向原来的服务器发起请求重新加载资源（重新请求后，服务端还是会对比eTag, 如果eTag 相同的话，还是会使用缓存文件 并返回304） |
+| no-store | 所有的内容都不会保存到缓存或者Internet 临时文件中（无论什么情况下都不会使用缓存，也不会对比eTag） |
+| max-age=delta-seconds | 告知服务端希望接受一个相对时间内资源缓存（常用，浏览器就算修改了本地时间，也不会影响，但是如果是expired 那么就是一个绝对时间，浏览器如果修改了本地时间，那么资源缓存的请求依然会收影响） |
+| max-age=delta-seconds | 告知服务端希望接受的能容忍的最大过期时间。 就是超过max-age 后能依然容忍等待多长时间，max-age和max-stale在请求中同时使用的情况下，缓存的时间可以为max-age和max-stale的和 |
+| min-fresh=delta-seconds | 告知服务端希望接受的一个小于 delta-seconds 内被更新的资源 |
+| no-transform | 告知服务器，希望获得一个实体数据没有被转换过的资源 |
+| only-if-cached | 告知服务器希望获取的缓存内容，而不用向原来的服务器发起请求 |
+| cache-extension | 自定义扩展值，如果服务器不识别那么就会被忽略 |
+
+### 作为服务端
+
+在服务端中，Cache-Control 的值可以有：
+
+| 字段名称 | 说明 |
+|---------- |-------- |
+| public | 任何情况下都要缓存该资源 |
+| private[=field-name] | 表明，报文中的全部或者部分，仅开放给某些用户 服务器指定的 share-user 做缓存，而其他用户就不能使用这些缓存，如果没有指定特殊的field-name 那么就开放全部的用户 |
+| no-cache | 不使用缓存 |
+| no-transform | 告知客户端缓存文件时不能对缓存文件做任何改动 |
+
+
+

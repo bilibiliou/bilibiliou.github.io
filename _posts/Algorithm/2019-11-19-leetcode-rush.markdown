@@ -951,3 +951,65 @@ addTwoNumbers(gen([3,9,9,8,9]), gen([3,4, 9,1]))
 
 执行用时：144 ms
 内存消耗：38.1 MB
+
+## 二维数组查找
+
+在一个 n * m 的二维数组中，每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。请完成一个函数，输入这样的一个二维数组和一个整数，判断数组中是否含有该整数。
+
+来源：力扣（LeetCode）
+链接：https://leetcode-cn.com/problems/er-wei-shu-zu-zhong-de-cha-zhao-lcof
+著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+
+```js
+var matrix = [
+  [1,   4,  7, 11, 15],
+  [2,   5,  8, 12, 19],
+  [3,   6,  9, 16, 22],
+  [10, 13, 14, 17, 24],
+  [18, 21, 23, 26, 30]
+]
+/**
+ * @param {number[][]} matrix
+ * @param {number} target
+ * @return {boolean}
+ */
+var findNumberIn2DArray = function(matrix, target) {
+  if (!matrix.length) { return false }
+  var find = function (target, arr) {
+    var s = 0
+    var e = arr.length - 1
+    var Index = parseInt((s + e) / 2)
+    while (s <= e) {
+      var value = arr[Index]
+      if (target === value) {
+        return true
+      }
+
+
+      if (target < value) {
+        e = Index - 1
+      }
+
+      if (target > value) {
+        s = Index + 1
+      }
+
+      Index = parseInt((s + e) / 2)
+    }
+
+    return false
+  }
+
+  for (var i = 0; i < matrix.length; i++) {
+    var arr = matrix[i]
+    if (find(target, arr)) {
+      return true
+    }
+  }
+
+  return false
+};
+findNumberIn2DArray(matrix, 5)
+```
+执行用时：76 ms
+内存消耗：36.6 MB

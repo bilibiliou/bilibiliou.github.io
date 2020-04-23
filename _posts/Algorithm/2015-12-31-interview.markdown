@@ -1276,6 +1276,34 @@ return a && b 如果a是true的话，返回b， 如果a是false的话，返回a
 
 return a || b 如果a是true的话，返回a，如果a是false的话，返回b 。
 
+## 手写Promisify
+
+```js
+function promisify(fn) {
+  return function () {
+    var args = Array.prototype.slice.call(arguments);
+    return new Promise(function (resolve) {
+      args.push(function (result) {
+          resolve(result);
+      });
+      fn.apply(null, args);
+    })
+  }
+}
+
+var pro = promisify((name, callback) => {
+  setTimeout(() => {
+    console.log(name + ' Hello world')
+  }, 200)
+  callback('next')
+})
+
+pro('Owen')
+  .then((data) => {
+    console.log(data)
+  })
+```
+
 ## 浏览器页面资源加载过程和优化
 
 https://juejin.im/post/5a4ed917f265da3e317df515
