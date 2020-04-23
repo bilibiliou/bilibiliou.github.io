@@ -1090,6 +1090,77 @@ while (xlen<4) {
 }
 ```
 
+## js 如何判断一组数字是否连续
+
+给定一个一维数组，要求将连续部分整合为一个数组，最终得到得到一个二维数组。
+输入:var arr=[3, 4, 13 ,14, 15, 17, 20, 22];
+输出:[[3,4],[13,14,15],[17],[20],[22]];
+
+```js
+var main = function (arr) {
+  var result = []
+  var index = 0  
+  while (index < arr.length) {
+    var temp = [arr[index]]
+    while (true) {
+      var value = arr[index]
+      var valueNext = arr[index + 1]
+      if (value + 1 === valueNext) {
+        index++
+        temp.push(valueNext)
+      } else {
+        break
+      }
+    }
+    index++
+    result.push(temp)
+  }
+
+  return result
+}
+
+main([3,4,13,14,15,17,20,22])
+```
+
+### 变形题
+
+给定一个一维数组，要求将连续部分整合为一个数组，最终得到得到一个二维数组。
+输入： [1,2,3,4,6,8,9,10]
+输出： ["1-4", 6, "8-10"]
+
+```js
+var main = function (arr) {
+  var result = []
+  var index = 0  
+  while (index < arr.length) {
+    var temp = [arr[index]]
+    while (true) {
+      var value = arr[index]
+      var valueNext = arr[index + 1]
+      if (value + 1 === valueNext) {
+        index++
+        temp.push(valueNext)
+      } else {
+        break
+      }
+    }
+    index++
+    if (temp.length > 1) {
+        var f = temp[0]
+        var e = temp[temp.length - 1]
+        result.push(f + '-' + e)
+    } else {
+      result.push(temp[0])
+    }
+  }
+
+  return result
+}
+main([1,2,3,4,6,8,9,10])
+
+// ["1-4", 6, "8-10"]
+```
+
 ## 数组排列组合
 
 ```js
