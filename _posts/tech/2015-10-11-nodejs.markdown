@@ -1183,6 +1183,31 @@ var httpServer = http.createServer(function(request , respone)
 }).listen(8888);
 ```
 
+## node Js 的EventLoop
+
+nodeJs 底层使用了 libuv 实现了EventLoop
+但是nodeJs 和 浏览器的EventLoop 不同
+浏览器的EventLoop 只是宏任务和微任务的交替执行
+但是libuv 实现了6个阶段，这6个阶段执行宏任务，而阶段之间处理微任务队列
+
+这六个阶段分别是
+
+1. Timer 阶段，用于执行 声明的 setInterval 和 setTimeout
+2. pending callback 阶段，用于执行上一个阶段未执行完成的任务
+3. idle / prepare 阶段 用于提供给node内核执行内核任务
+4. poll 阶段，用于执行 I/O 事物队列 和 I/O的回调，当队列中的所有任务全部执行完毕，或者执行到系统所设的阈值的时候，会进入下一个阶段，如果事件队列为空，则直接进入下一个阶段
+5. check 阶段，执行setImmediate
+6. close callback 阶段，执行 onclose 的事件回调
+
+## setTimeout、process.nextTick、setImmediate 的区别
+
+在eventloop中执行的时机不同
+
+setTimeout 在Timer 中执行
+
+process.nextTick()，效率最高，消费资源小，但会阻塞CPU的后续调用；
+setTimeout()，精确度不高，可能有延迟执行的情况发生，且因为动用了红黑树，所以消耗资源大；
+setImmediate()，消耗的资源小，也不会造成阻塞，但效率也是最低的。
 
 ## 感谢
 

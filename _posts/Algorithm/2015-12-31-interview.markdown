@@ -1379,7 +1379,7 @@ pro('Owen')
 
 https://juejin.im/post/5a4ed917f265da3e317df515
 
-## 
+## 实现并发控制
 
 ```js
 /**
@@ -1424,7 +1424,62 @@ mapLimit(dataLists, 3, (curItem)=>{
     console.log('finish', response)
 })
 ```
+
+用管道的概念，更好理解
+
+```js
+function request (urls, maxNumber) {
+  var asyncList = []
+  var urlsList = urls.slice()
+
+  var pipe = function () {
+    return new Promise(function (resolve) {
+      console.log('>>>', urlsList.shift())
+      resolve()
+    })
+      .then(() => {
+        // 当一个任务执行完成后，继续从 队列中拿任务出来继续执行
+        if (urlsList.length) {
+          pipe()
+        } else {
+          console.log('has done')
+        }
+      })
+  }
+
+  // 创建 maxNumber 条管道
+  while (maxNumber--) {
+    asyncList.push( pipe() )
+  }
+  return Promise.all(asyncList)
+}
+
+request(['1','2','12','32','11','42','21','22','11','42','51','23','12','62'], 3)
+  .then(() => {
+    console.log('I am callback')
+  })
+```
+
 [15 行代码实现并发控制](https://segmentfault.com/a/1190000013128649)
+
+## 用 reduce 模拟 map
+
+```js
+Array.prototype.mmp = function (fn) {
+  var key = 0
+  var self = this
+  this.reduce((p, n) => {
+    fn && fn.call(self, n, key)
+    return n
+  }, this[1])
+}
+
+var arr = [1,2,3,4,5]
+
+arr.mmp((val, key) => {
+  console.log(val, key)
+})
+```
 
 ## 感谢
 

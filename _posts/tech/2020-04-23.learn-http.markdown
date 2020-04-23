@@ -70,6 +70,3 @@ Cache-Control 这个字段是，请求头和响应头都会携带的，http 请�
 | private[=field-name] | 表明，报文中的全部或者部分，仅开放给某些用户 服务器指定的 share-user 做缓存，而其他用户就不能使用这些缓存，如果没有指定特殊的field-name 那么就开放全部的用户 |
 | no-cache | 不使用缓存 |
 | no-transform | 告知客户端缓存文件时不能对缓存文件做任何改动 |
-
-
-
