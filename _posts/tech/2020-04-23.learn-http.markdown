@@ -6,6 +6,33 @@ category: 技术
 keywords: 技术
 ---
 
+## HTTP 的作用
+
+HTTP 不单单是一个应用层单纯的数据传输协议，其中还包括对安全、缓存策略、搜索引擎爬虫的控制
+
+## HTTP 请求包括那几个部分？
+
+HTTP 请求由 HTTP 请求行 HTTP 请求头 和 HTTP报文 三部分组成
+
+HTTP 请求行,表明了请求方法和请求地址
+
+```
+GET /shakespeare/v2/notes/450cc7320e30/book HTTP/1.1
+```
+
+## HTTP 1 的对头阻塞
+
+HTTP 中引入了 "管线化" 的概念，也就是允许一次发送多个HTTP请求，而单次并发是由请求数量限制的，Chorme 限制为6次
+而且HTTP 响应的接收也必须按顺序进行接收，如果一个请求队列中，首个请求因为网络原因迟迟没有返回，那么其他的请求也因此进行阻塞
+
+## HTTP 2.0 解决对头阻塞
+
+HTTP 2.0 采用了多路复用的办法，将多个HTTP 请求复用一个TCP连接，一个TCP连接中拆分了多个流Stream, 多个流中又可以传输若干个消息Message,每个消息由最小的二进制帧Frame组成, 多个HTTP 请求就这样被拆分成了若干个Frame进行传输，这样就算有一个请求被阻塞了，也不会影响到其他请求的正常接收
+
+同时，HTTP2.0 是基于 TCP 协议的，而TCP协议是可控的传输协议，会尝试进行重传
+
+谷歌研究了一种实验性的协议，QUIC(Quick UDP Internet Connections),则是基于UDP+Http2的一个实验性的快速传输协议，UDP是面向数据报文的，所以遇到丢包的情况也不会进行重传，从而进一步减少网络延迟、解决队头阻塞问题。
+
 ## content-length
 
 Content-Length, HTTP消息长度, 用十进制数字表示的八位字节的数目. 一般情况下, 很多工作都被框架完成, 我们很少去关注这部分内容, 但少数情况下发生了Content-Length与实际消息长度不一致, 程序可能会发生比较奇怪的异常：
@@ -38,8 +65,44 @@ Content-Length首部指示出报文中实体主体的字节大小. 但如在请�
 
 ### Summery
 
-Content-Length如果存在且生效, 必须是正确的, 否则会发生异常.(大于实际值会超时, 小于实际值会截断并可能导致后续的数据解析混乱)
+Content-Length如果存在且生效, 必须是正确的（如果漏传或不传都会出问题）, 否则会发生异常.(大于实际值会超时, 小于实际值会截断并可能导致后续的数据解析混乱)
 如果报文中包含Transfer-Encoding: chunked首部, 那么Content-Length将被忽略.
+
+## Content-Range
+
+这个字段用于多线程分段下载的时候设置的响应头
+
+e.g
+
+```
+Content-Range: bytes 0-2000/4932
+```
+
+
+如上例子，说明了 文件总大小为 4932 ，这一次 http 请求将传输 0到2000 这段数据
+
+当进行多线程分段传输的时候，
+content-type 就不会是原文件的mime类型
+例如，我要传输一个 图片， 源文件的mime 类型是 image/png
+
+正常情况下的响应头：
+content-type: image/png
+content-length: 4932
+
+但是，如果我使用了多线程分段下载，设置了content-range 的时
+content-type: multipart/byteranges
+content-range: bytes 0-2000/4932
+
+
+content-range 的取值有如下几种方式
+
+Range: bytes=0-499 表示第 0-499 字节范围的内容 
+Range: bytes=500-999 表示第 500-999 字节范围的内容 
+Range: bytes=-500 表示最后 500 字节的内容 
+Range: bytes=500- 表示从第 500 字节开始到文件结束部分的内容 
+Range: bytes=0-0,-1 表示第一个和最后一个字节 
+Range: bytes=500-600,601-999 同时指定几个范围
+
 
 ## Cache-Control
 
@@ -70,3 +133,34 @@ Cache-Control 这个字段是，请求头和响应头都会携带的，http 请�
 | private[=field-name] | 表明，报文中的全部或者部分，仅开放给某些用户 服务器指定的 share-user 做缓存，而其他用户就不能使用这些缓存，如果没有指定特殊的field-name 那么就开放全部的用户 |
 | no-cache | 不使用缓存 |
 | no-transform | 告知客户端缓存文件时不能对缓存文件做任何改动 |
+
+## X-Frame-option
+
+该响应头用来给浏览器一个指示：是否允许允许 iframe 标签和object 标签
+
+X-Frame-option 的值可以为：
+
+DENY 页面中不允许展示iframe，即使是同域名的iframe嵌套，也不允许
+SAMEORIGN 允许展示同域名的iframe
+ALLOW-FROM[=url] 通过配置url, 允许指定的url的iframe进行嵌套
+
+## Referrer 和 Referrer Policy
+
+Referrer 是HTTP请求头，表明了当前请求，是由那一个地址页面跳转过来的，用于指明当前流量的来源参考页面。通过这个信息，我们可以知道访客是怎么来到当前页面的。
+
+而 Referrer Policy 是HTTP通用头，他表明了对Referrer 发送的策略
+
+新的Referrer规定了五种策略：
+
+  No Referrer：任何情况下都不发送Referrer信息
+
+  No Referrer When Downgrade：仅当协议降级（如HTTPS页面引入HTTP资源）时不发送Referrer信息。是大部分浏览器默认策略。
+
+  Origin Only：发送只包含host部分的referrer.
+
+  Origin When Cross-origin：仅在发生跨域访问时发送只包含host的Referer，同域下还是完整的。与Origin 
+
+  Only的区别是多判断了是否Cross-origin。协议、域名和端口都一致，浏览器才认为是同域。
+
+  Unsafe URL：全部都发送Referrer信息。最宽松最不安全的策略。
+
