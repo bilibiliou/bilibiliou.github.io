@@ -1489,6 +1489,66 @@ arr.mmp((val, key) => {
 线程不能够独立执行，必须依存应用程序，进程有独立的程序入口和执行顺序
 线程是处理机调度的基本单位
 
+## CORS 跨域请求
+
+CORS (Cross Origin Resource Sharing) 跨域资源共享，是一种请求规范，用于解决跨域同域请求的一系列问题
+
+### CORS 跨域简单请求
+
+CORS 简单请求只允许限定的请求方法和请求头跨域访问获取信息，响应头报文会返回数据和跨域控制（Access-Control-Allow-*） 的回参信息以及一些受控的响应头信息
+
+当请求方法为
+HEAD
+GET
+POST
+等方法
+且HTTP请求头不超出以下几种请求头字段的时候
+
+Accept
+Accept-Language
+Content-Language
+Last-Event-ID
+Content-Type: application/x-www-form-urlencoded,multipart/form-data,text/plain
+
+如果超出了这些字段范围的请求，就需要走复杂请求
+
+只需要在请求头中带上
+Origin的请求头，那么就能够直接跨域，
+服务器会根据Origin的请求头来判断，访问源是否存在于 Access-Control-Allow-Origin 中
+如果存在那么就会直接返回数据，如果不存在，就会被 XMLHttpRequest 的 onerror 函数被捕获
+
+简单请求的响应头报文如下
+Access-Control-Allow-Origin（必含）- 不可省略，否则请求按失败处理。该项控制数据的可见范围，如果希望数据对任何人都可见，可以填写"*"。
+
+Access-Control-Allow-Credentials（可选） – 该项标志着请求当中是否包含cookies信息，只有一个可选值：true（必为小写）。如果不包含cookies，请略去该项，而不是填写false。这一项与XmlHttpRequest2对象当中的withCredentials属性应保持一致，即withCredentials为true时该项也为true；withCredentials为false时，省略该项不写。反之则导致请求失败。
+
+Access-Control-Expose-Headers（可选） – 该项确定XmlHttpRequest2对象当中getResponseHeader()方法所能获得的额外信息。通常情况下，getResponseHeader()方法只能获得如下的响应头信息：
+Cache-Control
+Content-Language
+Content-Type
+Expires
+Last-Modified
+Pragma
+
+需要注意的是，如果要发送Cookie，Access-Control-Allow-Origin就不能设为星号，必须指定明确的、与请求网页一致的域名。同时，Cookie依然遵循同源政策，只有用服务器域名设置的Cookie才会上传，其他域名的Cookie并不会上传，且（跨源）原网页代码中的document.cookie也无法读取服务器域名下的Cookie。
+
+### CORS 跨域复杂请求
+
+复杂请求的情况下即需要先发送一个预请求，向服务端获得所允许的域、允许的请求方法、能否允许携带cookie
+
+当请求方法为
+PUT
+DELETE
+TARCE
+CONNECT
+PATCH
+OPTIONS
+等
+或者是需要获取更多响应头、更复杂的响应内容的GET、POST、HEAD请求
+那么就需要先发送个预请求OPTIONS请求，域请求会告诉服务端，我浏览器接下来需要使用那种方法请求以及服务端未来需要回复那些响应头，以及响应的数据类型
+这些响应头规定了接下来的跨域请求，只能允许那些域，那些方法请求
+服务端获取到这一些列的跨域控制响应头后，才决定是否允许后续的跨域请求
+
 ## 感谢
 
 [JavaScript中call()与apply()有什么区别？](http://my.oschina.net/warmcafe/blog/74973)

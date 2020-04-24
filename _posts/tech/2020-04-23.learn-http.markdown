@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: HTTP 笔记
@@ -12,7 +11,7 @@ HTTP 不单单是一个应用层单纯的数据传输协议，其中还包括对
 
 ## HTTP 请求包括那几个部分？
 
-HTTP 请求由 HTTP 请求行 HTTP 请求头 和 HTTP报文 三部分组成
+HTTP 请求由 HTTP 请求行报文 HTTP 请求头报文 和 HTTP请求体报文 三部分组成
 
 HTTP 请求行,表明了请求方法和请求地址
 

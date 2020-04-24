@@ -1013,3 +1013,152 @@ findNumberIn2DArray(matrix, 5)
 ```
 执行用时：76 ms
 内存消耗：36.6 MB
+
+## 二叉树的层序遍历
+
+给你一个二叉树，请你返回其按 层序遍历 得到的节点值。 （即逐层地，从左到右访问所有节点）。
+
+示例：
+二叉树：[3,9,20,null,null,15,7],
+
+    3
+   / \
+  9  20
+    /  \
+   15   7
+返回其层次遍历结果：
+
+[
+  [3],
+  [9,20],
+  [15,7]
+]
+
+来源：力扣（LeetCode）
+链接：https://leetcode-cn.com/problems/binary-tree-level-order-traversal
+著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+
+说白了就是 BFS 广度遍历的算法：
+
+```js
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number[][]}
+ */
+var levelOrder = function(root) {
+  // 请你实现
+  if (!root) { return [] }
+  var result = []
+  var queue = [{node: root, deep: 1}]
+
+  while (queue.length) {
+    var treeNode = queue.shift()
+    var { node, deep } = treeNode
+
+    if (node.left) {
+      queue.push({node: node.left, deep: deep + 1})
+    }
+
+    if (node.right) {
+      queue.push({node: node.right, deep: deep + 1})
+    }
+
+    if (result[deep - 1]) {
+      result[deep - 1].push(node.val)
+    } else {
+      result[deep - 1] = [node.val]
+    }
+  }
+
+  return result
+};
+
+levelOrder({
+  val: 1,
+  left: {
+    val: 4,
+    left: null,
+    right: null
+  },
+  right: {
+    val: 6,
+    left: {
+      val: 2,
+      left: null,
+      right: null
+    },
+    right: {
+      val: 5,
+      left: null,
+      right: null
+    }
+  }
+})
+// [
+//   [1],
+//   [4, 6],
+//   [2, 5]
+// ]
+```
+
+## 二叉树的深度遍历
+
+前、中、后序遍历
+
+```js
+function lvl(root) {
+  if (!root) {
+    return
+  }
+  var result = []
+  var _ = function (root) {
+    // 前序
+    result.push(root.val)
+    if (root.left) {
+      _(root.left)
+    }
+    // 中序
+    // result.push(root.val)
+  
+    if (root.right) {
+      _(root.right)
+    }
+
+    // 后序
+    // result.push(root.val)
+  }
+  _(root)
+  return result
+}
+
+lvl({
+  val: 1,
+  left: {
+    val: 4,
+    left: null,
+    right: null
+  },
+  right: {
+    val: 6,
+    left: {
+      val: 2,
+      left: null,
+      right: null
+    },
+    right: {
+      val: 5,
+      left: null,
+      right: null
+    }
+  }
+})
+
+// 
+```
