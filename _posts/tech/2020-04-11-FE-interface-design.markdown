@@ -36,6 +36,8 @@ keywords: 技术,js,接口层,websocket
   |__初始化 websocket 实例（如需要），并同时配置ajax轮询兜底
 ```
 
+![interface](/assets/img/interface.png)
+
 ```js
 // 接口层针对不同type的回参进行响应
 
@@ -74,9 +76,56 @@ function downloadCommonHandler (type) {
 }
 ```
 
-## websocket 处理
+## websocket
 
-websocket 是全双工通信协议，前后端可以自由地互相推送消息，使用时需要注意以下几点：
+websocket 是全双工通信协议，可以理解为HTTP的升级版本，以下是websocket 比较经典的报文
+
+```
+GET /chat HTTP/1.1
+Host: server.example.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key: x3JJHMbDL1EzLkh9GBhXDw==
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+Origin: http://example.com
+```
+
+比起正常的HTTP请求头，websocket 多了这么些请求头
+
+```
+Upgrade: websocket
+Connection: Upgrade
+
+Sec-WebSocket-Key: x3JJHMbDL1EzLkh9GBhXDw==
+
+# Sec-WebSocket-Key 和 Sec-WebSocket-Accept 用于验证连接的有效性
+# 只有当请求头参数Sec-WebSocket-Key字段的值经过固定算法加密后的数据和响应头里的Sec-WebSocket-Accept的值保持一致，该连接才会被认可建立。
+
+Sec-WebSocket-Protocol: chat, superchat
+# 客户端所支持的websocket协议 有哪些
+
+Sec-WebSocket-Version: 13
+# 告知服端 支持
+```
+
+而响应头如下
+
+```
+HTTP/1.1 101 Switching Protocols
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Accept: HSmrc0sMlYUkAGmm5OPpG2HaGWk=
+
+Sec-WebSocket-Protocol: chat
+# 最终连接将采用那种协议
+```
+
+当通过HTTP请求进行连接后，websocket 正式连接
+
+### websoceket项目实践中踩的坑
+
+前后端可以自由地互相推送消息，使用时需要注意以下几点：
 
 1. websocket 连接处理不稳定 （特别是针对实时性要求比较高的，如通话、视频、监控等系统），在并发量大、连接数多的情况下，后台服务可能会出现丢包，丢状态（连接依然建立，但已失去对socket的管控）
 

@@ -39,33 +39,45 @@ var prices = [4, 5, 6]
 var items = [3, 4, 5]
 var packDynamicProgram = function (max, prices, items) {
   var result = []
+  // 放第几件物品
   for (var i = 0; i < items.length; i++) {
     result[i] = []
+    // 背包有多重
     for (var j = 0; j <= max;j++) {
+      // 当背包的重量为0的时候，根本不可能装任何东西
+      // 所以 第 零 列 能产生的价值一定都是0
       if (j === 0) {
         result[i][j] = 0
         continue;
       }
 
-      // 如果背包剩余重量小于当前的质量
+      // 如果当前背包剩余重量小于当前的质量
       if (j < items[i]) {
+        // 如果只是放第一件，那么肯定是放不下的，所以 产生的结果价值一定是0
         if (i === 0) {
           result[i][j] = 0
         } else {
+          // 如果现在想放第2，第3，第4... 件，那么此时肯定也是放不下的，那么产生的结果价值只能是维持上一阶的状态
           result[i][j] = result[i - 1][j]
         }
         continue
       }
+      
 
+      // 如果当前背包可以塞得进东西，且
       if (i === 0) {
-        // 初始化数据
+        // 如果塞第一件物品，之前背包里没塞任何东西，那么产生的结果价值是第一件物品
         result[i][j] = prices[i]
       } else {
+        // 如果现在想放第2，第3，第4... 件，说明放这玩意需要消耗背包质量
+        // 这时候就需要进行权衡
+        // 到底是 prices[i] + result[i-1][j-items[i]] 可以产生的结果价值大
+        // 还是 result[i-1][j] 可以产生的价值大
         result[i][j] = Math.max(prices[i] + result[i-1][j-items[i]], result[i-1][j])
       }
     }
   }
-  return result
+  return result[items.length - 1][max]
 }
 ```
 

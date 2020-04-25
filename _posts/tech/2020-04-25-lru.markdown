@@ -1,0 +1,78 @@
+---
+layout: post
+title: LRU 算法实现
+category: 算法,LRU
+keywords: 算法,LRU
+---
+
+## 手动实现一个LRU算法
+
+```js
+var LRUCache = function (capacity) {
+  // queue 是一个用来维护缓存的队列
+  this.queue = []
+
+  // cache 是实际缓存区
+  this.cache = new Map()
+
+  // capacity 用来存缓存阈值
+  this.capacity = capacity
+}
+
+LRUCache.prototype.get = function (key) {
+  // 如果当前缓存中有这个key
+  if (this.cache.has(key)) {
+    this.delete(key)
+    this.queue.push(key)
+    return this.cache.get(key)
+  }
+  return -1
+}
+
+LRUCache.prototype.put = function (key, value) {
+  this.cache.set(key, value)
+
+  if (this.cache.has(key)) {
+    this.delete(key)
+  }
+
+  this.queue.push(key)
+
+  // 如果当前队列以及到达了阈值
+  if (this.queue.length > this.capacity) {
+    var key = this.queue.shift()
+    this.cache.delete(key)
+  }
+}
+
+LRUCache.prototype.delete = function (key) {
+  if (this.queue.length) {
+    var Index = this.queue.indexOf(key)
+    if (Index !== -1) {
+      this.queue.splice(Index, 1)
+    }
+  }
+}
+```
+
+## LRU 算法的延伸和应用
+
+前端方面主要是两个方面的应用：
+
+1. 浏览器端的缓存控制
+2. Vue 内的keep-alive 实现
+
+浏览器端的缓存分配的区域是固定，如果有新的缓存进来，就会调用LRU算法，将使用队列中最旧的缓存淘汰掉，以保证不会因为缓存过多而堆栈溢出
+
+Vue 内的Keep-alive 实现组件的缓存，当组件进行切换的时候，不会对当前组件进行卸载
+
+```html
+<!-- 基本 -->
+<keep-alive>
+  <component :is="view"></component>
+</keep-alive>
+```
+
+keep-alive 具体的源码分析
+
+[keep-alive 源码分析](https://github.com/sisterAn/JavaScript-Algorithms/issues/9)

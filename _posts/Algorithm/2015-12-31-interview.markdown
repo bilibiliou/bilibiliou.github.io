@@ -1085,8 +1085,8 @@ function merge(sofar, rest) {
 
 xlen = 0;
 while (xlen<4) {
-    merge('', str);
-    xlen++;
+  merge('', str);
+  xlen++;
 }
 ```
 
@@ -1548,6 +1548,70 @@ OPTIONS
 那么就需要先发送个预请求OPTIONS请求，域请求会告诉服务端，我浏览器接下来需要使用那种方法请求以及服务端未来需要回复那些响应头，以及响应的数据类型
 这些响应头规定了接下来的跨域请求，只能允许那些域，那些方法请求
 服务端获取到这一些列的跨域控制响应头后，才决定是否允许后续的跨域请求
+
+## 多维数组扁平化
+
+```js
+var arr = [[0],[2,3,4],1,[1,[2,3]]]
+
+var main = function (arr) {
+  var result = []
+  for (var i = 0; i < arr.length; i++) {
+    var item = arr[i]
+    if (typeof item === 'object') {
+      result.push(...main(item))
+    } else {
+      result.push(item)
+    }
+  }
+  return result
+}
+
+main(arr)
+```
+
+## 手写parseInt
+
+10 进制转 n 进制，主要依靠辗转相除法
+
+```js
+function _parseInt(target, radix=10) {
+  if (radix < 2 || radix > 36) {
+    return NaN
+  }
+
+  var output = []
+  while (target > 0) {
+    var num = target % radix
+    output.unshift(num)
+    target = parseInt(target / radix)
+  }
+
+  return output.join('')
+}
+
+_parseInt(29, 2)
+// "11101"
+```
+
+二进制转十进制
+
+```js
+function main (str) {
+  var chars = str.split('').reverse()
+  var sum = 0
+  for (var i = 0; i < chars.length; i++) {
+    var char = chars[i]
+    if (char === '1') {
+      sum += Math.pow(2, i)
+    }
+  }
+
+  return sum
+}
+
+main('11101')
+```
 
 ## 感谢
 
