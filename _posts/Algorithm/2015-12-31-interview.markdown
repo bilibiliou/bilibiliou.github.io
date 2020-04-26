@@ -802,6 +802,12 @@ function transfer(value) {
 console.log(transfer(a))
 ```
 
+```js
+Number.prototype.thousandth = function() {
+  return `${this}`.replace(/\d{1,3}(?=(\d{3})+$)/g, '$&,');
+};
+```
+
 ## 如何将数组 或字符串逆序
 
 
