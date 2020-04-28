@@ -484,8 +484,6 @@ console.log(Fibonacci2(1000)) // 4.346655768693743e+208
 console.log(Fibonacci2(10000)) // Infinity
 ```
 
-复杂度达到了O(1)
-
 完整的算法如下
 
 
@@ -499,12 +497,11 @@ function fibonacci(n, ac = 1 , ac2 = 1) {
         return ac2;
     }
     str += `${ac2} + `;
-    return  f(n - 1, ac2, ac2 = ac + ac2);
+    return  fibonacci(n - 1, ac2, ac2 = ac + ac2);
 }
 
-console.log(f(10));
+console.log(fibonacci(10));
 console.log(str);
-
 ```
 
 

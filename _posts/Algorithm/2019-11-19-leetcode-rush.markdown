@@ -1162,3 +1162,97 @@ lvl({
 
 // 
 ```
+
+## 循环数组输出
+
+给定一个包含 m x n 个元素的矩阵（m 行, n 列），请按照顺时针螺旋顺序，返回矩阵中的所有元素。
+
+示例 1:
+
+输入:
+[
+ [ 1, 2, 3 ],
+ [ 4, 5, 6 ],
+ [ 7, 8, 9 ]
+]
+输出: [1,2,3,6,9,8,7,4,5]
+示例 2:
+
+输入:
+[
+  [1, 2, 3, 4],
+  [5, 6, 7, 8],
+  [9,10,11,12]
+]
+输出: [1,2,3,4,8,12,11,10,9,5,6,7]
+
+来源：力扣（LeetCode）
+链接：https://leetcode-cn.com/problems/spiral-matrix
+著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+
+```js
+var spiralOrder = function(matrix) {
+  var i = 0
+  var j = 0
+  var n = matrix.length
+  if (n === 0) {
+    return []
+  }
+  var m = matrix[0].length
+  var result = []
+
+  // 边界值设定
+  var left = 0
+  var right = m - 1
+  var top = 0
+  var bottom = n - 1
+  var turn = m === 1 ? 'bottom' : 'right'
+  for (var a = 0; a < (m * n); a++) {
+    var value = matrix[i][j]
+    result.push(value)
+
+    switch (turn) {
+      case 'right':
+        // 如果方向是从左往右的情况
+        j++
+        if (j === right) {
+          // 当已经遍历到右边后，那么上边界算是遍历完一次了
+          // 这时候上边界需要往下移一栏
+          turn = 'bottom'
+          top++
+        }
+        break
+      case 'bottom':
+        // 此时方向是从上到下
+        i++
+        if (i === bottom) {
+          turn = 'left'
+          right--
+        }
+        break
+      case 'left':
+        // 此时方向是从右到左
+        j--
+        if (j === left) {
+          turn = 'top'
+          bottom--
+        }
+        break
+      case 'top':
+        // 此时方向是从下到上
+        i--
+        if (i === top) {
+          turn = 'right'
+          left++
+        }
+        break
+    }
+  }
+
+  return result
+};
+```
+
+执行用时：68 ms
+
+内存消耗：33.8 MB

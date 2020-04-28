@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 2018年腾讯校招笔试题冲冲冲
+title: 校招笔试题
 category: 算法
 keywords: 算法
 ---
@@ -55,4 +55,26 @@ var howMuchCanEat = function (N, M) {
   return left
 }
 howMuchCanEat(N, M)
+```
+
+## 题2
+
+某国货币系统包含面值1元，4元，16元，64元共计4钟硬币，以及面值1024元的纸币。现在某人使用1024元的纸币购买了一件价格为N(0≤N≤1024)的商品。请问最少他会收到多少硬币?
+
+```js
+function main (consume) {
+  var surplus = 1024 - consume
+  var radix = 6
+  var result = 0
+
+  while (surplus) {
+    var level = Math.pow(2, radix)
+    result += parseInt(surplus / level)
+    surplus = surplus % level
+    radix -= 2
+  }
+  return result
+}
+
+main(1022)
 ```
