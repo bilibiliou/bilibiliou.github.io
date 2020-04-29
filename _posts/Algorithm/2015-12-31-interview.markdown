@@ -1545,7 +1545,7 @@ DELETE
 TARCE
 CONNECT
 PATCH
-OPTIONS
+OPTION
 等
 或者是需要获取更多响应头、更复杂的响应内容的GET、POST、HEAD请求
 那么就需要先发送个预请求OPTIONS请求，域请求会告诉服务端，我浏览器接下来需要使用那种方法请求以及服务端未来需要回复那些响应头，以及响应的数据类型
@@ -1614,6 +1614,55 @@ function main (str) {
 }
 
 main('11101')
+```
+
+### 二进制加法
+
+```js
+function binaryAdd (num1, num2) {
+  var m = num1.length
+  var n = num2.length
+  var i = m - 1
+  var j = n - 1
+  var carry = 0
+
+  var result = []
+  while (i >= 0 || j >= 0) {
+    var a = (i >= 0) ? +num1[i] : 0
+    var b = (j >= 0) ? +num2[j] : 0
+
+    if (a & b) {
+      // 如果 1 & 1 说明需要相加进位
+      // 如果存在上一轮的 carry 那么需要入队 1
+      result.unshift('0')
+      carry = 1
+    } else if ((!a && b) || (!b && a)) {
+      if (carry) {
+        result.unshift('0')
+        carry = 1
+      } else {
+        result.unshift('1')
+        carry = 0
+      }
+    } else if (!a && !b) {
+      if (carry) {
+        result.unshift('1')
+      } else {
+        result.unshift('0')
+      }
+      carry = 0
+    }
+
+    i--
+    j--
+  }
+
+  if (carry) {
+    result.unshift('1')
+  }
+  return result.join('').replace(/^0/, '')
+}
+binaryAdd('101010101', '00101010110') // 01010101011
 ```
 
 ## 感谢
