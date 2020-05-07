@@ -776,7 +776,7 @@ console.log(reg.exec(str));
 
 ## 如何将数字转变为银行金额
 
-```javascript
+```js
 let a = 12200002.12334
 
 function transfer(value) {
@@ -1185,8 +1185,6 @@ function groupSplit (arr, size) {
   return r;
 }
 ```
-
-## 26进制和10进制转换
 
 ### 问题描述
 
@@ -1663,6 +1661,152 @@ function binaryAdd (num1, num2) {
   return result.join('').replace(/^0/, '')
 }
 binaryAdd('101010101', '00101010110') // 01010101011
+```
+
+## 二进制内容存储与十进制互转
+
+实现一个函数 mask 可以实现 二进制数组转为十进制
+
+e.g
+
+输入： [1,1,1,1]
+输出： 15
+
+实现一个函数 encodeMask 可以实现 十进制转二进制数组
+
+e.g
+
+输入：15
+输出：[1,1,1,1]
+
+解释： 因为二进制 1111 等于 十进制的 15
+
+二进制数组长度可能会很大，这也是为什么使用数组来存储二进制数的原因
+
+```js
+function mask(arr) {
+  let len = arr.length;
+  let mask = 0;
+
+  for(let i = 0; i < len; i++) {
+    let v = arr[i] << i;
+    mask |= v;
+  }
+
+  return mask;
+}
+```
+
+```js
+function encodeMask(mask) {
+  let r = [];
+
+  while (mask) {
+    r.push(mask & 1);
+    mask >>>= 1;
+  }
+
+  return r;
+}
+```
+
+
+## 阿里笔试
+
+寻找四分点
+
+```js
+var data = [0,1,11,11,3,3,3,3,1,2,10,5,6,6];
+
+function main (cdata) {
+  if (cdata.length < 7) {return 0;}
+
+  var _max = 0;
+
+  data.forEach((t) => _max+=t);
+  _max = Math.floor(_max/4);
+
+  for (var i = _max; i>=0; i--) {
+    var sum = 0;
+    var m = []; // 切片点数组
+    var t = 0;
+
+    for (j = 0; j < cdata.length;) {
+      if (sum > i) {break;}
+      if ((sum + cdata[j]) === i) {
+      m[t] = j + 1;
+      t++;
+      j += 2;
+      sum = 0;
+    } else {
+      sum += cdata[j];
+      j++;
+    }
+  }
+
+  if (t === 4) {
+    console.info(`找到了四分和 ${i}, 四分点分别是 ${m}`)
+    return 1;
+  }
+}
+
+console.info(`没有找到了四分和`)
+return 0;
+}
+
+console.log('>>>',main(data));
+```
+
+## 不用循环产生 0 - 99 的数组
+
+```js
+new Array(100)
+  .fill('0')
+  .join('')
+  .replace(/0/g, function (a, b) {
+    console.log(b);
+    return b+'$';
+  })
+  .split('$')
+```
+
+## 将 a区间 的 区间值 进行映射 到 b区间
+
+```js
+// 例如将 0 - 255 中的 100 映射 到 0 - 1
+function map(s, a1, a2, b1, b2) {
+    return ((s - a1) / (a2 - a1)) * (b2 - b1) + b1
+}
+map(100, 0, 255, 0, 1) // 0.39
+```
+
+## 简单的diff算法
+
+```js
+const isEqual = (foo, bar) => {
+  const kFoos = Object.keys(foo);
+  const kBars = Object.keys(bar);
+
+  if (kFoos.length !== kBars.length) {
+    return false;
+  }
+
+  for (const k of kFoos) {
+    if (!bar.hasOwnProperty(k) || typeof foo[k] !== typeof bar[k]) {
+    return false;
+  }
+
+  if (typeof foo[k] !== 'object') {
+    if (foo[k] !== bar[k]) {
+      return false;
+    } else {
+      if (!isEqual(foo[k], bar[k])) {
+        return false;
+      }
+    }
+  }
+  return true;
+};
 ```
 
 ## 感谢

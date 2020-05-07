@@ -156,6 +156,31 @@ clipboard.destroy();
 
 当然如果html5出了更加合适的内置API，我们也就无需调用clipboardJs库了
 
+## 原生实现的复制
+
+这里主要是使用了一个 input 标签元素存储复制的内容，在使用 setSelectionRange 从Input 中获取需要复制的内容
+
+```js
+copyToClipBoard (value, cb) {
+  const input = document.createElement('input')
+  input.style.block = 'none'
+  document.body.appendChild(input)
+  setTimeout(() => {
+    // 防止移动端弹出键盘
+    input.setAttribute('readonly', 'readonly')
+    input.focus()
+    // 处理 IOS 下无法选取全部内容的问题
+    input.setAttribute('value', value)
+    input.setSelectionRange(0, 9999)
+    if (document.execCommand) {
+      document.execCommand('copy')
+      cb && cb()
+    }
+    document.body.removeChild(input)
+  })
+}
+```
+
 ## 感谢
 
 Zeno (一名来自洛杉矶的工程师)  以及他的博客 [http://zenorocha.com/](http://zenorocha.com/)

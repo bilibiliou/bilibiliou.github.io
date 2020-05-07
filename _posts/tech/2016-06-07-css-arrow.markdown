@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 如何使用css 绘制三角形？
+title: 如何使用 css 绘制三角形 和 扇形？
 category: 技术
 keywords: 技术,css3,css2
 ---
@@ -45,6 +45,41 @@ keywords: 技术,css3,css2
 原理很简单，当宽和高都为0的时候，边框就会被渲染成一个三角形，只要把其他三边变为透明的即可
 
 ![proto](/assets/img/arrow-css1.png)
+
+### 绘制扇形
+
+我们就可以根据上面的原理，来绘制扇形了
+
+```css
+.wrap {
+  position: relative;
+}
+
+.circle {
+  position: absolute;
+  left: 0px;
+  width: 100px;
+  height: 50px;
+  background: red;
+  border-radius: 50px 50px 0 0;
+}
+
+.triangle {
+  position: absolute;
+  top: 50px;
+  width: 0;
+  height: 0;
+  border: 50px solid transparent;
+  border-top: 50px solid red;
+}
+```
+
+```html
+<div class="wrap">
+  <div class="circle"></div>
+  <div class="triangle"></div>
+</div>
+```
 
 ### 如何为三角形绘制边
 
