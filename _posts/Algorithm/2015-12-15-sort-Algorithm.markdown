@@ -137,6 +137,8 @@ console.log(BubbleSort(data,1) + "");
 
 ### 快速排序
 
+阮一峰老师经典的非原地快排
+
 ```js
 var data = [];
 
@@ -167,7 +169,78 @@ function quickSort (data, order=1) {
 };
 
 console.log(quickSort(data,0));
-``` 
+```
+
+当然如果出现 一个很大的数组，且数组中的元素全部一样，这样就可能会出现堆栈溢出的情况，而且算法复杂度也降到了最低
+
+这时候我们可以考虑三路非原地快排（面试要写的话就写这个吧）
+
+```js
+const qsort = arr => arr.length > 1 ? [
+  ...qsort(arr.filter(x=>x<arr[0])),
+  ...arr.filter(x=>x===arr[0]),
+  ...qsort(arr.filter(x=>x>arr[0]))
+] : arr;
+```
+
+### 原地快排
+
+原地快排无需申请新的临时空间
+
+```js
+// left 和 right是数组的左标和右标
+function QuickSort(arr, left = 0, right = arr.length - 1) {
+  let len = arr.length,
+      index
+
+  if(len > 1) {
+    // 先分治，找到中间
+    index = partition(arr, left, right)
+
+    if(left < index - 1) {
+      QuickSort(arr, left, index - 1)
+    } 
+
+    if(index < right) {
+      QuickSort(arr, index, right)
+    }
+
+  }
+
+  return arr
+
+}
+
+function partition(arr, left, right) {
+  // 折半找到中间点
+  let middle = Math.floor((right + left) / 2),
+      pivot = arr[middle],
+      i = left,
+      j = right;
+
+  while(i <= j) {
+    while(arr[i] < pivot) {
+      i++
+    }
+
+    while(arr[j] > pivot) {
+      j--
+    }
+
+    if(i <= j) {
+      // 数组之间两个元素进行交换
+      [arr[i], arr[j]] = [arr[j], arr[i]]
+      i++
+      j--
+    }
+  }
+
+  return i
+}
+
+QuickSort([2,3,1,5,4,9])
+// [1, 2, 3, 4, 5, 9]
+```
 
 ## 选择排序
 
