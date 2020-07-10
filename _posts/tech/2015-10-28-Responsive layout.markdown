@@ -159,6 +159,35 @@ minimum-scale：允许缩小最小比例
 maximum-scale：允许放大最大比例
 user-scalable：允许使用者缩放，1 or 0 (yes or no)
 
+## REM viewport 实现响应式布局
+
+```js
+  (function (designWidth, ratio, maxWidth) {
+    var adjustRootFontSize = function () {
+      var adaptWidth = Math.min(
+        document.documentElement.clientWidth || screen.availWidth,
+        maxWidth
+      );
+      var logicFontSize = adaptWidth / designWidth * ratio;
+      document.documentElement.style.fontSize = logicFontSize + 'px';
+
+      var actualFontSize = parseFloat(window.getComputedStyle(document.documentElement).fontSize);
+      var scaleRate = logicFontSize / actualFontSize;
+      if (scaleRate !== 1) {
+        document.documentElement.style.fontSize = (logicFontSize * scaleRate) + 'px';
+      }
+    };
+
+    adjustRootFontSize();
+    window.addEventListener('resize', adjustRootFontSize);
+    window.addEventListener('onload', adjustRootFontSize);
+    document.documentElement.setAttribute('data-dpr', Math.floor(window.devicePixelRatio));
+  })(750, 100, 960);
+  // 按750标准为设计稿、100为缩放比、960为最大兼容宽度
+  // 如果在视觉稿中量的尺寸为 420px
+  // scss 中写的就是 0.42 rem
+```
+
 ## Summery
 
 响应式布局是一个网站提高用户体验的很重要的一环,说白了就是对不同终端用不同的css

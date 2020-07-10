@@ -1809,6 +1809,53 @@ const isEqual = (foo, bar) => {
 };
 ```
 
+## parseUrl 转换
+
+写一个函数 "parseUrl" 解析 url 并把 query 补充完整
+
+```js
+var url = 'https://localhost:8080/a?session=xxx&name=dist#pages=xxx';
+var protocolReg = /^(\w+):\/\/.*/i
+var hostReg = /^\w+:\/\/(\w+:\d+)\/.*/i
+var portReg = /^\w+:\/\/\w+:(\d+)\/.*/i
+var pathnameReg = /^\w+:\/\/\w+:\d+(\/\w+)+.*/i
+var queryReg = /^\w+:\/\/\w+:\d+[\/\w+]+(\?.*)#.*/i
+var hashReg = /^\w+:\/\/\w+:\d+[\/\w+]+\?.*(#.*)/i
+var parseUrl = () => {
+  var result = {}
+  result.hash = url.match(hashReg)[1].replace('#', '')
+  result.host = url.match(hostReg)[1]
+  result.pathname = url.match(pathnameReg)[1]
+  result.port = url.match(portReg)[1]
+  result.protocol = url.match(protocolReg)[1]
+
+  var querys = url.match(queryReg)[1].replace('?', '').split('&')
+  var query = {}
+  for (var i = 0; i < querys.length; i++) {
+    var qq = querys[i]
+    var [key, value] = qq.split('=')
+    query[key] = value
+  }
+  result.query = query
+  return result
+}
+
+it('query', () => {
+  const res = parseUrl(url);
+  assert(res).equal({
+    query: {
+     session: 'xxx',
+     name: 'dist'
+    },
+    hash: 'pages=xxx',
+    host: 'localhost:8080',
+    pathname: '/a',
+    port: '8080',
+    protocol: 'https'
+  });
+});
+```
+
 ## 感谢
 
 [JavaScript中call()与apply()有什么区别？](http://my.oschina.net/warmcafe/blog/74973)
