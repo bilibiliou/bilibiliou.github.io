@@ -1,0 +1,163 @@
+---
+layout: post
+title: 关于ts一些高阶技巧
+category: 技术
+keywords: typescript
+---
+
+ts 技术的文档很多在网上都能找到，这里不在赘述，本文仅讲述一些使用上的高阶技巧
+
+## inter 和 extends 条件语句
+
+infer，表示在 extends 条件语句中待推断的类型变量
+可以用来适配适配函数式编程
+
+一个简单的栗子
+
+我们可以来看一个简单的栗子
+
+```js
+type ParamType<T> = T extends (...args: any[]) => infer P ? P : T;
+// 泛型T 能不能继承 (param: infer P) => any
+// 如果输入的泛型能 属于 (param: infer P) => any 的话， 那么 ParamType<T> = P (P 是函数式编程的入参)
+// 如果输入的泛型能 属于 (param: infer P) => any 的话， 那么 ParamType<T> = T
+
+type stringTypeParam = ParamType<string>; // type stringTypeParam = string
+type fuctionTypeParam = ParamType<() => boolean> // type fuctionTypeParam = boolean
+```
+
+下面是一个复制的栗子
+
+```js
+type ParamType<T> = T extends (...args: any[]) => infer P ? P : T;
+
+// getName 方法被设计成可以接收一个函数 或者 是字符串
+
+// ParamType 将会根据函数的返回值对最终的返回值进行定义
+// 如果是函数的话，我们就会通过 ParamType 来获取这个函数的返回值 的类型，并作为 getName 的返回值进行定义
+// 如果是字符串的话，我们就直接拿字符串进行定义
+function getName <T> (nameOrHandleName: any, name?: string) : ParamType<T> {
+  if (typeof nameOrHandleName === 'function') {
+      return nameOrHandleName(name);
+  }
+
+  return nameOrHandleName;
+}
+
+type addSuffixType = (name: string) => string;
+
+// 如这个栗子，addSuffix 是我们定义的错误处理的函数，它的返回值是 string 
+// 因为入参是个函数，getName 这个函数的返回值就会根据 addSuffix 的返回值进行判断，也就是 infer P === string
+const addSuffix: addSuffixType = (name: string) => {
+  return name + '.js';
+}
+
+
+// 我们这样就做到了一个多参控制的功能
+// 如果入参是 处理函数 那么就把入参的 name 丢给处理函数处理，处理逻辑由函数定义
+// 如果入参就是一个 字符串name 那么就直接返回
+getName<string>('script.js');
+getName<addSuffixType>(addSuffix, 'script');
+```
+
+## Promise 使用 typescript
+
+怎么在用到 promise 的时候使用typescript呢？
+我们先看看 typescript 关于 Promise 的构造函数的定义
+
+```js
+/**
+* Creates a new Promise.
+* @param executor A callback used to initialize the promise. This callback is passed two arguments:
+* a resolve callback used resolve the promise with a value or the result of another promise,
+* and a reject callback used to reject the promise with a provided reason or error.
+*/
+interface PromiseConstructor {
+
+  new <T>(
+    executor: (
+      resolve: (value?: T | PromiseLike<T>) => void,
+      reject: (reason?: any) => void
+    ) => void
+  ): Promise<T>
+
+}
+```
+
+我们可以发现 new Promise 的时候，我们可以通过定义泛型或者定义 resolve 函数，来定义 resolve 抛出的数据内容：
+
+```js
+new Promise<number>(resolve => {
+  resolve(1)
+})
+
+new Promise((resolve: (value: number) => void) => {
+  resolve(1)
+})
+```
+
+## 函数重载
+
+值得注意的是 typescript 允许函数重载，这是 ecmascript 不支持的特性！
+
+```js
+function print(info: string): void;
+function print(num: number): void;
+
+print('owen');
+print(100);
+```
+
+Typescript 内部库代码，也用了重载的特性进行封装
+
+```js
+interface PromiseConstructor {
+  /**
+    * Creates a Promise that is resolved with an array of results when all
+    * of the provided Promises resolve or reject.
+    * @param values An array of Promises.
+    * @returns A new Promise.
+    */
+  allSettled<T extends readonly unknown[] | readonly [unknown]>(values: T):
+      Promise<{ -readonly [P in keyof T]: PromiseSettledResult<T[P] extends PromiseLike<infer U> ? U : T[P]> }>;
+
+  /**
+    * Creates a Promise that is resolved with an array of results when all
+    * of the provided Promises resolve or reject.
+    * @param values An array of Promises.
+    * @returns A new Promise.
+    */
+  allSettled<T>(values: Iterable<T>): Promise<PromiseSettledResult<T extends PromiseLike<infer U> ? U : T>[]>;
+}
+// 可以看到 allSettled 是 Promise 规范 2020 的新特性 【Promise.allSettled(promises)】
+// 其中 ts 对于 allSettled 的定义也是使用了函数重载
+// allSettled 允许参数为数组和迭代器实例（Iterable） 其返回的值也不一样
+```
+
+## 泛型的箭头函数写法
+
+```js
+// 正常写法
+function foo <T> (x: T): T {
+  return x
+}
+
+// 想当然觉得这样可以
+const foo = <T>(x: T) => x; // ERROR : unclosed `T` tag
+const foo = <T extends unknown>(x: T) => x;
+```
+
+其中 extends 是必须的
+
+因为如果没有extends 符号，解释器会将泛型T认错
+
+我们需要通过继承的写法来hack，提醒解释器这个是一个泛型
+
+
+## 泛型中使用构造函数
+
+```js
+function create <T> (c: { new(): T; }): T {
+  return new c();
+}
+```
