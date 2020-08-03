@@ -26,7 +26,7 @@ type stringTypeParam = ParamType<string>; // type stringTypeParam = string
 type fuctionTypeParam = ParamType<() => boolean> // type fuctionTypeParam = boolean
 ```
 
-下面是一个复制的栗子
+下面是一个进阶的栗子
 
 ```js
 type ParamType<T> = T extends (...args: any[]) => infer P ? P : T;
