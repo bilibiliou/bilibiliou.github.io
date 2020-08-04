@@ -60,6 +60,141 @@ getName<string>('script.js');
 getName<addSuffixType>(addSuffix, 'script');
 ```
 
+ts 的文档中还给我们列出了很多实际有用的关于 extends 条件语句 的栗子
+
+### 根据类型，从interface 中筛选出属性
+
+```js
+interface Part {
+  id: number;
+  name: string;
+  subparts: Part[];
+  updatePart(newName: string): void;
+  updateState(newState: object): void;
+}
+
+// 这个可以将 interface 转为 联合类型
+type toUnionType<T> = T[keyof T];
+type T38 = toUnionType<Part>;
+// type T38 = string | number | Part[] | ((newName: string) => void) | ((newState: object) => void);
+
+
+type FilterNonFunctionPropertyNames<T> = { [K in keyof T]: T[K] extends Function ? K : never }
+/**
+  { [K in keyof T]: T[K] }
+  这个返回了一个对象类型
+  [K in keyof T] 其实上是 输入的interface泛型中所有对象key的循环
+  T[K] 则是对象的value
+
+  T[K] extends Function ? K : never
+  判断这个value是否是继承于 Function 类型的，如果是 则返回这个 key, 否则是never
+*/
+
+// 我们可以看看上面执行的结果，发现不是函数类型的字段全部为never，是 Function 对象的则致为其字段
+type T39 = FilterNonFunctionPropertyNames<Part>;
+// type T39 = {
+//   id: never;
+//   name: never;
+//   subparts: never;
+//   updatePart: "updatePart";
+//   updateState: "updateState";
+// }
+
+// 根据上面的结果, 这条类型就是 T39[keyof T]
+// 也就是将 interface 转为了 联合类型
+type FunctionPropertyNames<T> = { [K in keyof T]: T[K] extends Function ? K : never }[keyof T];
+
+// 最终结果T40 就是一个联合类型
+type T40 = FunctionPropertyNames<Part>;
+// type T40 = "updatePart" | "updateState"
+
+// 总的来说，FunctionPropertyNames 允许我们从一个interface 中筛选出所有的函数名，并转为联合类型返回
+
+// 那么反过来，我们也可以通过这种方式找到所有不是函数的属性名
+
+type NonFunctionPropertyNames<T> = { [K in keyof T]: T[K] extends Function ? never : K }[keyof T];
+type T41 = NonFunctionPropertyNames<Part>;
+
+/**
+  type T41 = "id" | "name" | "subparts"
+*/
+```
+
+### 处理联合类型
+
+```js
+type Exclude<T, U> = T extends U ? never : T; // 从 T 中 找 U 中不存在的
+type Extract<T, U> = T extends U ? T : never; // 从 T 中 找 U 中存在的
+type NonNullable<T> = Exclude<T, null | undefined> // 联合类型中剔除 null 和 undefined 类型
+
+type T00 = Exclude<"a" | "b" | "c" | "d", "a" | "c" | "f">;  // "b" | "d"
+type T01 = Extract<"a" | "b" | "c" | "d", "a" | "c" | "f">;  // "a" | "c"
+```
+
+### 处理函数和实例的返回值类型
+
+```js
+class Person {
+  id: string;
+  name: string;
+  age: number;
+  wannaJoinArmy: boolean;
+  getFuncs: () => string;
+}
+
+type ReturnType<T> = T extends (...args: any[]) => infer R ? R : any;
+// 这个，实际上和上文的 ParamType 类似，只不过对于返回类型的兜底由 T 变为了 any
+type InstanceType<T extends new (...args: any) => any> = T extends new (...args: any) => infer R ? R : any
+
+class Person {
+  private head = 'myHead';
+  run = () => {
+    console.log('I can run');
+  }
+};
+
+type T20 = InstanceType<typeof Person>;  // Person
+// InstanceType返回返回实例的构造器类
+```
+
+Exclude，Extract，NonNullable，ReturnType，InstanceType 都已经内置在了 typescript 内
+
+## interface 声明构造实例
+
+```js
+interface PersonInstance {
+  username: string;
+  gender: string;
+
+  run: () => void;
+};
+
+interface Person extends PersonInstance {
+  new (username: string, gender: string): PersonInstance
+}
+
+class Person implements Person {
+  constructor(username: string, gender: string) {
+    this.username = username;
+    this.gender = gender;
+  }
+
+  run = () => {
+    console.log('I can run');
+  }
+}
+```
+
+## 泛型中使用构造函数
+
+```js
+function create <T> (c: { new(): T; }): T {
+  return new c();
+}
+```
+
+和 interface 类似，基本都是通过 new() 来声明构造对象的构造器 
+
 ## Promise 使用 typescript
 
 怎么在用到 promise 的时候使用typescript呢？
@@ -94,6 +229,60 @@ new Promise<number>(resolve => {
 new Promise((resolve: (value: number) => void) => {
   resolve(1)
 })
+```
+
+一个高阶点的栗子
+我们可以看看 React-hook + typescript 模式下，关于异步加载数据的函数式编程的实现
+
+```js
+// 我们可以声明一个 Resolve 这个泛型用来获取 Promise 的 resolve 参数的类型声明
+type Resolve<T> = T extends (...args: any[]) => Promise<infer U> ? U : never;
+
+const agent = axios.create({
+  baseURL: '/',
+  timeout: 10000,
+  withCredentials: true
+});
+
+// 数据请求层
+async function fetchDataes () {
+  return await agent.get(REQUEST_URL);
+}
+
+// 数据处理层
+async function getSomeDataes () {
+  const dataes = await fetchDataes();
+
+  // ... 处理dataes
+  // 对数据进行解构，数据解构预处理，数据格式校验，缺省补充 等等
+
+  return result;
+}
+
+// 数据驱动层
+function afterHandleDataes <T extends (...args: any[]) => Promise<any> > ( request: T ) {
+  const result: Resolve<T> = request(); // 这个result 是对于异步函数返回的 Promise  
+
+  // 之后对数据的缓存控制，useRef 持久化，或者设置 State 等等一些的处理
+  
+  // 还可以在这里做，异步数据加载态的变更（Pending or Finish） 这里简单省略了
+  const [state, setState] = useState<Resolve<T>({
+    ...result
+  });
+
+  const { current: ref } = useRef({
+    state,
+
+    updateState(s: Partial<Resolve<T>>) {
+      setState((ref.state = { ...ref.state, ...s }))
+    }
+  })
+
+  return [state, ref];
+}
+
+// 这样就实现了对于数据加载的函数式编程的表达
+afterHandleDataes(getSomeDataes);
 ```
 
 ## 函数重载
@@ -134,6 +323,25 @@ interface PromiseConstructor {
 // allSettled 允许参数为数组和迭代器实例（Iterable） 其返回的值也不一样
 ```
 
+## 获得 interface 内所有字段的类型
+
+```js
+interface Person {
+  id: string;
+  name: string;
+  age: number;
+  wannaJoinArmy: boolean;
+  getFuncs: () => string;
+}
+
+type getAllTypes<T> = T[keyof T];
+type T10 = getAllTypes<Person>;
+/**
+  type T10 = string | number | boolean | (() => string)
+*/
+```
+
+
 ## 泛型的箭头函数写法
 
 ```js
@@ -153,11 +361,25 @@ const foo = <T extends unknown>(x: T) => x;
 
 我们需要通过继承的写法来hack，提醒解释器这个是一个泛型
 
-
-## 泛型中使用构造函数
+## interface 允许多重继承
 
 ```js
-function create <T> (c: { new(): T; }): T {
-  return new c();
+interface Shape {
+    color: string;
 }
+
+interface PenStroke {
+    penWidth: number;
+}
+
+interface Square extends Shape, PenStroke {
+    sideLength: number;
+}
+
+let square = {} as Square;
+square.color = "blue";
+square.sideLength = 10;
+square.penWidth = 5.0;
 ```
+
+我们可以看到 typescript 中的interface 支持多重继承，这个也是 ecmascript 中不支持的
