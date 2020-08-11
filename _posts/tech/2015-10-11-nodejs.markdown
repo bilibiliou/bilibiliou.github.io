@@ -1209,6 +1209,38 @@ process.nextTick()，效率最高，消费资源小，但会阻塞CPU的后续�
 setTimeout()，精确度不高，可能有延迟执行的情况发生，且因为动用了红黑树，所以消耗资源大；
 setImmediate()，消耗的资源小，也不会造成阻塞，但效率也是最低的。
 
+## 检测文件夹或文件是否存在
+
+```js
+// 检测文件或者文件夹存在
+function fsExistsSync(path) {
+  try {
+    fs.accessSync(path, fs.constants.R_OK | fs.constants.W_OK);
+  } catch (e) {
+    return false;
+  }
+
+  return true;
+}
+```
+
+## nodeJs GUI 框架
+
+尝试一下，[inquirer](https://github.com/SBoudrias/Inquirer.js)
+
+```js
+npm i inquirer
+```
+
+## 文件夹整块一起复制粘贴到对应目录
+
+尝试一下 [ncp](https://github.com/AvianFlu/ncp)
+
+```js
+npm i ncp
+```
+
+
 ## 感谢
 
 [nodeJs](https://nodejs.org/en/)
