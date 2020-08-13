@@ -1856,6 +1856,30 @@ it('query', () => {
 });
 ```
 
+## 时间格式化
+
+函数式格式化时间，暴力美学
+```js
+function formatDuration(ms = 0, fmt = 'hh:mm:ss') {
+  const fmts = {
+    hh: v => v,
+    mm: v => (v >= 10 ? v : `0${v}`),
+    ss: v => (v >= 10 ? v : `0${v}`),
+  };
+
+  const values = {
+    // 36e5 === 36 * 10^5 === 3600000 and so on
+    hh: ms >= 36e5 ? Math.floor((ms / 36e5) % 24) : 0,
+    mm: ms >= 6e4 ? Math.floor((ms / 6e4) % 60) : 0,
+    ss: Math.ceil((ms / 1e3) % 60),
+  };
+
+  const format = s => (fmts[s] ? fmts[s](values[s]) : s);
+
+  return fmt.split(':').map(format).filter(Boolean).join(':');
+}
+```
+
 ## 感谢
 
 [JavaScript中call()与apply()有什么区别？](http://my.oschina.net/warmcafe/blog/74973)
