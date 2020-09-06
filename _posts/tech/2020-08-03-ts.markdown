@@ -16,7 +16,7 @@ infer，表示在 extends 条件语句中待推断的类型变量
 
 我们可以来看一个简单的栗子
 
-```js
+```ts
 type ParamType<T> = T extends (...args: any[]) => infer P ? P : T;
 // 泛型T 能不能继承 (param: infer P) => any
 // 如果输入的泛型能 属于 (param: infer P) => any 的话， 那么 ParamType<T> = P (P 是函数式编程的入参)
@@ -28,7 +28,7 @@ type fuctionTypeParam = ParamType<() => boolean> // type fuctionTypeParam = bool
 
 下面是一个进阶的栗子
 
-```js
+```ts
 type ParamType<T> = T extends (...args: any[]) => infer P ? P : T;
 
 // getName 方法被设计成可以接收一个函数 或者 是字符串
@@ -64,7 +64,7 @@ ts 的文档中还给我们列出了很多实际有用的关于 extends 条件�
 
 ### 根据类型，从interface 中筛选出属性
 
-```js
+```ts
 interface Part {
   id: number;
   name: string;
@@ -122,7 +122,7 @@ type T41 = NonFunctionPropertyNames<Part>;
 
 ### 处理联合类型
 
-```js
+```ts
 type Exclude<T, U> = T extends U ? never : T; // 从 T 中 找 U 中不存在的
 type Extract<T, U> = T extends U ? T : never; // 从 T 中 找 U 中存在的
 type NonNullable<T> = Exclude<T, null | undefined> // 联合类型中剔除 null 和 undefined 类型
@@ -133,7 +133,7 @@ type T01 = Extract<"a" | "b" | "c" | "d", "a" | "c" | "f">;  // "a" | "c"
 
 ### 处理函数和实例的返回值类型
 
-```js
+```ts
 class Person {
   id: string;
   name: string;
@@ -161,7 +161,7 @@ Exclude，Extract，NonNullable，ReturnType，InstanceType 都已经内置在�
 
 ## interface 声明构造实例
 
-```js
+```ts
 interface PersonInstance {
   username: string;
   gender: string;
@@ -187,7 +187,7 @@ class Person implements Person {
 
 ## 泛型中使用构造函数
 
-```js
+```ts
 function create <T> (c: { new(): T; }): T {
   return new c();
 }
@@ -200,7 +200,7 @@ function create <T> (c: { new(): T; }): T {
 怎么在用到 promise 的时候使用typescript呢？
 我们先看看 typescript 关于 Promise 的构造函数的定义
 
-```js
+```ts
 /**
 * Creates a new Promise.
 * @param executor A callback used to initialize the promise. This callback is passed two arguments:
@@ -221,7 +221,7 @@ interface PromiseConstructor {
 
 我们可以发现 new Promise 的时候，我们可以通过定义泛型或者定义 resolve 函数，来定义 resolve 抛出的数据内容：
 
-```js
+```ts
 new Promise<number>(resolve => {
   resolve(1)
 })
@@ -234,7 +234,7 @@ new Promise((resolve: (value: number) => void) => {
 一个高阶点的栗子
 我们可以看看 React-hook + typescript 模式下，关于异步加载数据的函数式编程的实现
 
-```js
+```ts
 // 我们可以声明一个 Resolve 这个泛型用来获取 Promise 的 resolve 参数的类型声明
 type Resolve<T> = T extends (...args: any[]) => Promise<infer U> ? U : never;
 
@@ -289,7 +289,7 @@ afterHandleDataes(getSomeDataes);
 
 值得注意的是 typescript 允许函数重载，这是 ecmascript 不支持的特性！
 
-```js
+```ts
 function print(info: string): void;
 function print(num: number): void;
 
@@ -299,7 +299,7 @@ print(100);
 
 Typescript 内部库代码，也用了重载的特性进行封装
 
-```js
+```ts
 interface PromiseConstructor {
   /**
     * Creates a Promise that is resolved with an array of results when all
@@ -325,7 +325,7 @@ interface PromiseConstructor {
 
 ## 获得 interface 内所有字段的类型
 
-```js
+```ts
 interface Person {
   id: string;
   name: string;
@@ -344,7 +344,7 @@ type T10 = getAllTypes<Person>;
 
 ## 泛型的箭头函数写法
 
-```js
+```ts
 // 正常写法
 function foo <T> (x: T): T {
   return x
@@ -363,7 +363,7 @@ const foo = <T extends unknown>(x: T) => x;
 
 ## interface 允许多重继承
 
-```js
+```ts
 interface Shape {
     color: string;
 }
@@ -383,3 +383,98 @@ square.penWidth = 5.0;
 ```
 
 我们可以看到 typescript 中的interface 支持多重继承，这个也是 ecmascript 中不支持的
+
+
+## 以枚举类型作为对象的key
+
+假如我们有一个枚举类型
+
+```ts
+export enum TagKeys {
+  'yesterday' = 1,
+  'recent_7_day' = 7,
+  'recent_15_day' = 15,
+  'recent_30_day' = 30,
+  'total' = 0
+}
+```
+
+我现在希望声明一个对象，这个对象的 key 一定是枚举类型的，并且我可以通过枚举类型进行访问，例如
+
+```ts
+const map {
+  map[TagKeys[1]]: 132
+  map[TagKeys['recent_7_day']]: 468
+}
+
+/*
+编译的结果：
+{
+  'yesterday': 132,
+  7: 468
+}
+*/
+```
+
+那么我们怎么做这个对象的声明类型呢？
+首先我想到的是：
+
+```ts
+type map = Record<TagKeys, number>;
+
+/*
+但是这样会被编译成
+type map = {
+  1: number;
+  7: number;
+  15: number;
+  30: number;
+  0: number;
+}
+*/
+```
+
+怎样获取枚举的双向绑定呢？
+
+```ts
+type TagKeysIndexes = keyof typeof TagKeys; // "yesterday" | "recent_7_day" | "recent_15_day" | "recent_30_day" | "total"
+
+type map = Record<TagKeys | TagKeysIndexes, number>;
+/*
+type map = {
+  1: number;
+  7: number;
+  15: number;
+  30: number;
+  0: number;
+  yesterday: number;
+  recent_7_day: number;
+  recent_15_day: number;
+  recent_30_day: number;
+  total: number;
+}
+*/
+```
+
+为什么呢，因为 ts 处理以枚举对象为类型的时候，只会将枚举对象的 values 绑定，而不会处理 keys
+所以我们需要手动处理keys的绑定声明
+
+
+最后，因为我们只需要部分的声明值就够了，所以最后代码这么写
+```ts
+type map = Partial<Record<TagKeys | TagKeysIndexes, number>>;
+/**
+type map = {
+  1?: number | undefined;
+  7?: number | undefined;
+  15?: number | undefined;
+  30?: number | undefined;
+  0?: number | undefined;
+  yesterday?: number | undefined;
+  recent_7_day?: number | undefined;
+  recent_15_day?: number | undefined;
+  recent_30_day?: number | undefined;
+  total?: number | undefined;
+}
+**/
+```
