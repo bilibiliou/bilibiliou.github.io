@@ -478,3 +478,36 @@ type map = {
 }
 **/
 ```
+
+## hook + 泛型组件
+
+```ts
+// tsx 定义泛型组件
+<SomeComponent<Generic>
+  data={Data}
+  a=1
+/>
+
+// hook 内声明
+interface Props<T> {
+  data: T[];
+}
+
+export default function <T>(props: Props<T>) {
+  return (<div>{...}<div>)
+};
+```
+
+问题来了，如果我们需要用到React.memo 等方法作为高阶组件封装，怎么办呢？
+
+这样可以解决问题，但是不算太优雅
+
+```ts
+interface Props<T> {
+  data: T[];
+}
+
+funtion Component <T>(props: Props<T>) {...}
+
+export default React.memo(Component) as typeof Component;
+```
