@@ -165,6 +165,42 @@ DENY 页面中不允许展示iframe，即使是同域名的iframe嵌套，也不
 SAMEORIGN 允许展示同域名的iframe
 ALLOW-FROM[=url] 通过配置url, 允许指定的url的iframe进行嵌套
 
+## Accept-Encoding
+
+这个是请求头
+用于告知给服务端，浏览器能够支持哪一种的压缩文件的算法
+
+Accept-Encoding 可以传的值有：
+
+```
+gzip
+表示采用 Lempel-Ziv coding (LZ77) 压缩算法，以及32位CRC校验的编码方式
+
+compress
+采用 Lempel-Ziv-Welch (LZW) 压缩算法
+
+deflate
+采用 zlib 结构和 deflate 压缩算法。
+
+br
+表示采用 Brotli 算法的编码方式。
+
+identity
+用于指代自身（例如：未经过压缩和修改）。除非特别指明，这个标记始终可以被接受。
+
+*
+匹配其他任意未在该请求头字段中列出的编码方式。假如该请求头字段不存在的话，这个值是默认值。它并不代表任意算法都支持，而仅仅表示算法之间无优先次序。
+```
+
+我们经常使用的是 gzip 的压缩方式，一般能够使传输
+
+和 Accept-Encoding 配套使用的，是 content-encoding
+
+## content-encoding
+
+content-encoding 是服务端对浏览器端的响应头回参
+用来通知浏览器端服务端所支持的压缩算法
+
 ## Referrer 和 Referrer Policy
 
 Referrer 是HTTP请求头，表明了当前请求，是由那一个地址页面跳转过来的，用于指明当前流量的来源参考页面。通过这个信息，我们可以知道访客是怎么来到当前页面的。

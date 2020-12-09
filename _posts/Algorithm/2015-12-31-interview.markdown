@@ -484,8 +484,6 @@ console.log(Fibonacci2(1000)) // 4.346655768693743e+208
 console.log(Fibonacci2(10000)) // Infinity
 ```
 
-复杂度达到了O(1)
-
 完整的算法如下
 
 
@@ -499,12 +497,11 @@ function fibonacci(n, ac = 1 , ac2 = 1) {
         return ac2;
     }
     str += `${ac2} + `;
-    return  f(n - 1, ac2, ac2 = ac + ac2);
+    return  fibonacci(n - 1, ac2, ac2 = ac + ac2);
 }
 
-console.log(f(10));
+console.log(fibonacci(10));
 console.log(str);
-
 ```
 
 
@@ -779,7 +776,7 @@ console.log(reg.exec(str));
 
 ## 如何将数字转变为银行金额
 
-```javascript
+```js
 let a = 12200002.12334
 
 function transfer(value) {
@@ -1189,8 +1186,6 @@ function groupSplit (arr, size) {
 }
 ```
 
-## 26进制和10进制转换
-
 ### 问题描述
 
 在Excel中，列的名称是这样一个递增序列：A、B、C、…、Z、AA、AB、AC、…、AZ、BA、BB、BC、…、BZ、CA、…、ZZ、AAA、AAB…。
@@ -1548,7 +1543,7 @@ DELETE
 TARCE
 CONNECT
 PATCH
-OPTIONS
+OPTION
 等
 或者是需要获取更多响应头、更复杂的响应内容的GET、POST、HEAD请求
 那么就需要先发送个预请求OPTIONS请求，域请求会告诉服务端，我浏览器接下来需要使用那种方法请求以及服务端未来需要回复那些响应头，以及响应的数据类型
@@ -1617,6 +1612,272 @@ function main (str) {
 }
 
 main('11101')
+```
+
+### 二进制加法
+
+```js
+function binaryAdd (num1, num2) {
+  var m = num1.length
+  var n = num2.length
+  var i = m - 1
+  var j = n - 1
+  var carry = 0
+
+  var result = []
+  while (i >= 0 || j >= 0) {
+    var a = (i >= 0) ? +num1[i] : 0
+    var b = (j >= 0) ? +num2[j] : 0
+
+    if (a & b) {
+      // 如果 1 & 1 说明需要相加进位
+      // 如果存在上一轮的 carry 那么需要入队 1
+      result.unshift('0')
+      carry = 1
+    } else if ((!a && b) || (!b && a)) {
+      if (carry) {
+        result.unshift('0')
+        carry = 1
+      } else {
+        result.unshift('1')
+        carry = 0
+      }
+    } else if (!a && !b) {
+      if (carry) {
+        result.unshift('1')
+      } else {
+        result.unshift('0')
+      }
+      carry = 0
+    }
+
+    i--
+    j--
+  }
+
+  if (carry) {
+    result.unshift('1')
+  }
+  return result.join('').replace(/^0/, '')
+}
+binaryAdd('101010101', '00101010110') // 01010101011
+```
+
+## 二进制内容存储与十进制互转
+
+实现一个函数 mask 可以实现 二进制数组转为十进制
+
+e.g
+
+输入： [1,1,1,1]
+输出： 15
+
+实现一个函数 encodeMask 可以实现 十进制转二进制数组
+
+e.g
+
+输入：15
+输出：[1,1,1,1]
+
+解释： 因为二进制 1111 等于 十进制的 15
+
+二进制数组长度可能会很大，这也是为什么使用数组来存储二进制数的原因
+
+```js
+function mask(arr) {
+  let len = arr.length;
+  let mask = 0;
+
+  for(let i = 0; i < len; i++) {
+    let v = arr[i] << i;
+    mask |= v;
+  }
+
+  return mask;
+}
+```
+
+```js
+function encodeMask(mask) {
+  let r = [];
+
+  while (mask) {
+    r.push(mask & 1);
+    mask >>>= 1;
+  }
+
+  return r;
+}
+```
+
+
+## 阿里笔试
+
+寻找四分点
+
+```js
+var data = [0,1,11,11,3,3,3,3,1,2,10,5,6,6];
+
+function main (cdata) {
+  if (cdata.length < 7) {return 0;}
+
+  var _max = 0;
+
+  data.forEach((t) => _max+=t);
+  _max = Math.floor(_max/4);
+
+  for (var i = _max; i>=0; i--) {
+    var sum = 0;
+    var m = []; // 切片点数组
+    var t = 0;
+
+    for (j = 0; j < cdata.length;) {
+      if (sum > i) {break;}
+      if ((sum + cdata[j]) === i) {
+      m[t] = j + 1;
+      t++;
+      j += 2;
+      sum = 0;
+    } else {
+      sum += cdata[j];
+      j++;
+    }
+  }
+
+  if (t === 4) {
+    console.info(`找到了四分和 ${i}, 四分点分别是 ${m}`)
+    return 1;
+  }
+}
+
+console.info(`没有找到了四分和`)
+return 0;
+}
+
+console.log('>>>',main(data));
+```
+
+## 不用循环产生 0 - 99 的数组
+
+```js
+new Array(100)
+  .fill('0')
+  .join('')
+  .replace(/0/g, function (a, b) {
+    console.log(b);
+    return b+'$';
+  })
+  .split('$')
+```
+
+## 将 a区间 的 区间值 进行映射 到 b区间
+
+```js
+// 例如将 0 - 255 中的 100 映射 到 0 - 1
+function map(s, a1, a2, b1, b2) {
+    return ((s - a1) / (a2 - a1)) * (b2 - b1) + b1
+}
+map(100, 0, 255, 0, 1) // 0.39
+```
+
+## 简单的diff算法
+
+```js
+const isEqual = (foo, bar) => {
+  const kFoos = Object.keys(foo);
+  const kBars = Object.keys(bar);
+
+  if (kFoos.length !== kBars.length) {
+    return false;
+  }
+
+  for (const k of kFoos) {
+    if (!bar.hasOwnProperty(k) || typeof foo[k] !== typeof bar[k]) {
+    return false;
+  }
+
+  if (typeof foo[k] !== 'object') {
+    if (foo[k] !== bar[k]) {
+      return false;
+    } else {
+      if (!isEqual(foo[k], bar[k])) {
+        return false;
+      }
+    }
+  }
+  return true;
+};
+```
+
+## parseUrl 转换
+
+写一个函数 "parseUrl" 解析 url 并把 query 补充完整
+
+```js
+var url = 'https://localhost:8080/a?session=xxx&name=dist#pages=xxx';
+var protocolReg = /^(\w+):\/\/.*/i
+var hostReg = /^\w+:\/\/(\w+:\d+)\/.*/i
+var portReg = /^\w+:\/\/\w+:(\d+)\/.*/i
+var pathnameReg = /^\w+:\/\/\w+:\d+(\/\w+)+.*/i
+var queryReg = /^\w+:\/\/\w+:\d+[\/\w+]+(\?.*)#.*/i
+var hashReg = /^\w+:\/\/\w+:\d+[\/\w+]+\?.*(#.*)/i
+var parseUrl = () => {
+  var result = {}
+  result.hash = url.match(hashReg)[1].replace('#', '')
+  result.host = url.match(hostReg)[1]
+  result.pathname = url.match(pathnameReg)[1]
+  result.port = url.match(portReg)[1]
+  result.protocol = url.match(protocolReg)[1]
+
+  var querys = url.match(queryReg)[1].replace('?', '').split('&')
+  var query = {}
+  for (var i = 0; i < querys.length; i++) {
+    var qq = querys[i]
+    var [key, value] = qq.split('=')
+    query[key] = value
+  }
+  result.query = query
+  return result
+}
+
+it('query', () => {
+  const res = parseUrl(url);
+  assert(res).equal({
+    query: {
+     session: 'xxx',
+     name: 'dist'
+    },
+    hash: 'pages=xxx',
+    host: 'localhost:8080',
+    pathname: '/a',
+    port: '8080',
+    protocol: 'https'
+  });
+});
+```
+
+## 时间格式化
+
+函数式格式化时间，暴力美学
+```js
+function formatDuration(ms = 0, fmt = 'hh:mm:ss') {
+  const fmts = {
+    hh: v => v,
+    mm: v => (v >= 10 ? v : `0${v}`),
+    ss: v => (v >= 10 ? v : `0${v}`),
+  };
+
+  const values = {
+    // 36e5 === 36 * 10^5 === 3600000 and so on
+    hh: ms >= 36e5 ? Math.floor((ms / 36e5) % 24) : 0,
+    mm: ms >= 6e4 ? Math.floor((ms / 6e4) % 60) : 0,
+    ss: Math.ceil((ms / 1e3) % 60),
+  };
+
+  const format = s => (fmts[s] ? fmts[s](values[s]) : s);
+
+  return fmt.split(':').map(format).filter(Boolean).join(':');
+}
 ```
 
 ## 感谢

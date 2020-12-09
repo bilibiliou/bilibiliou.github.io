@@ -1162,3 +1162,163 @@ lvl({
 
 // 
 ```
+
+## 循环数组输出
+
+给定一个包含 m x n 个元素的矩阵（m 行, n 列），请按照顺时针螺旋顺序，返回矩阵中的所有元素。
+
+示例 1:
+
+输入:
+[
+ [ 1, 2, 3 ],
+ [ 4, 5, 6 ],
+ [ 7, 8, 9 ]
+]
+输出: [1,2,3,6,9,8,7,4,5]
+示例 2:
+
+输入:
+[
+  [1, 2, 3, 4],
+  [5, 6, 7, 8],
+  [9,10,11,12]
+]
+输出: [1,2,3,4,8,12,11,10,9,5,6,7]
+
+来源：力扣（LeetCode）
+链接：https://leetcode-cn.com/problems/spiral-matrix
+著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+
+```js
+var spiralOrder = function(matrix) {
+  var i = 0
+  var j = 0
+  var n = matrix.length
+  if (n === 0) {
+    return []
+  }
+  var m = matrix[0].length
+  var result = []
+
+  // 边界值设定
+  var left = 0
+  var right = m - 1
+  var top = 0
+  var bottom = n - 1
+  var turn = m === 1 ? 'bottom' : 'right'
+  for (var a = 0; a < (m * n); a++) {
+    var value = matrix[i][j]
+    result.push(value)
+
+    switch (turn) {
+      case 'right':
+        // 如果方向是从左往右的情况
+        j++
+        if (j === right) {
+          // 当已经遍历到右边后，那么上边界算是遍历完一次了
+          // 这时候上边界需要往下移一栏
+          turn = 'bottom'
+          top++
+        }
+        break
+      case 'bottom':
+        // 此时方向是从上到下
+        i++
+        if (i === bottom) {
+          turn = 'left'
+          right--
+        }
+        break
+      case 'left':
+        // 此时方向是从右到左
+        j--
+        if (j === left) {
+          turn = 'top'
+          bottom--
+        }
+        break
+      case 'top':
+        // 此时方向是从下到上
+        i--
+        if (i === top) {
+          turn = 'right'
+          left++
+        }
+        break
+    }
+  }
+
+  return result
+};
+```
+
+执行用时：68 ms
+
+内存消耗：33.8 MB
+
+## 汉诺塔问题
+
+```
+在经典汉诺塔问题中，有 3 根柱子及 N 个不同大小的穿孔圆盘，盘子可以滑入任意一根柱子。一开始，所有盘子自上而下按升序依次套在第一根柱子上(即每一个盘子只能放在更大的盘子上面)。移动圆盘时受到以下限制:
+(1) 每次只能移动一个盘子;
+(2) 盘子只能从柱子顶端滑出移到下一根柱子;
+(3) 盘子只能叠在比它大的盘子上。
+
+请编写程序，用栈将所有盘子从第一根柱子移到最后一根柱子。
+
+你需要原地修改栈。
+
+示例1:
+
+ 输入：A = [2, 1, 0], B = [], C = []
+ 输出：C = [2, 1, 0]
+示例2:
+
+ 输入：A = [1, 0], B = [], C = []
+ 输出：C = [1, 0]
+提示:
+
+A中盘子的数目不大于14个。
+
+来源：力扣（LeetCode）
+链接：https://leetcode-cn.com/problems/hanota-lcci
+著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+```
+
+```js
+var hanota = function (A, B, C) {
+  var n = A.length
+  if (n > 14) {
+    return void 0
+  }
+  var _ = function (n, A, B, C) {
+    if (n === 1) {
+      var item = A.pop()
+      C.push(item)
+      return
+    }
+  
+    if (n > 1) {
+      // 将 A 的 n-1 个元素移动到 B
+      _(n - 1, A, C, B)
+
+      // 此时，A柱只剩下一个圆盘，已经空了
+      var item = A.pop()
+      C.push(item)
+
+      // 将 B 柱剩下的圆盘移动到 C 柱
+      _(n - 1, B, A, C)
+    }
+  }
+
+  _(n, A, B, C)
+  return C
+}
+
+hanota([3, 2, 1, 0], [], [])
+```
+
+执行用时 : 72 ms, 在所有 JavaScript 提交中击败了 33.33% 的用户
+
+内存消耗 : 34.1 MB, 在所有 JavaScript 提交中击败了 100.00% 的用户

@@ -1,14 +1,48 @@
 ---
 layout: post
-title: Css3 学习历程
+title: Css2.1 和 Css3 学习笔记
 category: 技术
 keywords: 技术,css3
 ---
 
+## BFC
+
+### BFC 作用
+
+```
+防止margin重叠
+清除内部浮动
+自适应两（多）栏布局
+防止字体环绕
+```
+
+### 触发BFC条件
+
+```
+根元素
+float的值不为none
+overflow的值不为visible
+display的值为inline-block、table-cell、table-caption
+position的值为absolute、fixed
+```
+
+### BFC的特性
+
+```
+内部的Box会在垂直方向上一个接一个的放置。
+垂直方向上的距离由margin决定
+bfc的区域不会与float的元素区域重叠。
+计算bfc的高度时，浮动元素也参与计算
+bfc就是页面上的一个独立容器，容器里面的子元素不会影响外面元素。
+```
+
+## 伪元素
+
+伪元素用于创建一些不在文档树中的元素，并为其添加样式。比如说，我们可以通过::before来在一个元素前增加一些文本，并为这些文本添加样式。虽然用户可以看到这些文本，但是这些文本实际上不在文档树中。常见的伪元素有：::before，::after，::first-line，::first-letter，::selection、::placeholder等
+
 ## 属性选择器
 
 我们可以通过属性选择器,选出带有特定的属性的标签元素
-
 
 ```html
 
@@ -48,8 +82,8 @@ keywords: 技术,css3
 
 <ul>
 	<li lavender="owen handsome" >owen</li>
-	<li lavender="zye"  >zye</li>
-	<li lavender="ppt"  >ppt</li>
+	<li lavender="zye" >zye</li>
+	<li lavender="ppt" >ppt</li>
 </ul>
 
 ```
@@ -1839,21 +1873,21 @@ grayscale        	灰度     (把图片变为黑白色,灰度越大,黑色程度
 
 sepia            	色偏     (使图片变得古老,色偏越大,古老程度越深,默认值是100%)
 
-saturate			饱和度   (色彩饱和度)
+saturate          饱和度   (色彩饱和度)
 
-hue-rotate	 		色相旋转 (改变图片色相,默认值为0deg)
+hue-rotate        色相旋转 (改变图片色相,默认值为0deg)
 
-invert				反色     (255-当前rgb的值取反色,默认值是100%)
+invert            反色     (255-当前rgb的值取反色,默认值是100%)
 
-opacity				透明度   (图片透明程度)
+opacity           透明度   (图片透明程度)
 
-brightness			亮度     (图片显示的局部亮度)
+brightness        亮度     (图片显示的局部亮度)
 
-contrast			对比度   (设置图片对比度,默认值是100%)
+contrast          对比度   (设置图片对比度,默认值是100%)
 
-blur				模糊	 (使图片变得模糊不清,很实用的一个属性默认值是0)
+blur              模糊     (使图片变得模糊不清,很实用的一个属性默认值是0)
 
-drop-shadow			阴影     (类似box-shadow,为图片添加阴影)
+drop-shadow       阴影     (类似box-shadow,为图片添加阴影)
 
 虽然这些很艺术的东西一般都是UI妹纸去做的,但是,我们也需要了解一下,毕竟如果有时候真的要用到,也不可能老是去麻烦人家(众:...怪不得泡不到妹子)
 
@@ -1899,6 +1933,127 @@ after 和 before伪类就不多提了
 appearance 
 
 http://www.w3cplus.com/css3/changing-appearance-of-element-with-css3.html
+
+## mix-blend-mode 和 background-blend-mode
+
+1 会将设置了此属性的元素层级下的元素进行混合渲染
+
+2 如果层级下的元素产生了层叠上下文，则无法混合渲染
+
+包括
+
+```
+1 transfrom
+2 opacity 不为1
+3 will-change
+4 position: fixed + z-index
+5 mix-blend-mode
+6 filter
+7 isolation: isolate
+```
+
+则 两个元素之间不会进行混合渲染
+
+background-blend-mode 则是一个完全封闭的空间，能够将两个背景混合渲染（不会影响到其他元素）
+
+## @support
+
+Css3 提供了@support 来让我们进行优雅降级处理
+
+```css
+/* 如果新属性在浏览器中是支持的 则返回true 则下面的css 属性会被bind
+如果不支持，则{} 中的css 属性不会被bind */
+@support(新属性) {
+}
+
+// 可以逻辑取反
+@support not (新属性) {
+
+}
+
+// 有且只有两个属性都支持的时候才会bind
+@support(新属性1) and (新属性2) {
+
+}
+
+// 当有一个属性支持的时候就会bind
+@support(新属性1) or (新属性2) {
+}
+
+```
+
+## 实现首字下沉
+
+```
+1 ::first-letter + float: left or right
+2 safari 下的inital-letter (兼容性不行)
+inital-letter: 首字行高 下沉程度;
+```
+
+## 弹性动画帧，开箱即用
+
+```scss
+@function spring-wobbly ($t) {
+  @return -0.5 * pow(2.71828, (-6 * $t)) * (-2 * pow(2.71828, (6 * $t))  + sin(12 * $t) + 2 * cos(12 * $t));
+}
+
+/* 线性插值补间 */
+@function lerp ($a, $b, $p) {
+  @return $a + $p * ($b - $a);
+}
+
+@keyframes wobble {
+  @for $i from 0 through 100 {
+    $t: lerp(0, 1, spring-wobbly($i / 100));
+    // 这里可以不单单是形变，也可以是 opacity 或者 translate
+    transform: scale(#{$t}, #{$t});
+  }
+}
+```
+
+
+## 如何使一个3d 层 正反面渲染
+
+```
+A, B {
+  position: absolute;
+  width: 100%;
+  heigth: 100%;
+  backface-visibility: hidden;
+}
+
+A {
+  z-index: 2;
+}
+
+B {
+  transform: rotateY(180deg);
+}
+
+C {
+  transform-style: preserve-3d;
+}
+
+D {
+  perspective: 800px;
+}
+
+
+<D>
+  <C>
+    <A></A>
+    <B></B>
+  </C>
+</D>
+```
+
+## 纯css 绘制进度条
+
+https://juejin.im/post/5c35953ce51d45523f04b6d2
+
+## Element Query CSS
+
+是一个基于css 媒体查询理念+jquery的库，可以用于各种css查询
 
 ## 感谢
 
