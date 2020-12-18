@@ -1880,6 +1880,36 @@ function formatDuration(ms = 0, fmt = 'hh:mm:ss') {
 }
 ```
 
+## 封装对象数组去重
+
+```js
+/*
+* arr 待去重数组
+* key 索引
+* 返回一个新函数
+*/
+function removeMultiple<T>(arr: Array<T>, key: string | number): Array<T> {
+  if (!arr) {
+    return [];
+  }
+
+  return [...new Set(arr.map(item => item[key]))].map(mainKey => arr.find(item => item[key] === mainKey));
+}
+```
+
+## 函数式更新数组
+
+```js
+/*
+* source 需要处理的数组，返回一个新的数组副本
+* test 判断函数，返回boolean 判断是否需要对其更新
+* update 更新函数，用于对，对应位置的数组项进行更新
+*/
+function updateArray<T>(source: T[], test: (i: T) => boolean, update: (t: T) => T) {
+  return source.map(item => (test(item) ? update(item) : item));
+}
+```
+
 ## 感谢
 
 [JavaScript中call()与apply()有什么区别？](http://my.oschina.net/warmcafe/blog/74973)
