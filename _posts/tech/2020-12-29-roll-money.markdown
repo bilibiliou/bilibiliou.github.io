@@ -13,6 +13,8 @@ keywords: 技术, 动画
 
 注：转 gif 图片的时候，出于体积考虑，有损压缩的时候，有一定的掉帧
 
+## 主逻辑代码
+
 ```js
 // 格式化金额，保留两位小数
 // value 入参为 最小单位金额 一份钱
@@ -170,6 +172,8 @@ export default class RollMoney {
   }
 }
 ```
+
+## 业务调用
 
 ```js
 const [renderMoney, setRenderMoney] = useState(0);
