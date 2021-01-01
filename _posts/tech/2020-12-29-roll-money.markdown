@@ -1,11 +1,11 @@
 ---
 layout: post
-title: 自研数字翻滚动画框架
+title: 自己搭一套数字翻滚动画框架
 category: 技术
 keywords: 技术, 动画
 ---
 
-由于业务需要，自研了一套金额翻滚的动画小框架， 基于 ts + react-hooks, 当然不强耦合react-hooks, 逻辑都足够解耦，你也可以在vue上用
+由于业务需要，自研了一套金额翻滚的动画小框架， 基于 ts + react-hooks, 当然，不强耦合react-hooks, 逻辑都足够解耦，你也可以在vue上用
 
 ## 效果
 
@@ -24,10 +24,6 @@ export function formatMoney(value: number) {
 
 ```js
 // ease 函数库「开源」
-/*
- * Easing Functions - inspired from http://gizma.com/easing/
- * only considering the t value for the range [0, 1] => [0, 1]
- */
 const EasingFunctions = {
   // no easing, no acceleration
   linear: t => t,
@@ -85,7 +81,7 @@ export default class RollMoney {
   }
 
   start(newTarget?: number) {
-    // 重新设置目标值，当目标值被改动后，会从current 补间到新的目标值
+    // 重新设置目标值，当目标值被改动后，会从 current 补间到 target
     if (newTarget) {
       this.config.target = newTarget;
     }
@@ -145,6 +141,7 @@ export default class RollMoney {
       done();
       return;
     }
+
     // 根据 easing 函数，对单位增量进行控制，达到非线性补间的效果
     const _tween = Easing[ease]( Math.max(Math.abs(current - this._start) / this._valueAbs, 0.01) ) * 100;
     const _gapTime = this._mode === 1 ? Math.max(_tween * (this._valueAbs / (duration / frame)), 1) : gap;
