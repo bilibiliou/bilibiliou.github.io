@@ -82,12 +82,9 @@ export default class RollMoney {
     this.config = props;
   }
 
-  start(newTarget?: number) {
+  start(newTarget: number) {
     // 重新设置目标值，当目标值被改动后，会从 current 补间到 target
-    if (newTarget) {
-      this.config.target = newTarget;
-    }
-
+    this.config = { ...this.config, target: newTarget };
     const { current, target, duration } = this.config;
     this._valueAbs = Math.abs(current - target);
 
