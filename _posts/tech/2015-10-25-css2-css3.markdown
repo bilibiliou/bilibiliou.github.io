@@ -5,6 +5,18 @@ category: 技术
 keywords: 技术,css3
 ---
 
+## 获取css 计算后的值
+
+```js
+function getComputedStyle (target: HTMLElement) {
+	const style = typeof window !== 'undefined' && document.defaultView ?
+		document.defaultView.getComputedStyle(target) : {};
+	return style;
+}
+
+getComputedStyle()['opacity'];
+```
+
 ## BFC
 
 ### BFC 作用
