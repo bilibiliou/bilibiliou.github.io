@@ -1910,6 +1910,38 @@ function updateArray<T>(source: T[], test: (i: T) => boolean, update: (t: T) => 
 }
 ```
 
+## passive 改善滚屏性能
+
+[详情见](https://blog.csdn.net/dj0379/article/details/52883315)
+
+passive「英：顺从」
+
+这个是 addEventLisenter 的第三个参数 options 里面的 参数key值
+
+默认为 false, 但如果监听的对象`Window`, `Document` 和 `Document.body` 的滚动和手势事件的时候， 则会被默认设置成true
+
+设置成 true 之后，浏览器允许被监听的事件不会收到 「主线程」计算的影响，也就是说如果当滚动的过程中涉及了大量的计算，也不会使页面在计算过程中滚动被卡住，让页面滚动过程中渲染的更加流畅
+
+但是，由于其内部机制，被设置为 true 之后就不能阻止默认事件了，所以有些特殊情况，我们需要显式地在声明 `Window`, `Document` 和 `Document.body` 的事件的时候，把 passive 设置成 false, 这样，才能够阻止滚动的默认事件
+
+### 检测当前浏览器是否支持 passive
+
+```js
+var passiveIfSupported = false;
+
+try {
+  window.addEventListener(
+    "test",
+    null,
+    Object.defineProperty({}, "passive", {
+      get: function() {
+        passiveIfSupported = true;
+      }
+    })
+  );
+} catch(err) {}
+```
+
 ## 感谢
 
 [JavaScript中call()与apply()有什么区别？](http://my.oschina.net/warmcafe/blog/74973)
@@ -1917,3 +1949,5 @@ function updateArray<T>(source: T[], test: (i: T) => boolean, update: (t: T) => 
 [Javascript中变量提升](http://www.cnblogs.com/damonlan/archive/2012/07/01/2553425.html)
 
 [JavaScript 五十问——从源码分析 ES6 Class 的实现机制](https://segmentfault.com/a/1190000017842257)
+
+[让页面滑动流畅得飞起的新特性：Passive Event Listeners](https://blog.csdn.net/dj0379/article/details/52883315)
