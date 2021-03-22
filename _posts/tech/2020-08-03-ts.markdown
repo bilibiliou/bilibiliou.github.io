@@ -511,3 +511,27 @@ funtion Component <T>(props: Props<T>) {...}
 
 export default React.memo(Component) as typeof Component;
 ```
+
+## enum 继承
+
+如果要实现enum继承的话，暂时还只能这么写：
+
+```ts
+enum BasicEvents {
+  Start = "Start",
+  Finish = "Finish"
+};
+
+enum AdvEvents {
+  Pause = "Pause",
+  Resume = "Resume"
+};
+
+// 变量继承
+export const EventsVars = {...BasicEvents, ...AdvEvents};
+
+// 类型继承
+export type EventsTypes = BasicEvents | AdvEvents;
+```
+
+未来可能会支持extends 关键字直接处理
