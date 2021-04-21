@@ -774,39 +774,7 @@ console.log(reg.exec(str));
 
 个人认为生产过程中，使用match比较方便
 
-## 如何将数字转变为银行金额
-
-```js
-let a = 12200002.12334
-
-function transfer(value) {
-    var pointOut = value.toString().split(".")
-
-    return pointOut[0]
-            .split("")
-            .reverse()
-            .join("")
-            .replace(/(\d{3})/g, "$1,")
-            .replace(/\,$/,"")
-            .split("")
-            .reverse()
-            .join("")
-
-            + "." 
-            + pointOut[1]
-}
-
-console.log(transfer(a))
-```
-
-```js
-Number.prototype.thousandth = function() {
-  return `${this}`.replace(/\d{1,3}(?=(\d{3})+$)/g, '$&,');
-};
-```
-
 ## 如何将数组 或字符串逆序
-
 
 ### 法一
 
@@ -1770,16 +1738,6 @@ new Array(100)
   .split('$')
 ```
 
-## 将 a区间 的 区间值 进行映射 到 b区间
-
-```js
-// 例如将 0 - 255 中的 100 映射 到 0 - 1
-function map(s, a1, a2, b1, b2) {
-    return ((s - a1) / (a2 - a1)) * (b2 - b1) + b1
-}
-map(100, 0, 255, 0, 1) // 0.39
-```
-
 ## 简单的diff算法
 
 ```js
@@ -1856,59 +1814,8 @@ it('query', () => {
 });
 ```
 
-## 时间格式化
 
-函数式格式化时间，暴力美学
-```js
-function formatDuration(ms = 0, fmt = 'hh:mm:ss') {
-  const fmts = {
-    hh: v => v,
-    mm: v => (v >= 10 ? v : `0${v}`),
-    ss: v => (v >= 10 ? v : `0${v}`),
-  };
 
-  const values = {
-    // 36e5 === 36 * 10^5 === 3600000 and so on
-    hh: ms >= 36e5 ? Math.floor((ms / 36e5) % 24) : 0,
-    mm: ms >= 6e4 ? Math.floor((ms / 6e4) % 60) : 0,
-    ss: Math.ceil((ms / 1e3) % 60),
-  };
-
-  const format = s => (fmts[s] ? fmts[s](values[s]) : s);
-
-  return fmt.split(':').map(format).filter(Boolean).join(':');
-}
-```
-
-## 封装对象数组去重
-
-```js
-/*
-* arr 待去重数组
-* key 索引
-* 返回一个新函数
-*/
-function removeMultiple<T>(arr: Array<T>, key: string | number): Array<T> {
-  if (!arr) {
-    return [];
-  }
-
-  return [...new Set(arr.map(item => item[key]))].map(mainKey => arr.find(item => item[key] === mainKey));
-}
-```
-
-## 函数式更新数组
-
-```js
-/*
-* source 需要处理的数组，返回一个新的数组副本
-* test 判断函数，返回boolean 判断是否需要对其更新
-* update 更新函数，用于对，对应位置的数组项进行更新
-*/
-function updateArray<T>(source: T[], test: (i: T) => boolean, update: (t: T) => T) {
-  return source.map(item => (test(item) ? update(item) : item));
-}
-```
 
 ## passive 改善滚屏性能
 

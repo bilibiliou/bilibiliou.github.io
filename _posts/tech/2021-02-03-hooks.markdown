@@ -1,6 +1,6 @@
 ---
 layout: post
-title: hooks cheat sheet
+title: Hooks cheat sheet
 category: 技术
 keywords: 技术, react-hooks
 ---
@@ -101,3 +101,7 @@ useDidMountEffect(() => {
   // 业务的实现逻辑
 }, [something]);
 ```
+
+## spa 监听路由变化
+
+如果是多页面的话，路由的变化我们可以用 ``
