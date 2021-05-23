@@ -221,3 +221,34 @@ export const ge: Compare = (a, b) => gt(a, b) || eq(a, b);
 export const le: Compare = (a, b) => lt(a, b) || eq(a, b);
 ```
 
+## 处理url query 部分
+
+```typescript
+// schema参数拼接，将 对象解析成 query字符串，并编码
+export function stringifyQuery(params: Params) {
+  const pairs = Object.keys(params).map(k => {
+    // 如果传入的键值对没有值则为空
+    if (typeof params[k] === 'undefined') {
+      return '';
+    }
+    return `${k}=${encodeURIComponent(params[k])}`;
+  });
+
+  return pairs.filter(Boolean).join('&');
+}
+
+// 输入url或者deeplink，插入query
+export function appendQuery(schema: string, params: Params) {
+  const [main, hash] = schema.split('#');
+  const [base, _qs = ''] = main.split('?');
+
+  const query = _qs.split('&').reduce((r, kv) => {
+    const [k, v = ''] = kv.split('=');
+    return { ...r, [k]: decodeURIComponent(v) };
+  }, {});
+
+  const qs = stringifyQuery({ ...query, ...params });
+
+  return `${base}${qs ? `?${ qs}` : ''}${hash || hash === '' ? `#${hash}` : ''}`;
+}
+```
