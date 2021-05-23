@@ -82,11 +82,7 @@ td {
 
 tbody tr {
   transition: background 0.25s ease;
-}
-
-tbody tr:hover {
-	color: #fff !important;
-  background: #014055;
+	border-bottom: 1px solid #364043;
 }
 
 figcaption {
