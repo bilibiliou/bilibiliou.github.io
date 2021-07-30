@@ -252,3 +252,20 @@ export function appendQuery(schema: string, params: Params) {
   return `${base}${qs ? `?${ qs}` : ''}${hash || hash === '' ? `#${hash}` : ''}`;
 }
 ```
+
+## 检测某种 css 属性在浏览器中是否可用
+
+```ts
+export const checkCssSupport = (cssProp: string, cssValue: string) => {
+  const prefixes = ['', '-webkit-', '-moz-', '-o-', '-ms-'];
+  if (CSS?.supports) {
+    return prefixes.some(prefix => CSS.supports(cssProp, prefix + cssValue));
+  }
+
+  const el = document.createElement("a");
+  const mStyle = el.style;
+  mStyle.cssText = prefixes.map(prefix => `${cssProp}:${prefix}${cssValue};`).join('');
+
+  return mStyle[cssProp]?.indexOf(cssValue) !== -1;
+};
+```
