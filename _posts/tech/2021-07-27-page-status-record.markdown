@@ -16,7 +16,7 @@ Navigator.connection 是新标准中的一个实验性的功能，能够返回�
 
 downlink 表示有效带宽的估计值，单位是 Mbit/s
 
-effectiveType 表示当前的网络类型，可选的返回值为 slow-2g | 2g | 3g | 4g
+effectiveType 表示当前的网络类型，可选的返回值为 slow-2g、 2g、 3g、 4g
 
 rtt 表示有效的往返时间估计，单位是 ms。
 
@@ -87,7 +87,7 @@ export const getNetworkStatus = (() => {
 我们将用户的当前设备的性能也可以做一个初略的估计
 例如用户的系统版本如果比较低，用户的手机屏幕的设备像素比(dpr)如果比较低的话，可以基本推断当前用户的手机是一个比较低端的机器
 
-我们把性能评级分为 high(高性能) | middle(正常性能) | low(性能较差) 三个评级
+我们把性能评级分为 high(高性能)、 middle(正常性能)、 low(性能较差) 三个评级
 我们认为：
 
 ```
@@ -183,7 +183,7 @@ export const getPerformanceStatus = (() => {
 ### 结合 网络性能和设备性能给资源评级
 
 上述我们可以得到当前用户的网络性能和设备性能，这样我们就可以根据两者来评估一个加载资源评级
-我们用 BETTER(可获取优质资源) | MIDDLE(正常资源) | WORSE(采用降级方案) 分别表示用户需要加载高 中 低 质量的资源（图片、视频、音频）
+我们用 BETTER(可获取优质资源)、 MIDDLE(正常资源)、 WORSE(采用降级方案) 分别表示用户需要加载高 中 低 质量的资源（图片、视频、音频）
 
 ```ts
 export const getResourceType = (
@@ -233,19 +233,19 @@ export const getResourceType = (
 export const resource = {
   BETTER: {
     url_perfix: '/better_resource/',
-    need_downgrade: false
+    need_downgrade: false,
     其他的涉及资源加载的参数，视业务场景自定义
   },
 
   MIDDLE: {
     url_perfix: '/middle_resource/',
-    need_downgrade: false
+    need_downgrade: false,
     其他的涉及资源加载的参数，视业务场景自定义
   },
 
   WORSE: {
     url_perfix: '/worse_resource/',
-    need_downgrade: true
+    need_downgrade: true,
     其他的涉及资源加载的参数，视业务场景自定义
   }
 }
