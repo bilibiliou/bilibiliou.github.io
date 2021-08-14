@@ -5,6 +5,20 @@ category: 技术
 keywords: 技术, js, javascript
 ---
 
+## 基于ts 简单封装一下获取dom节点的方法
+
+```ts
+export const $ = (v: string, d?: HTMLElement | Document) => {
+  d = d || document;
+  return d.querySelector(v) as HTMLElement;
+};
+
+export const $$ = <T extends unknown>(v: string, d?: HTMLElement | Document) => {
+  d = d || document;
+  return Array.from(d.querySelectorAll(v)) as T[];
+};
+```
+
 ## base64 转文件
 
 ```ts
@@ -39,6 +53,18 @@ function removeMultiple<T>(arr: Array<T>, key: string | number): Array<T> {
   }
 
   return [...new Set(arr.map(item => item[key]))].map(mainKey => arr.find(item => item[key] === mainKey));
+}
+```
+
+```ts
+// 这种方式可读性更高
+export function dedupeList<T>(list: T[], id: (i: T) => string) {
+  const existed = {};
+  for (let index = list.length - 1; index >= 0; index--) {
+    existed[id(list[index])] = index;
+  }
+
+  return list.filter((i, index) => index === existed[id(i)]);
 }
 ```
 
@@ -221,6 +247,53 @@ export const ge: Compare = (a, b) => gt(a, b) || eq(a, b);
 export const le: Compare = (a, b) => lt(a, b) || eq(a, b);
 ```
 
+或者，自己写一个
+
+```ts
+let semverCompare = function cmp(a: string, b: string) {
+  let pa = a.split('.');
+  let pb = b.split('.');
+  for (let i = 0; i < 3; i++) {
+    let na = Number(pa[i]);
+    let nb = Number(pb[i]);
+    if (na > nb) {
+      return 1;
+    }
+    if (nb > na) {
+      return -1;
+    }
+    if (!isNaN(na) && isNaN(nb)) {
+      return 1;
+    }
+    if (isNaN(na) && !isNaN(nb)) {
+      return -1;
+    }
+  }
+  return 0;
+};
+
+// greater than >
+export const gt = function (a: string, b: string) {
+  return semverCompare(a, b) === 1;
+};
+// less than <
+export const lt = function (a: string, b: string) {
+  return semverCompare(a, b) === -1;
+};
+// qeual to =
+export const eq = function (a: string, b: string) {
+  return semverCompare(a, b) === 0;
+};
+// greater than or equal to >=
+export const ge = function (a: string, b: string) {
+  return gt(a, b) || eq(a, b);
+};
+// less than or equal to <=
+export const le = function (a: string, b: string) {
+  return lt(a, b) || eq(a, b);
+};
+```
+
 ## 处理url query 部分
 
 ```typescript
@@ -258,7 +331,7 @@ export function appendQuery(schema: string, params: Params) {
 ```ts
 export const checkCssSupport = (cssProp: string, cssValue: string) => {
   const prefixes = ['', '-webkit-', '-moz-', '-o-', '-ms-'];
-  if (CSS?.supports) {
+  if (CSS && CSS?.supports) {
     return prefixes.some(prefix => CSS.supports(cssProp, prefix + cssValue));
   }
 
@@ -268,4 +341,62 @@ export const checkCssSupport = (cssProp: string, cssValue: string) => {
 
   return mStyle[cssProp]?.indexOf(cssValue) !== -1;
 };
+```
+
+## 检测当前浏览器是否能够使用 webp 格式
+
+```ts
+import fuckIE from 'fuck-ie';
+// fuckIE 检测 ie 7 8 9
+// trident 内核检测 ie 10 11
+export const isIE = isAnyVersionOfIE || /trident/i.test(ua);
+
+const checkWebpSupported = (() => {
+  return new Promise<boolean>((resolve, reject) => {
+    try {
+      let isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+      // 判断当前用户浏览器webp格式是否支持
+      let isSupported = false;
+      let probe = new Image();
+      probe.onload = function () {
+        isSupported = probe.height === 2;
+        // safari 浏览器的对 webp 的兼容不稳定，并发加载出现过图片加载不出来的问题
+        resolve(isSupported && !isSafari);
+      };
+      probe.src = 'data:image/webp;base64,UklGRi4AAABXRUJQVlA4TCEAAAAvAUAAEB8wAiMwAgSSNtse/cXjxyCCmrYNWPwmHRH9jwMA';
+    } catch (e) {
+      reject(false)
+      throw new Error(e);
+    }
+  })
+})();
+
+export const isWebpSupported = !isIE && (async () => await checkWebpSupported)();
+```
+
+## 开启webgl高性能绘制
+
+```ts
+/**
+ * 开启webgl高性能绘制，可能会进行GPU切换，导致0.5s~1s的卡顿
+ */
+export const enableHighPerformanceRendering = (() => {
+  let webglContext: any;
+  return () => {
+    if (!webglContext) {
+      const canvas = document.createElement("canvas");
+      const option = {
+        powerPreference: "high-performance",
+      };
+
+      webglContext =
+        canvas.getContext("webgl", option) ||
+        canvas.getContext("experimental-webgl", option);
+
+      requestAnimationFrame(() => {
+        webglContext?.clear(0);
+      });
+    }
+  };
+})();
 ```

@@ -104,4 +104,33 @@ useDidMountEffect(() => {
 
 ## spa 监听路由变化
 
-如果是多页面的话，路由的变化我们可以用 ``
+如果是多页面的话，路由的变化可以被封装为一个hook
+
+### 实现
+
+```ts
+export function useReactPath(history: H.History) {
+  const [path, setPath] = useState(window.location.pathname);
+  const listenToPopstate = (path: string) => {
+    setPath(path);
+  };
+
+  history.listen(location => {
+    listenToPopstate(location.pathname);
+  });
+
+  return path;
+}
+```
+
+### 使用
+
+```ts
+const history = useHistory();
+const currentPath = useReactPath(history)
+
+useEffer(() => {
+  // 当路由改变后，做出一系列的变化
+}, [currentPath])
+```
+
