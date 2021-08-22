@@ -400,3 +400,75 @@ export const enableHighPerformanceRendering = (() => {
   };
 })();
 ```
+
+## 解析 markdown 超链接语法
+
+经常产品有运营配置要求，输入一个字符串，有可能是链接或者文本
+我们可以借鉴markdown 的超链接规则，但是不能照搬其他语法
+也不想引入库
+
+```ts
+const strs = [
+  '这个问题很简单，去[百度一下](https://www.baidu.com/)把',
+  '中国视频网站主要有 [B站](https://www.bilibili.com/) [爱奇艺](https://www.iqiyi.com/) [优酷](https://www.youku.com/) 等几家',
+  '我们去踩点蘑菇把'
+];
+
+const formatTxts = (configTips: string[]) => configTips.map(tip => {
+  const reg = /(\[[^\]]*\])(\([^\)]*\))/g;
+  const matchResult = tip.match(reg);
+  if (matchResult) {
+    const txts = tip.split(reg);
+    const result = [];
+    for (let i = 0; i < txts.length;) {
+      const p = txts[i];
+      const n = txts[i + 1];
+      const reg2 = /^\[[^\]]*\]$/g;
+      const reg3 = /^\([^\)]*\)$/g;
+      if (reg2.test(p) && reg3.test(n)) {
+        result.push({
+          tip: p.replace(/(^\[)|(\]$)/g, ''),
+          link: n.replace(/(^\()|(\)$)/g, ''),
+        });
+        i += 2;
+      } else {
+        if (p) {
+          result.push({ tip: p });
+        }
+        i++;
+      }
+    }
+
+    return result;
+  }
+
+  return [{ tip }];
+});
+
+formatTxts(strs);
+
+/*
+[
+  [
+    {tip: "这个问题很简单，去"}
+    {tip: "百度一下", link: "https://www.baidu.com/"}
+    {tip: "把"}
+  ],
+  [
+    {tip: "中国视频网站主要有 "}
+    {tip: "B站", link: "https://www.bilibili.com/"}
+    {tip: " "}
+    {tip: "爱奇艺", link: "https://www.iqiyi.com/"}
+    {tip: " "}
+    {tip: "优酷", link: "https://www.youku.com/"}
+    {tip: " 等几家"}
+  ],
+  [
+    {tip: "我们去踩点蘑菇把"}
+  ]
+]
+*/
+
+```
+
+我们将句子解析成了三个数组，然后渲染的时候就可以根据数组来循环进行渲染了
