@@ -472,3 +472,43 @@ formatTxts(strs);
 ```
 
 我们将句子解析成了三个数组，然后渲染的时候就可以根据数组来循环进行渲染了
+
+## 封装 localStorage
+
+```ts
+export const STORAGE_PREFIX = '存储的命名空间';
+
+const createProxy = (storage: WindowLocalStorage['localStorage'] | WindowSessionStorage['sessionStorage']) => {
+  const data: Record<string, any> = {};
+  return new Proxy(data, {
+    get(target, key: string) {
+      if (Reflect.has(target, key)) {
+        return Reflect.get(target, key);
+      }
+
+      const item = storage.getItem(`${STORAGE_PREFIX}${key}`);
+      try {
+        const value = JSON.parse(item);
+        return value;
+      } catch (e) {
+        return item;
+      }
+    },
+    set(target, key: string, value) {
+      Reflect.set(target, key, value);
+      storage.setItem(`${STORAGE_PREFIX}${key}`, JSON.stringify(value));
+      return true;
+    },
+    has(target, key: string) {
+      if (Reflect.has(target, key)) {
+        return true;
+      } else {
+        return storage.getItem(`${STORAGE_PREFIX}${key}`) !== void 0;
+      }
+    },
+  });
+};
+
+export const local = createProxy(localStorage);
+export const session = createProxy(sessionStorage);
+```
