@@ -512,3 +512,16 @@ const createProxy = (storage: WindowLocalStorage['localStorage'] | WindowSession
 export const local = createProxy(localStorage);
 export const session = createProxy(sessionStorage);
 ```
+
+## 简洁地方式填充数组
+
+```js
+// 如果使用展开运算符展开一个空数组，可以得到一个被自动填充的数组
+[...new Array(5)] // [undefined, undefined, undefined, undefined, undefined]
+
+// 这样就能够非常简洁地构造遍历
+[...new Array(5)].map(((_, i) => i + 1)) // [1, 2, 3, 4, 5]
+
+// 我们画骨架屏的时候也可以用这种办法，简洁地循环填充骨架
+{[...new Array(5)].map((() => <Skeleton />))}
+```
