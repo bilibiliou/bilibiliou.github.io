@@ -5,7 +5,7 @@ category: 技术
 keywords: 技术, js, javascript
 ---
 
-## 基于ts 简单封装一下获取dom节点的方法
+## 基于 ts 简单封装一下获取 dom 节点的方法
 
 ```ts
 export const $ = (v: string, d?: HTMLElement | Document) => {
@@ -13,7 +13,10 @@ export const $ = (v: string, d?: HTMLElement | Document) => {
   return d.querySelector(v) as HTMLElement;
 };
 
-export const $$ = <T extends unknown>(v: string, d?: HTMLElement | Document) => {
+export const $$ = <T extends unknown>(
+  v: string,
+  d?: HTMLElement | Document
+) => {
   d = d || document;
   return Array.from(d.querySelectorAll(v)) as T[];
 };
@@ -23,7 +26,7 @@ export const $$ = <T extends unknown>(v: string, d?: HTMLElement | Document) => 
 
 ```ts
 function base64toFile(base64: string, filename: string) {
-  const arr = base64.split(',');
+  const arr = base64.split(",");
   // compatible with "data:image/jpeg;base64" or "image/jpeg;base64"
   // get correctly mime type
   const mime = arr[0]!.match(/(data:)?(.*?);/)![2];
@@ -43,16 +46,18 @@ function base64toFile(base64: string, filename: string) {
 
 ```js
 /*
-* arr 待去重数组
-* key 索引
-* 返回一个新函数
-*/
+ * arr 待去重数组
+ * key 索引
+ * 返回一个新函数
+ */
 function removeMultiple<T>(arr: Array<T>, key: string | number): Array<T> {
   if (!arr) {
     return [];
   }
 
-  return [...new Set(arr.map(item => item[key]))].map(mainKey => arr.find(item => item[key] === mainKey));
+  return [...new Set(arr.map((item) => item[key]))].map((mainKey) =>
+    arr.find((item) => item[key] === mainKey)
+  );
 }
 ```
 
@@ -72,24 +77,29 @@ export function dedupeList<T>(list: T[], id: (i: T) => string) {
 
 ```js
 /*
-* source 需要处理的数组，返回一个新的数组副本
-* test 判断函数，返回boolean 判断是否需要对其更新
-* update 更新函数，用于对，对应位置的数组项进行更新
-*/
-function updateArray<T>(source: T[], test: (i: T) => boolean, update: (t: T) => T) {
-  return source.map(item => (test(item) ? update(item) : item));
+ * source 需要处理的数组，返回一个新的数组副本
+ * test 判断函数，返回boolean 判断是否需要对其更新
+ * update 更新函数，用于对，对应位置的数组项进行更新
+ */
+function updateArray<T>(
+  source: T[],
+  test: (i: T) => boolean,
+  update: (t: T) => T
+) {
+  return source.map((item) => (test(item) ? update(item) : item));
 }
 ```
 
 ## 时间格式化
 
 函数式格式化时间，暴力美学
+
 ```js
-function formatDuration(ms = 0, fmt = 'hh:mm:ss') {
+function formatDuration(ms = 0, fmt = "hh:mm:ss") {
   const fmts = {
-    hh: v => v,
-    mm: v => (v >= 10 ? v : `0${v}`),
-    ss: v => (v >= 10 ? v : `0${v}`),
+    hh: (v) => v,
+    mm: (v) => (v >= 10 ? v : `0${v}`),
+    ss: (v) => (v >= 10 ? v : `0${v}`),
   };
 
   const values = {
@@ -99,28 +109,29 @@ function formatDuration(ms = 0, fmt = 'hh:mm:ss') {
     ss: Math.ceil((ms / 1e3) % 60),
   };
 
-  const format = s => (fmts[s] ? fmts[s](values[s]) : s);
+  const format = (s) => (fmts[s] ? fmts[s](values[s]) : s);
 
-  return fmt.split(':').map(format).filter(Boolean).join(':');
+  return fmt.split(":").map(format).filter(Boolean).join(":");
 }
 ```
 
-## 将 a区间 的 区间值 进行映射 到 b区间
+## 将 a 区间 的 区间值 进行映射 到 b 区间
 
 数值上的区间映射
+
 ```js
 // 例如将 0 - 255 中的 100 映射 到 0 - 1
 function map(s, a1, a2, b1, b2) {
-    return ((s - a1) / (a2 - a1)) * (b2 - b1) + b1
+  return ((s - a1) / (a2 - a1)) * (b2 - b1) + b1;
 }
-map(100, 0, 255, 0, 1) // 0.39
+map(100, 0, 255, 0, 1); // 0.39
 ```
 
 ## 如何将数字转变为银行金额
 
 ```js
-Number.prototype.thousandth = function() {
-  return `${this}`.replace(/\d{1,3}(?=(\d{3})+$)/g, '$&,');
+Number.prototype.thousandth = function () {
+  return `${this}`.replace(/\d{1,3}(?=(\d{3})+$)/g, "$&,");
 };
 ```
 
@@ -131,14 +142,14 @@ e.g:
 输出: 一十二万三千四百五十六
 
 ```ts
-const chnNumChar = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九'];
-const chnUnitSection = ['', '万', '亿', '万亿', '亿亿'];
-const chnUnitChar = ['', '十', '百', '千'];
+const chnNumChar = ["零", "一", "二", "三", "四", "五", "六", "七", "八", "九"];
+const chnUnitSection = ["", "万", "亿", "万亿", "亿亿"];
+const chnUnitChar = ["", "十", "百", "千"];
 
 export function number2Chinese(num) {
   const section2Chinese = function (section) {
-    let strIns = '';
-    let chnStr = '';
+    let strIns = "";
+    let chnStr = "";
     let unitPos = 0;
     let zero = true;
 
@@ -163,8 +174,8 @@ export function number2Chinese(num) {
   };
 
   let unitPos = 0;
-  let strIns = '';
-  let chnStr = '';
+  let strIns = "";
+  let chnStr = "";
   let needZero = false;
 
   if (num === 0) {
@@ -191,13 +202,17 @@ export function number2Chinese(num) {
 ## 获取当前元素，距离根节点的距离
 
 ```ts
-const getPosition = element => {
-  const currentTop = window.pageXOffset !== undefined ?
-      window.pageXOffset :
-      (document.documentElement || document.body.parentNode || document.body).scrollLeft;
-  const currentLeft = window.pageYOffset !== undefined ?
-      window.pageYOffset :
-      (document.documentElement || document.body.parentNode || document.body).scrollTop;
+const getPosition = (element) => {
+  const currentTop =
+    window.pageXOffset !== undefined
+      ? window.pageXOffset
+      : (document.documentElement || document.body.parentNode || document.body)
+          .scrollLeft;
+  const currentLeft =
+    window.pageYOffset !== undefined
+      ? window.pageYOffset
+      : (document.documentElement || document.body.parentNode || document.body)
+          .scrollTop;
 
   if (element) {
     if (element.getBoundingClientRect) {
@@ -209,7 +224,8 @@ const getPosition = element => {
       let yPosition = 0;
 
       while (element) {
-        xPosition += element.offsetLeft - element.scrollLeft + element.clientLeft;
+        xPosition +=
+          element.offsetLeft - element.scrollLeft + element.clientLeft;
         yPosition += element.offsetTop - element.scrollTop + element.clientTop;
         element = element.offsetParent;
       }
@@ -227,7 +243,7 @@ const getPosition = element => {
 ## 比较两个版本号的大小
 
 ```ts
-import compare from 'semver-compare'; // 调用 semver-compare 这个库
+import compare from "semver-compare"; // 调用 semver-compare 这个库
 
 type Compare = (a: string, b: string) => boolean;
 
@@ -251,8 +267,8 @@ export const le: Compare = (a, b) => lt(a, b) || eq(a, b);
 
 ```ts
 let semverCompare = function cmp(a: string, b: string) {
-  let pa = a.split('.');
-  let pb = b.split('.');
+  let pa = a.split(".");
+  let pb = b.split(".");
   for (let i = 0; i < 3; i++) {
     let na = Number(pa[i]);
     let nb = Number(pb[i]);
@@ -294,35 +310,35 @@ export const le = function (a: string, b: string) {
 };
 ```
 
-## 处理url query 部分
+## 处理 url query 部分
 
 ```typescript
 // schema参数拼接，将 对象解析成 query字符串，并编码
 export function stringifyQuery(params: Params) {
-  const pairs = Object.keys(params).map(k => {
+  const pairs = Object.keys(params).map((k) => {
     // 如果传入的键值对没有值则为空
-    if (typeof params[k] === 'undefined') {
-      return '';
+    if (typeof params[k] === "undefined") {
+      return "";
     }
     return `${k}=${encodeURIComponent(params[k])}`;
   });
 
-  return pairs.filter(Boolean).join('&');
+  return pairs.filter(Boolean).join("&");
 }
 
 // 输入url或者deeplink，插入query
 export function appendQuery(schema: string, params: Params) {
-  const [main, hash] = schema.split('#');
-  const [base, _qs = ''] = main.split('?');
+  const [main, hash] = schema.split("#");
+  const [base, _qs = ""] = main.split("?");
 
-  const query = _qs.split('&').reduce((r, kv) => {
-    const [k, v = ''] = kv.split('=');
+  const query = _qs.split("&").reduce((r, kv) => {
+    const [k, v = ""] = kv.split("=");
     return { ...r, [k]: decodeURIComponent(v) };
   }, {});
 
   const qs = stringifyQuery({ ...query, ...params });
 
-  return `${base}${qs ? `?${ qs}` : ''}${hash || hash === '' ? `#${hash}` : ''}`;
+  return `${base}${qs ? `?${qs}` : ""}${hash || hash === "" ? `#${hash}` : ""}`;
 }
 ```
 
@@ -330,14 +346,16 @@ export function appendQuery(schema: string, params: Params) {
 
 ```ts
 export const checkCssSupport = (cssProp: string, cssValue: string) => {
-  const prefixes = ['', '-webkit-', '-moz-', '-o-', '-ms-'];
+  const prefixes = ["", "-webkit-", "-moz-", "-o-", "-ms-"];
   if (CSS && CSS?.supports) {
-    return prefixes.some(prefix => CSS.supports(cssProp, prefix + cssValue));
+    return prefixes.some((prefix) => CSS.supports(cssProp, prefix + cssValue));
   }
 
   const el = document.createElement("a");
   const mStyle = el.style;
-  mStyle.cssText = prefixes.map(prefix => `${cssProp}:${prefix}${cssValue};`).join('');
+  mStyle.cssText = prefixes
+    .map((prefix) => `${cssProp}:${prefix}${cssValue};`)
+    .join("");
 
   return mStyle[cssProp]?.indexOf(cssValue) !== -1;
 };
@@ -346,7 +364,7 @@ export const checkCssSupport = (cssProp: string, cssValue: string) => {
 ## 检测当前浏览器是否能够使用 webp 格式
 
 ```ts
-import fuckIE from 'fuck-ie';
+import fuckIE from "fuck-ie";
 // fuckIE 检测 ie 7 8 9
 // trident 内核检测 ie 10 11
 export const isIE = isAnyVersionOfIE || /trident/i.test(ua);
@@ -363,18 +381,20 @@ const checkWebpSupported = (() => {
         // safari 浏览器的对 webp 的兼容不稳定，并发加载出现过图片加载不出来的问题
         resolve(isSupported && !isSafari);
       };
-      probe.src = 'data:image/webp;base64,UklGRi4AAABXRUJQVlA4TCEAAAAvAUAAEB8wAiMwAgSSNtse/cXjxyCCmrYNWPwmHRH9jwMA';
+      probe.src =
+        "data:image/webp;base64,UklGRi4AAABXRUJQVlA4TCEAAAAvAUAAEB8wAiMwAgSSNtse/cXjxyCCmrYNWPwmHRH9jwMA";
     } catch (e) {
-      reject(false)
+      reject(false);
       throw new Error(e);
     }
-  })
+  });
 })();
 
-export const isWebpSupported = !isIE && (async () => await checkWebpSupported)();
+export const isWebpSupported =
+  !isIE && (async () => await checkWebpSupported)();
 ```
 
-## 开启webgl高性能绘制
+## 开启 webgl 高性能绘制
 
 ```ts
 /**
@@ -404,46 +424,47 @@ export const enableHighPerformanceRendering = (() => {
 ## 解析 markdown 超链接语法
 
 经常产品有运营配置要求，输入一个字符串，有可能是链接或者文本
-我们可以借鉴markdown 的超链接规则，但是不能照搬其他语法
+我们可以借鉴 markdown 的超链接规则，但是不能照搬其他语法
 也不想引入库
 
 ```ts
 const strs = [
-  '这个问题很简单，去[百度一下](https://www.baidu.com/)把',
-  '中国视频网站主要有 [B站](https://www.bilibili.com/) [爱奇艺](https://www.iqiyi.com/) [优酷](https://www.youku.com/) 等几家',
-  '我们去踩点蘑菇把'
+  "这个问题很简单，去[百度一下](https://www.baidu.com/)把",
+  "中国视频网站主要有 [B站](https://www.bilibili.com/) [爱奇艺](https://www.iqiyi.com/) [优酷](https://www.youku.com/) 等几家",
+  "我们去踩点蘑菇把",
 ];
 
-const formatTxts = (configTips: string[]) => configTips.map(tip => {
-  const reg = /(\[[^\]]*\])(\([^\)]*\))/g;
-  const matchResult = tip.match(reg);
-  if (matchResult) {
-    const txts = tip.split(reg);
-    const result = [];
-    for (let i = 0; i < txts.length;) {
-      const p = txts[i];
-      const n = txts[i + 1];
-      const reg2 = /^\[[^\]]*\]$/g;
-      const reg3 = /^\([^\)]*\)$/g;
-      if (reg2.test(p) && reg3.test(n)) {
-        result.push({
-          tip: p.replace(/(^\[)|(\]$)/g, ''),
-          link: n.replace(/(^\()|(\)$)/g, ''),
-        });
-        i += 2;
-      } else {
-        if (p) {
-          result.push({ tip: p });
+const formatTxts = (configTips: string[]) =>
+  configTips.map((tip) => {
+    const reg = /(\[[^\]]*\])(\([^\)]*\))/g;
+    const matchResult = tip.match(reg);
+    if (matchResult) {
+      const txts = tip.split(reg);
+      const result = [];
+      for (let i = 0; i < txts.length; ) {
+        const p = txts[i];
+        const n = txts[i + 1];
+        const reg2 = /^\[[^\]]*\]$/g;
+        const reg3 = /^\([^\)]*\)$/g;
+        if (reg2.test(p) && reg3.test(n)) {
+          result.push({
+            tip: p.replace(/(^\[)|(\]$)/g, ""),
+            link: n.replace(/(^\()|(\)$)/g, ""),
+          });
+          i += 2;
+        } else {
+          if (p) {
+            result.push({ tip: p });
+          }
+          i++;
         }
-        i++;
       }
+
+      return result;
     }
 
-    return result;
-  }
-
-  return [{ tip }];
-});
+    return [{ tip }];
+  });
 
 formatTxts(strs);
 
@@ -468,7 +489,6 @@ formatTxts(strs);
   ]
 ]
 */
-
 ```
 
 我们将句子解析成了三个数组，然后渲染的时候就可以根据数组来循环进行渲染了
@@ -476,9 +496,13 @@ formatTxts(strs);
 ## 封装 localStorage
 
 ```ts
-export const STORAGE_PREFIX = '存储的命名空间';
+export const STORAGE_PREFIX = "存储的命名空间";
 
-const createProxy = (storage: WindowLocalStorage['localStorage'] | WindowSessionStorage['sessionStorage']) => {
+const createProxy = (
+  storage:
+    | WindowLocalStorage["localStorage"]
+    | WindowSessionStorage["sessionStorage"]
+) => {
   const data: Record<string, any> = {};
   return new Proxy(data, {
     get(target, key: string) {
@@ -524,4 +548,17 @@ export const session = createProxy(sessionStorage);
 
 // 我们画骨架屏的时候也可以用这种办法，简洁地循环填充骨架
 {[...new Array(5)].map((() => <Skeleton />))}
+```
+
+## 格式化 天时分秒
+
+```js
+function parse(ms = 0) {
+  const cast = v => (v < 0 ? 0 : Math.floor(v));
+  const days = cast(ms / 864e5);
+  const hours = cast((ms / 36e5) % 24);
+  const minutes = cast((ms / 6e4) % 60);
+  const seconds = cast((ms / 1e3) % 60);
+  return { days, hours, minutes, seconds };
+}
 ```
