@@ -1,49 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+  style="--siteFont:PT Sans; --defaultTheme:dark; --codeFontFamily:Roboto Mono, Monaco, courier, monospace; --bodyFontSize:17px; --accent:#42b983; --toogleBackground:#ffffff; --background:#091a28; --textColor:#b4b4b4; --codeTextColor:#ffffff; --codeBackgroundColor:#0e2233; --borderColor:#0d2538; --blockQuoteColor:#858585; --highlightColor:#d22778; --sidebarSublink:#b4b4b4; --codeTypeColor:#ffffff; --coverBackground:linear-gradient(to left bottom, hsl(118, 100%, 85%) 0%,hsl(181, 100%, 85%) 100%); --toogleImage:url(https\:\/\/cdn\.jsdelivr\.net\/npm\/docsify-darklight-theme\@latest\/icons\/sun\.svg); color-scheme: dark;">
 
-<head>
-  <meta charset="UTF-8">
-  <title>Document</title>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-  <meta name="description" content="Description">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
-  <link rel="stylesheet" href="/_assets/styles/global.css">
-</head>
+  <head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="description" content="Description">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
+    <link rel="stylesheet" href="/_assets/styles/theme.css">
+    <link rel="stylesheet" href="/_assets/styles/global.css">
 
-<body>
-  <div id="app"></div>
-  <script>
-    window.$docsify = {
-      repo: 'https://github.com/bilibiliou',
-      loadNavbar: './layout/_navbar.md',
-      coverpage: './layout/_coverpage.md',
-      loadSidebar: './layout/_sidebar.md',
-      subMaxLevel: 3,
-      sidebarDisplayLevel: 1,
+  </head>
 
-      search: {
-        maxAge: 8.64 * 10e7, // 过期时间，单位毫秒
-        paths: 'auto', // or 'auto'
-        placeholder: '搜一搜',
-        noData: '啥都找不到',
-        // 搜索标题的最大层级, 1 - 6
-        depth: 1,
-        hideOtherSidebarContent: false, // 是否隐藏其他侧边栏内容
-        namespace: 'bilibiliou_search_space',
+  <body>
+    <div id="app"></div>
+    <script>
+      window.$docsify = {
+        repo: 'https://github.com/bilibiliou',
+        loadNavbar: './layout/_navbar.md',
+        coverpage: './layout/_coverpage.md',
+        loadSidebar: './layout/_sidebar.md',
+        subMaxLevel: 3,
+        sidebarDisplayLevel: 1,
+
+        search: {
+          maxAge: 8.64 * 10e7, // 过期时间，单位毫秒
+          paths: 'auto',
+          placeholder: '搜一搜',
+          noData: '啥都找不到',
+          // 搜索标题的最大层级, 1 - 6
+          depth: 1,
+          hideOtherSidebarContent: false, // 是否隐藏其他侧边栏内容
+          namespace: 'bilibiliou_search_space',
+        }
       }
-    }
-  </script>
-  <!-- Docsify v4 -->
-  <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
-  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/prismjs@1.25.0/components/prism-javascript.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/prismjs@1.25.0/components/prism-typescript.min.js"></script>
-  <!-- <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"></script> -->
-  <!-- <script src="//cdn.jsdelivr.net/npm/docsify-tabs@1"></script> -->
-  <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/pdfobject/2.1.1/pdfobject.min.js"></script> -->
-  <!-- <script src="//unpkg.com/docsify-pdf-embed-plugin@1.0.8/src/docsify-pdf-embed.js"></script> -->
-</body>
+    </script>
+    <!-- Docsify v4 -->
+    <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+    <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/prismjs@1.25.0/components/prism-typescript.min.js"></script>
+    <script src="/_assets/scripts/gesture.js"></script>
+    <script src="/_assets/scripts/theme.js"></script>
+
+    <!-- <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"></script> -->
+    <!-- <script src="//cdn.jsdelivr.net/npm/docsify-tabs@1"></script> -->
+    <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/pdfobject/2.1.1/pdfobject.min.js"></script> -->
+    <!-- <script src="//unpkg.com/docsify-pdf-embed-plugin@1.0.8/src/docsify-pdf-embed.js"></script> -->
+  </body>
+
 </html>

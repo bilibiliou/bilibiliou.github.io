@@ -7,3 +7,9 @@
     padding-top: 44px;
   }
 }
+
+@media screen and (max-width: 768px) {
+  body.close .sidebar-toggle {
+    background-color: transparent;
+  }
+}
