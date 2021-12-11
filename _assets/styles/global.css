@@ -1,0 +1,9 @@
+.folder {
+  cursor: pointer;
+}
+
+@media screen and (max-width: 768px) {
+  .content {
+    padding-top: 44px;
+  }
+}
