@@ -4,7 +4,7 @@
   - [自己搭一套数字翻滚动画框架](/docs/front_end/animation/roll_money/2020-12-29-roll-money.md)
   - [如何制作水球动画？](/docs/front_end/animation/water_bubble/2016-11-13-water-bubble.md)
   - [一起画只萌萌的百度熊吧](/docs/front_end/animation/2017-2-16-baidu-bear.md)
-  - [基于ThreeJs的心形折纸动画](/docs/front_end/animation/2018-09-08-heart-animation.md)
+  - [基于ThreeJs的心形折纸动画](/docs/front_end/animation/heart_animation/2018-09-08-heart-animation.md)
 - 前端
   - 经验总结
     - [Js技巧](/docs/front_end/summery_of_experience/2021-04-21-js-cheat-sheet.md)
