@@ -12,7 +12,7 @@ var themeConfig = {
     sidebarSublink: '#b4b4b4',
     codeTypeColor: '#ffffff',
     coverBackground: 'linear-gradient(to left bottom, hsl(118, 100%, 85%) 0%,hsl(181, 100%, 85%) 100%)',
-    toogleImage: 'url(https://cdn.jsdelivr.net/npm/docsify-darklight-theme@latest/icons/sun.svg)'
+    toogleImage: 'url(/_assets/icons/sun.svg)'
   },
   light: {
     accent: '#42b983',
@@ -27,7 +27,7 @@ var themeConfig = {
     sidebarSublink: '#505d6b',
     codeTypeColor: '#091a28',
     coverBackground: 'linear-gradient(to left bottom, hsl(118, 100%, 85%) 0%,hsl(181, 100%, 85%) 100%)',
-    toogleImage: 'url(https://cdn.jsdelivr.net/npm/docsify-darklight-theme@latest/icons/moon.svg)'
+    toogleImage: 'url(/_assets/icons/moon.svg)'
   }
 }
 

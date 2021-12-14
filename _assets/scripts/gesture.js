@@ -30,6 +30,7 @@ function initGlobalGestureHandle(payload) {
 
     if (absXDiff > absyDiff) {
       if (absXDiff > threshold) {
+        document.body.style.overflow = 'hidden';
         if (xDiff > 0) {
           payload.rightSwipe && payload.rightSwipe();
         } else {
@@ -51,6 +52,7 @@ function initGlobalGestureHandle(payload) {
     xDown = null;
     yDown = null;
     document.removeEventListener('touchmove', handleTouchMove, false);
+    document.body.style.overflow = 'scroll';
   }
 
   function handleTouchMove(evt) {
