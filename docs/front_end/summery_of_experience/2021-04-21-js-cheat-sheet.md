@@ -547,11 +547,33 @@ export const session = createProxy(sessionStorage);
 
 ```js
 function parse(ms = 0) {
-  const cast = v => (v < 0 ? 0 : Math.floor(v));
+  const cast = (v) => (v < 0 ? 0 : Math.floor(v));
   const days = cast(ms / 864e5);
   const hours = cast((ms / 36e5) % 24);
   const minutes = cast((ms / 6e4) % 60);
   const seconds = cast((ms / 1e3) % 60);
   return { days, hours, minutes, seconds };
+}
+```
+
+## 生成 UUID
+
+```js
+function UUID() {
+  const random4 = function () {
+    return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+  };
+
+  return (
+    random4() +
+    "-" +
+    random4() +
+    "-" +
+    random4() +
+    "-" +
+    random4() +
+    "-" +
+    random4()
+  );
 }
 ```
