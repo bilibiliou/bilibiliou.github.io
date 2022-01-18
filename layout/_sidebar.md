@@ -17,7 +17,8 @@
   - 框架学习
   - React
     - [一些常用的ReactHook](/docs/front_end/react/2021-02-03-hooks.md)
-  - Canvas
+  - Typescript
+    - [关于ts一些高阶技巧](/docs/front_end/typescript/2020-08-03-ts.md)
 - 基础
   - 计算机网络
     - [关于DNS和CDN的基本原理](/docs/base/computer_network/2018-05-23-dns-cdn.md)
