@@ -577,3 +577,47 @@ function UUID() {
   );
 }
 ```
+
+## 多函数合并，串行调用
+
+```js
+// 实现
+function compose (...fns) {
+  if (fns.length === 1) {
+    return fns[0]
+  }
+  return fns.reduce((prev, next) => {
+    return (...args) => next(prev(...args))
+  })
+}
+
+// demo
+function fn1 (props) {
+  console.log('fn1');
+  props.b = 2;
+  return props;
+}
+
+function fn2 (props) {
+  console.log('fn2');
+  props.c = 3;
+  return props;
+}
+
+function fn3 (props) {
+  console.log('fn3');
+  console.log(props);
+}
+
+compose(fn1, fn2, fn3)({ a: 1 });
+
+// fn1
+// fn2
+// fn3
+// {a: 1, b: 2, c: 3}
+```
+
+如上，fn1, fn2, fn3 会依次串行的执行，并将上一次的结果传递到下一个执行函数中
+下一个函数就能继承上一个函数的执行结果继续计算，这种方式是可插拔式的
+
+假如后面我不需要 fn2 了，直接修改为 `compose(fn1, fn3)({ a: 1 });` 即可，不会有任何的问题
