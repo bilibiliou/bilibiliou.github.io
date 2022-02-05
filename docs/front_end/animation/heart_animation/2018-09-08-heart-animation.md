@@ -1,90 +1,63 @@
-#  基于ThreeJs Heart 折纸动画
+#  怎么把女朋友的照片揉成心形
 
 ## 效果
 
 ![gif](/assets/images/heart-animation.gif)
+## 原理
 
-## 思路
+这个效果是利用了Threejs来实现的，首先把女朋友的照片加载进来，然后加载一个3维的平面网格，当女朋友点击的时候，控制网格的顶点运动成一个爱你的心形，这样就实现了揉纸动画。
+本文是一个很简单教学帖，略点一二，具体细节请看源码的注释
 
-基于ThreeJs设置一个 PlaneGeometry ，加载图片 Texture，获取 PlaneGeometry 下的所有 vertices , 依照 心形函数 
+## 代码文件结构
 
 ```
-x = 16sin³(t)
-y = 13Cos(t) - 5Cos(2t) - 2Cos(3t) - Cos(4t)
-t ∈ [0,2π]
+女朋友的照片.jpg
+heart.js  // 计算心形轨迹
+plane.js  // 定义的平面类，通过Three的网格和材质来把女朋友画出来
+point.js  // 定义的点类，用来把平面里的点运动到计算好的心形轨迹
+world.js  // 定义的基本的ThreeJs的舞台、场景、摄像机
+index.html // 你画的一个浪漫温馨的页面
 ```
 
-将原有Mesh内的点集均匀的排布在心形的轨迹上，渲染函数
+## 心形的实现
 
-间补动画通过位移差进行计算
+这里的心形我是采用下面这个极坐标方程来实现
 
-## 加载Texture
+```
+ρ = 11
+x = ρ * 16 * Sin³(θ)
+y = ρ * (13 * Cos(θ) - 5Cos(2θ) - 2Cos(2θ) - 2Cos(3θ) - Cos(4θ))
+```
 
-加载Texture 一定要在服务器环境下（推荐Http-server）
-
-## 心形轨迹计算
+由此我们可以封装一个函数
 
 ```js
-var vdeg = ((2 * Math.PI) / _obj._geo.vertices.length) * _id
-var _tx = 11 * 16 * Math.pow( Math.sin(vdeg) , 3);
-var _ty = 11 * (13 * Math.cos( vdeg ) - 5 * Math.cos( 2 * vdeg ) - 2 * Math.cos( 3 * vdeg ) - Math.cos( 4 * vdeg ));
+function calcHeartPosition(θ) {
+  const { cos, sin, pow } = Math;
+  const p = 11;
+  return {
+    x: p * 16 * pow(sin(θ), 3),
+    y: p * (13 * cos(θ) - 5 * cos(2 * θ) - 2 * cos(3 * θ) - cos(4 * θ))
+  }
+}
+
+// 根据需要控制的点数量，每个点分配为一弧度，输入进函数中即可
+// pointsTotal 一共有几个点
+// index 点的索引，0、1、2、3、4、... pointsTotal - 1
+const degree = 2 * PI / totalLength * (index + 1);
+const { x, y } = calcHeartPosition(degree); // 得到了一个点在心形中的坐标
 ```
 
-众所周知，圆 === 2π 所以心形也是一样
-这里将 2π除以点集数，等到每一份的度数，在根据公式计算出具体的位置（x,y）
+## 搭建场景
 
-注意，原有函数所绘制的心形太小，这里我给x和y都乘以了一个 11 的倍数
-这个参数可以自行调整
+我们先搭建 ThreeJs 的场景，包括渲染器、相机、场景、舞台等类，并调整好相机的距离，定义好渲染函数，既每一帧执行的函数，具体代码请见`world.js`
 
-## 速度算法
+## 将女朋友绘制出来
 
-随机生成一个速度倍率 s
-
-```js
-this._speedA = Math.random() * 18 * 0.01 + 0.08;  // 我们称为s
-```
-
-```js
-this._currentV.x = ( this._currentV.x * this._speedB ) + ( this._trgV.x * this._speedA );
-```
-
-新当前点位置 === 旧当前点位置 * s + 目标点位置 * （1 - s）
-
-目标点 * s > 旧当前位置 * s
-
-所以每次渲染实际上点的增量为 s * (目标点 - 当前旧位置)
-
-## 代码分析
-
-由于Three 的核心是 几何体（Geometry） + 材质（Material） => 网格模型（Mesh）
-
-内置的 几何体模型 就包含了很多 Vector3 (三维向量)  本质就是点
-
-这里我们可以在声明 Geometry 的时候通过设置 几何体分段来实现
-
-```js
-this._geo = new THREE.PlaneGeometry( this._world._stageWidth, this._world._stageHeight, this._segW, this._segH );
-
-// 这里的_segW 和 _segH 分别为 x轴的分段和y轴的分段
-// 分别为 12 和 6
-// 也就是说产生了 (12+1) * (6+1) 个 Vector3
-// 我们所操控的 vertices 就是由这些 Vector3 来组成的 
-``` 
-
-Three 会自动将 Vector3 连起来， 这个我们可以通过 设置 wireframe: true 来看到
-
-这样如果我们将 PlaneGeometry 的透明度调低，就能够看到这个互相连线心形点集
-
-如果想要心画的更密集，可以增加分段数，但是过多的分段数将会影响性能体验
-
-## 感谢
-
-感谢 homunculus （https://homunculus.jp/ ）株式会社的创意，有些东西，咱们真的暂时还没法超过人家
-
-## 最后
-
-本文章严禁用于商业行为，仅供学习参考
+我们通过 `plane.js` 中定义的 `PlaneGeometry` 平面几何体是可以加载材质的，将女朋友的照片以材质的方式加载进来，ThreeJs 同时也会帮我们根据入参的分段的宽高，计算出一个个分段的点，
+将这些点输入到 `point.js` 中可以就可以得到点类，通过补间动画控制这些点，就能够实现爱心动画的变化
 
 ## 源码
 
+很多细节我都在源代码里备注了，大家可以看看👇
 [https://github.com/bilibiliou/animations](https://github.com/bilibiliou/animations)
