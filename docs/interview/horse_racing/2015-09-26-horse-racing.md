@@ -1,9 +1,4 @@
----
-layout: post
-title: 关于赛马问题解决方案
-category: 算法
-keywords: 算法,奔猪问题
----
+# 关于赛马问题解决方案
 
 如果有25匹马,跑道5条,只能记比赛名次但是不能用秒表记录速度,问至少需要多少次才能从中找出最快的3匹马
 
@@ -42,11 +37,7 @@ keywords: 算法,奔猪问题
 
 这是我自己想的,但是也不知道是否是最少
 
-![奔猪问题](/assets/img/Algorithm1.png)
-(看不清可以查看图片预览)
-
-[图片预览](/assets/img/Algorithm1.png)
-
+![奔猪问题](/assets/images/horse_racing.png)
 
 
 如果我们把25马认作是数字、跑道也就是每次排序能够传递的参数个数

@@ -7,18 +7,26 @@
   - [怎么把女朋友的照片揉成心形](/docs/front_end/animation/heart_animation/2018-09-08-heart-animation.md)
 - 前端
   - 经验总结
-    - [Js技巧](/docs/front_end/summery_of_experience/2021-04-21-js-cheat-sheet.md)
+    - [JS技巧](/docs/front_end/summery_of_experience/2021-04-21-js-cheat-sheet.md)
     - [浅谈字体加载](/docs/front_end/summery_of_experience/font_load/2021-05-23-font-load.md)
     - [如何根据页面的各项指标来确定资源的加载策略](/docs/front_end/summery_of_experience/2021-07-27-page-status-record.md)
     - [如何获取屏幕的缩放比例](/docs/front_end/summery_of_experience/2017-7-18-how-get-dpr.md)
+    - [如何使用 css 绘制三角形 和 扇形？](/docs/front_end/css/arrow_css/2016-06-07-css-arrow.md)
+    - [通过控制dataset属性，为游戏小人显示得分](/docs/front_end/summery_of_experience/data_use/2015-12-14-data-use.md)
   - 前端基础
     - [WebSocket](/docs/front_end/base/websocket/2015-10-11-websocket.md)
     - [网页中支持的长度单位](/docs/front_end/base/2015-10-28-unit.md)
-  - 框架学习
+    - [深入理解 flex 布局以及计算](/docs/front_end/css/flexbox/2017-4-6-flexbox.md)
   - React
     - [一些常用的ReactHook](/docs/front_end/react/2021-02-03-hooks.md)
   - Typescript
     - [关于ts一些高阶技巧](/docs/front_end/typescript/2020-08-03-ts.md)
+- 面试
+  - [面试题汇总](/docs/interview/2015-12-31-interview.md)
+  - [如何实现一个LazyMan](/docs/interview/2020-02-25-lazyman.md)
+  - [赛马问题](/docs/interview/horse_racing/2015-09-26-horse-racing.md)
+  - [校招面试题](/docs/interview/2018-4-14-campus-inverview.md)
+  - [手撕数据劫持代码](/docs/interview/data_hijack/2020-04-24-data-hijack.md)
 - 基础
   - 计算机网络
     - [关于DNS和CDN的基本原理](/docs/base/computer_network/2018-05-23-dns-cdn.md)

@@ -1,9 +1,4 @@
----
-layout: post
-title: 深入理解 flex 布局以及计算
-category: 技术
-keywords: 技术,flex,css3
----
+# 深入理解 flex 布局以及计算
 
 ## 起因
 
@@ -49,7 +44,7 @@ flex盒模型是被期望设计成
 
 而关于不同种类不同情况下的 item-size 我们会在下面讨论，现在您可以简单将它理解为width[height]
 
-![img](/assets/img/flexbox1.png)
+![img](/assets/images/flexbox1.png)
 
 *盗规范中的一张图*
 
@@ -111,7 +106,7 @@ css解析器会把 定义了 display: flex; 和 display: inline-flex; 的 flexbo
 
 值得注意的是，空格也是文本节点，所以 white-space 会影响flexbox 中的布局
 
-![img](/assets/img/flexbox3.png)
+![img](/assets/images/flexbox3.png)
 
 *设置了white-space: pre 的flexbox*
 
@@ -131,7 +126,7 @@ flex-item content以flex-basis来决定，无论width[height] 设置了多少。
 
 (可理解为 flex-basis 比 width[height]: 非auto; 的优先级高)
 
-![img](/assets/img/flexbox17.png)
+![img](/assets/images/flexbox17.png)
 
 *flex-basis的优先级比width[height]高，无论width[height]设置多少，flex-item content都以flex-basis来决定*
 
@@ -139,7 +134,7 @@ flex-item content以flex-basis来决定，无论width[height] 设置了多少。
 
 如果子元素有默认固定宽高（例如input 标签）、并且设置了 flex-basis，那么它的 content以 固定宽高为下限，如果flex-basis 超过了固定宽高，那么flex-basis则成为其 content，如果flex-basis比固定宽高小，那么以固定宽高为 content。
 
-![img](/assets/img/flexbox13.png)
+![img](/assets/images/flexbox13.png)
 
 *对于固定元素的尺寸设定*
 
@@ -149,11 +144,11 @@ flex-item content以flex-basis来决定，无论width[height] 设置了多少。
 
 如果flex-basis 的值小于 min-width[min-height] 那么flex-item content以min-width[min-height] 计算
 
-![img](/assets/img/flexbox14.png)
+![img](/assets/images/flexbox14.png)
 
 如果 min-width[min-height] 的值已经超出了容器的尺寸，那么即使设置了 flex-shrink css解析器也不会进行将这个item的 content shrink，而是坚持保留它的min-width[min-height]
 
-![img](/assets/img/flexbox6.png)
+![img](/assets/images/flexbox6.png)
 
 *如果flexbox 设置的min-width 超出了flex container 的范围, 不会对其进行压缩*
 
@@ -170,26 +165,26 @@ css解析器对比两者的值，两者谁大取谁 作为item的基本尺寸，
 
 但是如果item有了内容，且内容撑开的尺寸比flex-basis大，那么flex-item content就会以width[height]: auto; 来决定，且**无法被 shrink**。反之，如果比flex-basis小，flex-item content就会以flex-basis来决定;
 
-![img](/assets/img/flexbox18.png)
+![img](/assets/images/flexbox18.png)
 
 *width: auto; 内容长度比 flex-basis 大，则 flex-item content以内容长度来决定，且无法shrink*
 
-![img](/assets/img/flexbox19.png)
+![img](/assets/images/flexbox19.png)
 
 *如果 flex-basis 的长度大于文字内容长度，那么flex-item content以 flex-basis 来决定*
 
-![img](/assets/img/flexbox23.png)
+![img](/assets/images/flexbox23.png)
 
 *同时设置了flex-basis: 800px; 和 width: 1px; flex-item content以 flex-basis 来决定，可以发生shrink*
 
-![img](/assets/img/flexbox20.png)
+![img](/assets/images/flexbox20.png)
 
 *注意2号盒子我设置了 flex-shrink: 1; 1号盒子和3号盒子我设置了 flex-shrink: 0; 
 意思就是我将所有的需要shrink的空间都压到了2号盒子上，总共的需要 shrink的空间为 0 * 600 + 1 * 20 + 0 * 100 = -20；而2号盒子只有20的空间，理应被完全shrink变为0，但是值得注意的是2号盒子并没有被完全 shrink，还保留了一个文字的距离。*
 
 除此之外，overflow: hidden; 也会影响
 
-![img](/assets/img/flexbox24.png)
+![img](/assets/images/flexbox24.png)
 
 *overflow: hidden; 把文字长度限制在了600px; 小于 flex-basis: 700px; 所以flex-item content以flex-basis来决定，可以 shrink*
 
@@ -207,7 +202,7 @@ css解析器对比两者的值，两者谁大取谁 作为item的基本尺寸，
 
 position: absolute 也是适用 flexbox 中的子元素的，并且，设置了position: absolute属性的子元素，也会受到 flexbox 排列的影响。
 
-![img](/assets/img/flexbox4.png)
+![img](/assets/images/flexbox4.png)
 
 *设置了absolute 的子元素重叠在了一起，但是依然会受到 align-items: center; 的影响而居中*
 
@@ -225,7 +220,7 @@ position: absolute 也是适用 flexbox 中的子元素的，并且，设置了p
 
 这里我们不讨论 translate 因为 translate 只是视觉上位置的改变
 
-![img](/assets/img/flexbox5.png)
+![img](/assets/images/flexbox5.png)
 
 *设置了absolute 的item 不会影响布局,*
 
@@ -289,13 +284,13 @@ flex-basis、flex-grow、flex-shrink是FFC下特有的属性，只有父级元�
 
 如果 items 所占的空间是小于flexbox的 那么说明flexbox 还没有填满，css解析器就会计算还有多少空间没有填满，根据每一个item所设置的flex-grow 设置的值，将这些空间分配按比例分配给每一个item
 
-![img](/assets/img/flexbox7.png)
+![img](/assets/images/flexbox7.png)
 
 *可用空间*
 
 如果 items 所占的空间是大于flexbox的 那么说明flexbox 被填满了，css解析器就会计算超出了多少空间，根据每一个item所设置的flex-shrink 设置的值，将这些空间分配按比例缩小每一个item
 
-![img](/assets/img/flexbox8.png)
+![img](/assets/images/flexbox8.png)
 
 *超出的空间*
 
@@ -311,11 +306,11 @@ flex-grow计算流程是：
 
 那么 每一个 item 就需要在原基础上 加上被分配的大小 就完成了grow
 
-![img](/assets/img/flexbox11.png)
+![img](/assets/images/flexbox11.png)
 
 *分配前*
 
-![img](/assets/img/flexbox12.png)
+![img](/assets/images/flexbox12.png)
 
 *分配后*
 
@@ -333,11 +328,11 @@ flex-shrink计算流程是：
 
 然后计算 子元素超出父级的部分（负可用空间），每一个item 减去这个  shrink比例 * 负可用空间即可
 
-![img](/assets/img/flexbox15.png)
+![img](/assets/images/flexbox15.png)
 
 *shrink前* 
 
-![img](/assets/img/flexbox16.png)
+![img](/assets/images/flexbox16.png)
 
 *shrink后* 
 
@@ -345,11 +340,11 @@ flex-shrink计算流程是：
 
 那么items 都会先在主轴方向上的多条线上排列，css解析器先会计算 每一条线 在主轴方向上尺寸 相对于 flexbox 容器的width[height]进行比较计算，每条线之间互不干扰
 
-![img](/assets/img/flexbox9.png)
+![img](/assets/images/flexbox9.png)
 
 *未分配之前*
 
-![img](/assets/img/flexbox10.png)
+![img](/assets/images/flexbox10.png)
 
 *平均分配后*
 
@@ -361,7 +356,7 @@ flex-shrink计算流程是：
 
 所以，css引擎会先进行一次分配，分配后，统计那些有max-width[height]的items, 分配后是否有超出的剩余空间，然后对这些剩余空间再分配给那些没有设置max-width[height]的item
 
-![img](/assets/img/flexbox21.png)
+![img](/assets/images/flexbox21.png)
 
 *再分配流程*
 
@@ -373,7 +368,7 @@ flex-shrink计算流程是：
 
 注意：第一次 shrink的算法和第二次分配未 shrink剩余空间的算法不同！
 
-![img](/assets/img/flexbox22.png)
+![img](/assets/images/flexbox22.png)
 
 ## 总结
 

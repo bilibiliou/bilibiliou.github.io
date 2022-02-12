@@ -1,13 +1,6 @@
----
-layout: post
-title: 手撕数据劫持代码
-category: 技术
-keywords: 技术
----
+# 手写简单的数据劫持
 
-## 手写简单的数据劫持
-
-![shotpic](/assets/img/data-hijack.png)
+![shotpic](/assets/images/data-hijack.png)
 
 逻辑上来说，如果我们对一个普通对象的数据进行数据劫持，大概是这样的一些思路，下面的代码，只是我对Vue源码关于数据劫持双向绑定的简单理解，代码是我个人手写的，难免可能会有错误
 

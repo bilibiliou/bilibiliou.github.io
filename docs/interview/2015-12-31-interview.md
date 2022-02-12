@@ -1,10 +1,3 @@
----
-layout: post
-title: 关于一些前端面试题
-category: 算法
-keywords: 算法,前端面试题
----
-
 ## 理解对象的底层函数
 
 题:
@@ -321,23 +314,23 @@ var a = 1;
 
 ```javascript
 function ObjectTest (obj) {
-    var objType = Object.prototype.toString.call(obj);
-    var result = "";
-    switch(objType) {
-        case "[object Array]": console.log("This is Array");
-            break;
-        case "[object Function]": console.log("This is Function");
-            break;
-        case "[object Object]": console.log("This is Object");
-            break;
-        case "[object String]": console.log("This is String");
-            break;
-        case "[object Number]": console.log("This is Number");
-            break;
-        case "[object RegExp]": console.log("This is RegExp");
-            break;
-        default: console.log(objType);
-    }
+  var objType = Object.prototype.toString.call(obj);
+  var result = "";
+  switch(objType) {
+    case "[object Array]": console.log("This is Array");
+        break;
+    case "[object Function]": console.log("This is Function");
+        break;
+    case "[object Object]": console.log("This is Object");
+        break;
+    case "[object String]": console.log("This is String");
+        break;
+    case "[object Number]": console.log("This is Number");
+        break;
+    case "[object RegExp]": console.log("This is RegExp");
+        break;
+    default: console.log(objType);
+  }
 }
 ```
 
@@ -349,35 +342,32 @@ function ObjectTest (obj) {
 
 ```javascript
 var s = "sdaddf444sfsfdsf8485sdfsdfds￥d#我1526dfdsfdsfds我2%fsdf58";
-    
-    var flag = -1;
-    var boff = true;
-    var r = "";
-    var t = "";
-    var result = [];
-    Array.prototype.forEach.call( s , function ( value , idx , array ) {
-        if ( value > "0" && value < "9" ) {
-            if ( boff ) {
-                boff = false;
-                flag = idx;
-            }
+var flag = -1;
+var boff = true;
+var r = "";
+var t = "";
+var result = [];
+Array.prototype.forEach.call( s , function ( value , idx , array ) {
+  if ( value > "0" && value < "9" ) {
+    if ( boff ) {
+        boff = false;
+        flag = idx;
+    }
 
-            r += value;
-        } else {
-            boff = true;
-            flag = -1;
-        }
+    r += value;
+  } else {
+    boff = true;
+    flag = -1;
+  }
 
-        if ( flag === -1 && r !== "" || idx === array.length - 1 ) {
-            t = r;
-            r = "";
-            result.push(t)
-        }
-    });
+  if ( flag === -1 && r !== "" || idx === array.length - 1 ) {
+    t = r;
+    r = "";
+    result.push(t)
+  }
+});
 
-    console.log(result)
-
-}   
+console.log(result)
 ```
 
 ## 数组去重
@@ -392,27 +382,27 @@ var arr = [1,1,2,2,"Owen","Owen",true,false,undefined,NaN,NaN,{a:1},{a:1},{a:3},
 
 ```javascript
 Array.prototype.unique = function () {
-    var mapObj = {};
-    var newArr = [];
-    for(var i = 0,temp,type; i<this.length; i++) {
-        temp = this[i];
-        type = Object.prototype.toString.call(temp);
-        if (type === "[object Object]") {
-            // 对象类型需要特殊处理
-            temp = JSON.stringify(temp);
-        }
-
-        if (!mapObj[temp]) {
-            mapObj[temp] = true;
-
-            if(type === "[object Object]") {
-                newArr.push(JSON.parse(temp))
-            } else {
-                newArr.push(temp);
-            }
-        }   
+  var mapObj = {};
+  var newArr = [];
+  for(var i = 0,temp,type; i<this.length; i++) {
+    temp = this[i];
+    type = Object.prototype.toString.call(temp);
+    if (type === "[object Object]") {
+      // 对象类型需要特殊处理
+      temp = JSON.stringify(temp);
     }
-    return newArr;
+
+    if (!mapObj[temp]) {
+      mapObj[temp] = true;
+
+      if(type === "[object Object]") {
+          newArr.push(JSON.parse(temp))
+      } else {
+          newArr.push(temp);
+      }
+    }
+  }
+  return newArr;
 }
 ```
 
@@ -440,14 +430,13 @@ Array.prototype.unique = function () {
 
 ```javascript
 function Fibonacci (n) {
-    if ( n <= 1 ) {return 1};
+  if ( n <= 1 ) {return 1};
 
-    return Fibonacci( n - 1 ) + Fibonacci( n - 2 );
+  return Fibonacci( n - 1 ) + Fibonacci( n - 2 );
 }
 
 console.log(Fibonacci(10));
 // console.log(Fibonacci(100)) // 浏览器挂了
-
 ```
 
 可以发现上面的代码并不理想
@@ -455,7 +444,7 @@ console.log(Fibonacci(10));
 为什么呢，因为 
 
 ```javascript
-    return Fibonacci( n - 1 ) + Fibonacci( n - 2 );
+  return Fibonacci( n - 1 ) + Fibonacci( n - 2 );
 ```
 
 return 的优先级是比双目运算符（+-*/） 要大的
@@ -472,10 +461,10 @@ return 的优先级是比双目运算符（+-*/） 要大的
 
 ```javascript
 function Fibonacci2 (n , ac1 = 1 , ac2 = 1) {
-    if( n <= 1 ) {return ac1};
+  if( n <= 1 ) {return ac1};
 
-    return Fibonacci2 (n-1 , ac2 , ac1 + ac2); 
-    // 会先计算参数里面的双目运算符，再return 形成尾递归
+  return Fibonacci2 (n-1 , ac2 , ac1 + ac2); 
+  // 会先计算参数里面的双目运算符，再return 形成尾递归
 }
 
 
@@ -486,18 +475,17 @@ console.log(Fibonacci2(10000)) // Infinity
 
 完整的算法如下
 
-
 ```javascript
 let str = "";
 let t = 0;
 function fibonacci(n, ac = 1 , ac2 = 1) {
-    t += ac2;
-    if(n<=1) {
-        str += `${ac2} = ${t}`
-        return ac2;
-    }
-    str += `${ac2} + `;
-    return  fibonacci(n - 1, ac2, ac2 = ac + ac2);
+  t += ac2;
+  if(n<=1) {
+      str += `${ac2} = ${t}`
+      return ac2;
+  }
+  str += `${ac2} + `;
+  return  fibonacci(n - 1, ac2, ac2 = ac + ac2);
 }
 
 console.log(fibonacci(10));
@@ -521,11 +509,11 @@ console.log(str);
 
 ```javascript
 Object.prototype.setIterator = function() {
-    this.__proto__[Symbol.iterator] = function *() {
-        for(let i in this) {
-            yield this[i]
-        }
+  this.__proto__[Symbol.iterator] = function *() {
+    for(let i in this) {
+        yield this[i]
     }
+  }
 }
 ```
 
@@ -533,12 +521,12 @@ Object.prototype.setIterator = function() {
 
 ```javascript
 let obj = {
-    a : 1,
-    b : 2,
-    c : x => x + 10,
-    d : {},
-    f : [],
-    g : /^(\s|\u00A0)+ | (\s|\u00A00)$/
+  a : 1,
+  b : 2,
+  c : x => x + 10,
+  d : {},
+  f : [],
+  g : /^(\s|\u00A0)+ | (\s|\u00A00)$/
 }
 
 obj.setIterator();
@@ -592,21 +580,21 @@ d// n
 
 ```javascript
 function createState (...args) {
-    return (function * () {
-        while(true) {
-            for(let i of args) {
-                yield i();
-            } 
-        }
-    })();
+  return (function * () {
+    while(true) {
+      for(let i of args) {
+          yield i();
+      }
+    }
+  })();
 }   
 
 let amd = createState(function () {
-    ...代码块1
+  ...代码块1
 },function () {
-    ...代码块2
+  ...代码块2
 },function () {
-    ...代码块3
+  ...代码块3
 });
 
 amd.next();
@@ -635,8 +623,8 @@ amd.next();
 
 ```javascript
 let nowTime = new Date()
-    .toTimeString()
-    .match(/(\d{2})\:(\d{2})\:(\d{2})/)[0]
+  .toTimeString()
+  .match(/(\d{2})\:(\d{2})\:(\d{2})/)[0]
 ```
 
 ## 实现add(1)(2)(3)
@@ -644,13 +632,13 @@ let nowTime = new Date()
 法一：
 ```javascript
 function add (v1,v2) {
-    v2 = v2 || 0;
+  v2 = v2 || 0;
 
-    arguments.callee.toString = function () {
-        return "Anwser == "+ (v1 + v2);
-    }
+  arguments.callee.toString = function () {
+    return "Anwser == "+ (v1 + v2);
+  }
 
-    return arguments.callee.bind(this,v1+v2);
+  return arguments.callee.bind(this,v1+v2);
 }
 
 console.log(add(1)(2)(3))
@@ -787,8 +775,8 @@ function reverse (seq) {
  }
 
  return (seq.length > 1) ? 
-         reverse(seq.slice(1)).concat(seq.slice(0,1))
-       : seq;
+    reverse(seq.slice(1)).concat(seq.slice(0,1)) :
+      seq;
 }
 ```
 
@@ -798,16 +786,16 @@ function reverse (seq) {
 
 ```javascript
 function reverse (seq) {
-    var  len    = seq.length,  // 4
-         temp   = Math.floor(len / 2),
-         flag   = 0
+  var  len    = seq.length,  // 4
+        temp   = Math.floor(len / 2),
+        flag   = 0
 
-    return (function rev (seq) {
-        seq[len-flag-1] = seq.splice(flag,1,seq[len-flag-1])[0]
-        ++flag
+  return (function rev (seq) {
+      seq[len-flag-1] = seq.splice(flag,1,seq[len-flag-1])[0]
+      ++flag
 
-        return  (flag !== temp) ? rev(seq) : seq
-    })(seq)
+      return  (flag !== temp) ? rev(seq) : seq
+  })(seq);
 }
 ```
 

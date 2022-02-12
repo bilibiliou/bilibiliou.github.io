@@ -1,9 +1,4 @@
----
-layout: post
-title: 校招笔试题
-category: 算法
-keywords: 算法
----
+# 校招笔试题
 
 ## 题1
 
