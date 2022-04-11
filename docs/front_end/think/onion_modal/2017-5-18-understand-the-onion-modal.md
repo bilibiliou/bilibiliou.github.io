@@ -249,3 +249,32 @@ function thunk (next) {
     }
 }
 ```
+
+## 简单的demo
+
+```js
+var app = { middlewares: [] };
+
+app.use = (fn) => {
+   app.middlewares.push(fn);
+}
+
+app.compose = () =>
+  app.middlewares.reduceRight((p, n) => () => n(p), () => {})();
+
+
+app.use((next) => {
+   console.log(1);
+   next();
+   console.log(2)
+})
+
+app.use((next) => {
+   console.log(3);
+   next();
+   console.log(4)
+})
+
+
+app.compose();   // 1, 3, 4, 2
+```
