@@ -13,6 +13,7 @@
     - [如何获取屏幕的缩放比例](/docs/front_end/summery_of_experience/2017-7-18-how-get-dpr.md)
     - [如何使用 css 绘制三角形 和 扇形？](/docs/front_end/css/arrow_css/2016-06-07-css-arrow.md)
     - [通过控制dataset属性，为游戏小人显示得分](/docs/front_end/summery_of_experience/data_use/2015-12-14-data-use.md)
+    - [理解洋葱模型](/docs/front_end/think/onion_modal/2017-5-18-understand-the-onion-modal.md)
   - 前端基础
     - [WebSocket](/docs/front_end/base/websocket/2015-10-11-websocket.md)
     - [网页中支持的长度单位](/docs/front_end/base/2015-10-28-unit.md)
@@ -22,7 +23,7 @@
   - Typescript
     - [关于ts一些高阶技巧](/docs/front_end/typescript/2020-08-03-ts.md)
 - 面试
-  - [面试题汇总](/docs/interview/2015-12-31-interview.md)
+  - [面试题汇总](/docs/interview/summary/2015-12-31-interview.md)
   - [如何实现一个LazyMan](/docs/interview/2020-02-25-lazyman.md)
   - [赛马问题](/docs/interview/horse_racing/2015-09-26-horse-racing.md)
   - [校招面试题](/docs/interview/2018-4-14-campus-inverview.md)
@@ -36,6 +37,6 @@
   - [关于一种特殊的逻辑前缀表达式的解析和抽象规则](/docs/algorithm/logic_tree/2019-11-22-logic-tree.md)
   - [计算两随机年份之间的闰年数](/docs/algorithm/2016-3-30-leapYearNum.md)
   - [手动实现一个LRU算法](/docs/algorithm/2020-04-25-lru.md)
-  - [Leetcode刷题](/docs/algorithm/2019-11-19-leetcode-rush.md)
+  - [Leetcode刷题](/docs/algorithm/leetcode_rush/2019-11-19-leetcode-rush.md)
 - nodejs
   - [DIY 一个自己的 REPL 工具](/docs/nodejs/2016-09-02-how-diy-repl.md)

@@ -1,10 +1,4 @@
----
-layout: post
-title: 简单理解洋葱模型
-category: 技术
-keywords: 技术,js
----
-
+# 简单理解洋葱模型
 ## 起因
 
 组里的T5的分享了redux 源码解读， 其中有一块用到了洋葱模型
@@ -17,7 +11,7 @@ keywords: 技术,js
 
 而洋葱模型，就是这样一种模式
 
-![onion_modal](/assets/img/onion_modal.png)
+![onion_modal](/assets/images/onion_modal.png)
 
 **redux middleware 的洋葱模型演示**
 
