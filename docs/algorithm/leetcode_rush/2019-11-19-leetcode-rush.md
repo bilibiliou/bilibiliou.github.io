@@ -1409,3 +1409,68 @@ function main(str) {
 
 main('boawaebnc');
 ```
+
+## 螺旋矩阵
+
+给你一个正整数 n ，生成一个包含 1 到 n² 所有元素，且元素按顺时针顺序螺旋排列的 n x n 正方形矩阵 matrix。
+
+![spiraln](/assets/images/spiraln.jpg)
+
+示例 1：
+
+```
+输入：n = 3
+输出：[[1,2,3],[8,9,4],[7,6,5]]
+```
+
+示例 2:
+
+```
+输入：n = 1
+输出：[[1]]
+```
+
+```js
+const generateMatrix = function(n) {
+  let t = 0;      // top
+  let b = n - 1;    // bottom
+  let l = 0;      // left
+  let r = n - 1;    // right
+
+  let k = 0;
+  let temp = new Array(n * n);
+
+  function getNo (x, y, n) {
+    return x * n + y;
+  }
+
+  while (k < n * n) {
+    for (let i=t,j=l;j<=r;j++) {
+      temp[getNo(i, j, n)] = ++k;
+    }
+    t++;
+    for (let i=t,j=r;i<=b;i++) {
+      temp[getNo(i, j, n)] = ++k;
+    }
+    r--;
+    for (let i=b,j=r;j>=l;j--) {
+      temp[getNo(i, j, n)] = ++k;
+    }
+    b--;
+    for (let i=b,j=l;i>=t;i--) {
+      temp[getNo(i, j, n)] = ++k;
+    }
+    l++;
+  }
+
+  const result = [];
+  for (let i=0, j=0; i <= n * n; i++) {
+    if (!(i % n) && i) {
+      result.push(temp.slice(j, i));
+      j = i;
+    }
+  }
+
+  return result;
+};
+```
