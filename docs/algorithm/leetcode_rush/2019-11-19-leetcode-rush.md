@@ -1474,3 +1474,43 @@ const generateMatrix = function(n) {
   return result;
 };
 ```
+
+## 有效的括号问题
+
+[leetcode](https://leetcode.cn/problems/valid-parentheses/)
+
+```js
+function checkEvenBracket (s) {
+  if (s.length < 2) { return false };
+  const queue = s.split('');
+  const stack = [];
+  const leftBracket = ['(', '{', '['];
+  const rightBracket = [')', '}', ']'];
+
+  for (let i = 0; i < queue.length; i++) {
+    const value = queue[i];
+    if (leftBracket.includes(value)) {
+      stack.push(value);
+      continue;
+    }
+
+    const index = rightBracket.indexOf(value);
+    if (index !== -1) {
+      const stackFirstEle = stack.pop();
+      const targetBracketIndex = rightBracket.findIndex(t => t === value);
+      if (stackFirstEle !== leftBracket[targetBracketIndex]) {
+        return false;
+      }
+    }
+  }
+
+  return !stack.length;
+}
+
+// checkEvenBracket('()'); true
+// checkEvenBracket('()[]{}'); true
+// checkEvenBracket('([)]'); false
+// checkEvenBracket('{[]}') true
+// checkEvenBracket('{{') false
+// checkEvenBracket('{') false
+```
