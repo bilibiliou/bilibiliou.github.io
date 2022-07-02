@@ -621,3 +621,18 @@ compose(fn1, fn2, fn3)({ a: 1 });
 下一个函数就能继承上一个函数的执行结果继续计算，这种方式是可插拔式的
 
 假如后面我不需要 fn2 了，直接修改为 `compose(fn1, fn3)({ a: 1 });` 即可，不会有任何的问题
+
+# 从对象数组内进行查找极值，并返回索引和对应的对象
+
+```ts
+function findObjectLimit<T> (list: T[], key: keyof T, mode: 'max' | 'min' = 'max'): T {
+  if (!list || !list.length) { return null };
+  return list.reduce((p, n, idx) => {
+    if (mode === 'max') {
+      return p[0][key] > n[key] ? [n, idx] : p;
+    } else {
+      return p[0][key] < n[key] ?  p : [n, idx];
+    }
+  }, [list[0], 0]);
+}
+```
