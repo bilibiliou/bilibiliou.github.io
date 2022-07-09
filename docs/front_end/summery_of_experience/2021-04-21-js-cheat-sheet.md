@@ -625,14 +625,19 @@ compose(fn1, fn2, fn3)({ a: 1 });
 # 从对象数组内进行查找极值，并返回索引和对应的对象
 
 ```ts
-function findObjectLimit<T> (list: T[], key: keyof T, mode: 'max' | 'min' = 'max'): T {
-  if (!list || !list.length) { return null };
-  return list.reduce((p, n, idx) => {
-    if (mode === 'max') {
-      return p[0][key] > n[key] ? [n, idx] : p;
-    } else {
-      return p[0][key] < n[key] ?  p : [n, idx];
-    }
-  }, [list[0], 0]);
+export function findObjectLimit<T>(list: T[], key: keyof T, mode: 'max' | 'min' = 'max'): [T, number] {
+  if (!list || !list.length) {
+    return null;
+  }
+  return list.reduce(
+    (p, n, idx) => {
+      if (mode === 'max') {
+        return p[0][key] > n[key] ? p : [n, idx];
+      } else {
+        return p[0][key] < n[key] ? p : [n, idx];
+      }
+    },
+    [list[0], 0]
+  );
 }
 ```
