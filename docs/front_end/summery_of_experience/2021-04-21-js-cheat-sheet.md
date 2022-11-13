@@ -641,3 +641,66 @@ export function findObjectLimit<T>(list: T[], key: keyof T, mode: 'max' | 'min' 
   );
 }
 ```
+
+# Random
+
+```ts
+// 输入上下限，随机生成上下限中的一个整数
+export const random = (s: number, e: number) => (s !== e ? Math.floor(s + Math.random() * (e - s)) : 0);
+```
+
+# 生成彩虹色
+
+```ts
+// 输入需要生成的彩虹色的数量
+// 输出rgba格式的 string[]
+export function colorful(colorLens: number): string[] {
+  function gen(i: number) {
+    const frequency = 0.05;
+    const red = Math.round(Math.sin(frequency * i + 0) * 127 + 128);
+    const green = Math.round(Math.sin(frequency * i + 2) * 127 + 128);
+    const blue = Math.round(Math.sin(frequency * i + 4) * 127 + 128);
+    return `rgba(${red},${green},${blue},1)`;
+  }
+  const result = [];
+  for (let i = 0; i < colorLens; i++) {
+    result.push(gen(i));
+  }
+  return result;
+}
+
+```
+
+# 扁平化Promise实例
+
+```ts
+export function flattenPromise<T>() {
+  let promiseResolve: (value: T | PromiseLike<T>) => void = null;
+  let promiseReject: (reason?: any) => void = null;
+  const promise = new Promise<T>(function (resolve, reject) {
+    promiseResolve = resolve;
+    promiseReject = reject;
+  });
+
+  return {
+    promise,
+    promiseResolve,
+    promiseReject,
+  };
+}
+
+// 扁平化后，可以将resolve和reject抛出到任意作用域下面执行
+```
+
+# rem转px
+
+```ts
+// 将获取到的rem值，根据根节点的fontSize转换成px
+export const rem2px = (rem: number) => {
+  const fontSize = document.documentElement.style.fontSize ?
+    Number(document.documentElement.style.fontSize.replace('px', '')) :
+    100;
+
+  return fontSize * rem;
+};
+```

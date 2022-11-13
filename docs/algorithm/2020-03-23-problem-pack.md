@@ -1,9 +1,4 @@
----
-layout: post
-title: 动态规划相关题和思考
-category: 算法
-keywords: 算法
----
+# 动态规划相关题和思考
 
 ## 动态规划
 
@@ -241,4 +236,4 @@ func(x - 1, b, (a + b))
 
 ### 最小编辑距离
 
-[看这里](http://bilibiliou.github.io/posts/min-edit-distance/)
+[看这里](/docs/algorithm/min-edit-distance/2019-10-15-min-edit-distance.md)

@@ -40,5 +40,7 @@
   - [计算两随机年份之间的闰年数](/docs/algorithm/2016-3-30-leapYearNum.md)
   - [手动实现一个LRU算法](/docs/algorithm/2020-04-25-lru.md)
   - [Leetcode刷题](/docs/algorithm/leetcode_rush/2019-11-19-leetcode-rush.md)
+  - [动态规划相关题和思考](/docs/algorithm/2020-03-23-problem-pack.md)
+  - [关于最小编辑距离的js实现](/docs/algorithm/min-edit-distance/2019-10-15-min-edit-distance.md)
 - nodejs
   - [DIY 一个自己的 REPL 工具](/docs/nodejs/2016-09-02-how-diy-repl.md)

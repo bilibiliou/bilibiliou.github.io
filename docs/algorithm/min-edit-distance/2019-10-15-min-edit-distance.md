@@ -1,13 +1,8 @@
----
-layout: post
-title: 关于最小编辑距离的js实现
-category: 算法
-keywords: 算法
----
+# 关于最小编辑距离的js实现
 
 ## 题目概要
 
-![img](https://bilibiliou.github.io/assets/img/min-edit-distance.jpg)
+![img](./assets/images/min-edit-distance.jpg)
 
 ## 算法实现
 
@@ -70,7 +65,7 @@ str2.length = y
 
 我们首先初始化一个二维矩阵，宽为 x + 1 , 高为 y + 1
 
-![img](https://bilibiliou.github.io/assets/img/min-edit-distance-2.png)
+![img](./assets/images/min-edit-distance-2.png)
 
 第一行和第一列为字符串的标号，其余内容以0填充
 
@@ -88,7 +83,7 @@ diff每一个字符串，计算全部可能发生的操作，例如 a -> d 的�
 
 计算后得到矩阵(矩阵红框为计算内容)
 
-![img](https://bilibiliou.github.io/assets/img/min-edit-distance-3.png)
+![img](./assets/images/min-edit-distance-3.png)
 
 例如红框内第一个节点 计算为 1 的计算步骤为
 删除操作 [1][0] + 1 -> 1
