@@ -704,3 +704,45 @@ export const rem2px = (rem: number) => {
   return fontSize * rem;
 };
 ```
+
+# 函数执行队列
+
+```ts
+// 函数执行队列
+// 每一个函数需要返回一个boolean
+// 队列的下一个函数可以接收到上一函数的boolean, 队列中所有的函数都会被执行一次
+// 下一个函数可以接收到上一个函数提供的控制变量，来决定是否执行一些函数
+async function functionExecuteQueue(actions: ((canExecute: boolean) => boolean)[], canExecute = true) {
+  if (!actions.length) {
+    return;
+  }
+
+  const [fn, ...nextActions] = actions;
+  const shouldExecute = typeof fn === 'function' ? await fn(canExecute) : true;
+  functionExecuteQueue(nextActions, shouldExecute);
+}
+
+
+function A (canExecute = true) {
+  if (canExecute) {
+    console.log('funcA Todo something');
+    return false;
+  }
+  return true
+}
+
+function B (canExecute = true) {
+  if (canExecute) {
+    console.log('funcB Todo something');
+  }
+  return true
+}
+
+function C (canExecute = true) {
+  if (canExecute) {
+    console.log('funcC Todo something');
+    return false;
+  }
+  return true
+}
+```
