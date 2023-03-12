@@ -106,3 +106,45 @@ obj.a
 
 obj.a = 3
 ```
+
+## ES6写法
+
+```js
+class Observer {
+  _functionMap = {}
+  _data = {}
+  constructor(data) {
+    const that = this;
+    this._data = data;
+    return new Proxy(this, {
+      set(target, key, value) {
+        const oldData = that._data[key];
+        that._data[key] = value;
+        if (that._functionMap[key]) {
+          that._functionMap[key].forEach(func => func.call(that, value, oldData));
+        }
+      },
+
+      get(target, key) {
+        return that[key] || that._data[key];
+      }
+    });
+  }
+
+  $on(key, func) {
+    if (!this._functionMap[key]) {
+      this._functionMap[key] = [func]
+    } else {
+      this._functionMap[key].push(func)
+    }
+  }
+}
+const instance = new Observer({ a: 1 });
+console.log(instance.a) // console: 1
+instance.$on('a', (newValue, oldValue) => {
+  console.log(newValue, oldValue);
+});
+instance.a = 2 // console: 2 1
+```
+
+这里的关键是实例化返回了一个Proxy, Proxy对象代理的是原本Observer所实例化所返回的实际例, 同时当get的时候这里会先从原本的Observer内寻找对应的字段，如果没有的情况下再去_data下寻值，这样做的好处就能保证 数据和封装方法全部都可以链式操控instance找到了
