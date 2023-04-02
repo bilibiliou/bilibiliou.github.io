@@ -15,6 +15,7 @@
     - [通过控制dataset属性，为游戏小人显示得分](/docs/front_end/summery_of_experience/data_use/2015-12-14-data-use.md)
     - [理解洋葱模型](/docs/front_end/think/onion_modal/2017-5-18-understand-the-onion-modal.md)
     - [SEO 基础](/docs/front_end/summery_of_experience/seo/2022-08-06-seo.md)
+    - [前端性能优化](/docs/front_end/summery_of_experience/performance/2023-04-02-fe-performance.md)
   - 前端基础
     - [WebSocket](/docs/front_end/base/websocket/2015-10-11-websocket.md)
     - [网页中支持的长度单位](/docs/front_end/base/2015-10-28-unit.md)
