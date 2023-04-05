@@ -1514,3 +1514,84 @@ function checkEvenBracket (s) {
 // checkEvenBracket('{{') false
 // checkEvenBracket('{') false
 ```
+
+## 蛇形逆序遍历二叉树
+
+![binary_tree1](./assets/images/binary_tree1.jpg)
+
+1. 你需要实现一个traverseBinaryTreeLikeSnake函数，输入二叉树的根节点地址，按要求顺序输出一个数字数组
+2. 要求是从叶子节点开始，以蛇型地方式遍历二叉树
+3. 如图1所示，最右边的叶子节点开始逆序，再往上一层则是顺序，然后逆序顺序交替，则子树的遍历顺序是 
+[7,6,4,3,2,5,1]
+
+![binary_tree2](./assets/images/binary_tree2.png)
+
+如图2所示，从最右边叶子结点开始蛇形遍历二叉树，输出为[7,4,3,6,5,2,1]
+
+```js
+// 测试用例如下
+class Node {
+  constructor(data) {
+    this.left = null;
+    this.right = null;
+    this.data = data;
+  }
+}
+// 构建二叉树
+function buildBinaryTree(arr, i = 0) {
+  let root = null;
+  // Base case for recursion
+  if (i < arr.length) {
+    root = new Node(arr[i]);
+
+    // insert left child
+    root.left = buildBinaryTree(arr, 2 * i + 1);
+
+    // insert right child
+    root.right = buildBinaryTree(arr, 2 * i + 2);
+  }
+  return root;
+}
+
+// 蛇形遍历二叉树
+function traverseBinaryTreeLikeSnake(root) {
+  if (!root) { return []; }
+  const queue = [root];
+  let result = [];
+  let layerResult = [];
+  let layer = 0; // 层
+  let count = 1; // 该层节点数量
+  while (queue.length) {
+    count--;
+    const front = queue.shift();
+    if (front) {
+      front.left && queue.push(front.left);
+      front.right && queue.push(front.right);
+      front.data && layerResult.push(front);
+    }
+
+    if (!count) {
+      result.push([...layerResult]);
+      layerResult = [];
+      layer++;
+      count = Math.pow(2, layer);
+    }
+  }
+
+  let flag = true;
+  return result.reduceRight((p, n) => {
+    p = flag ? p.concat(n.reverse()) : p.concat(n)
+    flag = !flag;
+    return p;
+  }, []).map(i => i.data);
+}
+// 例1
+const root1 = buildBinaryTree([1, 2, 5, 3, 4, 6, 7]);
+const res = traverseBinaryTreeLikeSnake(root1) // [7,6,4,3,2,5,1]
+console.log(res);
+
+// 例2
+const root2 = buildBinaryTree([1, 2, 5, 3, null, 6, null, 4, null, null, null, 7, null, null, null]);
+const res2 = traverseBinaryTreeLikeSnake(root2) // [7,4,3,6,5,2,1]
+console.log(res2);
+```
