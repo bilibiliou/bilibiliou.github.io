@@ -24,6 +24,7 @@
     - [一些常用的ReactHook](/docs/front_end/react/2021-02-03-hooks.md)
   - Typescript
     - [关于ts一些高阶技巧](/docs/front_end/typescript/2020-08-03-ts.md)
+    - [范型体操](/docs//front_end/typescript/2023-09-28-ts-generics.md)
 - 面试
   - [面试题汇总](/docs/interview/summary/2015-12-31-interview.md)
   - [如何实现一个LazyMan](/docs/interview/2020-02-25-lazyman.md)
@@ -35,6 +36,8 @@
     - [关于DNS和CDN的基本原理](/docs/base/computer_network/2018-05-23-dns-cdn.md)
     - [HTTP学习笔记](/docs/base/computer_network/2020-04-23-learn-http.md)
     - [TCP学习笔记](/docs/base/computer_network/tcp_learning/2020-04-25-tcp.md)
+- 安全
+  - [CSRF总结](/docs//security/csrf/2023-05-19-csrf.md)
 - 算法
   - [前端排序](/docs/algorithm/2015-12-15-sort-Algorithm.md)
   - [关于一种特殊的逻辑前缀表达式的解析和抽象规则](/docs/algorithm/logic_tree/2019-11-22-logic-tree.md)
