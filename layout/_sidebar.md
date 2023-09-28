@@ -38,6 +38,7 @@
     - [TCP学习笔记](/docs/base/computer_network/tcp_learning/2020-04-25-tcp.md)
 - 安全
   - [CSRF总结](/docs/security/csrf/2023-05-19-csrf.md)
+  - [XSS总结](/docs/security/csrf/2023-09-28-xss.md)
 - 算法
   - [前端排序](/docs/algorithm/2015-12-15-sort-Algorithm.md)
   - [关于一种特殊的逻辑前缀表达式的解析和抽象规则](/docs/algorithm/logic_tree/2019-11-22-logic-tree.md)
